@@ -8,4 +8,4 @@
 |---|:---:|:---:|:---:|:---:|:---:|
 |프로필|
 |역할|Android|Android|Back-end|Back-end|Back-end|
-|깃허브|[kms7020](https://github.com/kms7020)|[Jejeong-Moon](https://github.com/Jejeong-Moon)|[TigerPaark](https://github.com/TigerPaark)|[MoonMinHyuk1](https://github.com/MoonMinHyuk1)||[YoungHoon-Jung97](https://github.com/YoungHoon-Jung97)|
+|깃허브|[kms7020](https://github.com/kms7020)|[Jejeong-Moon](https://github.com/Jejeong-Moon)|[TigerPaark](https://github.com/TigerPaark)|[MoonMinHyuk1](https://github.com/MoonMinHyuk1)||[YoungHoon-Jung97](https://github.com/YoungHoon-Jung97)||
