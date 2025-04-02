@@ -30,7 +30,7 @@ body {
 }
 
 /* Team Menu */
-.tean-menu {
+.team-menu {
 	display:flex; /*영역 나누기*/
 	list-style: none;
 	border-bottom: 1px solid #ddd;
@@ -416,7 +416,7 @@ textarea {
 	<section>
 		<div class="main">
 			<div class="main-content">
-				<ul class="tean-menu">
+				<ul class="team-menu">
 					<li class="teampage-link"><a href="teammain.action">팀 정보</a></li>
 					<li class="teampage-link"><a href="teamschedule.action">팀 매치</a></li>
 					<li class="teampage-link"><a href="teamfee.action">팀 가계부</a></li>
