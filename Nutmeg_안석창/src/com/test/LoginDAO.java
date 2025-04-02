@@ -1,4 +1,4 @@
-package com.project.mvc;
+package com.test;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

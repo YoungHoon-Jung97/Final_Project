@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>로그인</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/Login.css">
@@ -49,7 +49,7 @@
 									<div class="section text-center">
 										<h4 class="mb-4 pb-3">로그인</h4>
 										
-										<form action="LoginCheck.action" method="post" id="loginFormKo">
+										<form action="LoginCheck.jsp" method="post" id="loginFormKo">
 											<input type="hidden" name="lang" value="ko">
 											
 											<div class="form-group">
@@ -89,7 +89,7 @@
 											</div>
 											
 											<p class="mb-0 mt-4 text-center">
-												<a href="ForgotPassword.action" class="link">비밀번호 찾기</a>
+												<a href="forgotPassword.jsp" class="link">비밀번호 찾기</a>
 											</p>
 										</form>
 									</div> <!-- section text-center end -->
@@ -142,7 +142,7 @@
 											</div>
 											
 											<p class="mb-0 mt-4 text-center">
-												<a href="ForgotPassword.action" class="link">Forgot your password?</a>
+												<a href="forgotPassword.jsp" class="link">Forgot your password?</a>
 											</p>
 										</form>
 									</div> <!-- section text-center end -->

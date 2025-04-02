@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ForgotPassword.jsp</title>
+<title>forgotPassword.jsp</title>
 
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <style type="text/css">
@@ -53,7 +53,7 @@
 
 <br><br><br><br>
 
-<form action="Login.action" method="post" id="form">
+<form action="Login.do" method="post" id="form">
 	<button type="button" onclick="Submit()">돌아가기</button>
 </form>
 </body>

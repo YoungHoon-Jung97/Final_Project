@@ -15,7 +15,7 @@
     if (userSid == null || userSid == 0)
     {
         // 로그인 페이지로 리다이렉트
-        response.sendRedirect("Login.action");
+        response.sendRedirect("Login.jsp");
         return; // 이하 코드 실행 방지
     }
 %>
@@ -71,7 +71,7 @@
 
 <br><br><br><br>
 
-<form action="Template.action" method="get" id="form">
+<form action="Login.do" method="post" id="form">
 	<button type="button" onclick="Submit()">로그아웃</button>
 </form>
 

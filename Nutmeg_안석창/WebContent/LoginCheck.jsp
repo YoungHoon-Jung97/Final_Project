@@ -1,5 +1,5 @@
-<%@ page import="com.project.mvc.LoginDTO"%>
-<%@ page import="com.project.mvc.LoginDAO"%>
+<%@ page import="com.test.LoginDTO"%>
+<%@ page import="com.test.LoginDAO"%>
 <%@ page import="java.sql.Connection"%>
 <%@ page import="javax.servlet.http.Cookie"%>
 <%@ page import="java.net.URLEncoder"%>
@@ -68,7 +68,7 @@
 		}
 	
 		// 3) 메인 페이지(또는 원하는 페이지)로 이동
-		response.sendRedirect("Main.action");
+		response.sendRedirect("Main.jsp");
 	}
 	
 	else

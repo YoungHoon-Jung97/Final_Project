@@ -1,4 +1,4 @@
-package com.project.mvc;
+package com.test;
 
 public class LoginDTO
 {
