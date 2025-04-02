@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.info.IUserDAO">
+
+	<!-- <insert id="userInsert" >
+	
+		<selectKey keyProperty="user_code_id" resultType="int" order="BEFORE">
+        SELECT USER_CODE_SEQ.NEXTVAL FROM DUAL
+    	</selectKey>
+
+	    INSERT INTO USER_CODE(user_code_id, user_code_reg_at)
+	    VALUES(#{user_code_id}, SYSDATE)
+		
+		INSERT INTO USER_INFO(USER_ID,USER_NAME,USER_PWD,USER_EMAIL,USER_SSN,USER_TEL,USER_POSTAL_ADDR,USER_ADDR,USER_DETAILED_ADDR,USER_NICK_NAME,USER_CODE_ID)
+		VALUES(USER_ID_SEQ.NEXTVAL,#{user_name},#{user_pwd},#{user_email},#{user_ssn},#{user_tel},#{user_postal_addr},#{user_addr},#{user_detailed_addr},#{user_nick_name},#{user_code_id})
+	
+	</insert> -->
+	
+	<insert id="userInsert" parameterType="com.project.info.UserDTO" statementType="CALLABLE">
+        CALL PRC_USER_INSERT(
+            #{user_name, jdbcType=VARCHAR},
+            #{user_pwd, jdbcType=VARCHAR},
+            #{user_email, jdbcType=VARCHAR},
+            #{user_ssn, jdbcType=VARCHAR},
+            #{user_tel, jdbcType=VARCHAR},
+            #{user_postal_addr, jdbcType=VARCHAR},
+            #{user_addr, jdbcType=VARCHAR},
+            #{user_detailed_addr, jdbcType=VARCHAR},
+            #{user_nick_name, jdbcType=VARCHAR}
+        )
+    </insert>
+    
+    <!-- <insert id="userInsert" parameterType="com.project.info.UserDTO" statementType="CALLABLE">
+        CALL PRC_USER_INSERT(
+            #{user_name},
+            #{user_pwd},
+            #{user_email},
+            #{user_ssn},
+            #{user_tel},
+            #{user_postal_addr},
+            #{user_addr},
+            #{user_detailed_addr},
+            #{user_nick_name})
+    </insert> -->
+	
+
+</mapper>
