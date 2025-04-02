@@ -1,0 +1,11 @@
+# nutmac
+
+
+
+## 팀원
+
+|이름|김민승|문제정|박세진|안석창|정영훈|
+|---|:---:|:---:|:---:|:---:|:---:|
+|프로필|<img width="90px" height="90px" src="https://avatars.githubusercontent.com/u/102985015?v=4" />||<img width="90px" height="90px" src="https://avatars.githubusercontent.com/u/102985637?v=4" />||
+|역할|Android|Android|Back-end|Back-end|
+|깃허브|[kms7020](https://github.com/kms7020)|[Jejeong-Moon](https://github.com/Jejeong-Moon)|[TigerPaark](https://github.com/TigerPaark)|[MoonMinHyuk1](https://github.com/MoonMinHyuk1)||[YoungHoon-Jung97](https://github.com/YoungHoon-Jung97)|
