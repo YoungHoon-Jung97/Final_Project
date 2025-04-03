@@ -11,8 +11,8 @@
 
 ## 팀원
 
-|이름|김민승|문제정 박세진|안석창|정영훈(팀장)|
-|---|:---:|:---:|:---:|:---:|
+|이름|김민승|문제정|박세진|안석창|정영훈(팀장)|
+|---|:---:|:---:|:---:|:---:|:---:|
 |프로필|<img width="90px" height="90px" src="https://avatars.githubusercontent.com/u/102985015?v=4" />||<img width="90px" height="90px" src="https://avatars.githubusercontent.com/u/102985637?v=4" />||
-|역할|Android|Android|Back-end|Back-end|
-|깃허브|[mojong2](https://github.com/mojong2)|[TigerPaark](https://github.com/TigerPaark)|[MoonMinHyuk1](https://github.com/MoonMinHyuk1)||
+|역할|Front-end|Front-end|Back-end|Back-end|Back-end|
+|깃허브|[kms1027](https://github.com/kms1027)|[jejeong-Moon](https://github.com/jejeong-Moon)|[TigerPaark](https://github.com/TigerPaark)||[석창](https://github.com/석창)||[YoungHoon-Jung97](https://github.com/YoungHoon-Jung97)|
