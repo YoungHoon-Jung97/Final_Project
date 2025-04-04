@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+
+*
+{
+	font-size: 18px;
+	color: #334433;
+	font-family: 맑은 고딕;
+	font-weight: bold;
+}
+
+
+input
+{
+	border-radius: 4px;
+}
+
+button:hover
+{
+	color: orange;
+}
+
+.table
+{
+	border-collapse: collapse;	
+}
+
+.table th, .table td
+{
+	border: 1px solid gray;
+	border-left: 0px;
+	border-right: 0px;
+	
+	padding: 3px;
+	line-height: 150%;
+	text-align: center;
+	
+}
+
+.table th
+{
+	font-weight: bold;
+	background-color: #eeeeee;
+}
+
+.btnSmallAct
+{
+	font-size: 10pt;
+	color: blue;
+	width: 45px;
+	height: 38px;
+}
+.btnSmallNon
+{
+	font-size: 10pt;
+	color: gray;
+	width: 45px;
+	height: 38px;
+}
+
+.errMsg
+{
+	font-size: small;
+	color: red;
+	display: none;
+}
+
+.numTh
+{
+	width: 50px;
+}
+
+.nameTh
+{
+	width:100px;
+}
+
+.txtScore
+{
+	width: 100px;
+	text-align: right;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+
+
+
+
