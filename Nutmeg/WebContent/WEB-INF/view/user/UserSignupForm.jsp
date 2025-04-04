@@ -19,7 +19,7 @@
 
 </head>
 <body>
-<c:import url="/WEB-INF/view/Template.jsp"></c:import>
+
 	<div class="content">
 		<form id="inserForm" class="form form--join" method="post" action="UserInsert.action">
 			<h2 class="form__title">회원 정보 입력</h2>
