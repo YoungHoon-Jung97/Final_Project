@@ -133,7 +133,7 @@ String cp = request.getContextPath();
 </script>
 
 <body>
-
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 <div class="container mt-4">
 
 	<section>

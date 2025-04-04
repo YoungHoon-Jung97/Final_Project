@@ -16,7 +16,7 @@
 <style>
 body {
 	background-color: #f9f9f9;
-	margin: 0;
+	margin-top: 1rem;
 	padding: 0;
 }
 
@@ -50,12 +50,13 @@ body {
 	background-color: #f1f1f1;
 	margin-top: 2rem;
 }
+
 </style>
 </head>
 <body>
-	<div>배너 넣을 공간</div>
+	<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 	<!-- 상단 정보 영역 -->
-	<div class="container my-4">
+	<div class="container">
 		<div class="row">
 			<!-- 날씨 정보 -->
 			<div class="col-md-4 mb-3">

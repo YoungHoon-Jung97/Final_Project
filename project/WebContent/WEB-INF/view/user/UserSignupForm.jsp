@@ -106,17 +106,16 @@ String cp = request.getContextPath();
 						<label for="ssn1" class="form__label required">주민번호</label>
 						<div class="form__input--wrapper jumin-section">
 							<input type="text" class="form__input ssn1-input" id="ssn1" maxlength="6"
-								placeholder="생년월일(6자리)" required name="user_ssn"/> 
+								placeholder="생년월일(6자리)" required name="user_ssn1"/> 
 							<span class="dash">-</span>
 							<input type="text"
-								class="form__input ssn2-input" id="ssn2" maxlength="1" required />
+								class="form__input ssn2-input" id="ssn2" name="user_ssn2" maxlength="1" required />
 							<span style="padding-left:3px; ">●</span>
 							<span style="padding-left:3px; ">●</span>
 							<span style="padding-left:3px; ">●</span>
 							<span style="padding-left:3px; ">●</span>
 							<span style="padding-left:3px; ">●</span>
 							<span style="padding-left:3px; ">●</span>
-							<input type="hidden" id="ssn" name="ssn">
 						</div>
 					</div>
 					<div class="form__error">올바른 주민등록번호를 입력해주세요.</div>

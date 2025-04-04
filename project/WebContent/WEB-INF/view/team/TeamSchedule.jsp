@@ -376,7 +376,7 @@ textarea {
 
 </head>
 <body>
-
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 <!-- 투표 종류 모달 -->
 <div id="voteTypeModal" class="voteType-modal">
     <div class="voteType-content">
@@ -417,10 +417,10 @@ textarea {
 		<div class="main">
 			<div class="main-content">
 				<ul class="team-menu">
-					<li class="teampage-link"><a href="teammain.action">팀 정보</a></li>
-					<li class="teampage-link"><a href="teamschedule.action">팀 매치</a></li>
-					<li class="teampage-link"><a href="teamfee.action">팀 가계부</a></li>
-					<li class="teampage-link"><a href="teamboard.action">팀 게시판</a></li>
+					<li class="teampage-link"><a href="MyTeam.action">팀 정보</a></li>
+					<li class="teampage-link"><a href="TeamSchedule.action">팀 매치</a></li>
+					<li class="teampage-link"><a href="TeamFee.action">팀 가계부</a></li>
+					<li class="teampage-link"><a href="TeamBoard.action">팀 게시판</a></li>
 				</ul>
 				<!-- .team-menu -->
 				<div class="vote">

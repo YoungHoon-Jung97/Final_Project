@@ -4,7 +4,7 @@ public class UserDTO
 {
 	private int user_code_id,user_id;
 	private String user_code_reg_at,user_email,user_pwd
-	,user_name,user_ssn,user_tel
+	,user_name,user_ssn1,user_ssn2,user_tel
 	,user_postal_addr,user_addr,user_detailed_addr
 	,user_nick_name;
 	
@@ -57,13 +57,21 @@ public class UserDTO
 	{
 		this.user_name = user_name;
 	}
-	public String getUser_ssn()
+	public String getUser_ssn1()
 	{
-		return user_ssn;
+		return user_ssn1;
 	}
-	public void setUser_ssn(String user_ssn)
+	public void setUser_ssn1(String user_ssn1)
 	{
-		this.user_ssn = user_ssn;
+		this.user_ssn1 = user_ssn1;
+	}
+	public String getUser_ssn2()
+	{
+		return user_ssn2;
+	}
+	public void setUser_ssn2(String user_ssn2)
+	{
+		this.user_ssn2 = user_ssn2;
 	}
 	public String getUser_tel()
 	{

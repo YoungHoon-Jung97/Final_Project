@@ -90,6 +90,7 @@ body {
 </style>
 </head>
 <body>
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 	<section>
 		<div class="main">
 			<div class="main-content">

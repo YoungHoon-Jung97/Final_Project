@@ -6,6 +6,4 @@ public interface IUserDAO
 {
 	public int userInsert(UserDTO user);
 	
-	
-
 }
