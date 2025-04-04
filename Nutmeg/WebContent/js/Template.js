@@ -89,10 +89,10 @@ $(function()
 	
 	$(".logout").click(function()
 	{
-		var currentPath = window.location.pathname.replace("/project", "");
+		var currentPath = window.location.pathname.replace("/Nutmeg", "");
 		var currentUrl = currentPath + window.location.search;
 		var returnUrl = currentUrl + (currentUrl.includes('?') ? '&' : '?') + "logoutMsg=1";
 		
-		window.location.href = "/project" + "/Logout.action?returnUrl=" + encodeURIComponent(returnUrl);
+		window.location.href = "/Nutmeg" + "/Logout.action?returnUrl=" + encodeURIComponent(returnUrl);
 	});
 });
