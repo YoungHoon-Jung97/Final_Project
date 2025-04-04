@@ -18,19 +18,11 @@
             #{user_nick_name, jdbcType=VARCHAR}
         )
     </insert>
-    
-    <!-- <insert id="userInsert" parameterType="com.project.info.UserDTO" statementType="CALLABLE">
-        CALL PRC_USER_INSERT(
-            #{user_name},
-            #{user_pwd},
-            #{user_email},
-            #{user_ssn},
-            #{user_tel},
-            #{user_postal_addr},
-            #{user_addr},
-            #{user_detailed_addr},
-            #{user_nick_name})
-    </insert> -->
 	
+	<select id="userLogin" resultType="com.nutmag.project.dto.LoginDTO">
+		SELECT USER_ID,USER_NAME,USER_PWD
+		FROM USER_INFO
+		WHERE USER_EMAIL =#{logEmailKo} AND USER_PWD = #{logPwKo}
+	</select>
 
 </mapper>

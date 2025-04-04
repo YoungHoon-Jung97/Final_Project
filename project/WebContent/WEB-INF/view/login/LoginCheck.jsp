@@ -1,4 +1,4 @@
-
+<%-- 
 <%@page import="com.nutmag.project.dto.LoginDTO"%>
 <%@page import="com.nutmag.project.dao.LoginDAO"%>
 <%@ page import="java.sql.Connection"%>
@@ -42,7 +42,7 @@
 		// 로그인 성공
 	
 		// 1) 세션에 사용자 정보 저장
-		session.setAttribute("userSid", dto.getSid());
+		session.setAttribute("userSid", dto.getid());
 		session.setAttribute("userName", dto.getName());
 		session.setAttribute("userEmail", dto.getEmail());
 		
@@ -101,4 +101,4 @@
 		session.setAttribute("lang", lang);
 		response.sendRedirect("Login.action?msg=fail");
 	}
-%>
+%> --%>

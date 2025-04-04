@@ -1,8 +1,5 @@
 package com.nutmag.project.controller;
-	
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,40 +16,6 @@ public class NutmegTemplateController
 		return "Template";
 	}
 	
-	// 로그인
-	@RequestMapping(value="/Login.action", method = RequestMethod.GET)
-	public String login(Model model)
-	{
-		return "/login/Login";
-	}
-	
-	// 로그인 체크
-	@RequestMapping(value="/LoginCheck.action", method = RequestMethod.POST)
-	public String loginCheck(Model model)
-	{
-		return "/login/LoginCheck";
-	}
-	
-	// 회원가입
-	@RequestMapping(value="/UserSignupForm.action", method = RequestMethod.GET)
-	public String userSignupForm(Model model)
-	{
-		return "/user/UserSignupForm";
-	}
-	
-	// 이메일 찾기
-	@RequestMapping(value="/ForgotEmail.action", method = RequestMethod.GET)
-	public String forgotEmail(Model model)
-	{
-		return "ForgotEmail";
-	}
-	
-	// 비밀번호 찾기
-	@RequestMapping(value="/ForgotPassword.action", method = RequestMethod.GET)
-	public String forgotPassword(Model model)
-	{
-		return "ForgotPassword";
-	}
 	
 	// 동호회 모집
 	@RequestMapping(value="/Team.action", method = RequestMethod.GET)
@@ -103,38 +66,6 @@ public class NutmegTemplateController
 		return "Match";
 	}
 	
-	// 내 정보
-	@RequestMapping(value="/MyInformation.action", method = RequestMethod.GET)
-	public String myInformation(Model model)
-	{
-		return "MyInformation";
-	}
+	
 		
-	// 로그아웃
-	@RequestMapping(value="/Logout.action", method=RequestMethod.GET)
-	public String logout(HttpServletRequest request, HttpServletResponse response)
-	{
-		HttpSession session = request.getSession();
-		
-		// 세션 삭제
-		session.removeAttribute("userSid");
-		session.removeAttribute("userName");
-		session.removeAttribute("userEmail");
-		
-		// 로그아웃 상태 플래그 남기기
-		session.setAttribute("logoutFlag", "1");
-		
-		// 리다이렉트 (이전 페이지 or 기본 Template)
-		String returnUrl = request.getParameter("returnUrl");
-		
-		// logoutMsg 파라미터 제거
-		if (returnUrl != null && returnUrl.contains("logoutMsg"))
-	    {
-			returnUrl = returnUrl.replaceAll("[&?]logoutMsg=1", "");
-			// 끝에 ?나 &가 남으면 제거
-			returnUrl = returnUrl.replaceAll("[?&]$", "");
-	    }
-	    
-		return "redirect:" + (returnUrl != null ? returnUrl : "/Error.action");
-	}
 }

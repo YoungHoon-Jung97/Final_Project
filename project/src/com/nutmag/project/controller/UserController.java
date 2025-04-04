@@ -1,12 +1,22 @@
 package com.nutmag.project.controller;
 
+import java.net.URLEncoder;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nutmag.project.dao.IUserDAO;
+import com.nutmag.project.dto.LoginDTO;
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -18,7 +28,7 @@ public class UserController
 	@Autowired 
 	private SqlSession sqlSession;
 
-	
+	// 메인 페이지
 	@RequestMapping(value = "/MainPage.action",method=RequestMethod.GET)
 	public String mainPage()
 	{
@@ -29,7 +39,14 @@ public class UserController
 		return result;
 	};
 	
+	// 유저 회원가입 폼
+	@RequestMapping(value="/UserSignupForm.action", method = RequestMethod.GET)
+	public String userSignupForm(Model model)
+	{
+		return "/user/UserSignupForm";
+	}
 	
+	// 유저 회원가입 인서트
 	@RequestMapping(value = "/UserInsert.action", method=RequestMethod.POST)
 	public String userInsert(UserDTO user)
 	{
@@ -43,5 +60,102 @@ public class UserController
 		return result;
 	};
 	
+	// 로그인
+	@RequestMapping(value="/Login.action", method = RequestMethod.GET)
+	public String login(Model model)
+	{
+		return "/login/Login";
+	}
+	
+	// 로그인 체크
+	@RequestMapping("/LoginCheck.action")
+	public String login(
+			@RequestParam("logEmailKo") String email,
+			@RequestParam("logPwKo") String pw,
+			@RequestParam(value = "saveEmailKo", required = false) String saveEmail,
+			HttpSession session,
+			HttpServletResponse response
+	) throws Exception
+	
+	{
+		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		LoginDTO dto = dao.userLogin(email, pw);
+
+		if (dto != null && dto.getUser_id() > 0)
+		{
+			// 로그인 성공
+			session.setAttribute("user_id", dto.getUser_id());
+			session.setAttribute("user_name", dto.getUser_name());
+			session.setAttribute("user_email", dto.getUser_email());
+
+			if ("on".equals(saveEmail))
+			{
+				Cookie c = new Cookie("key", URLEncoder.encode(email, "UTF-8"));
+				c.setMaxAge(399 * 24 * 60 * 60);
+				response.addCookie(c);
+			}
+
+			return "redirect:/MainPage.action";
+		}
+		else
+		{
+			// 로그인 실패
+			Cookie c = new Cookie("key", null);
+			c.setMaxAge(0);
+			response.addCookie(c);
+
+			return "redirect:/Login.action?msg=fail";
+		}
+	
+	}
+	
+	// 로그아웃
+	@RequestMapping(value="/Logout.action", method=RequestMethod.GET)
+	public String logout(HttpServletRequest request, HttpServletResponse response)
+	{
+		HttpSession session = request.getSession();
+		
+		// 세션 삭제
+		session.removeAttribute("user_id");
+		session.removeAttribute("user_name");
+		session.removeAttribute("user_email");
+		
+		// 로그아웃 상태 플래그 남기기
+		session.setAttribute("logoutFlag", "1");
+		
+		// 리다이렉트 (이전 페이지 or 기본 Template)
+		String returnUrl = request.getParameter("returnUrl");
+		
+		// logoutMsg 파라미터 제거
+		if (returnUrl != null && returnUrl.contains("logoutMsg"))
+	    {
+			returnUrl = returnUrl.replaceAll("[&?]logoutMsg=1", "");
+			// 끝에 ?나 &가 남으면 제거
+			returnUrl = returnUrl.replaceAll("[?&]$", "");
+	    }
+	    
+		return "redirect:" + (returnUrl != null ? returnUrl : "/Error.action");
+	}
+	
+	// 이메일 찾기
+	@RequestMapping(value="/ForgotEmail.action", method = RequestMethod.GET)
+	public String forgotEmail(Model model)
+	{
+		return "ForgotEmail";
+	}
+	
+	// 비밀번호 찾기
+	@RequestMapping(value="/ForgotPassword.action", method = RequestMethod.GET)
+	public String forgotPassword(Model model)
+	{
+		return "ForgotPassword";
+	}
+	
+	// 내 정보
+	@RequestMapping(value="/MyInformation.action", method = RequestMethod.GET)
+	public String myInformation(Model model)
+	{
+		return "MyInformation";
+	}
 	
 }

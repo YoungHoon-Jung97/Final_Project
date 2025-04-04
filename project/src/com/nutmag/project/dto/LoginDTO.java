@@ -2,39 +2,43 @@ package com.nutmag.project.dto;
 
 public class LoginDTO
 {
-	private int sid;
-	private String name, email, pw;
+	private int user_id;
+	private String user_name, user_email, user_pwd;
 	
-	public int getSid()
+	
+	public int getUser_id()
 	{
-		return sid;
+		return user_id;
 	}
-	public void setSid(int sid)
+	public void setUser_id(int user_id)
 	{
-		this.sid = sid;
+		this.user_id = user_id;
 	}
-	public String getName()
+	public String getUser_name()
 	{
-		return name;
+		return user_name;
 	}
-	public void setName(String name)
+	public void setUser_name(String user_name)
 	{
-		this.name = name;
+		this.user_name = user_name;
 	}
-	public String getEmail()
+	public String getUser_email()
 	{
-		return email;
+		return user_email;
 	}
-	public void setEmail(String email)
+	public void setUser_email(String user_email)
 	{
-		this.email = email;
+		this.user_email = user_email;
 	}
-	public String getPw()
+	public String getUser_pwd()
 	{
-		return pw;
+		return user_pwd;
 	}
-	public void setPw(String pw)
+	public void setUser_pwd(String user_pwd)
 	{
-		this.pw = pw;
+		this.user_pwd = user_pwd;
 	}
+	
+	
+	
 }

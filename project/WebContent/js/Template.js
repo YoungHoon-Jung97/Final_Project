@@ -28,7 +28,7 @@ $(function()
 			$(this).removeClass("active").addClass("inactive");
 			$(this).find(".user-icon").removeClass("shrink").addClass("inshrink");
 			
-			if (userSid != null)
+			if (user_id != null)
 				$(".user-menu").hide();
 		}
 		
@@ -37,7 +37,7 @@ $(function()
 			$(this).removeClass("inactive").addClass("active");
 			$(this).find(".user-icon").removeClass("inshrink").addClass("shrink");
 			
-			if (userSid != null)
+			if (user_id != null)
 				$(".user-menu").show();
 		}
 	});
