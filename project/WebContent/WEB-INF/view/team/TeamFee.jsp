@@ -197,9 +197,9 @@ table td {
 			<div class="main-content">
 				<ul class="tean-menu">
 					<li class="teampage-link"><a href="MyTeam.action">팀 정보</a></li>
-					<li class="teampage-link"><a href="TeamSchedule.action">팀 매치</a></li>
-					<li class="teampage-link"><a href="TeamFee.action">팀 가계부</a></li>
-					<li class="teampage-link"><a href="TeamBoard.action">팀 게시판</a></li>
+					<li class="teampage-link"><a href="MyTeamSchedule.action">팀 매치</a></li>
+					<li class="teampage-link"><a href="MyTeamFee.action">팀 가계부</a></li>
+					<li class="teampage-link"><a href="MyTeamBoard.action">팀 게시판</a></li>
 				</ul>
 				<!-- .tean-menu -->
 

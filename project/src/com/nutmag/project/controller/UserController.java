@@ -25,18 +25,7 @@ public class UserController
 		String result ="";
 		
 		
-		result = "/WEB-INF/view/main/MainPage.jsp";
-		return result;
-	};
-	
-
-	@RequestMapping(value = "/UserSignupForm.action",method=RequestMethod.GET)
-	public String userSignupForm()
-	{
-		String result ="";
-		
-		
-		result = "/WEB-INF/view/user/UserSignupForm.jsp";
+		result = "main/MainPage";
 		return result;
 	};
 	
