@@ -10,7 +10,6 @@ public class StadiumRegInsertDTO
 	,stadium_doc_path;
 	
 	
-	
 	public int getStadium_reg_id()
 	{
 		return stadium_reg_id;

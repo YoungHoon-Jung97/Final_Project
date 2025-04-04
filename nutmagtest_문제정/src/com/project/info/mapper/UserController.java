@@ -12,9 +12,11 @@ import com.project.info.UserDTO;
 @Controller
 public class UserController
 {
-	
-	@Autowired
+
+
+	@Autowired 
 	private SqlSession sqlSession;
+
 	
 	@RequestMapping(value = "/MainPage.action",method=RequestMethod.GET)
 	public String mainPage()
@@ -26,6 +28,7 @@ public class UserController
 		return result;
 	};
 	
+
 	@RequestMapping(value = "/UserSignupForm.action",method=RequestMethod.GET)
 	public String userSignupForm()
 	{
@@ -35,7 +38,6 @@ public class UserController
 		result = "/WEB-INF/view/UserSignupForm.jsp";
 		return result;
 	};
-	
 	
 	
 	@RequestMapping(value = "/UserInsert.action", method=RequestMethod.POST)
