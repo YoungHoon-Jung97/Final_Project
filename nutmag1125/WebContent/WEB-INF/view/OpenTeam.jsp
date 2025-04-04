@@ -45,14 +45,13 @@ body {
 					    <div style="display: flex; style=width: 48%;">
 					    <div>
 					        <label for="region">시</label>
-					        <select id="regions" name="region_id" class="form-control"  required="required">
-					            <option value="">시를 선택하세요</option>
-					            <c:forEach var="regionList" items="${regionList}">
-					                <option value="${regionList.region_id}">${regionList.region_name}</option>
-					            </c:forEach>
-					        </select>
-					    </div>
-					
+								<select id="region_id" name="region_id" class="form-control" required="required">
+								    <option value="">시를 선택하세요</option>
+								    <c:forEach var="region" items="${regionList}">
+								        <option value="${region.region_id}">${region.region_name}</option>
+								    </c:forEach>
+								</select>
+						    </div>
 					    <div>
 					        <label for="city">구</label>
 					        <select id="city" name="city_id" class="form-control"  required="required">
@@ -76,14 +75,15 @@ body {
 					<div class="mb-2">
 					    <div style="display: flex; style=width: 48%;">
 					    <div>
-					        <label for="bank">은행명</label>
-					        <select id="banks" name="bank_id" class="form-control"  required="required">
-					            <option value="">은행을 선택하세요</option>
-					            <c:forEach var="bank" items="${banks}">
-					                <option value="${bank.bank_id}">${bank.bank_name}</option>
-					            </c:forEach>
-					        </select>
-					    </div>
+						    <label for="bank">은행명</label>
+						    <select id="bank_id" name="bank_id" class="form-control" required="required">
+						        <option value="">은행을 선택하세요</option>
+						        <!-- bankList를 순회하여 은행명 출력 -->
+						        <c:forEach var="bank" items="${bankList}">
+						            <option value="${bank.bank_id}">${bank.bank_name}</option>
+						        </c:forEach>
+						    </select>
+						</div>
 					</div>
 					</div>
 					<div class="mb-2">

@@ -35,18 +35,30 @@ public class UserInfoController
 		return result;
 	};
 	@RequestMapping(value = "/insert.action", method = RequestMethod.GET)
-	public String insert(Model model)
+	public String teaminsert(Model model)
 	{
-		String result = "";
+		String result = null;
 		
-		IRegionDAO dao = sqlSession.getMapper(IRegionDAO.class);
-		
-		
-		model.addAttribute("regionList", dao.regionList());
+		IRegionDAO regionDAO = sqlSession.getMapper(IRegionDAO.class);
+		IBankDAO bankDao = sqlSession.getMapper(IBankDAO.class);
+	    
+	    
+	    
+	    model.addAttribute("bankList", bankDao.bankList());
+		model.addAttribute("regionList", regionDAO.regionList());
 		
 		result = "/WEB-INF/view/OpenTeam.jsp";
 		
 		return result;
 	};
+	
+	/*
+	 * @RequestMapping(value = "/bank.action", method = RequestMethod.GET) public
+	 * String bank(Model model) { String result = "/WEB-INF/view/OpenTeam.jsp";
+	 * 
+	 * 
+	 * 
+	 * return result; }
+	 */
 	
 }

@@ -5,8 +5,8 @@
 <mapper namespace="com.test.what.IRegionDAO">
 	
 	<select id="regionList" resultType="com.test.what.RegionDTO">
-		SELECT REGION_ID,REGION_NAME,REGION_NAME_ENG
-		FROM REGION
+		SELECT REGION_ID,REGION_NAME
+		FROM TBL_REGION
 	</select>
 
 </mapper>
