@@ -106,10 +106,14 @@ public class UserController
 					previousPage = previousPage.replaceAll(".*/", "/Nutmeg/").replace(".jsp", ".action");
 				
 				
-				/*
-				 * response.sendRedirect(previousPage); // 이전 페이지로 이동
-				 */				 
-				return "redirect:" + previousPage;
+				
+				  // 응답이 이미 커밋된 경우를 체크
+		        if (!response.isCommitted()) {
+		            response.sendRedirect(previousPage); // 이전 페이지로 이동
+		            return null; // 이후 코드 실행 방지
+		        } else {
+		            return "redirect:" + previousPage;
+		        }
 			}
 			
 			else
@@ -127,7 +131,7 @@ public class UserController
 			return "redirect:/Login.action?msg=fail";
 		}
 		
-		return "redirect:/MainPage.action";
+		
 	}
 	
 	// 로그아웃

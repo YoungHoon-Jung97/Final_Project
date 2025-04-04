@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
+	String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html>
@@ -19,6 +19,7 @@ String cp = request.getContextPath();
 
 </head>
 <body>
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 	<div class="content">
 		<form id="inserForm" class="form form--join" method="post" action="UserInsert.action">
 			<h2 class="form__title">회원 정보 입력</h2>

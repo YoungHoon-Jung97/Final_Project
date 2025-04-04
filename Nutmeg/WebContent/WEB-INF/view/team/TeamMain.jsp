@@ -1,10 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>팀 정보</title>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style type="text/css">
 /* General Reset */
 * {
@@ -189,10 +196,11 @@ table td {
 	
 }
 </style>
+
 </head>
 <body>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
-	<section>
+	<div class="container-fluid">
 		<div class="main">
 			<div class="main-content">
 				<ul class="tean-menu">
@@ -261,8 +269,7 @@ table td {
 			<!-- .main-content  -->
 		</div>
 		<!-- .main  -->
-	</section>
-
+	</div>
 
 
 </body>
