@@ -15,4 +15,4 @@
 |---|:---:|:---:|:---:|:---:|:---:|
 |프로필|||
 |역할|Front-end|Front-end|Back-end|Back-end|Back-end|
-|깃허브|[kms1027](https://github.com/kms1027)|[jejeong-Moon](https://github.com/jejeong-Moon)|[TigerPaark](https://github.com/TigerPaark)|[석창](https://github.com/석창)|[YoungHoon-Jung97](https://github.com/YoungHoon-Jung97)|
+|깃허브|[kms1027](https://github.com/kms1027)|[jejeong-Moon](https://github.com/jejeong-Moon)|[TigerPaark](https://github.com/TigerPaark)|[석창](https://github.com/totoru119)|[YoungHoon-Jung97](https://github.com/YoungHoon-Jung97)|
