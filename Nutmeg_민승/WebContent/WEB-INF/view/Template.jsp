@@ -198,7 +198,7 @@ $(function()
 	
 	<!-- 로고 -->
 	<div class="logo">
-		<a href="Team.action">
+		<a href="MainPage.action">
 			<img src="images/nutmeg.png" alt="넛맥 로고">
 		</a>
 	</div>

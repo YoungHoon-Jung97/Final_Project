@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
-public class adminController
+public class AdminController
 {
 	
 	@Autowired
 	private SqlSession sqlSession;
 	
-	@RequestMapping(value = "/AdminSignUp.action",method=RequestMethod.GET)
-	public String adminSignUp()
+	@RequestMapping(value = "/AdminInsert.action",method=RequestMethod.GET)
+	public String AdminInsert()
 	{
 		String result ="";
 		
 		
-		result = "/admin/AdminSignUp";
+		result = "/admin/AdminInsertForm";
 		return result;
 	};
 	

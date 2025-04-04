@@ -8,7 +8,6 @@
 		#{admin_email, jdbcType=VARCHAR},
 		#{admin_tel, jdbcType=VARCHAR},
 		#{admin_nickName, jdbcType=VARCHAR}
-		#{admin_id, jdbcType=VARCHAR}
 		)
 	</insert>
 </mapper>

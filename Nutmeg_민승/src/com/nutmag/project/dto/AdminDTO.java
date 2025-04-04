@@ -2,16 +2,8 @@ package com.nutmag.project.dto;
 
 public class AdminDTO
 {
-	private String admin_id,admin_email,admin_nickName,admin_tel,user_code_reg_at;
-	private int userCode_id;
-	public String getAdmin_id()
-	{
-		return admin_id;
-	}
-	public void setAdmin_id(String admin_id)
-	{
-		this.admin_id = admin_id;
-	}
+	private String admin_email,admin_nickName,admin_tel,user_code_reg_at;
+	private int userCode_id,admin_id;
 	public String getAdmin_email()
 	{
 		return admin_email;
@@ -51,6 +43,14 @@ public class AdminDTO
 	public void setUserCode_id(int userCode_id)
 	{
 		this.userCode_id = userCode_id;
+	}
+	public int getAdmin_id()
+	{
+		return admin_id;
+	}
+	public void setAdmin_id(int admin_id)
+	{
+		this.admin_id = admin_id;
 	}
 	
 	
