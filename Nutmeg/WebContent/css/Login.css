@@ -43,12 +43,14 @@ p
 	font-weight: 500;
 	font-size: 14px;
 	line-height: 1.7;
+	margin-left: 15px;
 }
 
 h4
 {
 	font-weight: 600;
 	color: #102770;
+	margin-right: 10px;
 }
 
 h5
@@ -341,19 +343,10 @@ h5 span
 	transition: all 200ms linear;
 }
 
-.checkbox-button
-{
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	margin-top: 20px;
-	vertical-align: middle;
-}
-
 #loginFormKo .input-wrap, #loginFormEn .input-wrap
 {
 	order: 1;
-	margin-left: 52px;
+	margin-left: -290px;
 	display: inline-flex;
 	align-items: center;
 }
@@ -361,7 +354,7 @@ h5 span
 #loginFormKo .btn.mt-4, #loginFormEn .btn.mt-4
 {
 	order: 2;
-	margin-left: 27px;
+	margin-left: 32px;
 	display: block;
 }
 
@@ -442,3 +435,60 @@ h5 span
 	-ms-user-select: none;
 	user-select: none;
 }
+
+.submit-button
+{
+	margin-top: -15px;
+}
+
+.submit-button-text
+{
+	padding-right: 10px;
+}
+
+.login-button
+{
+	width: 85.5%;
+}
+
+.boundary1, .boundary2, .boundary3
+{
+	color: #adb5bd;
+}
+
+.boundary1
+{
+	padding: 0 15px 0 15px;
+}
+
+.boundary2
+{
+	padding: 0 10px 0 15px;
+}
+
+.boundary3
+{
+	padding: 0 5px 0 10px;
+}
+
+.margin-p
+{
+	margin-left: 20px;
+}
+
+.back-btn
+{
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	background: none;
+	border: none;
+	font-size: 35px;
+	cursor: pointer;
+	color: #faaa7a;
+	transition: all 200ms linear;
+}
+
+.back-btn:hover
+{
+	color: #102770;

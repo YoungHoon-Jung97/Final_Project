@@ -1,3 +1,7 @@
+/*
+	Login.js
+*/
+
 $(function()
 {
 	// 페이지 로딩 시 초기 검증
@@ -195,6 +199,12 @@ $(function()
 			$('.save-email-ko').find('i').removeClass('uil-check-square').addClass('uil-square');
 			$('.save-email-en').find('i').removeClass('uil-check-square').addClass('uil-square');
 		}
+	});
+	
+	$('.input-icon5').on('click', function()
+	{
+		var checkbox = $(this).siblings('.save-email');
+		checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
 	});
 });
 
