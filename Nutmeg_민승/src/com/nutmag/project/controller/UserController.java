@@ -1,6 +1,9 @@
 package com.nutmag.project.controller;
 
+<<<<<<< HEAD
 import java.io.IOException;
+=======
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 import java.net.URLEncoder;
 
 import javax.servlet.http.Cookie;
@@ -15,7 +18,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.ResponseBody;
+=======
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.LoginDTO;
@@ -48,6 +54,7 @@ public class UserController
 		return "/user/UserSignupForm";
 	}
 	
+<<<<<<< HEAD
 	//유저 회원가입 이메일 중복검사
 	@RequestMapping(value="/CheckEmail.action", method = RequestMethod.GET)
 	public void checkEmail(@RequestParam("email") String email, HttpServletResponse response) throws IOException {
@@ -101,6 +108,8 @@ public class UserController
 		
 	}
 	
+=======
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 	// 유저 회원가입 인서트
 	@RequestMapping(value = "/UserInsert.action", method=RequestMethod.POST)
 	public String userInsert(UserDTO user)

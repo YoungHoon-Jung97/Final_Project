@@ -93,7 +93,11 @@ $(function()
 	
 	$(".temp-team").click(function()
 	{
+<<<<<<< HEAD
 		window.location.href = "TempOpen.action";
+=======
+		window.location.href = "TempTeam.action";
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 	});
 	
 	$(".field").click(function()

@@ -2,10 +2,15 @@ package com.nutmag.project.dto;
 
 public class AdminDTO
 {
+<<<<<<< HEAD
 	private String admin_email,admin_pwd,admin_nickName,admin_tel,user_code_reg_at;
 	private int userCode_id,admin_id;
 	
 	
+=======
+	private String admin_email,admin_nickName,admin_tel,user_code_reg_at;
+	private int userCode_id,admin_id;
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 	public String getAdmin_email()
 	{
 		return admin_email;
@@ -14,6 +19,7 @@ public class AdminDTO
 	{
 		this.admin_email = admin_email;
 	}
+<<<<<<< HEAD
 	public String getAdmin_pwd()
 	{
 		return admin_pwd;
@@ -22,6 +28,8 @@ public class AdminDTO
 	{
 		this.admin_pwd = admin_pwd;
 	}
+=======
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 	public String getAdmin_nickName()
 	{
 		return admin_nickName;
@@ -66,6 +74,9 @@ public class AdminDTO
 	
 	
 	
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 }

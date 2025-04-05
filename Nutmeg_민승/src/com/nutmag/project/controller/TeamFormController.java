@@ -1,5 +1,6 @@
 package com.nutmag.project.controller;
 
+<<<<<<< HEAD
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,10 +15,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.nutmag.project.dao.IBankDAO;
 import com.nutmag.project.dao.IRegionDAO;
+=======
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 
 @Controller
 public class TeamFormController
 {
+<<<<<<< HEAD
 	@Autowired 
 	private SqlSession sqlSession;
 	
@@ -42,6 +49,8 @@ public class TeamFormController
 		return "/team/TeamOpen";
 	}
 	
+=======
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 	//동호회 메인 페이지 호출
 	@RequestMapping(value="/MyTeam.action", method = RequestMethod.GET)
 	public String teamMain() {

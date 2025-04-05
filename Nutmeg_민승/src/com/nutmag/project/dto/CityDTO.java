@@ -1,5 +1,6 @@
 package com.nutmag.project.dto;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 public class CityDTO
@@ -25,4 +26,9 @@ public class CityDTO
 	public void setCity_name(String city_name) {
 		this.city_name = city_name;
 	}
+=======
+public class CityDTO
+{
+
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 }

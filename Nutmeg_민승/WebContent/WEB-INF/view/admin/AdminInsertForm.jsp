@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+=======
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+String cp = request.getContextPath();
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 %>
 <!DOCTYPE html>
 <html>
@@ -10,6 +18,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css">
+<<<<<<< HEAD
 <style type="text/css">
 	#ssn1 {
     	width: 200px;
@@ -113,6 +122,8 @@ function checkPassword(){
 	}
 }
 </script>
+=======
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 </head>
 <body>
 	<div class="content">
@@ -128,6 +139,7 @@ function checkPassword(){
 					<div class="form__field">
 						<label for="email" class="form__label required">이메일</label>
 						<div class="form__input--wrapper">
+<<<<<<< HEAD
 							<input type="email" class="form__input" id="email" name="email"
 							       placeholder="예: example@google.com" maxlength="100" required />
 							<button type="button" class="btn btn--check" onclick="checkEmail()">중복확인</button>
@@ -158,6 +170,12 @@ function checkPassword(){
 						</div>
 					</div>
 					<p id="passwordCheck" class="result"></p>
+=======
+							<input type="email" class="form__input" id="email"
+							placeholder="예: example@google.com" maxlength="100" required />
+						</div>
+					</div>
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 				</div>
 
 				<!-- 닉네임 입력 -->
@@ -166,11 +184,19 @@ function checkPassword(){
 						<label for="nickName" class="form__label required">닉네임</label>
 						<div class="form__input--wrapper">
 							<input type="text" class="form__input" id="nickName"
+<<<<<<< HEAD
 							       placeholder="닉네임" maxlength="20" name="nickName" required />
 							<button type="button" class="btn btn--check" onclick="checkNickName()">중복확인</button>
 						</div>
 					</div>
 					<p id="nickNameCheck" class="result"></p>
+=======
+								placeholder="닉네임" maxlength="20" name="nickName" required />
+							<button type="button" class="btn btn--check">중복확인</button>
+						</div>
+					</div>
+					<p class="form__error nickName--error">이미 존재하는 닉네임 입니다.</p>
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 				</div>
 
 				<!-- 전화번호 입력 -->
@@ -179,22 +205,44 @@ function checkPassword(){
 						<label for="tel" class="form__label">전화번호</label> 
 						<div class="form__input-wrapper">
 							<input type="tel" class="form__input" id="tel" placeholder="전화번호"
+<<<<<<< HEAD
 							       name="tel" data-type="tel" />
 						</div>
 					</div>
 				</div>
+=======
+							name="tel" data-type="tel" />
+						</div>
+					</div>
+				</div>
+
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 			</div>
 			<!-- .form__section -->
 
 			<!-- 버튼 그룹 -->
 			<div class="form__actions">
+<<<<<<< HEAD
 				<button id="submitBtn" type="submit" class="btn btn--submit">회원가입</button>
 				<button type="reset" class="btn btn--reset">취소</button>
 				<button type="button" class="btn btn--back">뒤로가기</button>
 			</div>
+=======
+				<button type="submit" class="btn btn--submit">회원가입</button>
+				<button type="reset" class="btn btn--reset">취소</button>
+				<button type="button" class="btn btn--back">뒤로가기</button>
+			</div>
+
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 		</form>
 		<!-- .form -->
 	</div>
 	<!-- .content -->
+<<<<<<< HEAD
 </body>
 </html>
+=======
+
+</body>
+</html>
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b

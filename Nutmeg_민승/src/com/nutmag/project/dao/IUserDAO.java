@@ -7,6 +7,7 @@ import com.nutmag.project.dto.UserDTO;
 
 public interface IUserDAO
 {
+<<<<<<< HEAD
 	//유저 정보 입력
 	public int userInsert(UserDTO user);
 	
@@ -18,4 +19,8 @@ public interface IUserDAO
 	
 	//유저 닉네임 찾기
 	public int searchnickName(@Param("nickName") String nickName);
+=======
+	public int userInsert(UserDTO user);
+	LoginDTO userLogin(@Param("logEmailKo") String email, @Param("logPwKo") String pw);
+>>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 }
