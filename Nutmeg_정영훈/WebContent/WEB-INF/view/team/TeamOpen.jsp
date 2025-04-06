@@ -117,7 +117,7 @@
 <div class="container">
 	<div>
 		<h5 class="form__title">동호회 개설 신청 양식</h5>
-		<form method="post" action="TeamInsert.action" class="form">
+		<form method="post" action="TeamInsert.action" class="form" enctype="multipart/form-data">
 			<div class="form__section">
 				<div class="form__group">
 					<label for="teamName" class="form__label required">동호회 이름</label>
