@@ -1,8 +1,11 @@
 package com.nutmag.project.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +31,8 @@ import com.nutmag.project.dto.CityDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.UserDTO;
 
+import util.Emblem;
+
 @Controller
 public class TeamFormController
 {
@@ -35,7 +41,7 @@ public class TeamFormController
 	
 	//동호회 개설 페이지 호출
 	@RequestMapping(value="/TempOpen.action", method = RequestMethod.GET)
-	public String teamOpen(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public String createTeam(Model model, HttpServletRequest request, HttpServletResponse response) {
 
 		HttpSession session = request.getSession();
 		
@@ -83,8 +89,6 @@ public class TeamFormController
 
 	    String searchTeamName = dao.searchTeamName(teamName);
 	    
-	    System.out.println(searchTeamName);
-	    
 	    response.setCharacterEncoding("UTF-8");
 	    response.setContentType("text/plain;charset=UTF-8");
 	    
@@ -102,7 +106,46 @@ public class TeamFormController
 	
 	//동호회 등록
 	@RequestMapping(value = "/TeamInsert.action", method = RequestMethod.POST)
-	public String teamInsert(TeamDTO team){
+	public String insertTeam(TeamDTO team ,HttpServletRequest request){
+		System.out.println("파일 경로 : "+ 1);
+		
+		MultipartFile file = team.getTemp_team_emblem();
+		
+		//파일이 있을 시
+		if(file !=null && !file.isEmpty()) {
+			try {
+				//웹 애플리케이션 루트 경로 가져오기
+				String root = request.getServletContext().getRealPath("");
+				
+				//업로드 디렉토리 생성
+				String uploadPath = root + Emblem.getUploadDir();
+				File uploadDir = new File(uploadPath);
+				//파일 경로 없을 시 폴더 생성
+				if(!uploadDir.exists()) {
+					uploadDir.mkdirs();
+				}
+				
+				//파일명 충동 방지를 위한 고유 파일명 생성
+				String originalFileName = file.getOriginalFilename();
+				String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+				String teamFileName = team.getTemp_team_name()+fileExtension;
+				
+				//파일 저장
+				String filePath = uploadPath + teamFileName;
+				File dest = new File(filePath);
+				file.transferTo(dest);
+				
+				//DB에 저장할 상대 경로 설정
+				String dbFilePath = Emblem.getUploadDir() + teamFileName;
+				
+				System.out.println("파일 경로 : "+ dbFilePath);
+				
+				team.setEmblem(dbFilePath);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 		
@@ -110,7 +153,7 @@ public class TeamFormController
 		
 		return "redirect:/MainPage.action";
 	}
-	
+
 	//동호회 메인 페이지 호출
 	@RequestMapping(value="/MyTeam.action", method = RequestMethod.GET)
 	public String teamMain() {
