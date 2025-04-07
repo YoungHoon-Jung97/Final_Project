@@ -28,7 +28,7 @@
 	<select id="searchTeamMember" resultType="int">
 		SELECT COUNT(*)
 		FROM team_member
-		WHERE USER_CODE_ID=1 AND TEAM_MEMBER_APPLY_AT IS NOT NULL
+		WHERE USER_CODE_ID=#{user_code_id} AND TEAM_MEMBER_APPLY_AT IS NOT NULL
 	</select>
 	
 	<select id="searchTeamName" resultType="String">
