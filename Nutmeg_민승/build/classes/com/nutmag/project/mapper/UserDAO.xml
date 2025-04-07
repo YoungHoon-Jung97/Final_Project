@@ -4,10 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutmag.project.dao.IUserDAO">
 	
-<<<<<<< HEAD
+
 	<!-- 유저 정보 입력 프로시저  -->
-=======
->>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
+
 	<insert id="userInsert" parameterType="com.nutmag.project.dto.UserDTO" statementType="CALLABLE">
         CALL PRC_USER_INSERT(
             #{user_name, jdbcType=VARCHAR},
@@ -43,12 +42,11 @@
 		FROM USER_INFO
 		WHERE USER_NICK_NAME = #{nickName}
 	</select>
-=======
+
 	<select id="userLogin" resultType="com.nutmag.project.dto.LoginDTO">
 		SELECT USER_ID,USER_NAME,USER_EMAIL
 		FROM USER_INFO
 		WHERE USER_EMAIL =#{logEmailKo} AND USER_PWD = #{logPwKo}
 	</select>
 
->>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 </mapper>

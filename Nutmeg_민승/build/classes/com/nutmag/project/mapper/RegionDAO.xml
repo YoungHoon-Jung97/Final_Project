@@ -8,14 +8,13 @@
 		SELECT REGION_ID,REGION_NAME,REGION_NAME_ENG
 		FROM REGION
 	</select>
-<<<<<<< HEAD
+
 	
 	<select id="cityList" resultType="com.nutmag.project.dto.CityDTO">
 		SELECT REGION_ID,CITY_NAME,CITY_ID
 		FROM CITY
 	</select>
-=======
->>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
+
     
 
 </mapper>

@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-<<<<<<< HEAD
 String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
@@ -108,9 +107,8 @@ body {
 			</div>
 	</div>
 
-=======
-	String cp = request.getContextPath();
-%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -139,6 +137,5 @@ body {
 			<span class="search-icon">🔍</span>
 		</div>
 	</header>
->>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
 </body>
 </html>
