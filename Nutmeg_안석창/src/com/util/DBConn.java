@@ -1,3 +1,9 @@
+/*======================================
+  DBConn.java
+  - 데이터베이스 연결 전용 객체(Singleton)
+  - 예외 처리 : throws
+========================================*/
+
 package com.util;
 
 import java.sql.Connection;

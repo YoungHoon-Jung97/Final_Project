@@ -1,3 +1,7 @@
+/*
+	Login.js
+*/
+
 $(function()
 {
 	// 페이지 로딩 시 초기 검증
@@ -202,6 +206,25 @@ $(function()
 		var checkbox = $(this).siblings('.save-email');
 		checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
 	});
+	
+	// 로그인 실패 시 메시지 알림과 주소창의 파라미터 제거 처리
+	if (msg == "fail")
+	{
+		if (lang == "ko")
+			swal("로그인 실패", "이메일 / 비밀번호가 올바르지 않습니다.", "error");
+		
+		else
+			swal("Login failed", "email / password is invalid.", "error");
+
+		if (history.replaceState)
+			history.replaceState({}, '', location.pathname);
+		
+		else
+		{
+			var cleanUrl = location.protocol + '//' + location.host + location.pathname;
+			location.href = cleanUrl;
+		}
+	}
 });
 
 function validateLoginForm()
@@ -261,24 +284,5 @@ function Submit()
 		}
 
 		document.getElementById("loginFormEn").submit();
-	}
-}
-
-// 로그인 실패 시 메시지 알림과 주소창의 파라미터 제거 처리
-if (typeof msg !== "undefined" && msg === "fail")
-{
-	if (typeof lang !== "undefined" && lang === "ko")
-		alert("이메일 / 비밀번호가 올바르지 않습니다.");
-	
-	else
-		alert("email / password is invalid.");
-
-	if (history.replaceState)
-		history.replaceState({}, '', location.pathname);
-	
-	else
-	{
-		var cleanUrl = location.protocol + '//' + location.host + location.pathname;
-		location.href = cleanUrl;
 	}
 }

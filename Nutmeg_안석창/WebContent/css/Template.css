@@ -24,10 +24,10 @@ body
 	background-color: #ebedec;
 }
 
-.menu-bar, main
+.menu-bar, .main
 {
 	width: 90%;
-	max-width: 1200px;
+	max-width: 1300px;
 	margin: 0 auto;
 }
 
@@ -142,16 +142,6 @@ body
 	cursor: pointer;
 	font-weight: bold;
 	margin-right: 30px;
-}
-
-/* 중앙 컨텐츠 */
-main
-{
-	padding: 100px 0 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
 }
 
 /* 컨텐츠 박스 */

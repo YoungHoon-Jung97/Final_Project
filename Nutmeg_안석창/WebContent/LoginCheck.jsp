@@ -1,5 +1,5 @@
-<%@ page import="com.project.mvc.LoginDTO"%>
-<%@ page import="com.project.mvc.LoginDAO"%>
+<%@ page import="com.test.LoginDTO"%>
+<%@ page import="com.test.LoginDAO"%>
 <%@ page import="java.sql.Connection"%>
 <%@ page import="javax.servlet.http.Cookie"%>
 <%@ page import="java.net.URLEncoder"%>
@@ -34,7 +34,7 @@
 	// DB 연결 종료
 	dao.close();
 	
-	// 로그인 성공 / 실패 분기
+	// 로그인 성공/실패 분기
 	// dto.getSid()가 0이면 로그인 정보가 없다는 뜻
 	if (dto.getSid() > 0)
 	{
@@ -67,22 +67,8 @@
 			response.addCookie(c);
 		}
 	
-		// 이전 페이지 URL 가져오기
-		String previousPage = (String) session.getAttribute("previousPage");
-		
-		if (previousPage != null)
-		{
-			session.removeAttribute("previousPage"); // 이전 페이지 정보 삭제
-			
-			// 만약 잘못된 JSP 경로가 저장된 경우 .action 경로로 변경
-			if (previousPage.contains("/WEB-INF/view"))
-				previousPage = previousPage.replace("/WEB-INF/view", "").replace(".jsp", ".action");
-			
-			response.sendRedirect(previousPage); // 이전 페이지로 이동
-		}
-		
-		else
-			response.sendRedirect("Error.action");
+		// 3) 메인 페이지(또는 원하는 페이지)로 이동
+		response.sendRedirect("Main.jsp");
 	}
 	
 	else
@@ -98,6 +84,6 @@
 		
 		// 다시 로그인 페이지로 돌아가면서, 실패 메시지 등을 전달
 		session.setAttribute("lang", lang);
-		response.sendRedirect("Login.action?msg=fail");
+		response.sendRedirect("Login.do?msg=fail");
 	}
 %>

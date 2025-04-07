@@ -14,14 +14,14 @@
 	session.setAttribute("previousPage", previousPage);
 	
 	// 세션에서 로그인 정보를 확인
-    // (LoginCheck.jsp 등에서 session.setAttribute("userSid", dto.getSid()); 한 값)
-    Integer userSid = (Integer) session.getAttribute("userSid");
-    String userName = (String) session.getAttribute("userName");
-    String userEmail = (String) session.getAttribute("userEmail");
+    // (LoginCheck.jsp 등에서 session.setAttribute("user_id", dto.getSid()); 한 값)
+    Integer user_id = (Integer) session.getAttribute("user_id");
+    String user_name = (String) session.getAttribute("user_name");
+    String user_email = (String) session.getAttribute("user_email");
     
-    /* System.out.println("DEBUG: userSid = " + userSid);
-	System.out.println("DEBUG: userName = " + userName);
-	System.out.println("DEBUG: userEmail = " + userEmail); */
+    System.out.println("DEBUG: user_id = " + user_id);
+	System.out.println("DEBUG: user_name = " + user_name);
+	System.out.println("DEBUG: user_email = " + user_email);
 %>
 <!DOCTYPE html>
 <html>
@@ -30,16 +30,16 @@
 <title>Template.jsp</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
-	var userSid = "<%=userSid %>";
+	var user_id = "<%=user_id %>";
 
 </script>
-<script type="text/javascript" src="<%=cp %>/js/Template.js"></script>
+<script type="text/javascript" src="<%=cp %>/js/Template.js?after"></script>
 
 </head>
 <body>
@@ -75,9 +75,15 @@
 			</div>
 			
 			<div class="nav-item">
+				<span class="nav-title stadium">구장</span>
+				<div class="nav-sub stadium">구장 예약</div>
+				<div class="nav-sub stadium-reg">구장 등록</div>
+			</div>
+			
+			<div class="nav-item">
 				<span class="nav-title field">경기장</span>
 				<div class="nav-sub field">경기장 예약</div>
-				<div class="nav-sub stadium">경기장 등록</div>
+				<div class="nav-sub field-reg">경기장 등록</div>
 			</div>
 			
 			<div class="nav-item">
@@ -96,14 +102,14 @@
 	
 	<!-- 로고 -->
 	<div class="logo">
-		<a href="Team.action">
+		<a href="MainPage.action">
 			<img src="images/nutmeg.png" alt="넛맥 로고">
 		</a>
 	</div>
 	
 	<div class="right-menu">
 		<!-- 로그인 버튼 / 사람 아이콘 -->
-<%		if (userSid != null)
+<%		if (user_id != null)
 		{
 %>
 			<div class="line-4"></div>
@@ -123,14 +129,16 @@
 %>
 	</div>
 	
-<%	if (userSid != null)
+<%	if (user_id != null)
 	{
 %>
-		<div class="user-menu" style="display: none;">
-			<span class="myInformation">내 정보</span>
-			<div class="myTeam">내 동호회</div>
-			<div class="logout">로그아웃</div>
-		</div>
+	<div class="user-menu" style="display: none;">
+		<span class="myInformation">내 정보</span>
+		<div class="myTeam">내 동호회</div>
+		<!-- 구장 운영자는 내 구장으로 변경 -->
+		<!-- 관리자는 관리자 페이지로 변경 -->
+		<div class="logout">로그아웃</div>
+	</div>
 <%	}
 %>
 </header>
