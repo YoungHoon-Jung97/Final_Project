@@ -26,14 +26,14 @@
 		FROM USER_INFO
 		WHERE USER_EMAIL = UPPER(#{logEmailKo}) AND USER_PWD = #{logPwKo}
 	</select> -->
-	<select id="userLoginKo" resultType="com.nutmag.project.dto.LoginDTO">
-		SELECT USER_ID,USER_NAME,USER_EMAIL
+	<select id="userLoginKo" resultType="com.nutmag.project.dto.UserDTO">
+		SELECT USER_ID,USER_NAME,USER_EMAIL,USER_CODE_ID
 		FROM USER_INFO
 		WHERE USER_EMAIL = #{logEmailKo} AND USER_PWD = #{logPwKo}
 	</select>
 	
-	<select id="userLoginEn" resultType="com.nutmag.project.dto.LoginDTO">
-		SELECT USER_ID,USER_NAME,USER_EMAIL
+	<select id="userLoginEn" resultType="com.nutmag.project.dto.UserDTO">
+		SELECT USER_ID,USER_NAME,USER_EMAIL,USER_CODE_ID
 		FROM USER_INFO
 		WHERE USER_EMAIL = #{logEmailEn} AND USER_PWD = #{logPwEn}
 	</select>

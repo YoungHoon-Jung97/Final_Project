@@ -42,9 +42,10 @@ $(function()
 		}
 	});
 	
+	//동호회 모집
 	$(".team").click(function()
 	{
-		window.location.href = "Team.action";
+		window.location.href = "MainPage.action";
 	});
 	
 	//동호회 개설

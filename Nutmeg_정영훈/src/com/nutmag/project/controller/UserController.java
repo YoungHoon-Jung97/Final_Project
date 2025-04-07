@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nutmag.project.dao.IUserDAO;
-import com.nutmag.project.dto.LoginDTO;
+
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -137,7 +137,7 @@ public class UserController
 	
 	{
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		LoginDTO dto = null;
+		UserDTO dto = null;
 		
 		if ("ko".equals(lang))
 			dto = dao.userLoginKo(logEmailKo, logPwKo);
@@ -151,6 +151,7 @@ public class UserController
 			session.setAttribute("user_id", dto.getUser_id());
 			session.setAttribute("user_name", dto.getUser_name());
 			session.setAttribute("user_email", dto.getUser_email());
+			session.setAttribute("user_code_id", dto.getUser_code_id());
 
 			if ("on".equals(saveEmail))
 			{
