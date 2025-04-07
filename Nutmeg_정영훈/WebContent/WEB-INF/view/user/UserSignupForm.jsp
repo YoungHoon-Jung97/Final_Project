@@ -44,6 +44,13 @@
 			
 		});
 		
+		$('#passwordConfirm').on('input',function(){
+			
+			$('#passwordCheck').css('display','none');
+			$('#submitBtn').prop('disabled',true);
+			
+		});
+		
 	});
 	
 	function checkEmail(){

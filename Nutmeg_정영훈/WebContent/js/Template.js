@@ -47,21 +47,30 @@ $(function()
 		window.location.href = "Team.action";
 	});
 	
+	//동호회 개설
 	$(".temp-team").click(function()
 	{
-		window.location.href = "TempTeam.action";
+		window.location.href = "TempOpen.action";
 	});
 	
+	//경기장 예약
 	$(".field").click(function()
 	{
 		window.location.href = "Field.action";
 	});
 	
-	$(".stadium").click(function()
+	//경기장 등록
+	$(".field_reg").click(function()
 	{
 		window.location.href = "Stadium.action";
 	});
 	
+	//구장등록
+	$(".stadium_reg").click(function()
+	{
+		window.location.href = "StadiumRegInsertForm.action";
+	});
+
 	$(".mercenary-offer").click(function()
 	{
 		window.location.href = "MercenaryOffer.action";

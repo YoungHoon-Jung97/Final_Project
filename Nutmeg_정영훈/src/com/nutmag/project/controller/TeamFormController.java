@@ -32,7 +32,7 @@ import com.nutmag.project.dto.CityDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.UserDTO;
 
-import util.Emblem;
+import util.Path;
 
 @Controller
 public class TeamFormController
@@ -47,7 +47,7 @@ public class TeamFormController
 		System.out.println(root);
 		
 		//업로드 디렉토리 생성
-		String uploadPath = root + Emblem.getUploadDir();
+		String uploadPath = root + Path.getUploadEmblemDir();
 		File uploadDir = new File(uploadPath);
 		//파일 경로 없을 시 폴더 생성
 		if(!uploadDir.exists()) {
@@ -122,25 +122,59 @@ public class TeamFormController
 	public String insertTeam(TeamDTO team, HttpServletRequest request) {
 	    MultipartFile file = team.getTemp_team_emblem();
 	    
+	    System.out.println("===================================================================================================");
+	    
 	    System.out.println("파일 업로드 시작: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
 	    
 	    // 파일이 있을 시
 	    if (file != null && !file.isEmpty()) {
 	        try {
+	        	
+	        	 // 디버그 코드
+		        System.out.println("======= [DEBUG] 폼 파라미터 로그 =======");
+		        
+		        if (team != null)
+		        {
+		            System.out.println("TEMP_TEAM_NAME(팀 이름) = " + team.getTemp_team_name());
+		            System.out.println("TEMP_TEAM_DESC(팀 설명) = " + team.getTemp_team_desc());
+		            System.out.println("TEMP_TEAM_EMBLEM(팀 엠블럼) = " + team.getTemp_team_emblem());
+		            System.out.println("TEMP_TEAM_ACCOUNT(팀 계좌번호) = " + team.getTemp_team_account());
+		            System.out.println("TEMP_TEAM_ACCOUNT_HOLDER(팀 예금주) = " + team.getTemp_team_account_holder());
+		            System.out.println("BANK_ID(팀 은행) = " + team.getBank_id());
+		            System.out.println("REGION_ID(팀 지역) = " + team.getRegion_id());
+		            System.out.println("CITY_ID(팀 도시) = " + team.getCity_id());
+		            System.out.println("TEMP_TEAM_PERSON_COUNT(팀 인원수) = " + team.getTemp_team_persom_count());
+		            
+		        }
+		        else
+		        {
+		            System.out.println("stadiumDTO is null");
+		        }
+
+		        System.out.println("======= 파일 업로드 상태 =======");
+		        if (file != null)
+		        {
+		            System.out.println("파일 비어 있음? : " + file.isEmpty());
+		            System.out.println("파일 원래 이름 : " + file.getOriginalFilename());
+		        }
+		        else
+		        {
+		            System.out.println("uploadFile is null");
+		        }
+	        	
+	        	
+	        	
 	            // 웹 애플리케이션 루트 경로 가져오기
 	            String root = request.getServletContext().getRealPath("");
-	            System.out.println("웹 애플리케이션 루트: " + root);
 	            
 	            // 업로드 디렉토리 경로
-	            String uploadDir = Emblem.getUploadDir();
-	            System.out.println("설정된 업로드 경로: " + uploadDir);
+	            String uploadDir = Path.getUploadEmblemDir();
 	            
 	            // 전체 업로드 경로 생성
 	            String uploadPath = root + uploadDir;
 	            if (!uploadDir.endsWith(File.separator)) {
 	                uploadPath = root + uploadDir + File.separator;
 	            }
-	            System.out.println("전체 업로드 경로: " + uploadPath);
 	            
 	            File uploadDirFile = new File(uploadPath);
 	            // 파일 경로 없을 시 폴더 생성
@@ -162,6 +196,7 @@ public class TeamFormController
 	            file.transferTo(dest);
 	            System.out.println("파일 저장 완료");
 	            
+	            System.out.println("웹 애플리케이션 루트: " + root);
 	            // DB에 저장할 상대 경로 설정
 	            String dbFilePath = uploadDir;
 	            if (!uploadDir.endsWith("/") && !uploadDir.endsWith("\\")) {
@@ -169,7 +204,11 @@ public class TeamFormController
 	            }
 	            dbFilePath += teamFileName;
 	            
+	            System.out.println("/n=====[파일 업로드]=====");
+	            System.out.println("전체 업로드 경로: " + uploadPath);
+	            System.out.println("설정된 업로드 경로: " + uploadDir);
 	            System.out.println("DB에 저장할 파일 경로: " + dbFilePath);
+	            
 	            team.setEmblem(dbFilePath);
 	        } catch (Exception e) {
 	            System.out.println("파일 저장 중 오류 발생:");
@@ -185,6 +224,7 @@ public class TeamFormController
 	        System.out.println("DB 저장 중 오류 발생:");
 	        e.printStackTrace();
 	    }
+	    System.out.println("===================================================================================================");
 	    
 	    return "redirect:/MainPage.action";
 	}
