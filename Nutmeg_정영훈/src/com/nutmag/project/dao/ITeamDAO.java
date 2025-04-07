@@ -10,4 +10,6 @@ public interface ITeamDAO {
 	
 	//팀이름 검색
 	public String searchTeamName(String teamName);
+	
+	
 }

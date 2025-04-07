@@ -30,16 +30,6 @@ public class UserController
 	@Autowired 
 	private SqlSession sqlSession;
 
-	// 메인 페이지
-	@RequestMapping(value = "/MainPage.action",method=RequestMethod.GET)
-	public String mainPage()
-	{
-		String result ="";
-		
-		
-		result = "main/MainPage";
-		return result;
-	};
 	
 	// 유저 회원가입 폼
 	@RequestMapping(value="/UserSignupForm.action", method = RequestMethod.GET)
