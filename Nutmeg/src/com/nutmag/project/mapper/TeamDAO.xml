@@ -3,20 +3,33 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutmag.project.dao.ITeamDAO">
-	<insert id="teamInsert" parameterType="com.nutmag.project.dto.TeamDTO">
-	    insert into temp_team(
-	        TEMP_TEAM_ID, TEMP_TEAM_NAME, TEMP_TEAM_DESC,
-	        TEMP_TEAM_EMBLEM, TEMP_TEAM_APPLY_AT,
-	        TEMP_TEAM_ACCOUNT, TEMP_TEAM_ACCOUNT_HOLDER,
-	        USER_CODE_ID, BANK_ID, REGION_ID, CITY_ID,TEMP_TEAM_PERSON_COUNT
-	    )
-	    VALUES (
-	        temp_team_seq.nextval, #{temp_team_name}, #{temp_team_desc},
-	        #{emblem}, sysdate, #{temp_team_account}, #{temp_team_account_holder},
-	        #{user_code_id}, #{bank_id}, #{region_id}, #{city_id},#{temp_team_person_count}
-	    )
-	</insert>
+	
+	<insert id="teamInsert" parameterType="com.nutmag.project.dto.TeamDTO" statementType="CALLABLE">
+        CALL PRC_TEMP_TEAM_INSERT(
+            #{temp_team_name, jdbcType=VARCHAR},
+            #{temp_team_desc, jdbcType=VARCHAR},
+            #{emblem, jdbcType=VARCHAR},
+            #{temp_team_account, jdbcType=VARCHAR},
+            #{temp_team_account_holder, jdbcType=VARCHAR},
+            #{bank_id},
+            #{region_id},
+            #{city_id},
+            #{temp_team_person_count},
+            #{user_code_id}
+        )
+    </insert>
 
+	<select id="searchTempTeamMember" resultType="int">
+		SELECT COUNT(*)
+		FROM TEMP_TEAM_APPLY
+		WHERE USER_CODE_ID=#{user_code_id} AND TEMP_TEAM_APPLY_APPR_AT IS NOT NULL 
+	</select>
+	
+	<select id="searchTeamMember" resultType="int">
+		SELECT COUNT(*)
+		FROM team_member
+		WHERE USER_CODE_ID=1 AND TEAM_MEMBER_APPLY_AT IS NOT NULL
+	</select>
 	
 	<select id="searchTeamName" resultType="String">
 		SELECT TEMP_TEAM_NAME

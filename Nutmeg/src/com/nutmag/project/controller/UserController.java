@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.nutmag.project.dao.IBankDAO;
 import com.nutmag.project.dao.IUserDAO;
+import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -29,16 +31,6 @@ public class UserController
 	@Autowired 
 	private SqlSession sqlSession;
 
-	// 메인 페이지
-	@RequestMapping(value = "/MainPage.action",method=RequestMethod.GET)
-	public String mainPage()
-	{
-		String result ="";
-		
-		
-		result = "main/MainPage";
-		return result;
-	};
 	
 	// 유저 회원가입 폼
 	@RequestMapping(value="/UserSignupForm.action", method = RequestMethod.GET)
@@ -113,6 +105,90 @@ public class UserController
 		result = "redirect:MainPage.action";
 		return result;
 	};
+//=================================================================================================================================	
+	
+	// 구장 운영자 회원가입 폼
+		@RequestMapping(value="/OperatorSignupForm.action", method = RequestMethod.GET)
+		public String operatorSignupForm(Model model)
+		{
+			
+			IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
+			
+			model.addAttribute("bankList", bankDAO.bankList());
+			
+			return "/user/OperatorSignupForm";
+		}
+		
+		// 구장 운영자 회원가입 이메일 중복검사
+		@RequestMapping(value="/CheckEmailOperator.action", method = RequestMethod.GET)
+		public void checkEmailOperator(@RequestParam("email") String email, HttpServletResponse response) throws IOException
+		{
+		    
+		    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		    int count = dao.searchEmailOperator(email);
+		    
+		    response.setCharacterEncoding("UTF-8");
+		    response.setContentType("text/plain;charset=UTF-8");
+		    
+		    //이메일을 아무것도 안적었을 경우
+		    if(email.equals("") || email.isEmpty()) {
+		    	
+		    	//error 발생
+		    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		    }
+		    
+		    if (count >0) {
+		        response.getWriter().write("이미 사용중인 이메일 입니다.");
+		    }
+		    else {
+		        response.getWriter().write("사용 가능한 이메일 입니다.");
+		    }
+		}
+		
+		// 구장 운영자 회원가입 계좌 중복검사
+		@RequestMapping(value="/CheckAccountNo.action", method = RequestMethod.GET)
+		public void checkAccountNo(@RequestParam("accountNo") String accountNo,HttpServletResponse response) throws IOException{
+			
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			int count =dao.searchAccountOperator(accountNo);
+			
+			response.setCharacterEncoding("UTF-8");
+		    response.setContentType("text/plain;charset=UTF-8");
+			
+			  //이메일을 아무것도 안적었을 경우
+		    if(accountNo.equals("") || accountNo.isEmpty()) {
+		    	
+		    	//error 발생
+		    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		    }
+		    
+		    if (count >0) {
+		        response.getWriter().write("이미 사용중인 계좌번호 입니다.");
+		    }
+		    else {
+		        response.getWriter().write("사용 가능한 계좌번호 입니다.");
+		    }
+			
+		}
+		
+		// 구장 운영자 회원가입 인서트
+		@RequestMapping(value = "/OperatorInsert.action", method=RequestMethod.POST)
+		public String operatorInsert(OperatorDTO operator)
+		{
+			String result = null;
+			
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			dao.operatorInsert(operator);
+			
+			result = "redirect:MainPage.action";
+			return result;
+		};
+	
+//=================================================================================================================================	
+	
 	
 	// 로그인
 	@RequestMapping(value="/Login.action", method = RequestMethod.GET)
@@ -124,16 +200,25 @@ public class UserController
 	// 로그인 체크
 	@RequestMapping("/LoginCheck.action")
 	public String login(
-			@RequestParam("logEmailKo") String email,
-			@RequestParam("logPwKo") String pw,
+			@RequestParam(value = "logEmailKo", required = false) String logEmailKo,
+			@RequestParam(value = "logPwKo", required = false) String logPwKo,
 			@RequestParam(value = "saveEmailKo", required = false) String saveEmail,
+			@RequestParam(value = "logEmailEn", required = false) String logEmailEn,
+			@RequestParam(value = "logPwEn", required = false) String logPwEn,
+			@RequestParam("lang") String lang,
 			HttpSession session,
 			HttpServletResponse response
 	) throws Exception
 	
 	{
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		UserDTO dto = dao.userLogin(email, pw);
+		UserDTO dto = null;
+		
+		if ("ko".equals(lang))
+			dto = dao.userLoginKo(logEmailKo, logPwKo);
+		
+		else
+			dto = dao.userLoginEn(logEmailEn, logPwEn);
 
 		if (dto != null && dto.getUser_id() > 0)
 		{
@@ -142,12 +227,22 @@ public class UserController
 			session.setAttribute("user_name", dto.getUser_name());
 			session.setAttribute("user_email", dto.getUser_email());
 			session.setAttribute("user_code_id", dto.getUser_code_id());
-			
+
 			if ("on".equals(saveEmail))
 			{
-				Cookie c = new Cookie("key", URLEncoder.encode(email, "UTF-8"));
-				c.setMaxAge(399 * 24 * 60 * 60);
-				response.addCookie(c);
+				if ("ko".equals(lang))
+				{
+					Cookie c = new Cookie("key", URLEncoder.encode(logEmailKo, "UTF-8"));
+					c.setMaxAge(399 * 24 * 60 * 60);
+					response.addCookie(c);
+				}
+				
+				else
+				{
+					Cookie c = new Cookie("key", URLEncoder.encode(logEmailEn, "UTF-8"));
+					c.setMaxAge(399 * 24 * 60 * 60);
+					response.addCookie(c);
+				}
 			}
 			
 			String previousPage = (String) session.getAttribute("previousPage");
@@ -160,33 +255,31 @@ public class UserController
 				if (previousPage.contains("/WEB-INF/view"))
 					previousPage = previousPage.replaceAll(".*/", "/Nutmeg/").replace(".jsp", ".action");
 				
-				
-				
-				  // 응답이 이미 커밋된 경우를 체크
-		        if (!response.isCommitted()) {
+				// 응답이 이미 커밋된 경우를 체크
+		        if (!response.isCommitted())
+		        {
 		            response.sendRedirect(previousPage); // 이전 페이지로 이동
 		            return null; // 이후 코드 실행 방지
-		        } else {
-		            return "redirect:" + previousPage;
 		        }
+		        
+		        else
+		            return "redirect:" + previousPage;
 			}
 			
 			else
 				return "redirect:/Error.action";
-
-			
 		}
+		
 		else
 		{
 			// 로그인 실패
 			Cookie c = new Cookie("key", null);
 			c.setMaxAge(0);
 			response.addCookie(c);
-
+			
+			session.setAttribute("lang", lang);
 			return "redirect:/Login.action?msg=fail";
 		}
-		
-		
 	}
 	
 	// 로그아웃

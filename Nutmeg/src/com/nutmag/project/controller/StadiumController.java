@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +72,6 @@ public class StadiumController
 		
 		IStadiumDAO stadiumDAO = sqlSession.getMapper(IStadiumDAO.class);
 		
-		
-		
 		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
 		
 		result = "/stadium/StadiumRegInsertForm";
@@ -89,7 +89,7 @@ public class StadiumController
 	@RequestMapping(value = "/StadiumRegInsert.action", method = RequestMethod.POST)
 	public String stadiumInsert(StadiumRegInsertDTO stadiumDTO,
 	                            @RequestParam("stadium_reg_image") MultipartFile uploadFile,
-	                            HttpServletRequest request,
+	                            HttpServletRequest request, HttpServletResponse response,HttpSession session,
 	                            Model model) throws SQLException
 	{
 	    String result = null;
