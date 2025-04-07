@@ -20,6 +20,7 @@
 	$(document).ready(function(){
 		var user_code_id = "<%= user_code_id %>";
 
+		//팀이름 입력시 에러메시지 제거
 		$('#teamName').on('input',function(){
 			
 			$('#teamNameCheck').css('display','none');
@@ -27,8 +28,10 @@
 			
 		});
 		
+		//사용자 코드 넣기 위한 코드
 		$('#user_code_id').val(user_code_id);
 		
+		//city select의 option을 나열하기 위한 코드
 		var region = $("#regions").val();
 		
 		if (region == "") {
@@ -51,11 +54,15 @@
 					}
 				},
 				error: function(xhr, status, error){
+					console.log("오류 상태:", status);  
+		            console.log("오류 메시지:", error);  
+		            console.log("응답 데이터:", xhr.responseText);  
 					alert("도시 목록을 불러오는 중 오류가 발생했습니다.");
 				}
 			});
 		});
 		
+		//submit하기전 이름 중복확인
 		$('form').on('submit',function(event){
 			
 			event.preventDefault();
@@ -110,7 +117,7 @@
 <div class="container">
 	<div>
 		<h5 class="form__title">동호회 개설 신청 양식</h5>
-		<form method="post" action="TeamInsert.action" class="form">
+		<form method="post" action="TeamInsert.action" class="form" enctype="multipart/form-data">
 			<div class="form__section">
 				<div class="form__group">
 					<label for="teamName" class="form__label required">동호회 이름</label>
@@ -154,13 +161,15 @@
 					</div>
 				</div>
 				<div>
-			        <label for="bank" class="form__label">은행명</label>
-			        <select id="bank" name="bank_id" class="required form__input"  required>
-			            <option value="">은행을 선택하세요</option>
-			            <c:forEach var="bank" items="${bankList}">
-			                <option value="${bank.bank_id}">${bank.bank_name}</option>
-			            </c:forEach>
-			        </select>
+			        <label for="bank" class="form__label required">은행명</label>
+			        <div class="form__selection">
+				        <select id="bank" name="bank_id" class="required form__input"  required>
+				            <option value="">은행을 선택하세요</option>
+				            <c:forEach var="bank" items="${bankList}">
+				                <option value="${bank.bank_id}">${bank.bank_name}</option>
+				            </c:forEach>
+				        </select>
+			        </div>
 			    </div>
 			    <div class="form__group">
 						<label for="depositor" class="form__label required">동호회 예금주</label>

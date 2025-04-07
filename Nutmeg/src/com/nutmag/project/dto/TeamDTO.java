@@ -1,10 +1,37 @@
 package com.nutmag.project.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class TeamDTO {
 	private int temp_team_id,user_code_id,bank_id,region_id,city_id,temp_team_person_count;
-	private String temp_team_name,temp_team_desc,temp_team_emblem,temp_team_apply_at,
+	private String temp_team_name,temp_team_desc,emblem,temp_team_apply_at,
 	temp_team_account,temp_team_account_holder;
 	
+
+	
+	private MultipartFile temp_team_emblem;
+	
+
+	public int getTemp_team_person_count() {
+		return temp_team_person_count;
+	}
+	public void setTemp_team_person_count(int temp_team_person_count) {
+		this.temp_team_person_count = temp_team_person_count;
+	}
+	
+	
+	public String getEmblem() {
+		return emblem;
+	}
+	public void setEmblem(String emblem) {
+		this.emblem = emblem;
+	}
+	public MultipartFile getTemp_team_emblem() {
+		return temp_team_emblem;
+	}
+	public void setTemp_team_emblem(MultipartFile temp_team_emblem) {
+		this.temp_team_emblem = temp_team_emblem;
+	}
 	public int getTemp_team_id() {
 		return temp_team_id;
 	}
@@ -53,12 +80,7 @@ public class TeamDTO {
 	public void setTemp_team_desc(String temp_team_desc) {
 		this.temp_team_desc = temp_team_desc;
 	}
-	public String getTemp_team_emblem() {
-		return temp_team_emblem;
-	}
-	public void setTemp_team_emblem(String temp_team_emblem) {
-		this.temp_team_emblem = temp_team_emblem;
-	}
+	
 	public String getTemp_team_apply_at() {
 		return temp_team_apply_at;
 	}
