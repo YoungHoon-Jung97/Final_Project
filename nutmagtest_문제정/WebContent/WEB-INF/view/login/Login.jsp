@@ -4,8 +4,26 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
-	String msg = request.getParameter("msg");
+	String msg = (String) session.getAttribute("msg");
 	String lang = (String) session.getAttribute("lang");
+	
+	if (msg == null)
+		msg = request.getParameter("msg");
+
+	if (lang == null)
+		lang = request.getParameter("lang");
+	
+	session.removeAttribute("msg");
+	session.removeAttribute("lang");
+	
+	System.out.println("-------------------------------------");
+	System.out.println("DEBUG: msg = " + msg);
+	System.out.println("DEBUG: lang = " + lang);
+	
+	String referer = request.getHeader("Referer");
+	
+	if (referer != null && !referer.contains("Login"))
+		session.setAttribute("prevPage", referer);
 %>
 <!DOCTYPE html>
 <html>
@@ -14,10 +32,11 @@
 <title>Login</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Login.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Login.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="<%=cp %>/js/util.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 	
 	var msg = "<%= msg %>";
@@ -28,12 +47,19 @@
 		// 뒤로 가기
 		$('#backButton').on('click', function()
 		{
-			window.history.back();
+			var prevPage = "<%= session.getAttribute("prevPage") %>";
+			var fallback = "<%= cp %>/MainPage.action";
+
+			if (prevPage && prevPage !== "null")
+				window.location.href = prevPage;
+			
+			else
+		        window.location.href = fallback;
 		});
 	})
 	
 </script>
-<script type="text/javascript" src="<%=cp %>/js/Login.js"></script>
+<script type="text/javascript" src="<%=cp %>/js/Login.js?after"></script>
 
 </head>
 <body>

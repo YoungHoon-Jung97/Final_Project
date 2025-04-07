@@ -12,7 +12,7 @@
 	    )
 	    VALUES (
 	        temp_team_seq.nextval, #{temp_team_name}, #{temp_team_desc},
-	        #{temp_team_emblem}, sysdate, #{temp_team_account}, #{temp_team_account_holder},
+	        #{emblem}, sysdate, #{temp_team_account}, #{temp_team_account_holder},
 	        #{user_code_id}, #{bank_id}, #{region_id}, #{city_id},#{temp_team_person_count}
 	    )
 	</insert>

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import com.nutmag.project.dao.IStadiumDAO;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
+
+import util.Path;
 
 
 
@@ -68,8 +72,6 @@ public class StadiumController
 		
 		IStadiumDAO stadiumDAO = sqlSession.getMapper(IStadiumDAO.class);
 		
-		
-		
 		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
 		
 		result = "/stadium/StadiumRegInsertForm";
@@ -87,7 +89,7 @@ public class StadiumController
 	@RequestMapping(value = "/StadiumRegInsert.action", method = RequestMethod.POST)
 	public String stadiumInsert(StadiumRegInsertDTO stadiumDTO,
 	                            @RequestParam("stadium_reg_image") MultipartFile uploadFile,
-	                            HttpServletRequest request,
+	                            HttpServletRequest request, HttpServletResponse response,HttpSession session,
 	                            Model model) throws SQLException
 	{
 	    String result = null;
@@ -95,7 +97,6 @@ public class StadiumController
 	    try
 	    {
 	        // 디버그 코드
-	    	
 	        System.out.println("======= [DEBUG] 폼 파라미터 로그 =======");
 	        
 	        if (stadiumDTO != null)
@@ -123,30 +124,35 @@ public class StadiumController
 	        {
 	            System.out.println("uploadFile is null");
 	        }
-			
 
+	        String root = request.getServletContext().getRealPath("");
 	        // 1. 업로드 경로 설정
-	        String uploadPath = request.getSession().getServletContext().getRealPath("/uploads");
-	        // 이클립스 폴더에 바로 저정하는 경로 예시
-	        //String uploadPath = "C:/Users/유저 이름/eclipse-workspace/Nutmeg/WebContent/uploads";
-	        File uploadDir = new File(uploadPath);
-	        // 폴더 없으면 폴더 생성
-	        if (!uploadDir.exists())
-	            uploadDir.mkdirs();
+			String uploadPath = root + Path.getUploadStadiumDir();
+			File uploadDir = new File(uploadPath);
+			//파일 경로 없을 시 폴더 생성
+			if(!uploadDir.exists()) {
+				uploadDir.mkdirs();
+			}
 	        
 	        // 2. 파일 저장
 	        if (uploadFile != null && !uploadFile.isEmpty())
 	        {
+	        	
 	            String originalFileName = uploadFile.getOriginalFilename();
-	            String savedFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+	            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	            String savedFileName = stadiumDTO.getStadium_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
 	            File saveFile = new File(uploadPath, savedFileName);
 	            uploadFile.transferTo(saveFile);
 	            
 	           
-	            String fileWebPath = "/uploads/" + savedFileName;
+	            String fileWebPath = Path.getUploadStadiumDir() + savedFileName;
 	            stadiumDTO.setStadium_reg_image(fileWebPath);
 	            // 디버그
-	            System.out.println("파일 저장 경로 (uploadPath): " + uploadPath);
+	            
+	            System.out.println("/n=====[파일 경로]=====");
+	            System.out.println("파일 저장 경로 (uploadPath) : " + uploadPath);
+	            System.out.println("파일 이름 (savedFileName) : " + savedFileName);
+	            System.out.println("데이터 베이스에 저장된 경고(fileWebPath) : "+fileWebPath);
 	        }
 
 	        // 3. DB 저장
