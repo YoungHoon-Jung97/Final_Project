@@ -21,17 +21,28 @@
     </insert>
 	
 	<!-- 유저 아이디/비밀번호 찾기 select  -->
-	<select id="userLogin" resultType="com.nutmag.project.dto.UserDTO">
+	<!-- <select id="userLoginKo" resultType="com.nutmag.project.dto.UserDTO">
 		SELECT USER_ID,USER_NAME,USER_EMAIL,USER_CODE_ID
 		FROM USER_INFO
 		WHERE USER_EMAIL = UPPER(#{logEmailKo}) AND USER_PWD = #{logPwKo}
+	</select> -->
+	<select id="userLoginKo" resultType="com.nutmag.project.dto.LoginDTO">
+		SELECT USER_ID,USER_NAME,USER_EMAIL
+		FROM USER_INFO
+		WHERE USER_EMAIL = #{logEmailKo} AND USER_PWD = #{logPwKo}
 	</select>
 	
-	<!-- 유저 아이디 찾기 select  -->
+	<select id="userLoginEn" resultType="com.nutmag.project.dto.LoginDTO">
+		SELECT USER_ID,USER_NAME,USER_EMAIL
+		FROM USER_INFO
+		WHERE USER_EMAIL = #{logEmailEn} AND USER_PWD = #{logPwEn}
+	</select>
+	
+	<!-- 유저 아이디 찾기 select(중복확인)  -->
 	<select id="searchEmail" resultType="int">
 		SELECT COUNT(*)
 		FROM USER_INFO
-		WHERE USER_EMAIL = UPPER(#{email})
+		WHERE USER_EMAIL = #{email}
 	</select>
 
 	<select id="searchnickName" resultType="int">
