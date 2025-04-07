@@ -8,6 +8,14 @@
 		SELECT REGION_ID,REGION_NAME,REGION_NAME_ENG
 		FROM REGION
 	</select>
+	
+	<select id="cityList" resultType="com.nutmag.project.dto.CityDTO">
+	    SELECT CITY_ID, CITY_NAME, REGION_ID
+	    FROM CITY
+	    WHERE REGION_ID = #{region}
+	</select>
+
+    
     
 
 </mapper>
