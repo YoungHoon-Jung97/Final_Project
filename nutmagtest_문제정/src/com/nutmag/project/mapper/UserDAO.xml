@@ -50,4 +50,26 @@
 		FROM USER_INFO
 		WHERE USER_NICK_NAME = #{nickName}
 	</select>
+	
+	
+	<select id="searchEmailOperator" resultType="int">
+		SELECT COUNT(*)
+		FROM OPERATOR_INFO
+		WHERE OPERATOR_EMAIL = #{email}
+	</select>
+	
+	<select id="searchAccountOperator" resultType="int">
+		SELECT COUNT(*)
+		FROM OPERATOR_INFO
+		WHERE OPERATOR_ACCOUNT_NO = #{accountNo}
+	</select>
+	
+	<insert id="operatorInsert" parameterType="com.nutmag.project.dto.StadiumRegInsertDTO">
+		INSERT INTO OPERATOR_INFO (OPERATOR_ID,OPERATOR_EMAIL,OPERATOR_NAME
+								, OPERATOR_TEL,OPERATOR_ACCOUNT_NO,OPERATOR_ACCOUNT_HOLDER
+								, BANK_ID, USER_CODE_ID)
+		VALUES (OPERATOR_INFO_SEQ.NEXTVAL,#{operator_email},#{operator_name},#{operator_tel}
+				,#{operator_account_no},#{operator_account_holder},#{bank_id},#{user_code_id})
+	</insert>
+	
 </mapper>

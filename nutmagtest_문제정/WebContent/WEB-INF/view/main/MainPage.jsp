@@ -91,6 +91,12 @@ body {
 						<li><a href="">[공지] 예시요</a></li>
 					</ul>
 				</div>
+				<div class="border rounded p-3 bg-white">
+					<h5 class="mb-2">공지사항</h5>
+					<ul class="mb-0">
+						<li><a href="OperatorSignupForm.action">구단 운영자 가입하기</a></li>
+					</ul>
+				</div>
 			</div>
 
 			<!-- 로그인 폼 -->

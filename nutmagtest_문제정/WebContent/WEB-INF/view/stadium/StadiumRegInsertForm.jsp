@@ -33,6 +33,7 @@ body {
 		
 		var user_code_id = "<%= user_code_id != null ? user_code_id.toString() : "" %>";
 		
+		
 		if (!user_code_id) {
 			alert("로그인이 필요합니다.");
 			//로그인 안되어 있으면 로그인 창으로 보냄
