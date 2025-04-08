@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.nutmag.project.dao.IBankDAO;
 import com.nutmag.project.dao.IUserDAO;
-
+import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -104,6 +105,90 @@ public class UserController
 		result = "redirect:MainPage.action";
 		return result;
 	};
+//=================================================================================================================================	
+	
+	// 구장 운영자 회원가입 폼
+		@RequestMapping(value="/OperatorSignupForm.action", method = RequestMethod.GET)
+		public String operatorSignupForm(Model model)
+		{
+			
+			IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
+			
+			model.addAttribute("bankList", bankDAO.bankList());
+			
+			return "/user/OperatorSignupForm";
+		}
+		
+		// 구장 운영자 회원가입 이메일 중복검사
+		@RequestMapping(value="/CheckEmailOperator.action", method = RequestMethod.GET)
+		public void checkEmailOperator(@RequestParam("email") String email, HttpServletResponse response) throws IOException
+		{
+		    
+		    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		    int count = dao.searchEmailOperator(email);
+		    
+		    response.setCharacterEncoding("UTF-8");
+		    response.setContentType("text/plain;charset=UTF-8");
+		    
+		    //이메일을 아무것도 안적었을 경우
+		    if(email.equals("") || email.isEmpty()) {
+		    	
+		    	//error 발생
+		    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		    }
+		    
+		    if (count >0) {
+		        response.getWriter().write("이미 사용중인 이메일 입니다.");
+		    }
+		    else {
+		        response.getWriter().write("사용 가능한 이메일 입니다.");
+		    }
+		}
+		
+		// 구장 운영자 회원가입 계좌 중복검사
+		@RequestMapping(value="/CheckAccountNo.action", method = RequestMethod.GET)
+		public void checkAccountNo(@RequestParam("accountNo") String accountNo,HttpServletResponse response) throws IOException{
+			
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			int count =dao.searchAccountOperator(accountNo);
+			
+			response.setCharacterEncoding("UTF-8");
+		    response.setContentType("text/plain;charset=UTF-8");
+			
+			  //이메일을 아무것도 안적었을 경우
+		    if(accountNo.equals("") || accountNo.isEmpty()) {
+		    	
+		    	//error 발생
+		    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+		    }
+		    
+		    if (count >0) {
+		        response.getWriter().write("이미 사용중인 계좌번호 입니다.");
+		    }
+		    else {
+		        response.getWriter().write("사용 가능한 계좌번호 입니다.");
+		    }
+			
+		}
+		
+		// 구장 운영자 회원가입 인서트
+		@RequestMapping(value = "/OperatorInsert.action", method=RequestMethod.POST)
+		public String operatorInsert(OperatorDTO operator)
+		{
+			String result = null;
+			
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			dao.operatorInsert(operator);
+			
+			result = "redirect:MainPage.action";
+			return result;
+		};
+	
+//=================================================================================================================================	
+	
 	
 	// 로그인
 	@RequestMapping(value="/Login.action", method = RequestMethod.GET)

@@ -19,6 +19,17 @@
         )
     </insert>
 
+	<select id="searchTempTeamMember" resultType="int">
+		SELECT COUNT(*)
+		FROM TEMP_TEAM_APPLY
+		WHERE USER_CODE_ID=#{user_code_id} AND TEMP_TEAM_APPLY_APPR_AT IS NOT NULL 
+	</select>
+	
+	<select id="searchTeamMember" resultType="int">
+		SELECT COUNT(*)
+		FROM team_member
+		WHERE USER_CODE_ID=#{user_code_id} AND TEAM_MEMBER_APPLY_AT IS NOT NULL
+	</select>
 	
 	<select id="searchTeamName" resultType="String">
 		SELECT TEMP_TEAM_NAME

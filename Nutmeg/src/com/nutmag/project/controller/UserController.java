@@ -109,10 +109,21 @@ public class UserController
 	
 	// 구장 운영자 회원가입 폼
 		@RequestMapping(value="/OperatorSignupForm.action", method = RequestMethod.GET)
-		public String operatorSignupForm(Model model)
+		public String operatorSignupForm(Model model,HttpServletRequest request)
 		{
 			
 			IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
+			
+			String message= "";
+			HttpSession session = request.getSession();
+			Integer operator_id = (Integer)session.getAttribute("operator_id");
+			
+			// 구장 운영자 여부
+			if(operator_id != null) {
+				message = "이미 운영자 가입을 완료 했습니다.";
+				model.addAttribute("message", message);
+				return "redirect:MainPage.action";
+			}
 			
 			model.addAttribute("bankList", bankDAO.bankList());
 			
@@ -227,6 +238,7 @@ public class UserController
 			session.setAttribute("user_name", dto.getUser_name());
 			session.setAttribute("user_email", dto.getUser_email());
 			session.setAttribute("user_code_id", dto.getUser_code_id());
+			session.setAttribute("operator_id", dao.operatorSearchId(dto.getUser_code_id()));
 
 			if ("on".equals(saveEmail))
 			{
@@ -293,6 +305,7 @@ public class UserController
 		session.removeAttribute("user_name");
 		session.removeAttribute("user_email");
 		session.removeAttribute("user_code_id");
+		session.removeAttribute("operator_id");
 		
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");

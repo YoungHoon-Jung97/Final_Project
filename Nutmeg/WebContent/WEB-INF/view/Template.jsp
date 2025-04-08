@@ -19,12 +19,15 @@
     String user_name = (String) session.getAttribute("user_name");
     String user_email = (String) session.getAttribute("user_email");
     Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+    Integer operator_id = (Integer) session.getAttribute("operator_id");
     
+    System.out.println("==========DEBUG==========");
     System.out.println("DEBUG: user_id = " + user_id);
 	System.out.println("DEBUG: user_name = " + user_name);
 	System.out.println("DEBUG: user_email = " + user_email);
 	System.out.println("DEBUG: user_code_id = " + user_code_id);
-	
+	System.out.println("DEBUG: operator_id = " + operator_id);
+	System.out.println("=========================");
 	session.setAttribute("user_code_id", user_code_id);
 %>
 <!DOCTYPE html>
@@ -45,12 +48,9 @@
 </script>
 <script type="text/javascript" src="<%=cp %>/js/Template.js?after"></script>
 
-
-
 </head>
 <body>
-<%
-	String logoutFlag = (String) session.getAttribute("logoutFlag");
+<%	String logoutFlag = (String) session.getAttribute("logoutFlag");
 
 	if ("1".equals(logoutFlag))
 	{
@@ -59,9 +59,9 @@
 	<script>
 		swal("로그아웃", "로그아웃 되었습니다.", "success");
 	</script>
-<%
-	}
+<%	}
 %>
+<div class="background-banner"></div>
 
 <header class="menu-bar">
 	<div class="left-menu">

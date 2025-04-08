@@ -11,5 +11,9 @@ public interface ITeamDAO {
 	//팀이름 검색
 	public String searchTeamName(String teamName);
 	
+	//임시 팀가입 확인 
+	public int searchTempTeamMember(int userCode);
 	
+	//정식 팀가입 확인
+	public int searchTeamMember(int userCode);
 }
