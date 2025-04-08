@@ -305,6 +305,7 @@ public class UserController
 		session.removeAttribute("user_name");
 		session.removeAttribute("user_email");
 		session.removeAttribute("user_code_id");
+		session.removeAttribute("operator_id");
 		
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");
