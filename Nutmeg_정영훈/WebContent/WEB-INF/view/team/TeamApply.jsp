@@ -8,31 +8,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>팀 정보</title>
+<title>팀 가입</title>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/Team.css">
-<style type="text/css">
-/*팀 메뉴 넘어갔을 때 표시*/
-.teampage-link:first-child a {
-	color: #ff4500;
-	border-bottom: 2px solid #ff4500;
-}
-</style>
-
 </head>
 <body>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 	<div class="container-fluid container">
 		<div class="main">
 			<div class="main-content">
-				<ul class="tean-menu">
-					<li class="teampage-link"><a href="MyTeam.action">팀 정보</a></li>
-					<li class="teampage-link"><a href="MyTeamSchedule.action">팀 매치</a></li>
-					<li class="teampage-link"><a href="MyTeamFee.action">팀 가계부</a></li>
-					<li class="teampage-link"><a href="MyTeamBoard.action">팀 게시판</a></li>
-				</ul>
+				
 				<!-- .tean-menu -->
 
 				<div class="team-info-wrap">
@@ -40,17 +27,17 @@
 					<div class="left">
 						<div class="team_box">
 							<div class="team01">
-								<p class="img">
-									<img src="" alt="" />
-								</p>
-								<dt>팀 이름</dt>
-								<dd>경기 판수</dd>
+							<span></span>
+								<div class="team-img">
+									<img src="${team.emblem}" alt="" />
+								</div>
+								<dt>${team.temp_team_name}</dt>
 							</div>
 							<div class="team02">
 								<ul>
 									<li></li>
 								</ul>
-								<p class="comment">설명없음</p>
+								<p class="comment">${team.temp_team_desc}</p>
 							</div>
 						</div>
 					</div>
@@ -74,7 +61,7 @@
 							</thead>
 							<tbody class="center">
 								<tr>
-									<td>정영훈</td>
+									<td>${team.temp_team_name}</td>
 									<td></td>
 									<td>팀 개설자</td>
 									<td></td>
@@ -86,7 +73,7 @@
 				<!-- .team-info-wrap -->
 				<div class="team-modify">
 					<a href=""> 
-						<span>팀 정보 수정</span>
+						<span>팀 정보 가입</span>
 					</a>
 				</div>
 			</div>
@@ -94,7 +81,7 @@
 		</div>
 		<!-- .main  -->
 	</div>
-
+	
 
 </body>
 </html>
