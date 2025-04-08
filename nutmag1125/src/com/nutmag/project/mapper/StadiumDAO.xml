@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IStadiumDAO">
+	
+	<select id="fieldTypeList" resultType="com.nutmag.project.dto.FieldTypeDTO">
+	SELECT FIELD_TYPE_ID,
+	       FIELD_TYPE
+	FROM FIELD_TYPE
+	ORDER BY FIELD_TYPE_ID
+	</select>
+	
+	<select id="fieldEnviromentList" resultType="com.nutmag.project.dto.FieldEnvironmentDTO">
+	SELECT FIELD_ENVIRONMENT_ID,
+	       FIELD_ENVIRONMENT_TYPE
+	FROM FIELD_ENVIRONMENT
+	ORDER BY FIELD_ENVIRONMENT_ID
+	</select>
+    
+    <select id="stadiumTimeList" resultType="com.nutmag.project.dto.StadiumTimeDTO">
+    SELECT STADIUM_TIME_ID,STADIUM_TIME_AT
+    FROM STADIUM_TIME
+    </select>
+	
+	<insert id="stadiumInsert" parameterType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	INSERT INTO STADIUM_REG (STADIUM_REG_ID
+						,STADIUM_REG_NAME
+						,STADIUM_REG_POSTAL_ADDR
+						,STADIUM_REG_ADDR
+                        ,STADIUM_REG_DETAILED_ADDR
+                        ,STADIUM_REG_IMAGE
+                        ,STADIUM_REG_APPLY_AT
+                        ,STADIUM_TIME_ID1
+                        ,STADIUM_TIME_ID2
+                        ,USER_CODE_ID)
+	VALUES (STADIUM_REG_SEQ.NEXTVAL
+			,#{stadium_reg_name},#{stadium_reg_postal_addr},#{stadium_reg_addr}
+			,#{stadium_reg_detailed_addr},#{stadium_reg_image},SYSDATE
+			,#{stadium_time_id1},#{stadium_time_id2},#{user_code_id})
+	</insert>
+	
+	<select id="stadiumAllList" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+    SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE
+    FROM STADIUM_REG
+	</select>
+	
+	<select id="stadiumNameCheck" resultType="int" parameterType="String">
+    SELECT COUNT(*) 
+    FROM STADIUM_REG 
+    WHERE STADIUM_REG_NAME = #{stadium_reg_name}
+	</select>
+	
+	<select id="stadiumSearchList" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE,STADIUM_REG_DETAILED_ADDR,STADIUM_REG_ADDR
+	FROM STADIUM_REG
+	WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+</mapper>

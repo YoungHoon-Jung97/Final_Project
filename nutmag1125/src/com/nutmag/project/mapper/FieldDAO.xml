@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IFieldDAO">
+	
+	<select id="fieldTypeList" resultType="com.nutmag.project.dto.FieldTypeDTO">
+	SELECT FIELD_TYPE_ID,
+	       FIELD_TYPE
+	FROM FIELD_TYPE
+	ORDER BY FIELD_TYPE_ID
+	</select>
+	
+	<select id="fieldEnviromentList" resultType="com.nutmag.project.dto.FieldEnvironmentDTO">
+	SELECT FIELD_ENVIRONMENT_ID,
+	       FIELD_ENVIRONMENT_TYPE
+	FROM FIELD_ENVIRONMENT
+	ORDER BY FIELD_ENVIRONMENT_ID
+	</select>
+    
+	<insert id="fieldInsert" parameterType="com.nutmag.project.dto.FieldRegInsertDTO">
+	    INSERT INTO FIELD_REG (
+	    	FIELD_REG_ID,
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE_ID,
+	        FIELD_ENVIRONMENT_ID,
+	        FIELD_REG_PRICE,
+	        STADIUM_REG_ID
+	    )
+	    VALUES (
+	    	FIELD_REG_SEQ.NEXTVAL,
+	        #{field_reg_name},
+	        SYSDATE,
+	        #{field_reg_garo},
+	        #{field_reg_sero},
+	        #{field_type_id},
+	        #{field_environment_id},
+	        #{field_reg_price},
+	        #{stadium_reg_id}
+	    )
+	</insert>
+	
+</mapper>

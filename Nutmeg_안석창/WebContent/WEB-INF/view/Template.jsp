@@ -58,7 +58,7 @@
 	</script>
 <%	}
 %>
-<div class="background"></div>
+<div class="background-banner"></div>
 
 <header class="menu-bar">
 	<div class="left-menu">
