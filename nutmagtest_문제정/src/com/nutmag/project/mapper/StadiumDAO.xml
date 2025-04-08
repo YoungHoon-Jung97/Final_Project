@@ -57,4 +57,16 @@
 	WHERE USER_CODE_ID = #{user_code_id}
 	</select>
 	
+	<select id="stadiumSearchCount" resultType="Integer">
+	SELECT COUNT(*)
+	FROM STADIUM_REG
+	WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	<select id="stadiumSearchId" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE,STADIUM_REG_DETAILED_ADDR,STADIUM_REG_ADDR
+	FROM STADIUM_REG
+	WHERE STADIUM_REG_ID = #{stadium_reg_id}
+	</select>
+	
 </mapper>

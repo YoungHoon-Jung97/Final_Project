@@ -11,4 +11,6 @@ public interface IFieldDAO
 	public ArrayList<FieldTypeDTO> fieldTypeList();
 	public ArrayList<FieldEnvironmentDTO> fieldEnviromentList();
 	public int fieldInsertForm(FieldRegInsertDTO field);
+	public int fieldInsert(FieldRegInsertDTO fieldDTO);
+	
 }

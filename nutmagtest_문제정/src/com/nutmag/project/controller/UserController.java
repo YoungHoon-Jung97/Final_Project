@@ -109,10 +109,21 @@ public class UserController
 	
 	// 구장 운영자 회원가입 폼
 		@RequestMapping(value="/OperatorSignupForm.action", method = RequestMethod.GET)
-		public String operatorSignupForm(Model model)
+		public String operatorSignupForm(Model model,HttpServletRequest request)
 		{
 			
 			IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
+			
+			String message= "";
+			HttpSession session = request.getSession();
+			Integer operator_id = (Integer)session.getAttribute("operator_id");
+			
+			// 구장 운영자 여부
+			if(operator_id != null) {
+				message = "이미 운영자 가입을 완료 했습니다.";
+				model.addAttribute("message", message);
+				return "redirect:MainPage.action";
+			}
 			
 			model.addAttribute("bankList", bankDAO.bankList());
 			
