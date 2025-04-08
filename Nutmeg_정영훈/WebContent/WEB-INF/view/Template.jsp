@@ -19,11 +19,13 @@
     String user_name = (String) session.getAttribute("user_name");
     String user_email = (String) session.getAttribute("user_email");
     Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+    Integer operator_id = (Integer) session.getAttribute("operator_id");
     
     System.out.println("DEBUG: user_id = " + user_id);
 	System.out.println("DEBUG: user_name = " + user_name);
 	System.out.println("DEBUG: user_email = " + user_email);
 	System.out.println("DEBUG: user_code_id = " + user_code_id);
+	System.out.println("DEBUG: operator_id = " + operator_id);
 	
 	session.setAttribute("user_code_id", user_code_id);
 %>

@@ -40,29 +40,46 @@ public class TeamFormController
 	@Autowired 
 	private SqlSession sqlSession;
 	
+	// 메인 페이지
+	@RequestMapping(value = "/MainPage.action",method=RequestMethod.GET)
+	public String mainPage()
+	{
+		
+	
+		return "main/MainPage";
+	};
+	
+	
 	//동호회 개설 페이지 호출
 	@RequestMapping(value="/TempOpen.action", method = RequestMethod.GET)
 	public String createTeam(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String root = request.getServletContext().getRealPath("");
-		System.out.println(root);
 		
-		//업로드 디렉토리 생성
-		String uploadPath = root + Path.getUploadEmblemDir();
-		File uploadDir = new File(uploadPath);
-		//파일 경로 없을 시 폴더 생성
-		if(!uploadDir.exists()) {
-			uploadDir.mkdirs();
+		
+		//동호회 가입여부 확인
+		String message= "";
+		HttpSession session = request.getSession();
+		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
+		int user_code_id = (Integer)session.getAttribute("user_code_id");
+		
+		int TeamTeam = dao.searchTempTeamMember(user_code_id);
+		int Team = dao.searchTeamMember(user_code_id);
+		int ountMember =TeamTeam+Team;
+		
+		if(ountMember>0) {
+			message = "이미 가입중인 동호회가 있습니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
 		}
 		
-		System.out.println(uploadPath);
 		
-		HttpSession session = request.getSession();
-		
+		//로그인 여부 확인
 		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
 		{
 			return "redirect:Login.action";
 		}
 		
+		
+		//동호회 개설 페이지 출력
 		IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
 		IRegionDAO regionDAO = sqlSession.getMapper(IRegionDAO.class);
 		
@@ -76,11 +93,13 @@ public class TeamFormController
 	@RequestMapping(value="/SearchCity.action", method = RequestMethod.GET)
 	@ResponseBody
 	public void getCityList(@RequestParam("region") int region, HttpServletResponse response) throws IOException {
-	    IRegionDAO dao = sqlSession.getMapper(IRegionDAO.class);
+	    IRegionDAO regionDao = sqlSession.getMapper(IRegionDAO.class);
+	    ITeamDAO teamDao = sqlSession.getMapper(ITeamDAO.class);
+	    
 	    
 	    ArrayList<CityDTO> cityList = new ArrayList<>();
 	    if (region != 0) {
-	        cityList = dao.cityList(region);
+	        cityList = regionDao.cityList(region);
 	    }
 
 	    // JSON 응답 설정
@@ -215,7 +234,9 @@ public class TeamFormController
 	            e.printStackTrace();
 	        }
 	    }
-	    
+	    else {
+	    	team.setEmblem("/");
+	    }
 	    try {
 	        ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 	        dao.teamInsert(team);

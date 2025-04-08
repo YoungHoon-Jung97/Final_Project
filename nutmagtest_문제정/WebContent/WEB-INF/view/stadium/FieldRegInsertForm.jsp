@@ -57,25 +57,28 @@
 				    <div class="form__input--wrapper field-size-wrapper">
 				      <div class="form__selection">
 				        <span class="size-label">가로</span>
-				        <select name="width" id="width" class="form__input select-size">
-				          <% for(int i=1; i<=5; i++) { %>
-				          <option value="<%=i%>"><%=i+19 %></option>
-				          <% } %>
-				        </select>
+				        <input type="text" class="" name="filed_reg_garo"/>
 				        <span class="unit-label">m</span>
 				      </div>
 				      <span class="dash">X</span>
 				      <div class="form__selection">
 				        <span class="size-label">세로</span>
-				        <select name="length" id="length" class="form__input select-size">
-				          <% for(int i=1; i<=5; i++) { %>
-				          <option value="<%=i%>"><%=i+37 %></option>
-				          <% } %>
-				        </select>
+				        <input type="text" name="field_reg_sero" />
 				        <span class="unit-label">m</span>
 				      </div>
 				    </div>
 				  </div>
+				</div>
+				
+				<!-- 경기장 수용 인원 -->
+				<div class="form__group">
+					<div class="form__field">
+						<label for="personCount" class="form__label required">수용인원</label>
+						<div class="form__input--wrapper">
+							<input type="text" class="form__input" id="name"
+							placeholder="경기장수용인원" maxlength="20" name="personCount" required />
+						</div>
+					</div>
 				</div>
 				
 				<!-- 경기장 환경 선택-->

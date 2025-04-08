@@ -40,7 +40,7 @@
 			,#{stadium_time_id1},#{stadium_time_id2},#{user_code_id})
 	</insert>
 	
-	<select id="stadiumList" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	<select id="stadiumAllList" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
     SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE
     FROM STADIUM_REG
 	</select>
@@ -49,6 +49,12 @@
     SELECT COUNT(*) 
     FROM STADIUM_REG 
     WHERE STADIUM_REG_NAME = #{stadium_reg_name}
+	</select>
+	
+	<select id="stadiumSearchList" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE,STADIUM_REG_DETAILED_ADDR,STADIUM_REG_ADDR
+	FROM STADIUM_REG
+	WHERE USER_CODE_ID = #{user_code_id}
 	</select>
 	
 </mapper>

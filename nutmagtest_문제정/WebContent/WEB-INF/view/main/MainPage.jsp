@@ -3,6 +3,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -13,7 +14,17 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+		
+		
+	});
+</script>
 <style>
+
 body {
 	background-color: #f9f9f9;
 	margin-top: 1rem;
@@ -54,6 +65,7 @@ body {
 </style>
 </head>
 <body>
+
 	<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 	<!-- 상단 정보 영역 -->
 	<div class="container">
@@ -87,14 +99,8 @@ body {
 						<li><a href="">[공지] 예시요</a></li>
 						<li><a href="">[공지] 예시요</a></li>
 						<li><a href="">[공지] 예시요</a></li>
-						<li><a href="">[공지] 예시요</a></li>
-						<li><a href="">[공지] 예시요</a></li>
-					</ul>
-				</div>
-				<div class="border rounded p-3 bg-white">
-					<h5 class="mb-2">공지사항</h5>
-					<ul class="mb-0">
-						<li><a href="OperatorSignupForm.action">구단 운영자 가입하기</a></li>
+						<li><a href="StadiumListForm.action">경기장 등록</a></li>
+						<li><a href="OperatorSignupForm.action">구단 운영자 가입 폼</a></li>
 					</ul>
 				</div>
 			</div>
@@ -180,6 +186,13 @@ body {
 	<!-- 푸터(맨 아래 부분) -->
 	<div class="footer">문구 적을 공간</div>
 
+<% if(request.getParameter("message") != null) { %>
+          <script type="text/javascript">
+              alert("<%= request.getParameter("message") %>");
+              window.location.href = "MainPage.action";
+          </script>
+<% } %>
+	
 
 </body>
 </html>

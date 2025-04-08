@@ -31,6 +31,10 @@ public interface IUserDAO
 	//구장 운영자 계좌번호
 	public int searchAccountOperator(@Param("accountNo") String accountNo);
 	
+	//구장 운영자 가입
 	public int operatorInsert(OperatorDTO operator);
+	
+	//구장 운영자 인증
+	public Integer operatorSearchId(int user_code_id);
 	
 }

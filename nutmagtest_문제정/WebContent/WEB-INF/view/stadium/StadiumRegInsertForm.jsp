@@ -4,7 +4,6 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -30,23 +29,7 @@ body {
 <script>
 	$(document).ready(function()
 	{
-		
-		var user_code_id = "<%= user_code_id != null ? user_code_id.toString() : "" %>";
-		
-		
-		if (!user_code_id) {
-			alert("로그인이 필요합니다.");
-			//로그인 안되어 있으면 로그인 창으로 보냄
-			location.href = "MainPage.action"; 
-		}
-
-		$('#user_code_id').val(user_code_id);
-
-		$('#stadium_time_id1').on('change', function() {
-			var selectedValue = $(this).val();
-			alert("선택한 값: " + selectedValue);
-		});
-		
+		var user_code_id = "<%= user_code_id %>";
 		$('#user_code_id').val(user_code_id);
 		
 		$("#checkDuplicateBtn").click(function () {
@@ -98,7 +81,7 @@ body {
 		});
 		
 	}
-    
+
 </script>
 
 
@@ -198,7 +181,7 @@ body {
 			<div class="form__actions">
 				<button type="submit" class="btn btn--submit">구장 등록</button>
 				<button type="reset" class="btn btn--reset">취소</button>
-				<button type="button" class="btn btn--back">뒤로가기</button>
+				<button type="button" class="btn btn--back" onclick="location.href='MainPage.action'">뒤로가기</button>
 			</div>
 			
 		</form>

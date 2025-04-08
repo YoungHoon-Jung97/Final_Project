@@ -14,6 +14,9 @@ public interface IStadiumDAO
 	public ArrayList<FieldEnvironmentDTO> fieldEnviromentList();
 	public ArrayList<StadiumTimeDTO> stadiumTimeList();
 	public int stadiumInsert(StadiumRegInsertDTO stadium);
-	public ArrayList<StadiumRegInsertDTO> stadiumList();
+	public ArrayList<StadiumRegInsertDTO> stadiumAllList();
 	public int stadiumNameCheck(String stadium_reg_name) throws SQLException;
+	public ArrayList<StadiumRegInsertDTO> stadiumSearchList(int user_code_id);
+	
+	
 }

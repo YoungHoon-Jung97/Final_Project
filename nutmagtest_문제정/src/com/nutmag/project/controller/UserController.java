@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nutmag.project.dao.IBankDAO;
-import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.UserDTO;
@@ -32,16 +31,6 @@ public class UserController
 	@Autowired 
 	private SqlSession sqlSession;
 
-	// 메인 페이지
-	@RequestMapping(value = "/MainPage.action",method=RequestMethod.GET)
-	public String mainPage()
-	{
-		String result ="";
-		
-		
-		result = "main/MainPage";
-		return result;
-	};
 	
 	// 유저 회원가입 폼
 	@RequestMapping(value="/UserSignupForm.action", method = RequestMethod.GET)
@@ -76,7 +65,7 @@ public class UserController
 	    }
 	}
 	
-	//유저 회원가입 닉네임 중복검사
+	//유저 회원가입 이메일 중복검사
 	@RequestMapping(value="/CheckNickName.action", method = RequestMethod.GET)
 	public void checkNickName(@RequestParam("nickName") String nickName,HttpServletResponse response) throws IOException{
 		
@@ -116,86 +105,90 @@ public class UserController
 		result = "redirect:MainPage.action";
 		return result;
 	};
+//=================================================================================================================================	
 	
 	// 구장 운영자 회원가입 폼
-	@RequestMapping(value="/OperatorSignupForm.action", method = RequestMethod.GET)
-	public String operatorSignupForm(Model model)
-	{
+		@RequestMapping(value="/OperatorSignupForm.action", method = RequestMethod.GET)
+		public String operatorSignupForm(Model model)
+		{
+			
+			IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
+			
+			model.addAttribute("bankList", bankDAO.bankList());
+			
+			return "/user/OperatorSignupForm";
+		}
 		
-		IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
-		
-		model.addAttribute("bankList", bankDAO.bankList());
-		
-		return "/user/OperatorSignupForm";
-	}
-	
-	// 구장 운영자 회원가입 이메일 중복검사
-	@RequestMapping(value="/CheckEmailOperator.action", method = RequestMethod.GET)
-	public void checkEmailOperator(@RequestParam("email") String email, HttpServletResponse response) throws IOException
-	{
-	    
-	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-	    int count = dao.searchEmailOperator(email);
-	    
-	    response.setCharacterEncoding("UTF-8");
-	    response.setContentType("text/plain;charset=UTF-8");
-	    
-	    //이메일을 아무것도 안적었을 경우
-	    if(email.equals("") || email.isEmpty()) {
-	    	
-	    	//error 발생
-	    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		// 구장 운영자 회원가입 이메일 중복검사
+		@RequestMapping(value="/CheckEmailOperator.action", method = RequestMethod.GET)
+		public void checkEmailOperator(@RequestParam("email") String email, HttpServletResponse response) throws IOException
+		{
+		    
+		    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		    int count = dao.searchEmailOperator(email);
+		    
+		    response.setCharacterEncoding("UTF-8");
+		    response.setContentType("text/plain;charset=UTF-8");
+		    
+		    //이메일을 아무것도 안적었을 경우
+		    if(email.equals("") || email.isEmpty()) {
+		    	
+		    	//error 발생
+		    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
-	    }
-	    
-	    if (count >0) {
-	        response.getWriter().write("이미 사용중인 이메일 입니다.");
-	    }
-	    else {
-	        response.getWriter().write("사용 가능한 이메일 입니다.");
-	    }
-	}
-	
-	// 구장 운영자 회원가입 계좌 중복검사
-	@RequestMapping(value="/CheckAccountNo.action", method = RequestMethod.GET)
-	public void checkAccountNo(@RequestParam("accountNo") String accountNo,HttpServletResponse response) throws IOException{
+		    }
+		    
+		    if (count >0) {
+		        response.getWriter().write("이미 사용중인 이메일 입니다.");
+		    }
+		    else {
+		        response.getWriter().write("사용 가능한 이메일 입니다.");
+		    }
+		}
 		
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		int count =dao.searchAccountOperator(accountNo);
-		
-		response.setCharacterEncoding("UTF-8");
-	    response.setContentType("text/plain;charset=UTF-8");
-		
-		  //이메일을 아무것도 안적었을 경우
-	    if(accountNo.equals("") || accountNo.isEmpty()) {
-	    	
-	    	//error 발생
-	    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		// 구장 운영자 회원가입 계좌 중복검사
+		@RequestMapping(value="/CheckAccountNo.action", method = RequestMethod.GET)
+		public void checkAccountNo(@RequestParam("accountNo") String accountNo,HttpServletResponse response) throws IOException{
+			
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			int count =dao.searchAccountOperator(accountNo);
+			
+			response.setCharacterEncoding("UTF-8");
+		    response.setContentType("text/plain;charset=UTF-8");
+			
+			  //이메일을 아무것도 안적었을 경우
+		    if(accountNo.equals("") || accountNo.isEmpty()) {
+		    	
+		    	//error 발생
+		    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 
-	    }
-	    
-	    if (count >0) {
-	        response.getWriter().write("이미 사용중인 계좌번호 입니다.");
-	    }
-	    else {
-	        response.getWriter().write("사용 가능한 계좌번호 입니다.");
-	    }
+		    }
+		    
+		    if (count >0) {
+		        response.getWriter().write("이미 사용중인 계좌번호 입니다.");
+		    }
+		    else {
+		        response.getWriter().write("사용 가능한 계좌번호 입니다.");
+		    }
+			
+		}
 		
-	}
+		// 구장 운영자 회원가입 인서트
+		@RequestMapping(value = "/OperatorInsert.action", method=RequestMethod.POST)
+		public String operatorInsert(OperatorDTO operator)
+		{
+			String result = null;
+			
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			dao.operatorInsert(operator);
+			
+			result = "redirect:MainPage.action";
+			return result;
+		};
 	
-	// 구장 운영자 회원가입 인서트
-	@RequestMapping(value = "/OperatorInsert.action", method=RequestMethod.POST)
-	public String operatorInsert(OperatorDTO operator)
-	{
-		String result = null;
-		
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		
-		dao.operatorInsert(operator);
-		
-		result = "redirect:MainPage.action";
-		return result;
-	};
+//=================================================================================================================================	
+	
 	
 	// 로그인
 	@RequestMapping(value="/Login.action", method = RequestMethod.GET)
@@ -220,7 +213,6 @@ public class UserController
 	{
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		UserDTO dto = null;
-		OperatorDTO operatorDTO = null;
 		
 		if ("ko".equals(lang))
 			dto = dao.userLoginKo(logEmailKo, logPwKo);
@@ -235,6 +227,7 @@ public class UserController
 			session.setAttribute("user_name", dto.getUser_name());
 			session.setAttribute("user_email", dto.getUser_email());
 			session.setAttribute("user_code_id", dto.getUser_code_id());
+			session.setAttribute("operator_id", dao.operatorSearchId(dto.getUser_code_id()));
 
 			if ("on".equals(saveEmail))
 			{

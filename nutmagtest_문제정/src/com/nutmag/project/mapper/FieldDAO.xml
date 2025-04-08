@@ -18,6 +18,25 @@
 	ORDER BY FIELD_ENVIRONMENT_ID
 	</select>
     
-
+	<insert id="fieldInsert" parameterType="com.nutmag.project.dto.FieldRegInsertDTO">
+	    INSERT INTO FIELD_REG (
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE_ID,
+	        FIELD_ENVIRONMENT_TYPE_ID,
+	        FIELD_REG_PRICE
+	    )
+	    VALUES (
+	        #{field_reg_name},
+	        SYSDATE,
+	        #{field_reg_garo},
+	        #{field_reg_sero},
+	        #{field_type_id},
+	        #{field_environment_type},
+	        #{field_reg_price},
+	    )
+	</insert>
 	
 </mapper>
