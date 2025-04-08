@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IStadiumDAO">
+	<insert id="stadiumInsertList" parameterType="com.nutmag.project.dto.StadiumRegInsertDTO" statementType="CALLABLE">
+		CALL PRC_ADMIN_INSERT(
+		#{stadium_reg_name, jdbcType=VARCHAR},
+		#{stadium_reg_portal_addr, jdbcType=VARCHAR},
+		#{stadium_reg_addr, jdbcType=VARCHAR}
+		#{stadium_reg_detailed_addr, jdbcType=VARCHAR}
+		#{stadium_reg_image, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+</mapper>

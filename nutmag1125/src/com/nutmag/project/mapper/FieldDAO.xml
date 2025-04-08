@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IFieldDAO">
+	
+	<select id="fieldTypeList" resultType="com.nutmag.project.dto.FieldTypeDTO">
+	SELECT FIELD_TYPE_ID,
+	       FIELD_TYPE
+	FROM FIELD_TYPE
+	ORDER BY FIELD_TYPE_ID
+	</select>
+	
+	<select id="fieldEnviromentList" resultType="com.nutmag.project.dto.FieldEnvironmentDTO">
+	SELECT FIELD_ENVIRONMENT_ID,
+	       FIELD_ENVIRONMENT_TYPE
+	FROM FIELD_ENVIRONMENT
+	ORDER BY FIELD_ENVIRONMENT_ID
+	</select>
+	
+	<insert id="fieldInsert" parameterType="com.nutmag.project.dto.FieldInsertFormDTO">
+	    INSERT INTO FIELD_TABLE (
+	        FIELD_REG_NAME,
+	        FIELD_SIZE_TYPE,
+	        FIELD_TYPE,
+	        FIELD_ENVIRONMENT_TYPE,
+	        FIELD_REG_PRICE
+	    )
+	    VALUES (
+	        #{FIELD_REG_NAME, jdbcType=VARCHAR},
+	        #{FIELD_SIZE_TYPE, jdbcType=VARCHAR},
+	        #{FIELD_TYPE, jdbcType=VARCHAR},
+	        #{FIELD_ENVIRONMENT_TYPE, jdbcType=VARCHAR},
+	        #{FIELD_REG_PRICE, jdbcType=VARCHAR}
+	    )
+	</insert>
+    
+
+	
+</mapper>
