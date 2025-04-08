@@ -214,7 +214,7 @@ public class StadiumController
 	    return result;
 	}
 	
-	// 구장 전체 리스트 확인용 폼
+	// 구장 등록 전체 리스트 확인 폼
 	@RequestMapping("/StadiumListForm.action")
 	public String stadiumListForm(Model model,HttpServletRequest request, HttpServletResponse response)
 	{

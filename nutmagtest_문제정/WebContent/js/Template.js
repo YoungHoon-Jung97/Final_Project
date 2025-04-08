@@ -57,13 +57,13 @@ $(function()
 	//경기장 예약
 	$(".field").click(function()
 	{
-		window.location.href = "Field.action";
+		window.location.href = "OperatorSignupForm.action";
 	});
 	
 	//경기장 등록
 	$(".field_reg").click(function()
 	{
-		window.location.href = "Stadium.action";
+		window.location.href = "StadiumListForm.action";
 	});
 	
 	//구장등록

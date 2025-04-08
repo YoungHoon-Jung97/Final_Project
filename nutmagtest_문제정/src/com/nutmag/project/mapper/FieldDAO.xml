@@ -33,7 +33,7 @@
 	    VALUES (
 	    	FIELD_REG_SEQ.NEXTVAL,
 	        #{field_reg_name},
-	        ,
+	        null,
 	        #{field_reg_garo},
 	        #{field_reg_sero},
 	        #{field_type_id},

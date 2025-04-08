@@ -129,7 +129,8 @@
 				</div>
 				<div class="form__group">
 						<label for="memberCount" class="form__label required">동호회 회원 수</label>
-						<input type="number" name="temp_team_person_count" class="form-control" placeholder="동호회 회원 수" required>
+						<input type="number" name="temp_team_person_count" class="form-control" 
+						placeholder="동호회 회원 수" required id="memberCount" min="4" max="25"> 
 					</div>
 				<div class="form__group">
 					<label for="region" class="form__label required">지역</label>

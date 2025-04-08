@@ -35,29 +35,36 @@ import com.nutmag.project.dto.UserDTO;
 import util.Path;
 
 @Controller
-public class TeamFormController
+public class TeamController
 {
 	@Autowired 
 	private SqlSession sqlSession;
 	
 	// 메인 페이지
 	@RequestMapping(value = "/MainPage.action",method=RequestMethod.GET)
-	public String mainPage()
+	public String mainPage(Model model)
 	{
-		
-	
+		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
+		List<TeamDTO> teamList = dao.getTeamList();
+	    model.addAttribute("teamList", teamList);
+	    
 		return "main/MainPage";
 	};
-	
+		
 	
 	//동호회 개설 페이지 호출
 	@RequestMapping(value="/TempOpen.action", method = RequestMethod.GET)
 	public String createTeam(Model model, HttpServletRequest request, HttpServletResponse response) {
 		
+		HttpSession session = request.getSession();
+		//로그인 여부 확인
+		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
+		{
+			return "redirect:Login.action";
+		}
 		
 		//동호회 가입여부 확인
 		String message= "";
-		HttpSession session = request.getSession();
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 		int user_code_id = (Integer)session.getAttribute("user_code_id");
 		
@@ -72,11 +79,6 @@ public class TeamFormController
 		}
 		
 		
-		//로그인 여부 확인
-		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
-		{
-			return "redirect:Login.action";
-		}
 		
 		
 		//동호회 개설 페이지 출력
@@ -87,6 +89,27 @@ public class TeamFormController
 		model.addAttribute("regionList", regionDAO.regionList());
 		
 		return "/team/TeamOpen";
+	}
+	
+	//동호회 참여 페이지 호출
+	@RequestMapping(value="/TeamApply.action", method = RequestMethod.GET)
+	public String applyTeam(HttpServletRequest request,Model model){
+		
+		HttpSession session = request.getSession();
+		//로그인 여부 확인
+		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
+		{
+			return "redirect:Login.action";
+		}
+		
+		String strTeamId =(String)request.getParameter("teamId");
+		int teamId = Integer.parseInt(strTeamId);
+		
+		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
+		TeamDTO team =  dao.getTeam(teamId);
+		model.addAttribute("team", team);
+		
+		return "/team/TeamApply";
 	}
 	
 	//구 선택지 리스트

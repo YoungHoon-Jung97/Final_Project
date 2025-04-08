@@ -6,6 +6,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Noto Sans KR', sans-serif;
+  cursor: url('../images/soccerballcursor.png') 2 2, auto !important;
 }
 
 body {
@@ -17,12 +18,16 @@ body {
   padding: 1rem;
   color: #1e293b;
   line-height: 1.5;
+  background-image: url("../images/background.png");
+  background-size: cover;
+	background-position: center center;
+	background-attachment: fixed;
 }
 
 /* 컨텐츠 컨테이너 */
 .content {
   width: 100%;
-  max-width: 37.5rem; /* 600px */
+  max-width: 70rem; /* 600px */
 
   padding: 1.5rem; /* 24px */
   margin: 1rem 0;
@@ -351,5 +356,4 @@ select.form__input {
   width: auto;
   min-width: 100px;
 }
-
 

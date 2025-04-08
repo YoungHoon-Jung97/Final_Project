@@ -82,4 +82,5 @@
 		WHERE USER_CODE_ID = #{user_code_id}
 	</select>
 	
+	
 </mapper>
