@@ -104,24 +104,26 @@ body {
 		</c:forEach>
 		
 		<div class="match-card">
+		<strong>구장에 포함된 경기장 표시</strong>
+		</div>
+		<c:forEach var="field" items="${fieldSearchId}">
+		<div class="match-card">
 	        <div class="d-flex justify-content-between align-items-center">
-            <%-- <div style="display: flex; align-items: center;">
-                <img src="${stadium.stadium_reg_image}" alt="" 
-                    style="height: 150px; width: 150px; object-fit: cover; margin-right: 15px;"/>
-				
-                <!-- 오른쪽에 텍스트 (이미지 옆에 멘트들) -->
+            <div style="display: flex; align-items: center;">
+               
                 <div style="max-width: 500px;">
-                    <strong>${stadium.stadium_reg_name}</strong><br>
-                    ${stadium.stadium_reg_addr}, ${stadium.stadium_reg_detailed_addr}
+                    <strong>${field.field_reg_name}</strong><br>
+                    등록일 : ${field.field_reg_at} <br>
+                    가로 : ${field.field_reg_garo}, 세로 : ${field.field_reg_sero } <br>
+                    바닥 종류 : ${field.field_type }, 환경 : ${field.field_environment_type }<br>
+                    2시간당 가격 : ${field.field_reg_price }
                 </div>
             </div>
             <!-- 버튼 -->
             <input type="hidden" name="stadium_reg_id" value="${stadium.stadium_reg_id}" />
-            <button type="submit" class="btn btn-secondary" >클릭</button> --%>
-            여기에 구장 소속 경기장 정보 뿌릴 예정
 	        </div>
 	    </div>
-		
+		</c:forEach>
 		
 	</div>
 		

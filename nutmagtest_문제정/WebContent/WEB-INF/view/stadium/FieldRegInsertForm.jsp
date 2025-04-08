@@ -35,21 +35,6 @@
 					</div>
 				</div>
 
-				<!-- 경기장장 필드상태 선택-->
-				<!-- <div class="form__group">
-					<div class="form__field">
-						<label for="post" class="form__label required">경기장 필드</label>
-						<div class="form__selection"> 
-							<select name="field" id="field" class="form__input" style="width: 10rem;">
-								<option value="1">천연 잔디</option>
-								<option value="2">인조 잔디</option>
-								<option value="3">흙 운동장</option>
-								<option value="4">천연 잔디</option>
-								<option value="5">기타</option>
-							</select>
-						</div>
-					</div>
-				</div> -->
 				<div>
 				    <label for="fieldcondition" class="form__label required">경기장 필드</label>
 				    <div class="form__selection">
@@ -62,19 +47,7 @@
 				    </div>
 				</div>
 				
-				<!-- 경기장 환경 선택-->
-				<!-- <div class="form__group">
-				  <div class="form__field">
-				    <label for="environment" class="form__label required">경기장 환경</label>
-				    <div class="form__input--wrapper">
-				      <select name="environment" id="environment" class="form__input select-size">
-				        <option value="1">실내</option>
-				        <option value="2">야외</option>
-				      </select>
-				    </div>
-				  </div>
-				</div> -->
-				
+
 				<div>
 				    <label for="fieldevnvironment" class="form__label required">경기장 환경</label>
 				    <div class="form__selection">

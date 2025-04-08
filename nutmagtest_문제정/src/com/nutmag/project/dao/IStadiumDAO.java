@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.nutmag.project.dto.FieldEnvironmentDTO;
+import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 import com.nutmag.project.dto.StadiumTimeDTO;
@@ -20,4 +21,5 @@ public interface IStadiumDAO
 	public int stadiumAllCount();
 	public Integer stadiumSearchCount(int user_code_id);
 	public ArrayList<StadiumRegInsertDTO> stadiumSearchId(int stadium_reg_id);
+	
 }

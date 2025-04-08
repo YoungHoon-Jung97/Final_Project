@@ -27,6 +27,7 @@ import com.nutmag.project.dao.IStadiumDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
+import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 
@@ -263,6 +264,7 @@ public class StadiumController
 	    HttpSession session = request.getSession();
 		
 	    IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+	    IFieldDAO fielddao = sqlSession.getMapper(IFieldDAO.class);
 	    
 	    String message= "";
 		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
@@ -285,9 +287,11 @@ public class StadiumController
 		};
 	    
 	    
-		ArrayList<StadiumRegInsertDTO> list = dao.stadiumSearchId(stadium_reg_id);
+		ArrayList<StadiumRegInsertDTO> stadiumList = dao.stadiumSearchId(stadium_reg_id);
+		ArrayList<FieldRegSearchDTO> fieldList = fielddao.fieldSearchList(stadium_reg_id);
 		
-	    model.addAttribute("stadiumSearchId", list);
+	    model.addAttribute("stadiumSearchId", stadiumList);
+	    model.addAttribute("fieldSearchId", fieldList);
 	    
 	    result = "/stadium/StadiumFieldCheckForm";
 	    return result;

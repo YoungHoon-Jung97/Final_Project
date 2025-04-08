@@ -69,4 +69,8 @@
 	WHERE STADIUM_REG_ID = #{stadium_reg_id}
 	</select>
 	
+	
+	
+	
+	
 </mapper>
