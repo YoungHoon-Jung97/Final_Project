@@ -15,52 +15,50 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <style type="text/css">
 
+/* 기본 배경 */
 body
 {
 	background-color: #f9f9f9;
+	background-image: url("background.png");
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
 	margin-top: 1rem;
+	font-family: 'Poppins', sans-serif;
+	color: #2e3d3d;
 }
 
-main
-{
-	width: 86.5%;
-	display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 75px;
-}
-
-.filter-bar button
-{
-	margin: 0 5px;
-}
-
+/* 카드 박스 */
 .card
 {
 	width: 300px;
-	background: #fff;
+	background: rgba(255, 255, 255, 0.85);
 	border-radius: 16px;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 	overflow: hidden;
 	text-align: center;
-	transition: transform 0.2s;
+	transition: transform 0.2s, box-shadow 0.3s ease-in-out;
 	margin-top: 30px;
+	backdrop-filter: blur(2px);
+	border: 1px solid #d7f0e2;
 }
 
 .card:hover
 {
 	transform: translateY(-5px);
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
+/* 카드 이미지 영역 */
 .card-img
 {
-	background-color: #b2dfdb;
+	background-color: #cdece2;
 	padding-top: 10px;
 	padding-bottom: 30px;
 	z-index: 1;
 }
 
+/* 이미지 원형 처리 */
 .card-img img
 {
 	width: 80px;
@@ -68,8 +66,10 @@ main
 	object-fit: cover;
 	border-radius: 50%;
 	border: 3px solid white;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
 }
 
+/* 콘텐츠 텍스트 */
 .card-content
 {
 	padding: 20px;
@@ -80,62 +80,190 @@ main
 	margin: 0;
 	font-size: 1.5em;
 	font-weight: bold;
-	color: #333;
+	color: #356859;
 }
 
 .card-content p
 {
 	margin: 8px 0 0;
 	font-size: 0.9em;
-	color: #777;
+	color: #607466;
 }
 
+/* 버튼 스타일 */
 .card-action
 {
 	margin-top: 16px;
-	background: linear-gradient(to right, #4f80ff, #6a9eff);
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
 	color: white;
 	border: none;
 	padding: 10px 24px;
 	border-radius: 8px;
 	font-weight: bold;
 	cursor: pointer;
+	transition: background 0.3s ease;
 }
 
 .card-action:hover
 {
-	background: linear-gradient(to right, #3f70e0, #588dee);
+	background: linear-gradient(to right, #65bda2, #6ab797);
 }
 
-.temp
+/* 새싹 아이콘 */
+.temp-icon
 {
 	margin-right: 250px;
 	height: 30px;
 }
 
+/* 플로팅 버튼 */
+.floatingButton-wrapper
+{
+	position: fixed;
+	bottom: 30px;
+	right: 40px;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.floatingButton-wrapper:hover
+{
+	width: 120px;
+}
+
+.floatingButton
+{
+	background-color: #a8d5ba;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	font-size: 20px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+	padding: 0;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background-color 0.3s;
+}
+
+.floatingButton:hover {
+	background-color: #94c9ab;
+}
+
+.floatingButton-img
+{
+	width: 70%;
+	height: 70%;
+	object-fit: contain;
+	transition: transform 0.2s ease;
+}
+
+/* 서브 아이콘들 */
+.top-icon-slide, .left-icon-slide
+{
+	background-color: rgba(128, 128, 128, 0.7);
+	color: white;
+	font-size: 24px;
+	border: none;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.4s ease;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	pointer-events: none;
+}
+
+.top-icon-slide
+{
+	transform: translateY(10px);
+	margin-bottom: 10px;
+	margin-right: 5px;
+}
+
+.top-icon-slide:hover
+{
+	background-color: #84b6f4;
+}
+
+.left-icon-slide
+{
+	position: absolute;
+	transform: translateX(10px);
+	right: 60px;
+	bottom: 5px;
+}
+
+.left-icon-slide:hover
+{
+	background-color: #f48989;
+}
+
+.floatingButton-wrapper:hover .top-icon-slide
+{
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+}
+
+.floatingButton-wrapper:hover .left-icon-slide
+{
+	opacity: 1;
+	transform: translateX(0);
+	pointer-events: auto;
+}
+
+.bi-funnel-fill
+{
+	margin-top: 5px;
+}
+
+/* 필터 패널 */
+.filter-panel
+{
+	position: fixed;
+	top: 0;
+	left: -300px;
+	width: 260px;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+	box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	z-index: 1100;
+	transition: left 0.3s ease;
+	overflow-y: auto;
+	backdrop-filter: blur(4px);
+}
+
+/* 활성화 시 왼쪽으로 슬라이드 인 */
+.filter-panel.active
+{
+	left: 0;
+}
+
+/* 필터 안에 있는 텍스트 기본 스타일 보정 */
+.filter-panel label, .filter-panel input, .filter-panel select {
+	color: #355e3b;
+	font-weight: 500;
+	font-size: 0.95em;
+}
+
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
-
 </head>
 <body>
 <main>
-	<!-- 필터 바 -->
-	<div class="container text-center mt-3">
-		<form method="get" action="" class="filter-bar d-flex flex-wrap justify-content-center gap-2 mt-3">
-			<select name="region" class="form-select">
-				<option value="">지역</option>
-				<option value="서울">서울</option>
-				<option value="경기">경기</option>
-				<option value="부산">부산</option>
-				<option value="대구">대구</option>
-			</select>
-
-			<button type="submit" class="btn btn-primary">검색</button>
-		</form>
-	</div>
-
 	<!-- 동호회 리스트 -->
 	<div class="container mt-4">
 		<div class="row justify-content-center">
@@ -143,15 +271,14 @@ main
 				<div class="col-md-4 d-flex justify-content-center">
 					<div class="card">
 						<div class="card-img">
-							<div class="temp">
+							<div class="temp-icon">
 								<c:if test="${team.team_id == 'TEMP_TEAM'}">
 									🌱
 								</c:if>
 							</div>
 							
-							
 							<!-- 동호회 앰블럼 (이미지 경로는 동적으로 바꿀 수 있음) -->
-							<img src="${pageContext.request.contextPath}/${team.emblem}" alt="${team.temp_team_name} 앰블럼">
+							<img src="${team.emblem}" alt="${team.temp_team_name} 앰블럼">
 						</div>
 						
 						<div class="card-content">
@@ -166,8 +293,59 @@ main
 			</c:forEach>
 		</div>
 	</div>
-	<br><br><br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br><br><br><br>
 </main>
+
+<div id="filterPanel" class="filter-panel">
+	<h4>필터</h4>
+	<hr>
+	
+	<form method="get" action="">
+		<div class="mb-3">
+			<label for="regionSelect" class="form-label">지역</label>
+			<select id="regionSelect" name="region" class="form-select">
+				<option value="">전체</option>
+				<option value="서울">서울</option>
+				<option value="경기">경기</option>
+				<option value="부산">부산</option>
+				<option value="대구">대구</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-primary w-100 mt-3">검색</button>
+	</form>
+</div>
+
+<!-- 플로팅 버튼 (Top, 필터) -->
+<div class="floatingButton-wrapper">
+	<button id="topIconButton" class="top-icon-slide" title="맨 위로 이동">
+		<i class="bi bi-caret-up-fill"></i>
+	</button>
+	
+	<button id="leftIconButton" class="left-icon-slide" title="필터">
+		<i class="bi bi-funnel-fill"></i>
+	</button>
+	
+	<div id="floatingButton" class="floatingButton">
+		<img src="images/soccerball.png" alt="floating" class="floatingButton-img">
+	</div>
+</div>
+
+<script type="text/javascript">
+
+document.getElementById("topIconButton").addEventListener("click", function ()
+{
+	window.scrollTo(
+	{
+		top: 0,
+		behavior: "smooth"
+	});
+});
+
+document.getElementById("leftIconButton").addEventListener("click", function ()
+{
+	var panel = document.getElementById("filterPanel");
+	panel.classList.toggle("active");
+});
+
+</script>
 </body>
 </html>

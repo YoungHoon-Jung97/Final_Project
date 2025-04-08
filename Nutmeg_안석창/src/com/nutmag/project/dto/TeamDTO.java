@@ -7,6 +7,8 @@ public class TeamDTO {
 	private String temp_team_name,temp_team_desc,emblem,temp_team_apply_at,
 	temp_team_account,temp_team_account_holder,region_name,city_name,team_id;
 	
+	private MultipartFile temp_team_emblem;
+	
 	public String getRegion_name()
 	{
 		return region_name;
@@ -31,8 +33,6 @@ public class TeamDTO {
 	{
 		this.city_name = city_name;
 	}
-	private MultipartFile temp_team_emblem;
-
 	public int getTemp_team_person_count() {
 		return temp_team_person_count;
 	}

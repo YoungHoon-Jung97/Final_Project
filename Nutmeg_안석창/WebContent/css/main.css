@@ -1,6 +1,4 @@
 @charset "UTF-8";
-@charset "UTF-8";
-
 
 /* main.css */
 
@@ -8,6 +6,7 @@
 {
    font-family: 맑은 고딕;
    color: #343;
+   cursor: url('../images/soccerballcursor.png') 2 2, auto !important;
 }
 
 body, p, div, span, input, table, th, td, select
