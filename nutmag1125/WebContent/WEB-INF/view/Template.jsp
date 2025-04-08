@@ -18,10 +18,16 @@
     Integer user_id = (Integer) session.getAttribute("user_id");
     String user_name = (String) session.getAttribute("user_name");
     String user_email = (String) session.getAttribute("user_email");
+    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+    Integer operator_id = (Integer) session.getAttribute("operator_id");
     
     System.out.println("DEBUG: user_id = " + user_id);
 	System.out.println("DEBUG: user_name = " + user_name);
 	System.out.println("DEBUG: user_email = " + user_email);
+	System.out.println("DEBUG: user_code_id = " + user_code_id);
+	System.out.println("DEBUG: operator_id = " + operator_id);
+	
+	session.setAttribute("user_code_id", user_code_id);
 %>
 <!DOCTYPE html>
 <html>
@@ -30,7 +36,7 @@
 <title>Template.jsp</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -39,109 +45,9 @@
 	var user_id = "<%=user_id %>";
 
 </script>
-<%-- <script type="text/javascript" src="<%=cp %>/js/Template.js"></script> --%>
-<script type="text/javascript">
+<script type="text/javascript" src="<%=cp %>/js/Template.js?after"></script>
 
-/*
-Template.js
-*/
 
-$(function()
-	{
-	$(".menu-icon").click(function()
-	{
-		if ($(this).hasClass("active"))
-		{
-			$(this).removeClass("active").addClass("inactive");
-			$(".nav-menu").removeClass("active");
-			$(".nav-sub").hide();
-		}
-		
-		else
-		{
-			$(this).removeClass("inactive").addClass("active");
-			$(".nav-menu").addClass("active");
-			$(".nav-sub").show();
-		}
-	});
-	
-	$(".right-menu").on("click", function ()
-	{
-		if ($(this).hasClass("active"))
-		{
-			$(this).removeClass("active").addClass("inactive");
-			$(this).find(".user-icon").removeClass("shrink").addClass("inshrink");
-			
-			if (user_id != null)
-				$(".user-menu").hide();
-		}
-		
-		else
-		{
-			$(this).removeClass("inactive").addClass("active");
-			$(this).find(".user-icon").removeClass("inshrink").addClass("shrink");
-			
-			if (user_id != null)
-				$(".user-menu").show();
-		}
-	});
-	
-	$(".team").click(function()
-	{
-		window.location.href = "Team.action";
-	});
-	
-	$(".temp-team").click(function()
-	{
-		window.location.href = "TempTeam.action";
-	});
-	
-	$(".field").click(function()
-	{
-		window.location.href = "Field.action";
-	});
-	
-	$(".stadium").click(function()
-	{
-		window.location.href = "Stadium.action";
-	});
-	
-	$(".mercenary-offer").click(function()
-	{
-		window.location.href = "MercenaryOffer.action";
-	});
-	
-	$(".mercenary").click(function()
-	{
-		window.location.href = "Mercenary.action";
-	});
-	
-	$(".match").click(function()
-	{
-		window.location.href = "Match.action";
-	});
-	
-	$(".myInformation").click(function()
-	{
-		window.location.href = "MyInformation.action";
-	});
-	
-	$(".myTeam").click(function()
-	{
-		window.location.href = "MyTeam.action";
-	});
-	
-	$(".logout").click(function()
-	{
-		var currentPath = window.location.pathname.replace("/Nutmeg", "");
-		var currentUrl = currentPath + window.location.search;
-		var returnUrl = currentUrl + (currentUrl.includes('?') ? '&' : '?') + "logoutMsg=1";
-		
-		window.location.href = "/Nutmeg" + "/Logout.action?returnUrl=" + encodeURIComponent(returnUrl);
-	});
-});
-
-</script>
 
 </head>
 <body>
@@ -176,10 +82,12 @@ $(function()
 				<div class="nav-sub temp-team">동호회 개설</div>
 			</div>
 			
+			
 			<div class="nav-item">
 				<span class="nav-title field">경기장</span>
 				<div class="nav-sub field">경기장 예약</div>
-				<div class="nav-sub stadium">경기장 등록</div>
+				<div class="nav-sub field_reg">경기장 등록</div>
+				<div class="nav-sub stadium_reg">구장 등록</div>
 			</div>
 			
 			<div class="nav-item">

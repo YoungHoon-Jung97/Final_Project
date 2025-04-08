@@ -17,16 +17,6 @@
 	FROM FIELD_ENVIRONMENT
 	ORDER BY FIELD_ENVIRONMENT_ID
 	</select>
-	
-	<insert id="fieldInsert" parameterType="com.nutmag.project.dto.FieldInsertFormDTO" statementType="CALLABLE">
-		CALL PRC_ADMIN_INSERT(
-		#{field_reg_name, jdbcType=VARCHAR},
-		#{field_size_type, jdbcType=VARCHAR},
-		#{field_type, jdbcType=VARCHAR}
-		#{field_environment_type, jdbcType=VARCHAR}
-		#{field_reg_price, jdbcType=VARCHAR}
-		)
-	</insert>
     
 
 	
