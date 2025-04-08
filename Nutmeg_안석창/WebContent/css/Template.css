@@ -9,6 +9,7 @@
 	padding: 0;
 	box-sizing: border-box;
 	white-space: nowrap;
+	cursor: url('images/nutmeg.png') 500 500, auto;
 }
 
 body
@@ -24,10 +25,21 @@ body
 	background-color: #ebedec;
 }
 
-.menu-bar, .main
+.background
+{
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	height: 20px;
+	background-color: #ebedec;
+	z-index: 1;
+}
+
+.menu-bar, main, .background
 {
 	width: 90%;
-	max-width: 1300px;
+	max-width: 1200px;
 	margin: 0 auto;
 }
 
@@ -40,7 +52,7 @@ body
 	top: 10px;
 	left: 50%;
 	transform: translateX(-50%);
-	z-index: 100;
+	z-index: 10;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -142,6 +154,16 @@ body
 	cursor: pointer;
 	font-weight: bold;
 	margin-right: 30px;
+}
+
+/* 중앙 컨텐츠 */
+main
+{
+	padding: 100px 0 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
 }
 
 /* 컨텐츠 박스 */

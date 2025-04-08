@@ -31,40 +31,86 @@ main
     margin-top: 75px;
 }
 
-.navbar
-{
-	background-color: #fff;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-	padding: 1rem 2rem;
-}
-
-.nav-link
-{
-	margin-right: 20px;
-	color: #333;
-	font-weight: 500;
-}
-
 .filter-bar button
 {
 	margin: 0 5px;
 }
 
-.match-card
+.card
 {
+	width: 300px;
 	background: #fff;
-	border-radius: 8px;
-	padding: 1rem;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-	margin-bottom: 1rem;
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	text-align: center;
+	transition: transform 0.2s;
+	margin-top: 30px;
 }
 
-.footer
+.card:hover
 {
-	padding: 2rem;
-	text-align: center;
-	background-color: #f1f1f1;
-	margin-top: 2rem;
+	transform: translateY(-5px);
+}
+
+.card-img
+{
+	background-color: #b2dfdb;
+	padding-top: 10px;
+	padding-bottom: 30px;
+	z-index: 1;
+}
+
+.card-img img
+{
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 50%;
+	border: 3px solid white;
+}
+
+.card-content
+{
+	padding: 20px;
+}
+
+.card-content h2
+{
+	margin: 0;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #333;
+}
+
+.card-content p
+{
+	margin: 8px 0 0;
+	font-size: 0.9em;
+	color: #777;
+}
+
+.card-action
+{
+	margin-top: 16px;
+	background: linear-gradient(to right, #4f80ff, #6a9eff);
+	color: white;
+	border: none;
+	padding: 10px 24px;
+	border-radius: 8px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.card-action:hover
+{
+	background: linear-gradient(to right, #3f70e0, #588dee);
+}
+
+.temp
+{
+	margin-right: 250px;
+	height: 30px;
 }
 
 </style>
@@ -75,107 +121,51 @@ main
 </head>
 <body>
 <main>
-	<!-- 상단 정보 영역 -->
-	<div class="container">
-		<div class="row">
-			<!-- 날씨 정보 -->
-			<div class="col-md-6 mb-3">
-				<div class="border rounded p-3 bg-white">
-					<h5 class="mb-2">현재 날씨</h5>
-					<p class="mb-0">서울, 맑음 🌤️</p>
-					<p class="mb-0">온도: 22°C</p>
-				</div>
-				<div class="border rounded p-3 bg-white">
-					<h5 class="mb-2">내일 날씨</h5>
-					<p class="mb-0">서울, 비옴 </p>
-					<p class="mb-0">온도: 22°C</p>
-				</div>
-				<div class="border rounded p-3 bg-white">
-					<h5 class="mb-2">내일 날씨</h5>
-					<p class="mb-0">서울, 비옴 </p>
-					<p class="mb-0">온도: 22°C</p>
-				</div>
-			</div>
-			
-			<!-- 공지사항 -->
-			<div class="col-md-6 mb-3">
-				<div class="border rounded p-3 bg-white">
-					<h5 class="mb-2">공지사항</h5>
-					<ul class="mb-0">
-						<li><a href="">[공지] 예시요</a></li>
-						<li><a href="">[공지] 예시요</a></li>
-						<li><a href="">[공지] 예시요</a></li>
-						<li><a href="">[공지] 예시요</a></li>
-						<li><a href="">[공지] 예시요</a></li>
-						<li><a href="">[공지] 예시요</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<!-- 필터 바 -->
 	<div class="container text-center mt-3">
 		<form method="get" action="" class="filter-bar d-flex flex-wrap justify-content-center gap-2 mt-3">
-			<select name="region" class="form-select" style="width: 150px;">
-				<option value="">모든 지역</option>
+			<select name="region" class="form-select">
+				<option value="">지역</option>
 				<option value="서울">서울</option>
 				<option value="경기">경기</option>
 				<option value="부산">부산</option>
 				<option value="대구">대구</option>
 			</select>
 
-			<select name="gender" class="form-select" style="width: 150px;">
-				<option value="">성별 선택</option>
-				<option value="man">남성</option>
-				<option value="woman">여성</option>
-			</select>
-
-			<select name="age" class="form-select" style="width: 150px;">
-				<option value="">나이 대</option>
-				<option value="10">10대</option>
-				<option value="20">20대</option>
-				<option value="30">30대</option>
-				<option value="40">40대</option>
-				<option value="50">50대</option>
-			</select>
-
-			<select name="" class="form-select" style="width: 150px;">
-				<option value="">뭐 넣지</option>
-				<option value="">뭐 넣지</option>
-				<option value="">뭐 넣지</option>
-				<option value="">뭐 넣지</option>
-			</select>
-
 			<button type="submit" class="btn btn-primary">검색</button>
 		</form>
 	</div>
 
-	<!-- 매칭 리스트 -->
+	<!-- 동호회 리스트 -->
 	<div class="container mt-4">
-		<div class="match-card">
-			<div class="d-flex justify-content-between align-items-center">
-				<div>
-					<strong>동호회명</strong> 여기에 위치 정보<br> <small>동호회 정보</small>
+		<div class="row justify-content-center">
+			<c:forEach var="team" items="${teamList}">
+				<div class="col-md-4 d-flex justify-content-center">
+					<div class="card">
+						<div class="card-img">
+							<div class="temp">
+								<c:if test="${team.team_id == 'TEMP_TEAM'}">
+									🌱
+								</c:if>
+							</div>
+							
+							
+							<!-- 동호회 앰블럼 (이미지 경로는 동적으로 바꿀 수 있음) -->
+							<img src="${pageContext.request.contextPath}/${team.emblem}" alt="${team.temp_team_name} 앰블럼">
+						</div>
+						
+						<div class="card-content">
+							<h2>${team.temp_team_name}</h2>
+							<!-- 동호회 이름 -->
+							<p>${team.region_name} / ${team.city_name}</p>
+							<!-- 동호회 지역 -->
+							<button class="card-action">자세히 보기</button>
+						</div>
+					</div>
 				</div>
-				<button class="btn btn-secondary" disabled>마감</button>
-			</div>
-		</div>
-		<div class="match-card">
-			<div class="d-flex justify-content-between align-items-center">
-				<div>
-					<strong>동호회명</strong> 서울 마포구 홍대 xx 축구장 <br> <small>남성,초급, 기타 등등</small>
-				</div>
-				<button class="btn btn-danger">가입하기</button>
-			</div>
+			</c:forEach>
 		</div>
 	</div>
-
-	<!-- 푸터(맨 아래 부분) -->
-	<div class="footer">문구 적을 공간</div>
-	<br><br><br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br><br><br><br>
 	<br><br><br><br><br><br><br><br><br><br>
 	<br><br><br><br><br><br><br><br><br><br>
 </main>

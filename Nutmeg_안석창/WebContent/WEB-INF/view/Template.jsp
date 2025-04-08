@@ -18,10 +18,14 @@
     Integer user_id = (Integer) session.getAttribute("user_id");
     String user_name = (String) session.getAttribute("user_name");
     String user_email = (String) session.getAttribute("user_email");
+    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
     
     System.out.println("DEBUG: user_id = " + user_id);
 	System.out.println("DEBUG: user_name = " + user_name);
 	System.out.println("DEBUG: user_email = " + user_email);
+	System.out.println("DEBUG: user_code_id = " + user_code_id);
+	
+	session.setAttribute("user_code_id", user_code_id);
 %>
 <!DOCTYPE html>
 <html>
@@ -43,8 +47,7 @@
 
 </head>
 <body>
-<%
-	String logoutFlag = (String) session.getAttribute("logoutFlag");
+<%	String logoutFlag = (String) session.getAttribute("logoutFlag");
 
 	if ("1".equals(logoutFlag))
 	{
@@ -53,9 +56,9 @@
 	<script>
 		swal("로그아웃", "로그아웃 되었습니다.", "success");
 	</script>
-<%
-	}
+<%	}
 %>
+<div class="background"></div>
 
 <header class="menu-bar">
 	<div class="left-menu">
@@ -74,16 +77,12 @@
 				<div class="nav-sub temp-team">동호회 개설</div>
 			</div>
 			
-			<div class="nav-item">
-				<span class="nav-title stadium">구장</span>
-				<div class="nav-sub stadium">구장 예약</div>
-				<div class="nav-sub stadium-reg">구장 등록</div>
-			</div>
 			
 			<div class="nav-item">
 				<span class="nav-title field">경기장</span>
 				<div class="nav-sub field">경기장 예약</div>
-				<div class="nav-sub field-reg">경기장 등록</div>
+				<div class="nav-sub field_reg">경기장 등록</div>
+				<div class="nav-sub stadium_reg">구장 등록</div>
 			</div>
 			
 			<div class="nav-item">
@@ -135,8 +134,6 @@
 	<div class="user-menu" style="display: none;">
 		<span class="myInformation">내 정보</span>
 		<div class="myTeam">내 동호회</div>
-		<!-- 구장 운영자는 내 구장으로 변경 -->
-		<!-- 관리자는 관리자 페이지로 변경 -->
 		<div class="logout">로그아웃</div>
 	</div>
 <%	}

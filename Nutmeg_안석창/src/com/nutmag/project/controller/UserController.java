@@ -1,5 +1,6 @@
 package com.nutmag.project.controller;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 
 import javax.servlet.http.Cookie;
@@ -14,9 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nutmag.project.dao.IUserDAO;
-import com.nutmag.project.dto.LoginDTO;
+
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -27,23 +29,65 @@ public class UserController
 
 	@Autowired 
 	private SqlSession sqlSession;
-
-	// 메인 페이지
-	@RequestMapping(value = "/MainPage.action",method=RequestMethod.GET)
-	public String mainPage()
-	{
-		String result ="";
-		
-		
-		result = "main/MainPage";
-		return result;
-	};
 	
 	// 유저 회원가입 폼
 	@RequestMapping(value="/UserSignupForm.action", method = RequestMethod.GET)
 	public String userSignupForm(Model model)
 	{
 		return "/user/UserSignupForm";
+	}
+	
+	//유저 회원가입 이메일 중복검사
+	@RequestMapping(value="/CheckEmail.action", method = RequestMethod.GET)
+	public void checkEmail(@RequestParam("email") String email, HttpServletResponse response) throws IOException {
+	    
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+	    int count = dao.searchEmail(email);
+	    
+	    response.setCharacterEncoding("UTF-8");
+	    response.setContentType("text/plain;charset=UTF-8");
+	    
+	    //이메일을 아무것도 안적었을 경우
+	    if(email.equals("") || email.isEmpty()) {
+	    	
+	    	//error 발생
+	    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+	    }
+	    
+	    if (count >0) {
+	        response.getWriter().write("이미 사용중인 이메일 입니다.");
+	    }
+	    else {
+	        response.getWriter().write("사용 가능한 이메일 입니다.");
+	    }
+	}
+	
+	//유저 회원가입 이메일 중복검사
+	@RequestMapping(value="/CheckNickName.action", method = RequestMethod.GET)
+	public void checkNickName(@RequestParam("nickName") String nickName,HttpServletResponse response) throws IOException{
+		
+		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		int count =dao.searchnickName(nickName);
+		
+		response.setCharacterEncoding("UTF-8");
+	    response.setContentType("text/plain;charset=UTF-8");
+		
+		  //이메일을 아무것도 안적었을 경우
+	    if(nickName.equals("") || nickName.isEmpty()) {
+	    	
+	    	//error 발생
+	    	response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+
+	    }
+	    
+	    if (count >0) {
+	        response.getWriter().write("이미 사용중인 닉네임 입니다.");
+	    }
+	    else {
+	        response.getWriter().write("사용 가능한 닉네임 입니다.");
+	    }
+		
 	}
 	
 	// 유저 회원가입 인서트
@@ -82,7 +126,7 @@ public class UserController
 	
 	{
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		LoginDTO dto = null;
+		UserDTO dto = null;
 		
 		if ("ko".equals(lang))
 			dto = dao.userLoginKo(logEmailKo, logPwKo);
@@ -96,6 +140,7 @@ public class UserController
 			session.setAttribute("user_id", dto.getUser_id());
 			session.setAttribute("user_name", dto.getUser_name());
 			session.setAttribute("user_email", dto.getUser_email());
+			session.setAttribute("user_code_id", dto.getUser_code_id());
 
 			if ("on".equals(saveEmail))
 			{
@@ -161,6 +206,7 @@ public class UserController
 		session.removeAttribute("user_id");
 		session.removeAttribute("user_name");
 		session.removeAttribute("user_email");
+		session.removeAttribute("user_code_id");
 		
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");

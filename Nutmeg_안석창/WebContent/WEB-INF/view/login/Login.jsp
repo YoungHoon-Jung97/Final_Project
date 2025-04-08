@@ -15,15 +15,6 @@
 	
 	session.removeAttribute("msg");
 	session.removeAttribute("lang");
-	
-	System.out.println("-------------------------------------");
-	System.out.println("DEBUG: msg = " + msg);
-	System.out.println("DEBUG: lang = " + lang);
-	
-	String referer = request.getHeader("Referer");
-	
-	if (referer != null && !referer.contains("Login"))
-		session.setAttribute("prevPage", referer);
 %>
 <!DOCTYPE html>
 <html>
