@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
+import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 import com.nutmag.project.dto.StadiumTimeDTO;
 
@@ -40,5 +41,8 @@ public interface IStadiumDAO
 	
 	// 구장 검색 (유저 아이디로)
 	public ArrayList<StadiumRegInsertDTO> stadiumSearchId(int stadium_reg_id);
+	
+	// 구장 휴무
+	public int stadiumHolidayInsert(StadiumHolidayInsertDTO holidayDTO);
 	
 }

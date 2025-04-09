@@ -56,7 +56,7 @@
 			else
 		        window.location.href = fallback;
 		});
-	})
+	});
 	
 </script>
 <script type="text/javascript" src="<%=cp %>/js/Login.js?after"></script>

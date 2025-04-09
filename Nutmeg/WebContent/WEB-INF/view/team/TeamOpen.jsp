@@ -9,185 +9,161 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>구장 등록하기</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<title>TeamOpen.jsp</title>
+
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
-		var user_code_id = "<%= user_code_id %>";
 
-		//팀이름 입력시 에러메시지 제거
-		$('#teamName').on('input',function(){
-			
-			$('#teamNameCheck').css('display','none');
-			$('#submitBtn').prop('disabled',false);
-			
-		});
-		
-		//사용자 코드 넣기 위한 코드
-		$('#user_code_id').val(user_code_id);
-		
-		//city select의 option을 나열하기 위한 코드
-		var region = $("#regions").val();
-		
-		if (region == "") {
-			$("#citys").html('<option value="">-- 먼저 지역을 선택하세요 --</option>');	
-		}
-		
-		$("#regions").on('change',function(){
-			region = $("#regions").val();
-			$.ajax({
-				url:"SearchCity.action",
-				type:"get",
-				data:{region:region},
-				dataType:"JSON",
-				success:function(result){
-					$('#citys').empty();
-					if (result.length >0) {
-						$.each(result, function(index, city){
-							$('#citys').append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
-						});
-					}
-				},
-				error: function(xhr, status, error){
-					console.log("오류 상태:", status);  
-		            console.log("오류 메시지:", error);  
-		            console.log("응답 데이터:", xhr.responseText);  
-					alert("도시 목록을 불러오는 중 오류가 발생했습니다.");
-				}
-			});
-		});
-		
-		//submit하기전 이름 중복확인
-		$('form').on('submit',function(event){
-			
-			event.preventDefault();
-			
-			checkTeamName(function(isValid){
-				if (isValid) {
-	                // 중복 검사 통과 시 폼 제출
-	                $('form')[0].submit();
-	            }
-				
-			});
-			
-		});
-	});
-	
-	function checkTeamName(callback){
-		var teamName = $('#teamName').val();
+	var user_code_id = "<%=user_code_id %>";
 
-	
-		$.ajax({
-			
-			url:'CheckTeamName.action',
-			type:'get',
-			data:{teamName:teamName},
-			dataType:'text',
-			success:function(result){
-				if(result == "이미 사용중인 팀네임 입니다."){
-					
-					$('#teamNameCheck').text(result);
-					$('#teamNameCheck').css({'display': 'inline', 'color': 'red'})
-					callback(false);
-				}
-				else if(result =="사용 가능한 팀네임 입니다."){
-					
-					$('#teamNameCheck').text(result);
-					$('#teamNameCheck').css({'display': 'inline', 'color': 'green'})
-					callback(true);
-				}
-			},
-			error:function(){
-				$('#teamNameCheck').text("팀네임을 입력하세요").css({'display':'inline','color':'red'});
-				callback(false);
-			}
-			
-		});
-		
-	}
 </script>
+<script type="text/javascript" src="<%=cp %>/js/TeamOpen.js?after"></script>
+
+<style type="text/css">
+
+.result
+{
+	display: none;
+	color: red;
+	font-size: small;
+	margin-top: 5px;
+}
+
+</style>
 </head>
 <body>
-<c:import url="/WEB-INF/view/Template.jsp"></c:import>
-<div class="container">
-	<div>
-		<h5 class="form__title">동호회 개설 신청 양식</h5>
-		<form method="post" action="TeamInsert.action" class="form" enctype="multipart/form-data">
-			<div class="form__section">
-				<div class="form__group">
+<div class="content">
+	<form method="post" action="TeamInsert.action" class="form form--join" enctype="multipart/form-data">
+		<h2 class="form__title">동호회 개설 신청</h2>
+		
+		<div class="form__section">
+			<h3 class="form__section-title">기본 정보</h3>
+			
+			<!-- 동호회 이름 -->
+			<div class="form__group">
+				<div class="form__field">
 					<label for="teamName" class="form__label required">동호회 이름</label>
+					
 					<div class="form__input--wrapper">
 						<input type="text" id="teamName" name="temp_team_name" class="form__input" placeholder="동호회 이름" required>
-						<input type="hidden" id="user_code_id" name="user_code_id" value="">
+						<input type="hidden" id="user_code_id" name="user_code_id" value="<%=user_code_id %>">
 					</div>
-					<p id="teamNameCheck" class="result"></p>
 				</div>
-				<div class="form__group">
-						<label for="memberCount" class="form__label required">동호회 회원 수</label>
-						<input type="number" name="temp_team_person_count" class="form-control" 
-						placeholder="동호회 회원 수" required id="memberCount" min="4" max="25"> 
+				
+				<p id="teamNameCheck" class="result"></p>
+			</div>
+			
+			<!-- 동호회 인원 -->
+			<div class="form__group">
+				<div class="form__field">
+					<label for="memberCount" class="form__label required">동호회 회원 수</label>
+					
+					<div class="form__input--wrapper">
+						<input type="number" id="memberCount" name="temp_team_person_count"
+						class="form__input" placeholder="4~25명" required min="4" max="25">
 					</div>
-				<div class="form__group">
-					<label for="region" class="form__label required">지역</label>
+				</div>
+			</div>
+			
+			<!-- 지역 -->
+			<div class="form__group">
+				<div class="form__field">
+					<label class="form__label required">지역</label>
+					
 					<div class="form__selection">
-						<span class="size-label">시</span>	
 						<select id="regions" name="region_id" class="form__input" required>
 							<option value="">시를 선택하세요</option>
+							
 							<c:forEach var="region" items="${regionList}">
 								<option value="${region.region_id}">${region.region_name}</option>
 							</c:forEach>
 						</select>
-						<span class="size-label">구</span>
+						
 						<select id="citys" name="city_id" class="form__input" required>
+							<option value="">구를 선택하세요</option>
 						</select>
 					</div>
 				</div>
-				<div class="form__group">
+			</div>
+			
+			<!-- 동호회 설명 -->
+			<div class="form__group">
+				<div class="form__field">
 					<label for="discript" class="form__label">동호회 설명</label>
-					<!-- <input type="text" name="temp_team_desc" class="form-control" placeholder="동호회 설명" required="required"> -->
-					<textarea rows="5" cols="" class="form-control" name="temp_team_desc"  placeholder="동호회의 방향성 혹은 동호회 설명 등.."></textarea>
+					
+					<textarea rows="5" id="discript" name="temp_team_desc" class="form__input"
+					placeholder="동호회의 방향성 혹은 동호회 설명 등.."></textarea>
 				</div>
-				<!-- 첨부파일 -->
-				<div class="form__group">
-					<div class="form__field">
-						<label for="image" class="form__label">동호회 앰블럼</label>
-						<div class="form__input-wrapper file-upload">
-							<input type="file"  class="form__input file-upload-input" id="image" name="temp_team_emblem"/>
-						</div>
+			</div>
+			
+			<!-- 앰블럼 -->
+			<div class="form__group">
+				<div class="form__field">
+					<label class="form__label">동호회 앰블럼</label>
+					
+					<div class="form__input--wrapper file-upload-wrapper">
+						<input type="file" id="image" name="temp_team_emblem" class="file-upload-input" />
+						<label for="image" class="file-upload-label">파일 선택</label>
+						<span id="file-name" class="file-upload-name">선택된 파일 없음</span>
 					</div>
 				</div>
-				<div>
-			        <label for="bank" class="form__label required">은행명</label>
-			        <div class="form__selection">
-				        <select id="bank" name="bank_id" class="required form__input"  required>
-				            <option value="">은행을 선택하세요</option>
-				            <c:forEach var="bank" items="${bankList}">
-				                <option value="${bank.bank_id}">${bank.bank_name}</option>
-				            </c:forEach>
-				        </select>
-			        </div>
-			    </div>
-			    <div class="form__group">
-						<label for="depositor" class="form__label required">동호회 예금주</label>
-						<input type="text" name="temp_team_account_holder" class="required form-control" placeholder="동호회 예금주" required>
-					</div>
-					<div class="form__group">
-						<label for="account" class="form__label required">동호회 계좌번호</label>
-						<input type="text" name="temp_team_account" class="required form-control" placeholder="동호회 계좌 번호" required>
-					</div>
 			</div>
-			<div class="form__actions">
-					<button type="submit" id="submitBtn" class="btn btn--submit" >개설하기</button>
-					<button type="reset" class="btn btn--reset">취소</button>
-					<button type="button" class="btn btn--back">뒤로가기</button>
+		</div>
+		
+		<div class="form__section">
+			<h3 class="form__section-title">계좌 정보</h3>
+
+			<!-- 은행 -->
+			<div class="form__group">
+				<div class="form__field">
+					<label for="bank" class="form__label required">은행명</label>
+					
+					<div class="form__input--wrapper">
+						<select id="bank" name="bank_id" class="form__input" required>
+							<option value="">은행을 선택하세요</option>
+							
+							<c:forEach var="bank" items="${bankList}">
+								<option value="${bank.bank_id}">${bank.bank_name}</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
 			</div>
-		</form>
-	</div>
+			
+			<!-- 예금주 -->
+			<div class="form__group">
+				<div class="form__field">
+					<label for="depositor" class="form__label required">예금주</label>
+					
+					<div class="form__input--wrapper">
+						<input type="text" id="depositor" name="temp_team_account_holder"
+						class="form__input" placeholder="동호회 예금주" required>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 계좌번호 -->
+			<div class="form__group">
+				<div class="form__field">
+					<label for="account" class="form__label required">계좌번호</label>
+					
+					<div class="form__input--wrapper">
+						<input type="text" id="account" name="temp_team_account"
+						class="form__input" placeholder="동호회 계좌 번호" required>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 버튼 그룹 -->
+		<div class="form__actions">
+			<button type="submit" id="submitBtn" class="btn btn--submit">개설하기</button>
+			<button type="button" class="btn btn--back">뒤로가기</button>
+		</div>
+	</form>
 </div>
 </body>
 </html>

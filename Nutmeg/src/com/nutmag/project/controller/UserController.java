@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nutmag.project.dao.IBankDAO;
+import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.UserDTO;
@@ -222,23 +223,40 @@ public class UserController
 	) throws Exception
 	
 	{
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
 		UserDTO dto = null;
 		
 		if ("ko".equals(lang))
-			dto = dao.userLoginKo(logEmailKo, logPwKo);
+			dto = userDAO.userLoginKo(logEmailKo, logPwKo);
 		
 		else
-			dto = dao.userLoginEn(logEmailEn, logPwEn);
+			dto = userDAO.userLoginEn(logEmailEn, logPwEn);
 
 		if (dto != null && dto.getUser_id() > 0)
 		{
 			// 로그인 성공
-			session.setAttribute("user_id", dto.getUser_id());
 			session.setAttribute("user_name", dto.getUser_name());
 			session.setAttribute("user_email", dto.getUser_email());
 			session.setAttribute("user_code_id", dto.getUser_code_id());
-			session.setAttribute("operator_id", dao.operatorSearchId(dto.getUser_code_id()));
+			session.setAttribute("operator_id", userDAO.operatorSearchId(dto.getUser_code_id()));
+			
+			// 로그인 상태 플래그 남기기
+			session.setAttribute("loginFlag", "1");
+			
+			if(teamDAO.searchMyTempTeam(dto.getUser_code_id()) != null) {
+				session.setAttribute("team_id", teamDAO.searchMyTempTeam(dto.getUser_code_id()));
+			}else if(teamDAO.searchMyTeam(dto.getUser_code_id()) != null) {
+				session.setAttribute("team_id", teamDAO.searchTempTeam(teamDAO.searchMyTeam(dto.getUser_code_id()))); 
+			}
+			else {
+				session.setAttribute("team_id",-100);
+			}
+			
+			teamDAO.searchMyTeam(dto.getUser_code_id());
+			teamDAO.searchMyTempTeam(dto.getUser_code_id());
 
 			if ("on".equals(saveEmail))
 			{
@@ -301,7 +319,6 @@ public class UserController
 		HttpSession session = request.getSession();
 		
 		// 세션 삭제
-		session.removeAttribute("user_id");
 		session.removeAttribute("user_name");
 		session.removeAttribute("user_email");
 		session.removeAttribute("user_code_id");

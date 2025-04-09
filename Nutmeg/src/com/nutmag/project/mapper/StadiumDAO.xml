@@ -78,5 +78,25 @@
 	WHERE STADIUM_REG_ID = #{stadium_reg_id}
 	</select>
 	
+	<!-- 구장 휴무 -->
+	<insert id="stadiumHoliday" parameterType="com.nutmag.project.dto.StadiumHolidayInsertDTO">
+	    INSERT INTO FIELD_REG (
+	    	STADIUM_HOLIDAY_ID,
+	    	STADIUM_HOLIDAY_START_AT,
+	    	STADIUM_HOLIDAY_END_AT,
+	    	STADIUM_HOLIDAY_DESC,
+	    	STADIUM_HOLIDAY_TYPE_ID,
+	    	STADIUM_REG_ID
+	    )
+	    VALUES (
+        	FIELD_REG_SEQ.NEXTVAL,
+	        #{stadiumHolidayStartAt},
+	        #{stadiumHolidayEndAt},
+	        #{stadiumHolidayDesc},
+	        #{stadiumHolidayTypeId},
+	        #{stadiumRegId}
+    )
+	</insert>
+	
 	
 </mapper>

@@ -13,9 +13,62 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/Team.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/modal.css">
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#applyModal").css('display','none');
+	    
+		$("#teamApply").on("click",function(){
+			$("#applyModal").show();
+	    	$("body").css("overflow", "hidden"); // 페이지 스크롤 방지
+			
+		});
+	
+	    // 모달 닫기 버튼
+	    $("#apply-cancel").on("click", function() {
+	        $("#applyModal").hide(); // 모달 숨기기
+	        $("body").css("overflow", "auto"); // 페이지 스크롤 복원
+	    });
+	    
+	    
+	});
+</script>
+
 </head>
 <body>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
+
+<!-- 팀 참여 모달 -->
+<div id="applyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">팀 신청</h3>
+            <span id="apply-cancel" class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+        	<form action="TeamApplyInsert.action" method="post">
+	            <div class="content-section">
+	            	<h4 class="section-title">신청자 설명</h4>
+	            	<select name="position_id" id="position"
+					class="selectpicker" style="width: 150px; margin-top: 10px; margin-bottom: 10px;">
+						<option value="">포지션 선택 선택</option>
+						<c:forEach var="position" items="${positionList }">
+							<option value="${position.position_id }">${position.position_name }</option>
+						</c:forEach>
+					</select> 
+	            
+	                <h4 class="section-title">신청자 설명</h4>
+	                <textarea id="apply-content" placeholder="자신의 정보를 입력하세요" name="temp_team_apply_desc"></textarea>
+	                <input type="hidden" name="teamId" value="${teamId}" />
+	            </div>
+	            <div class="modal-footer">
+	                <button type="submit" id="submit-apply" class="modal-button modal-submit">신청</button>
+	                <button type="reset" id="reset-apply" class="modal-button modal-cancel">취소</button>
+	            </div>
+            </form>
+        </div>
+    </div>
+</div>	
 	<div class="container-fluid container">
 		<div class="main">
 			<div class="main-content">
@@ -72,16 +125,14 @@
 				</div>
 				<!-- .team-info-wrap -->
 				<div class="team-modify">
-					<a href=""> 
-						<span>팀 정보 가입</span>
-					</a>
+					<button id="teamApply">팀 가입</button>
 				</div>
 			</div>
 			<!-- .main-content  -->
 		</div>
 		<!-- .main  -->
 	</div>
-	
+
 
 </body>
 </html>
