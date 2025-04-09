@@ -29,6 +29,7 @@ import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
+import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 
 import util.Path;
@@ -343,6 +344,20 @@ public class StadiumController
 		dao.fieldInsert(fieldDTO);
 		
 		result = "redirect:MainPage.action";
+		
+		return result;
+	}
+	/* 구장 휴무 */
+	@RequestMapping(value = "/StadiumHoliday.action", method = RequestMethod.POST)
+	public String StadiumHoliday(Model model, StadiumHolidayInsertDTO stadiumHolidayDTO)
+	{
+		String result = null;
+		
+		IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+		
+		dao.stadiumHolidayInsert(stadiumHolidayDTO);
+		
+		result = "/main/mainPage";
 		
 		return result;
 	}
