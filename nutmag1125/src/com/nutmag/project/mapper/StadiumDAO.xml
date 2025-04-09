@@ -57,4 +57,35 @@
 	WHERE USER_CODE_ID = #{user_code_id}
 	</select>
 	
+	<select id="stadiumSearchCount" resultType="Integer">
+	SELECT COUNT(*)
+	FROM STADIUM_REG
+	WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	<select id="stadiumSearchId" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE,STADIUM_REG_DETAILED_ADDR,STADIUM_REG_ADDR
+	FROM STADIUM_REG
+	WHERE STADIUM_REG_ID = #{stadium_reg_id}
+	</select>
+	
+	<insert id="stadiumHoliday" parameterType="com.nutmag.project.dto.StadiumHolidayInsertDTO">
+	    INSERT INTO FIELD_REG (
+	    	STADIUM_HOLIDAY_ID,
+	    	STADIUM_HOLIDAY_START_AT,
+	    	STADIUM_HOLIDAY_END_AT,
+	    	STADIUM_HOLIDAY_DESC,
+	    	STADIUM_HOLIDAY_TYPE_ID,
+	    	STADIUM_REG_ID
+	    )
+	    VALUES (
+        	FIELD_REG_SEQ.NEXTVAL,
+	        #{stadiumHolidayStartAt},
+	        #{stadiumHolidayEndAt},
+	        #{stadiumHolidayDesc},
+	        #{stadiumHolidayTypeId},
+	        #{stadiumRegId}
+    )
+	</insert>
+	
 </mapper>
