@@ -15,6 +15,15 @@
 	
 	session.removeAttribute("msg");
 	session.removeAttribute("lang");
+	
+	System.out.println("-------------------------------------");
+	System.out.println("DEBUG: msg = " + msg);
+	System.out.println("DEBUG: lang = " + lang);
+	
+	String referer = request.getHeader("Referer");
+	
+	if (referer != null && !referer.contains("Login"))
+		session.setAttribute("prevPage", referer);
 %>
 <!DOCTYPE html>
 <html>
@@ -47,7 +56,7 @@
 			else
 		        window.location.href = fallback;
 		});
-	})
+	});
 	
 </script>
 <script type="text/javascript" src="<%=cp %>/js/Login.js?after"></script>

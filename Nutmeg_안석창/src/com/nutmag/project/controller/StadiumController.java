@@ -22,8 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nutmag.project.dao.IFieldDAO;
 import com.nutmag.project.dao.IStadiumDAO;
+import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
+import com.nutmag.project.dto.FieldRegInsertDTO;
+import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 
@@ -37,41 +41,35 @@ public class StadiumController
 	@Autowired
 	private SqlSession sqlSession;
 	
-	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.GET)
-	public String fieldInsertForm(Model model,FieldTypeDTO fieldType, FieldEnvironmentDTO environment) throws SQLException
-	{
-		String result =null;
-		
-		IStadiumDAO fieldDAO = sqlSession.getMapper(IStadiumDAO.class);
-		
-		/*
-		System.out.println(">>> fieldTypeList() 호출 시작"); List<FieldTypeDTO> list =
-		fieldDAO.fieldTypeList(); System.out.println(">>> fieldTypeList() 호출 완료");
-		 
-		System.out.println(">>> fieldDAO: " + fieldDAO);
-		  
-		System.out.println(">> field_type_list size: " + list.size());
-		 
-		System.out.println(">> field_type_list 조회 결과:"); for (FieldTypeDTO dto :
-		fieldDAO.fieldTypeList()) { System.out.println("ID: " +
-		dto.getField_type_id() + ", NAME: " + dto.getField_type()); }
-		*/	 
-		
-		model.addAttribute("fieldTypeList", fieldDAO.fieldTypeList());
-		model.addAttribute("fieldEnviromentList", fieldDAO.fieldEnviromentList());
-		
-		result = "/stadium/FieldRegInsertForm";
-		return result;
-	}
 	
 	// 구장 인서트 폼
 	@RequestMapping(value = "/StadiumRegInsertForm.action", method = RequestMethod.GET)
-	public String stadiumInsertForm(Model model) throws SQLException
+	public String stadiumInsertForm(Model model, HttpServletRequest request, HttpServletResponse response) throws SQLException
 	{
 		String result =null;
 		
+		
 		IStadiumDAO stadiumDAO = sqlSession.getMapper(IStadiumDAO.class);
 		
+		String message= "";
+		HttpSession session = request.getSession();
+		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
+		Integer operator_id = (Integer)session.getAttribute("operator_id");
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
+		// 구장 운영자 여부
+		if(operator_id == null) {
+			message = "구장 운영자 가입을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+			
 		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
 		
 		result = "/stadium/StadiumRegInsertForm";
@@ -180,24 +178,10 @@ public class StadiumController
 	        model.addAttribute("message", "오류 발생: " + e.toString());
 	        result = "error";
 	        */
-	    	System.out.println(e.toString());
+	    	//System.out.println(e.toString());
+	    	e.printStackTrace();
 	    }
 
-	    return result;
-	}
-	
-	// 구장 리스트 불러오기
-	@RequestMapping("/StadiumList.action")
-	public String stadiumList(Model model) 
-	{
-		String result = null;
-	    
-		IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
-		ArrayList<StadiumRegInsertDTO> list = dao.stadiumList();
-	    
-	    model.addAttribute("stadiumList", list);
-	    
-	    result = "/stadium/StadiumList";
 	    return result;
 	}
 	
@@ -213,6 +197,151 @@ public class StadiumController
 	   
 	    result = (count > 0) ? "duplicate" : "available";
 	    return result;
+	}
+	
+	// 구장 리스트 불러오기
+	@RequestMapping("/StadiumList.action")
+	public String stadiumList(Model model) 
+	{
+		String result = null;
+	    
+		IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+		ArrayList<StadiumRegInsertDTO> list = dao.stadiumAllList();
+	    
+	    model.addAttribute("stadiumAllList", list);
+	    
+	    result = "/stadium/StadiumList";
+	    return result;
+	}
+	
+	// 구장 전체 리스트 확인용 폼
+	@RequestMapping("/StadiumListForm.action")
+	public String stadiumListForm(Model model,HttpServletRequest request, HttpServletResponse response)
+	{
+		String result = null;
+	    HttpSession session = request.getSession();
+		
+	    IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+	    
+	    String message= "";
+		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
+		// 카운트 메소드 결과 확인용
+		// 결과값 없으면 0으로 반환
+		//System.out.println(dao.stadiumSearchCount(user_code_id));
+		
+		if (dao.stadiumSearchCount(user_code_id)==0)
+		{
+			message = "구장을 먼저 등록해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		};
+	    
+	    
+		ArrayList<StadiumRegInsertDTO> list = dao.stadiumSearchList(user_code_id);
+		int count = dao.stadiumSearchCount(user_code_id);
+		
+		model.addAttribute("stadiumCount",count);
+	    model.addAttribute("stadiumSearchList", list);
+	    
+	    result = "/stadium/StadiumListForm";
+	    return result;
+	    
+	}
+	
+	// 구장에 포함 된 경기장 리스트 확인용 폼
+	@RequestMapping("/StadiumFieldCheckForm.action")
+	public String stadiumFieldCheckForm(Model model,HttpServletRequest request, HttpServletResponse response)
+	{
+		String result = null;
+	    HttpSession session = request.getSession();
+		
+	    IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+	    IFieldDAO fielddao = sqlSession.getMapper(IFieldDAO.class);
+	    
+	    String message= "";
+		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
+		
+		int stadium_reg_id = Integer.parseInt(request.getParameter("stadium_reg_id"));
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
+		// 구장 등록 여부
+		if (dao.stadiumSearchCount(user_code_id)==0)
+		{
+			message = "구장을 먼저 등록해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		};
+	    
+	    
+		ArrayList<StadiumRegInsertDTO> stadiumList = dao.stadiumSearchId(stadium_reg_id);
+		ArrayList<FieldRegSearchDTO> fieldList = fielddao.fieldSearchList(stadium_reg_id);
+		
+	    model.addAttribute("stadiumSearchId", stadiumList);
+	    model.addAttribute("fieldSearchId", fieldList);
+	    
+	    result = "/stadium/StadiumFieldCheckForm";
+	    return result;
+	    
+	}
+	
+	
+	
+	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.POST)
+	public String FieldInsertForm(Model model,HttpServletRequest request,HttpServletResponse response) throws SQLException
+	{
+		String result =null;
+		
+		IStadiumDAO fieldDAO = sqlSession.getMapper(IStadiumDAO.class);
+		
+		HttpSession session = request.getSession();
+	    String message= "";
+		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
+		int stadium_reg_id = Integer.parseInt(request.getParameter("stadium_reg_id"));
+		System.out.println(stadium_reg_id);
+		
+		model.addAttribute("fieldTypeList", fieldDAO.fieldTypeList());
+		model.addAttribute("fieldEnviromentList", fieldDAO.fieldEnviromentList());
+		model.addAttribute("stadium_reg_id",stadium_reg_id);
+		
+		result = "/stadium/FieldRegInsertForm";
+		return result;
+	}
+	
+	
+	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
+	public String FieldInsert(Model model, FieldRegInsertDTO fieldDTO)
+	{
+		String result = null;
+		
+		IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+		
+		dao.fieldInsert(fieldDTO);
+		
+		result = "redirect:MainPage.action";
+		
+		return result;
 	}
 	
 	

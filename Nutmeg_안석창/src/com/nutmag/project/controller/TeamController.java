@@ -35,7 +35,7 @@ import com.nutmag.project.dto.UserDTO;
 import util.Path;
 
 @Controller
-public class TeamFormController
+public class TeamController
 {
 	@Autowired 
 	private SqlSession sqlSession;
@@ -50,30 +50,38 @@ public class TeamFormController
 	    
 		return "main/MainPage";
 	};
+		
 	
 	//동호회 개설 페이지 호출
 	@RequestMapping(value="/TempOpen.action", method = RequestMethod.GET)
 	public String createTeam(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String root = request.getServletContext().getRealPath("");
-		System.out.println(root);
-		
-		//업로드 디렉토리 생성
-		String uploadPath = root + Path.getUploadEmblemDir();
-		File uploadDir = new File(uploadPath);
-		//파일 경로 없을 시 폴더 생성
-		if(!uploadDir.exists()) {
-			uploadDir.mkdirs();
-		}
-		
-		System.out.println(uploadPath);
 		
 		HttpSession session = request.getSession();
-		
+		//로그인 여부 확인
 		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
 		{
 			return "redirect:Login.action";
 		}
 		
+		//동호회 가입여부 확인
+		String message= "";
+		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
+		int user_code_id = (Integer)session.getAttribute("user_code_id");
+		
+		int TeamTeam = dao.searchTempTeamMember(user_code_id);
+		int Team = dao.searchTeamMember(user_code_id);
+		int ountMember =TeamTeam+Team;
+		
+		if(ountMember>0) {
+			message = "이미 가입중인 동호회가 있습니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
+		
+		
+		
+		//동호회 개설 페이지 출력
 		IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
 		IRegionDAO regionDAO = sqlSession.getMapper(IRegionDAO.class);
 		
@@ -83,15 +91,42 @@ public class TeamFormController
 		return "/team/TeamOpen";
 	}
 	
+	//동호회 참여 페이지 호출
+	@RequestMapping(value="/TeamApply.action", method = RequestMethod.GET)
+	public String applyTeam(HttpServletRequest request,Model model){
+		
+		
+		
+		HttpSession session = request.getSession();
+		//로그인 여부 확인
+		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
+		{
+			return "redirect:Login.action";
+		}
+		
+		String strTeamId =(String)request.getParameter("teamId");
+		int teamId = Integer.parseInt(strTeamId);
+		
+		System.out.println("동호회 참여 페이지 확인 : "+strTeamId);
+		
+		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
+		TeamDTO team =  dao.getTeam(teamId);
+		model.addAttribute("team", team);
+		
+		return "/team/TeamApply";
+	}
+	
 	//구 선택지 리스트
 	@RequestMapping(value="/SearchCity.action", method = RequestMethod.GET)
 	@ResponseBody
 	public void getCityList(@RequestParam("region") int region, HttpServletResponse response) throws IOException {
-	    IRegionDAO dao = sqlSession.getMapper(IRegionDAO.class);
+	    IRegionDAO regionDao = sqlSession.getMapper(IRegionDAO.class);
+	    ITeamDAO teamDao = sqlSession.getMapper(ITeamDAO.class);
+	    
 	    
 	    ArrayList<CityDTO> cityList = new ArrayList<>();
 	    if (region != 0) {
-	        cityList = dao.cityList(region);
+	        cityList = regionDao.cityList(region);
 	    }
 
 	    // JSON 응답 설정
@@ -157,14 +192,23 @@ public class TeamFormController
 		            System.out.println("TEMP_TEAM_PERSON_COUNT(팀 인원수) = " + team.getTemp_team_persom_count());
 		            
 		        }
+		        else
+		        {
+		            System.out.println("stadiumDTO is null");
+		        }
 
 		        System.out.println("======= 파일 업로드 상태 =======");
-		        
 		        if (file != null)
 		        {
 		            System.out.println("파일 비어 있음? : " + file.isEmpty());
 		            System.out.println("파일 원래 이름 : " + file.getOriginalFilename());
 		        }
+		        else
+		        {
+		            System.out.println("uploadFile is null");
+		        }
+	        	
+	        	
 	        	
 	            // 웹 애플리케이션 루트 경로 가져오기
 	            String root = request.getServletContext().getRealPath("");
@@ -217,7 +261,9 @@ public class TeamFormController
 	            e.printStackTrace();
 	        }
 	    }
-	    
+	    else {
+	    	team.setEmblem("/");
+	    }
 	    try {
 	        ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 	        dao.teamInsert(team);

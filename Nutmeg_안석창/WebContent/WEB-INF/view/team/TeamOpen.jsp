@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>동호회 개설</title>
+<title>구장 등록하기</title>
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -129,7 +129,8 @@
 				</div>
 				<div class="form__group">
 						<label for="memberCount" class="form__label required">동호회 회원 수</label>
-						<input type="number" name="temp_team_person_count" class="form-control" placeholder="동호회 회원 수" required>
+						<input type="number" name="temp_team_person_count" class="form-control" 
+						placeholder="동호회 회원 수" required id="memberCount" min="4" max="25"> 
 					</div>
 				<div class="form__group">
 					<label for="region" class="form__label required">지역</label>

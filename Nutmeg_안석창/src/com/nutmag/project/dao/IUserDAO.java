@@ -2,6 +2,7 @@ package com.nutmag.project.dao;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -23,4 +24,17 @@ public interface IUserDAO
 	
 	//유저 닉네임 찾기
 	public int searchnickName(@Param("nickName") String nickName);
+	
+	//구장 운영자 이메일 찾기
+	public int searchEmailOperator(@Param("email") String email);
+	
+	//구장 운영자 계좌번호
+	public int searchAccountOperator(@Param("accountNo") String accountNo);
+	
+	//구장 운영자 가입
+	public int operatorInsert(OperatorDTO operator);
+	
+	//구장 운영자 인증
+	public Integer operatorSearchId(int user_code_id);
+	
 }

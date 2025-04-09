@@ -257,8 +257,32 @@ function validateLoginForm()
 function Submit()
 {
 	if (!$("#langToggle").is(":checked"))
+	{
+		var logEmailKo = document.getElementById("logEmailKo");
+		var logPwKo = document.getElementById("logPwKo");
+
+		if (!isValidEmail(logEmailKo.value))
+		{
+			alert("정상적인 이메일 형식을 입력하세요");
+			logEmailKo.focus();
+			return;
+		}
+
 		document.getElementById("loginFormKo").submit();
+	}
 
 	else
+	{
+		var logEmailEn = document.getElementById("logEmailEn");
+		var logPwEn = document.getElementById("logPwEn");
+
+		if (!isValidEmail(logEmailEn.value))
+		{
+			alert("Please enter a normal e-mail format");
+			logEmailEn.focus();
+			return;
+		}
+
 		document.getElementById("loginFormEn").submit();
+	}
 }
