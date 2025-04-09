@@ -46,7 +46,7 @@
             <span id="apply-cancel" class="close-modal">&times;</span>
         </div>
         <div class="modal-body">
-        	<form action="">
+        	<form action="TeamApplyInsert.action" method="post">
 	            <div class="content-section">
 	            	<h4 class="section-title">신청자 설명</h4>
 	            	<select name="position_id" id="position"
@@ -59,9 +59,10 @@
 	            
 	                <h4 class="section-title">신청자 설명</h4>
 	                <textarea id="apply-content" placeholder="자신의 정보를 입력하세요" name="temp_team_apply_desc"></textarea>
+	                <input type="hidden" name="teamId" value="${teamId}" />
 	            </div>
 	            <div class="modal-footer">
-	                <button type="button" id="submit-apply" class="modal-button modal-submit">신청</button>
+	                <button type="submit" id="submit-apply" class="modal-button modal-submit">신청</button>
 	                <button type="reset" id="reset-apply" class="modal-button modal-cancel">취소</button>
 	            </div>
             </form>
@@ -112,12 +113,14 @@
 								</tr>
 							</thead>
 							<tbody class="center">
-								<tr>
-									<td>${team.temp_team_name}</td>
-									<td></td>
-									<td>팀 개설자</td>
-									<td></td>
-								</tr>
+								<c:forEach var="teamMember" items="${teamMemberList}">
+									<tr>
+										<td>${teamMember.user_name}</td>
+										<td>${teamMember.position_name}</td>
+										<td>팀 개설자</td>
+										<td></td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>

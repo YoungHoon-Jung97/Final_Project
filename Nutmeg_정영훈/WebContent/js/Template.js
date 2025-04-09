@@ -28,7 +28,7 @@ $(function()
 			$(this).removeClass("active").addClass("inactive");
 			$(this).find(".user-icon").removeClass("shrink").addClass("inshrink");
 			
-			if (user_id != null)
+			if (user_code_id != null)
 				$(".user-menu").hide();
 		}
 		
@@ -37,7 +37,7 @@ $(function()
 			$(this).removeClass("inactive").addClass("active");
 			$(this).find(".user-icon").removeClass("inshrink").addClass("shrink");
 			
-			if (user_id != null)
+			if (user_code_id != null)
 				$(".user-menu").show();
 		}
 	});
@@ -51,7 +51,7 @@ $(function()
 	//동호회 개설
 	$(".temp-team").click(function()
 	{
-		window.location.href = "TempOpen.action";
+		window.location.href = "TeamOpen.action";
 	});
 	
 	//경기장 예약

@@ -9,9 +9,14 @@ import com.nutmag.project.dto.FieldTypeDTO;
 
 public interface IFieldDAO
 {
+	// 필드 타입
 	public ArrayList<FieldTypeDTO> fieldTypeList();
 	public ArrayList<FieldEnvironmentDTO> fieldEnviromentList();
 	public int fieldInsertForm(FieldRegInsertDTO field);
 	public int fieldInsert(FieldRegInsertDTO fieldDTO);
+	public ArrayList<FieldRegSearchDTO> fieldAllList();
 	public ArrayList<FieldRegSearchDTO> fieldSearchList(int stadium_reg_id);
+	public ArrayList<FieldRegSearchDTO> fieldBeforeApprList();
+	
+	
 }
