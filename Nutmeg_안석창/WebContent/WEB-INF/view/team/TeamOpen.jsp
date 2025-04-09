@@ -113,7 +113,6 @@
 </script>
 </head>
 <body>
-<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 <div class="container">
 	<div>
 		<h5 class="form__title">동호회 개설 신청 양식</h5>

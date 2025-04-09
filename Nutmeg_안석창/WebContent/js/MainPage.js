@@ -36,8 +36,12 @@ $(function()
 		
 		$('#descTeamStaus').text(statusText);
 		$('#teamApply').attr('href', 'TeamApply.action?teamId='+teamInfo.id);
+		
+		// 모달 열기
     	$("#descModal").show();
     	$("body").css("overflow", "hidden");
+    	$(".floatingButton-wrapper").addClass("blur-background");
+    	$("header").addClass("blur-background");
     });
 	
 	// 모달 닫기 버튼
@@ -45,5 +49,7 @@ $(function()
 	{
 		$("#descModal").hide(); // 모달 숨기기
 		$("body").css("overflow", "auto"); // 페이지 스크롤 복원
+		$(".floatingButton-wrapper").removeClass("blur-background");
+		$("header, .navbar").removeClass("blur-background");
 	});
 });

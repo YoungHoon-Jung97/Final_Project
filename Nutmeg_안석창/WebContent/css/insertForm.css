@@ -39,19 +39,20 @@ body
 
 .form
 {
-	background-color: white;
-	border-radius: 12px;
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+	background-color: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(6px);
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 	padding: 2.5rem;
+	border: 1px solid #d8f3dc;
 }
 
-/* 폼 제목 */
 .form__title
 {
 	font-size: 1.5rem;
 	font-weight: 600;
 	margin-bottom: 1.5rem;
-	color: #3b82f6;
+	color: #56ab91;
 	text-align: center;
 	position: relative;
 	padding-bottom: 1rem;
@@ -63,54 +64,38 @@ body
 	position: absolute;
 	width: 60px;
 	height: 3px;
-	background-color: #3498db;
+	background-color: #80cfa9;
 	bottom: -10px;
 	left: 50%;
 	transform: translateX(-50%);
 }
 
-/* 폼 섹션 */
-/* 섹션 스타일링 */
 .form__section
 {
 	margin-bottom: 2rem;
 }
 
-.form__section:last-of-type
-{
-	border-bottom: none;
-}
-
 .form__section-title
 {
-	color: #3498db;
+	color: #56ab91;
 	font-size: 1.3rem;
 	font-weight: 500;
 	margin-bottom: 1.5rem;
 	padding-bottom: 0.5rem;
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid #c2e5d3;
 }
 
-/* 폼 그룹 (각 입력 필드 세트) */
-/* 입력 필드 그룹 */
 .form__group
 {
 	margin-bottom: 0.5rem;
 }
 
-.form__group:last-child
-{
-	margin-bottom: 0;
-}
-
-/* 폼 필드 (라벨 + 입력) */
 .form__field
 {
 	display: flex;
 	flex-direction: column;
 }
 
-/* 필수 입력 표시 */
 .required::after
 {
 	content: '*';
@@ -118,7 +103,6 @@ body
 	margin-left: 0.25rem;
 }
 
-/* 라벨 스타일 */
 .form__label
 {
 	font-size: 0.9rem;
@@ -127,7 +111,6 @@ body
 	color: #555;
 }
 
-/* 입력 래퍼 (입력 필드 + 버튼) */
 .form__input--wrapper, .form__input-wrapper
 {
 	display: flex;
@@ -137,25 +120,17 @@ body
 	flex-wrap: nowrap;
 }
 
-/* 인풋 필드 스타일 */
-.form__input--wrapper
-{
-	display: flex;
-	align-items: center;
-}
-
-/* 입력 필드 */
 .form__input
 {
 	flex: 1;
 	height: 2.5rem;
 	padding: 0 0.5rem;
-	border: 1px solid #e2e8f0;
-	border-radius: 0.25rem;
+	border: 1px solid #cdece2;
+	border-radius: 8px;
 	font-size: 0.875rem;
 	transition: border-color 150ms, box-shadow 150ms;
-	background-color: #ffffff;
-	color: #1e293b;
+	background-color: rgba(255, 255, 255, 0.7);
+	color: #355e3b;
 }
 
 .form__input::placeholder
@@ -166,11 +141,10 @@ body
 .form__input:focus
 {
 	outline: none;
-	border-color: #3498db;
-	box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+	border-color: #80cfa9;
+	box-shadow: 0 0 0 3px rgba(128, 207, 169, 0.2);
 }
 
-/* 입력 필드 크기 변형 */
 .form__input--sm
 {
 	width: 10rem;
@@ -189,47 +163,44 @@ body
 	flex: none;
 }
 
-/* 읽기 전용 입력 필드 */
 .form__input[readonly]
 {
 	background-color: #f8fafc;
 	cursor: not-allowed;
 }
 
-/* 셀렉트 박스 스타일 */
 select.form__input
 {
 	appearance: none;
-	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23555'/%3E%3C/svg%3E");
+	background-image:
+		url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23555'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 10px center;
 	background-size: 20px;
 	padding-right: 30px;
 }
 
-/* 파일 업로드 필드 스타일 */
 .file-upload
 {
 	display: flex;
 	align-items: center;
-	background-color: #f8f9fa;
+	background-color: rgba(248, 249, 250, 0.8);
 	padding: 0.75rem 1rem;
-	border: 1px dashed #dce0e4;
-	border-radius: 6px;
+	border: 1px dashed #cdece2;
+	border-radius: 8px;
 }
 
 .file-upload-input
 {
 	padding: 0.5rem 0;
 	border: 0;
-	background-color: #f8f9fa;
+	background-color: transparent;
 }
 
-/* 버튼 스타일 기본 */
 .btn
 {
 	border: none;
-	border-radius: 0.25rem;
+	border-radius: 8px;
 	padding: 0 1.25rem;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -242,10 +213,9 @@ select.form__input
 	white-space: nowrap;
 }
 
-/* 중복확인/우편번호 검색 버튼 */
 .btn--check, .btn--search
 {
-	background-color: #64748b;
+	background-color: #7dcfb6;
 	color: white;
 	height: 2.5rem;
 	min-width: 6rem;
@@ -253,24 +223,21 @@ select.form__input
 
 .btn--check:hover, .btn--search:hover
 {
-	background-color: #475569;
+	background-color: #65bda2;
 }
 
-/* 주민번호 입력 섹션 */
 .jumin-section
 {
 	display: flex;
 	align-items: center;
 }
 
-/* 주민번호 첫 번째 입력란 */
 .ssn1-input
 {
 	width: 9.375rem;
 	flex: none;
 }
 
-/* 주민번호 두 번째 입력란(한 자리) */
 .ssn2-input
 {
 	width: 1.875rem;
@@ -278,14 +245,12 @@ select.form__input
 	text-align: center;
 }
 
-/* 대시(-) 스타일 */
 .dash
 {
 	margin: 0 0.25rem;
 	color: #64748b;
 }
 
-/* 시간 선택 영역 스타일 */
 .time-selection
 {
 	display: flex;
@@ -308,7 +273,6 @@ select.form__input
 	font-weight: 400;
 }
 
-/* 버튼 그룹 */
 .form__actions
 {
 	margin-top: 2rem;
@@ -317,10 +281,9 @@ select.form__input
 	justify-content: center;
 }
 
-/* 기본 동작 버튼 (등록, 취소, 뒤로가기 등) */
 .btn--primary, .btn--submit
 {
-	background-color: #3b82f6;
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
 	color: white;
 	height: 2.75rem;
 	min-width: 6.25rem;
@@ -331,12 +294,12 @@ select.form__input
 
 .btn--primary:hover, .btn--submit:hover
 {
-	background-color: #2563eb;
+	background: linear-gradient(to right, #65bda2, #6ab797);
 }
 
 .btn--secondary, .btn--reset, .btn--back
 {
-	background-color: #64748b;
+	background-color: #a8dadc;
 	color: white;
 	height: 2.75rem;
 	min-width: 6.25rem;
@@ -346,10 +309,9 @@ select.form__input
 
 .btn--secondary:hover, .btn--reset:hover, .btn--back:hover
 {
-	background-color: #475569;
+	background-color: #90c7c4;
 }
 
-/* 경기장 크기 선택 스타일 */
 .field-size-wrapper
 {
 	display: flex;
