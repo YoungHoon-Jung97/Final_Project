@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
+import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 
 public interface IFieldDAO
 {
