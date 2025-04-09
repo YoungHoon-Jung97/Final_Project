@@ -69,10 +69,13 @@ public class StadiumController
 			model.addAttribute("message", message);
 			return "redirect:MainPage.action";
 		}
-			
-		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
 		
-		result = "/stadium/StadiumRegInsertForm";
+		message = "구장 개설이 완료 되었습니다.";
+		
+		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
+		model.addAttribute("message", message);
+		
+		result = "redirect:MainPage.action";
 		return result;
 	}
 	
@@ -300,7 +303,7 @@ public class StadiumController
 	
 	
 	
-	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.POST)
 	public String FieldInsertForm(Model model,HttpServletRequest request,HttpServletResponse response) throws SQLException
 	{
 		String result =null;

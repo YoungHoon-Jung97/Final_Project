@@ -44,6 +44,7 @@
 <script type="text/javascript">
 
 	var user_id = "<%=user_id %>";
+	var operator_id = "<%=operator_id %>";
 
 </script>
 <script type="text/javascript" src="<%=cp %>/js/Template.js?after"></script>
@@ -131,15 +132,26 @@
 %>
 	</div>
 	
-<%	if (user_id != null)
+<%	if (user_id != null && operator_id==null)
 	{
 %>
 	<div class="user-menu" style="display: none;">
 		<span class="myInformation">내 정보</span>
 		<div class="myTeam">내 동호회</div>
+		<div class="operatorSignUp">구장 운영자 가입</div>
 		<div class="logout">로그아웃</div>
 	</div>
 <%	}
+	else if(user_id != null && operator_id!=null){
+%>
+	<div class="user-menu" style="display: none;">
+		<span class="myInformation">내 정보</span>
+		<div class="myTeam">내 동호회</div>
+		<div class="myStadium">내 구장</div>
+		<div class="logout">로그아웃</div>
+	</div>
+<%
+	}
 %>
 </header>
 </body>

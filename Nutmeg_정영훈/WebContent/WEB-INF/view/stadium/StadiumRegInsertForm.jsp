@@ -29,6 +29,8 @@ body {
 <script>
 	$(document).ready(function()
 	{
+		var user_code_id = "<%= user_code_id %>";
+		$('#user_code_id').val(user_code_id);
 		
 		$("#checkDuplicateBtn").click(function () {
 	        var name = $("#name").val();
@@ -79,7 +81,7 @@ body {
 		});
 		
 	}
-    
+
 </script>
 
 
@@ -87,7 +89,7 @@ body {
 
 <body>
 	<div class="content">
-		<form id="joinForm" class="form form--join" method="post" action="StadiumRegInsert.action">
+		<form id="joinForm" class="form form--join" method="post" action="StadiumRegInsert.action" enctype="multipart/form-data">
 			<h2 class="form__title">구장 정보 입력</h2>
 
 			<div class="form__section">
@@ -174,12 +176,12 @@ body {
 					</div>
 				</div>
 			</div>
-			<input type="hidden" name="user_code_id" value="1" />
+			<input type="hidden" id="user_code_id" name="user_code_id" value="">
 
 			<div class="form__actions">
 				<button type="submit" class="btn btn--submit">구장 등록</button>
 				<button type="reset" class="btn btn--reset">취소</button>
-				<button type="button" class="btn btn--back">뒤로가기</button>
+				<button type="button" class="btn btn--back" onclick="location.href='MainPage.action'">뒤로가기</button>
 			</div>
 			
 		</form>
