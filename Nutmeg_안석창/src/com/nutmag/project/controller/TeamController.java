@@ -53,7 +53,7 @@ public class TeamController
 		
 	
 	//동호회 개설 페이지 호출
-	@RequestMapping(value="/TempOpen.action", method = RequestMethod.GET)
+	@RequestMapping(value="/TeamOpen.action", method = RequestMethod.GET)
 	public String createTeam(Model model, HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session = request.getSession();

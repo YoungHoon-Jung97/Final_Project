@@ -32,6 +32,26 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript">
+	
+	$(function()
+	{
+		// 뒤로 가기
+		$('.btn--back').on('click', function()
+		{
+			var prevPage = "<%=session.getAttribute("prevPage") %>";
+			var fallback = "<%=cp %>/MainPage.action";
+
+			if (prevPage && prevPage !== "null")
+				window.location.href = prevPage;
+			
+			else
+		        window.location.href = fallback;
+		});
+	});
+
+</script>
 <script type="text/javascript" src="<%=cp %>/js/UserSignupForm.js?after"></script>
 
 </head>
@@ -163,7 +183,8 @@
 					<label for="post" class="form__label required">우편번호</label>
 					
 					<div class="form__input--wrapper">
-						<input type="text" class="form__input form__input--sm" readonly id="post" required name="user_postal_addr" />
+						<input type="text" class="form__input form__input--sm" readonly
+						id="post" required name="user_postal_addr" disabled>
 						
 						<button type="button" class="btn btn--search" onclick="execPostCode()">우편번호 찾기</button>
 					</div>
@@ -173,18 +194,18 @@
 			<!-- 상세주소 -->
 			<div class="form__group">
 				<div class="form__field">
-					<label for="address" class="form__label">주소</label>
+					<label for="address" class="form__label required">주소</label>
 					
 					<div class="form__input--wrapper">
 						<input type="text" class="form__input" id="address1"
-						placeholder="상세주소 입력" readonly required name="user_addr" />
+						placeholder="주소 입력" readonly required name="user_addr" disabled>
 					</div>
 				</div>
 			</div>
 			
 			<div class="form__group">
 				<div class="form__field">
-					<label for="address" class="form__label">상세주소</label>
+					<label for="address" class="form__label required">상세주소</label>
 					
 					<div class="form__input--wrapper">
 						<input type="text" class="form__input" id="address2"
@@ -197,7 +218,6 @@
 		<!-- 버튼 그룹 -->
 		<div class="form__actions">
 			<button id="submitBtn" type="submit" class="btn btn--submit" onclick="checkPassword()">회원가입</button>
-			<button type="reset" class="btn btn--reset">취소</button>
 			<button type="button" class="btn btn--back">뒤로가기</button>
 		</div>
 	</form> <!-- .form--join-->

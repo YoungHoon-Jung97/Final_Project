@@ -53,7 +53,7 @@ textarea
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 12px 0;
+	padding: 10px 0;
 	border-bottom: 1px solid #e2f0ea;
 }
 
@@ -121,9 +121,8 @@ textarea
 /* 닫기 버튼 */
 .close-modal
 {
-	font-size: 22px;
+	font-size: 30px;
 	color: #84b6f4;
-	cursor: pointer;
 	transition: color 0.3s ease;
 }
 

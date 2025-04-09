@@ -9,6 +9,8 @@ var isPasswordValid = false;
 
 $(function()
 {
+	$('#submitBtn').prop('disabled', true);
+	
     // 비밀번호와 비밀번호 확인 필드 입력 시
     $('#password, #passwordConfirm').on('input', function()
     {
@@ -20,15 +22,29 @@ $(function()
     $('form').on('submit', function(event)
     {
         event.preventDefault();
+        
         // 모든 조건 충족 시 폼 제출
         if (isEmailValid && isNickNameValid && isPasswordValid)
         {
-            alert("회원가입이 완료되었습니다!");
-            this.submit();
+        	swal(
+        	{
+        		title: "회원가입 성공",
+        		text: "회원가입이 완료되었습니다.",
+        		icon: "success",
+        		button: "확인"
+        	});
+        	
+        	setTimeout(function()
+        	{
+        		$(".swal-button--confirm").on("click", function()
+        		{
+        			$('form')[0].submit();
+        		});
+        	}, 50);
         }
         
         else
-            alert("모든 정보를 정확히 입력해주세요.");
+        	swal("회원가입 실패", "모든 정보를 정확히 입력해주세요.", "warning");
     });
 });
 
