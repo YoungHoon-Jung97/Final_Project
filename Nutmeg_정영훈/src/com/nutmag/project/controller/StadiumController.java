@@ -29,7 +29,6 @@ import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
-import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 
 import util.Path;
@@ -70,13 +69,10 @@ public class StadiumController
 			model.addAttribute("message", message);
 			return "redirect:MainPage.action";
 		}
-		
-		message = "구장 개설이 완료 되었습니다.";
-		
+			
 		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
-		model.addAttribute("message", message);
 		
-		result = "redirect:MainPage.action";
+		result = "/stadium/StadiumRegInsertForm";
 		return result;
 	}
 	
@@ -218,7 +214,7 @@ public class StadiumController
 	    return result;
 	}
 	
-	// 구장 전체 리스트 확인용 폼
+	// 구장 등록 전체 리스트 확인 폼
 	@RequestMapping("/StadiumListForm.action")
 	public String stadiumListForm(Model model,HttpServletRequest request, HttpServletResponse response)
 	{
@@ -344,20 +340,6 @@ public class StadiumController
 		dao.fieldInsert(fieldDTO);
 		
 		result = "redirect:MainPage.action";
-		
-		return result;
-	}
-	/* 구장 휴무 */
-	@RequestMapping(value = "/StadiumHoliday.action", method = RequestMethod.POST)
-	public String StadiumHoliday(Model model, StadiumHolidayInsertDTO stadiumHolidayDTO)
-	{
-		String result = null;
-		
-		IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
-		
-		dao.stadiumHolidayInsert(stadiumHolidayDTO);
-		
-		result = "/main/mainPage";
 		
 		return result;
 	}

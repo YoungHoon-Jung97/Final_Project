@@ -25,10 +25,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutmag.project.dao.IBankDAO;
+import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.CityDTO;
+import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.UserDTO;
 
@@ -102,11 +104,13 @@ public class TeamController
 		
 		String strTeamId =(String)request.getParameter("teamId");
 		int teamId = Integer.parseInt(strTeamId);
-		System.out.println("동호회 참여 페이지 확인 : "+strTeamId);
+		//System.out.println("동호회 참여 페이지 확인 : "+strTeamId);
+		ArrayList<PositionDTO> positionList = new ArrayList<PositionDTO>();
 		
 		
 		HttpSession session = request.getSession();
 		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
+		
 		
 		
 		// 로그인 여부
@@ -118,9 +122,12 @@ public class TeamController
 		
 		
 		
-		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
-		TeamDTO team =  dao.getTeam(teamId);
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		IPositionDAO positionDAO = sqlSession.getMapper(IPositionDAO.class);
+		TeamDTO team =  teamDAO.getTeam(teamId);
+		positionList = positionDAO.positionList();
 		model.addAttribute("team", team);
+		model.addAttribute("positionList", positionList);
 		
 		return "/team/TeamApply";
 	}

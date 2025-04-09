@@ -24,30 +24,6 @@
 </head>
 <body>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
-<!-- 팀 참여 모달 -->
-<div id="applyModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">투표 등록</h3>
-            <span id="vote-cancel" class="close-modal">&times;</span>
-        </div>
-        <div class="modal-body">
-        	<form action="">
-	            <div class="content-section">
-	                <h4 class="section-title">투표 내용</h4>
-	                <textarea id="apply-content" placeholder="자신의 정보를 입력하세요"></textarea>
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" id="submit-vote" class="modal-button modal-submit">신청</button>
-	                <button type="button" id="cancel-vote" class="modal-button modal-cancel">취소</button>
-	            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-
 	<div class="container-fluid container">
 		<div class="main">
 			<div class="main-content">
