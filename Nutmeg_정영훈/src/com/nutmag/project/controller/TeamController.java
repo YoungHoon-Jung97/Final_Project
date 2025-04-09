@@ -57,6 +57,8 @@ public class TeamController
 	public String createTeam(Model model, HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session = request.getSession();
+	
+		
 		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
 		String message = "";
 		
@@ -98,6 +100,10 @@ public class TeamController
 	public String applyTeam(HttpServletRequest request,Model model){
 		
 		
+		String strTeamId =(String)request.getParameter("teamId");
+		int teamId = Integer.parseInt(strTeamId);
+		System.out.println("동호회 참여 페이지 확인 : "+strTeamId);
+		
 		
 		HttpSession session = request.getSession();
 		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
@@ -110,10 +116,7 @@ public class TeamController
 			return "redirect:MainPage.action";
 		}
 		
-		String strTeamId =(String)request.getParameter("teamId");
-		int teamId = Integer.parseInt(strTeamId);
 		
-		System.out.println("동호회 참여 페이지 확인 : "+strTeamId);
 		
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 		TeamDTO team =  dao.getTeam(teamId);
