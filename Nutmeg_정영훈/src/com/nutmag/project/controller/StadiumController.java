@@ -300,7 +300,7 @@ public class StadiumController
 	
 	
 	
-	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.POST)
+	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.GET)
 	public String FieldInsertForm(Model model,HttpServletRequest request,HttpServletResponse response) throws SQLException
 	{
 		String result =null;
