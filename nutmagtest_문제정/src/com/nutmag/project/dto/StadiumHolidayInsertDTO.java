@@ -1,6 +1,6 @@
 package com.nutmag.project.dto;
 
-public class StadiumHolydayInsertDTO
+public class StadiumHolidayInsertDTO
 {
 	private int stadium_holiday_id,stadium_holiday_type_id,stadium_reg_id;
 	private String stadium_holiday_start_at, stadium_holiday_end_at

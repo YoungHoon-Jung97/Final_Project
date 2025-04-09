@@ -259,6 +259,55 @@ body
 }
 
 
+/* 텍스트 정보 스타일 */
+.modal_body p {
+  margin: 10px 0;
+  padding: 8px 0;
+  font-size: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.modal_body p:last-child {
+  border-bottom: none;
+  margin-top: 15px;
+  border-top: 1px solid #eaeaea;
+  padding-top: 15px;
+  font-style: italic;
+  color: #666;
+}
+
+/* 정보 라벨 스타일 */
+.modal_body p::before {
+  content: attr(id);
+  font-weight: bold;
+  color: #5f6368;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+#descTeamName::before {
+  content: "동호회명: ";
+}
+
+#descTeamReion::before {
+  content: "지역: ";
+}
+
+#descTeamCity::before {
+  content: "도시: ";
+}
+
+#descTeamMemberCount::before {
+  content: "회원 수: ";
+}
+
+#descTeamDesc::before {
+  content: "소개: ";
+  display: block;
+  margin-bottom: 5px;
+}
+
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -267,21 +316,31 @@ body
 	    $(".card-action").on("click",function(){
 	    	
 	    	var card = $(this).closest('.card');
-	    	var teamId = card.find('#teamId').val();
 	    	
-	    	$('#descTeamName').text(card.find('#teamName').val());
-	    	$('#descTeamDesc').text(card.find('#teamDesc').val());
-	    	$('#descTeamReion').text(card.find('#teamRegion').val());
-	    	$('#descTeamCity').text(card.find('#teamCity').val());
-	    	$('#descTeamMemberCount').text(card.find('#teamMemberCount').val());
-	    	$('#descTeamEmblem').attr('src',card.find('#teamEmblem').val());
-	    	if (teamStaus == 'TEMP_TEAM') {
-	    	    $('#descTeamStaus').text('임시');
-	    	    $('#teamApply').attr('href', 'TeamApply.action?teamId=' + teamId);
-	    	} else {
-	    	    $('#descTeamStaus').text('정식');
-	    	    $('#teamApply').attr('href', 'TeamApply.action?teamId=' + teamId);
-	    	}
+	    	// 팀 정보를 객체로 묶어서 관리
+	        var teamInfo = {
+	            name: card.find('#teamName').val(),
+	            desc: card.find('#teamDesc').val(),
+	            region: card.find('#teamRegion').val(),
+	            city: card.find('#teamCity').val(),
+	            memberCount: card.find('#teamMemberCount').val(),
+	            emblem: card.find('#teamEmblem').val(),
+	            status: card.find('#teamStaus').val(),
+	            id: card.find('#teamId').val()
+	        };
+	    	
+	     	// 모달 정보 세팅
+	        $('#descTeamName').text(teamInfo.name);
+	        $('#descTeamDesc').text(teamInfo.desc);
+	        $('#descTeamReion').text(teamInfo.region);
+	        $('#descTeamCity').text(teamInfo.city);
+	        $('#descTeamMemberCount').text(teamInfo.memberCount);
+	        $('#descTeamEmblem').attr('src', teamInfo.emblem);
+
+	        // 팀 상태에 따라 표시
+	        var statusText = (teamInfo.status == 'TEMP_TEAM') ? '임시' : '정식';
+	        $('#descTeamStaus').text(statusText);
+	        $('#teamApply').attr('href', 'TeamApply.action?teamId='+teamInfo.id);
 
 	    	
 	    	$("#descModal").show();
@@ -318,10 +377,10 @@ body
         
         <!-- 동호회 정보 폼 -->
             <!-- 내용 입력 섹션 -->
-            <div class="vote-section content-section">
-                <h4 class="section-title"><span id="descTeamStaus"></span>동호회 정보</h4>
+            <div class="modal_body">
+                <h4 class="modal-title"><span id="descTeamStaus"></span>동호회 정보</h4>
                 <div class ="modal-img">
-                	<img id="descTeamEmblem"  alt="${team.temp_team_name} 앰블럼">
+                	<img id="descTeamEmblem"  alt="${team.temp_team_name} 앰블럼" class="circle-img">
                 </div>
                 <p id="descTeamName"></p>
                 <p id="descTeamReion"></p>
@@ -331,10 +390,9 @@ body
             </div>
 
             <!-- 버튼 -->
-            <div class="modal-buttons">
-                <!-- <button type="button" id="submit-desc" class="modal-button submit-btn">동호회 참여</button> -->
-                <a class="btn btn-primary" id="teamApply">동호회 참여</a>
-                <button type="button" id="cancel-desc" class="btn btn-reset cancel-btn">취소</button>
+            <div class="modal-footer">
+                <a class="btn modal-submit" id="teamApply">동호회 참여</a>
+                <button type="button" id="cancel-desc" class="btn modal-cancel cancel-btn">취소</button>
             </div>
         </div>
     </div>

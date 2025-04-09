@@ -33,7 +33,7 @@
 	    VALUES (
 	    	FIELD_REG_SEQ.NEXTVAL,
 	        #{field_reg_name},
-	        null,
+	        SYSDATE,
 	        #{field_reg_garo},
 	        #{field_reg_sero},
 	        #{field_type_id},
@@ -57,6 +57,35 @@
 	        STADIUM_REG_ID
 	FROM FIELD_REG_VIEW
 	WHERE STADIUM_REG_ID=#{stadium_reg_id}
+	</select>
+	
+	<select id="fieldAllList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+	SELECT FIELD_REG_ID,
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE,
+	        FIELD_ENVIRONMENT_TYPE,
+	        FIELD_REG_PRICE,
+	        STADIUM_REG_NAME,
+	        STADIUM_REG_ID
+	FROM FIELD_REG_VIEW
+	</select>
+	
+	<select id="fieldBeforeApprList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+	SELECT FIELD_REG_ID,
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE,
+	        FIELD_ENVIRONMENT_TYPE,
+	        FIELD_REG_PRICE,
+	        STADIUM_REG_NAME,
+	        STADIUM_REG_ID,
+	        USER_CODE_ID
+	FROM FIELD_APPR_VALID_VIEW
 	</select>
 	
 </mapper>

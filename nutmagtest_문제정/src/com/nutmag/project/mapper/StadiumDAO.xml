@@ -78,5 +78,25 @@
 	WHERE STADIUM_REG_ID = #{stadium_reg_id}
 	</select>
 	
+	<!-- 구장 휴무 -->
+	<insert id="stadiumHoliday" parameterType="com.nutmag.project.dto.StadiumHolidayInsertDTO">
+	    INSERT INTO STADIUM_HOLIDAY (
+	    	STADIUM_HOLIDAY_ID,
+	    	STADIUM_HOLIDAY_START_AT,
+	    	STADIUM_HOLIDAY_END_AT,
+	    	STADIUM_HOLIDAY_DESC,
+	    	STADIUM_HOLIDAY_TYPE_ID,
+	    	STADIUM_REG_ID
+	    )
+	    VALUES (
+        	STADIUM_HOLIDAY_SEQ.NEXTVAL,
+	        #{stadium_holiday_start_at},
+	        #{stadium_holiday_end_at},
+	        #{stadium_holiday_desc},
+	        #{stadium_holiday_type_id},
+	        #{stadium_reg_id}
+    )
+	</insert>
+	
 	
 </mapper>

@@ -222,6 +222,7 @@ public class UserController
 	) throws Exception
 	
 	{
+
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		UserDTO dto = null;
 		

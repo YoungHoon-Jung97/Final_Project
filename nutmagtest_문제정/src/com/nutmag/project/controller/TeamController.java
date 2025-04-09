@@ -57,16 +57,18 @@ public class TeamController
 	public String createTeam(Model model, HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session = request.getSession();
-		//로그인 여부 확인
-		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
-		{
-			return "redirect:Login.action";
+		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
+		String message = "";
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
 		}
 		
 		//동호회 가입여부 확인
-		String message= "";
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
-		int user_code_id = (Integer)session.getAttribute("user_code_id");
 		
 		int TeamTeam = dao.searchTempTeamMember(user_code_id);
 		int Team = dao.searchTeamMember(user_code_id);
@@ -95,15 +97,23 @@ public class TeamController
 	@RequestMapping(value="/TeamApply.action", method = RequestMethod.GET)
 	public String applyTeam(HttpServletRequest request,Model model){
 		
+		
+		
 		HttpSession session = request.getSession();
-		//로그인 여부 확인
-		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
-		{
-			return "redirect:Login.action";
+		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
+		
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			String message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
 		}
 		
 		String strTeamId =(String)request.getParameter("teamId");
 		int teamId = Integer.parseInt(strTeamId);
+		
+		System.out.println("동호회 참여 페이지 확인 : "+strTeamId);
 		
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 		TeamDTO team =  dao.getTeam(teamId);

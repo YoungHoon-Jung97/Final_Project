@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IAdminDAO">
+	<insert id="adminInsert" parameterType="com.nutmag.project.dto.AdminDTO" statementType="CALLABLE">
+		CALL PRC_ADMIN_INSERT(
+		#{admin_email, jdbcType=VARCHAR},
+		#{admin_tel, jdbcType=VARCHAR},
+		#{admin_nickName, jdbcType=VARCHAR},
+		#{admin_pwd, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 관리자 아이디 찾기 select  -->
+	<select id="searchEmail" resultType="int">
+		SELECT COUNT(*)
+		FROM ADMIN_INFO
+		WHERE ADMIN_EMAIL = #{email}
+	</select>
+
+	<!-- 관리자 닉네임 찾기 select  -->
+	<select id="searchnickName" resultType="int">
+		SELECT COUNT(*)
+		FROM ADMIN_INFO
+		WHERE ADMIN_NICKNAME = #{nickName}
+	</select>
+	
+	
+	<select id="adminLoginKo" resultType="com.nutmag.project.dto.AdminDTO">
+		SELECT ADMIN_ID,ADMIN_EMAIL,ADMIN_NICKNAME,USER_CODE_ID
+		FROM ADMIN_INFO
+		WHERE ADMIN_EMAIL = #{logEmailKo} AND ADMIN_PWD = #{logPwKo}
+	</select>
+	
+	<select id="adminLoginEn" resultType="com.nutmag.project.dto.AdminDTO">
+		SELECT ADMIN_ID,ADMIN_EMAIL,ADMIN_NICKNAME,USER_CODE_ID
+		FROM ADMIN_INFO
+		WHERE ADMIN_EMAIL = #{logEmailEn} AND ADMIN_PWD = #{logPwEn}
+	</select>
+
+	<select id="adminLoginInfo" resultType="com.nutmag.project.dto.AdminDTO">
+		SELECT ADMIN_ID,ADMIN_EMAIL,ADMIN_NICKNAME,USER_CODE_ID
+		FROM ADMIN_INFO
+		WHERE ADMIN_ID = #{admin_id}
+	</select>
+	
+	<!-- <insert id="fieldApprInsert">
+		INSERT INTO FIELD_APPR (field_appr_id,field_appr_at
+								,field_reg_id,field_code_id,user_code_id)
+		VALUES (FIELD_APPR_SEQ.NEXTVAL,SYSDATE,#{field_reg_id},#{field_code_id},#{user_code_id})
+	</insert> -->
+	
+	<insert id="fieldApprInsert" parameterType="com.nutmag.project.dto.AdminFieldApprDTO" statementType="CALLABLE">
+		CALL PRC_FIELD_APPR_INSERT(
+		#{field_reg_id, jdbcType=VARCHAR},
+		#{user_code_id, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- <insert id="fieldCancelInsert" parameterType="com.nutmag.project.dto.AdminFieldApprDTO">
+		INSERT INTO
+	</insert> -->
+	
+</mapper>
