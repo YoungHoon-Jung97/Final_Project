@@ -75,8 +75,8 @@
             <div class="card h-100">
                 <div class="row g-0">
                     <!-- 이미지 영역 -->
-                    <div class="col-5 field-img ">
-                        <img src="${field.field_reg_image}" alt=""
+                    <div class="col-5">
+                        <img src="${field.field_reg_image}" alt="구장 이미지"
                              class="img-fluid rounded-start" 
                              style="height: 250px; width: 250px; object-fit: cover; margin-right: 15px;">
                     </div>

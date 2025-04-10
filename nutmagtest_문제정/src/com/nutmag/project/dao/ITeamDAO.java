@@ -50,5 +50,18 @@ public interface ITeamDAO {
 	//정식 동호회 인원
 	public ArrayList<TeamApplyDTO> teamMemberList(int teamId);
 	
+	//임시 동호회 신청자 명단
+	public ArrayList<TeamApplyDTO> tempTeamApplyList(int teamId);
 	
+	//정식 동호회 신청자 명단
+	public ArrayList<TeamApplyDTO> teamApplyList(int teamId);
+	
+	//----------------------------------------------------------------
+	
+	//임시 동호회 멤버 추가
+	public int addtempTeamMember(int team_apply_id);
+	
+	//정식 동호회 멤버 추가
+	public int addteamMember(int team_apply_id);
+	//----------------------------------------------------------------
 }

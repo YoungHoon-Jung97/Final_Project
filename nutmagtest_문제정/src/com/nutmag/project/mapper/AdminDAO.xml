@@ -47,7 +47,7 @@
 		WHERE ADMIN_ID = #{admin_id}
 	</select>
 	
-	
+	<!-- 경기장 반려 타입 리스트 -->
 	<select id="fieldApprCancelTypeList" resultType="com.nutmag.project.dto.AdminFieldApprCancelTypeDTO">
 		SELECT FIELD_APPR_CANCEL_TYPE_ID,FIELD_APPR_CANCEL_TYPE
 		FROM FIELD_APPR_CANCEL_TYPE

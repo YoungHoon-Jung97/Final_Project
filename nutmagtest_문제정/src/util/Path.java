@@ -18,6 +18,5 @@ public class Path {
 	public static String getUploadEmblemDir() {
 		return UPLOAD_EMBLEM_DIR;
 	}
-
 	
 }

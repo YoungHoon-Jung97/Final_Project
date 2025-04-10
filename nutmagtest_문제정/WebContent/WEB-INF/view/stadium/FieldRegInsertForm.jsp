@@ -108,10 +108,9 @@
 				<div class="form__group">
 					<div class="form__field">
 						<label for="image" class="form__label ">첨부파일</label>
-						<div class="form__input-wrapper file-upload">
-							<input type="file"  class="form__input file-upload-input" id="image" name="field_reg_image"/>
-						</div>
+						<input type="file"  class="form__input" id="image" name="field_reg_image" style="border: 0;"/>
 					</div>
+					
 				</div>
 			</div>
 			<input type="hidden" name="stadium_reg_id" value="${stadium_reg_id }">
