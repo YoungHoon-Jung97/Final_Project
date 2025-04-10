@@ -3,6 +3,8 @@ package com.nutmag.project.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.UserDTO;
@@ -59,9 +61,9 @@ public interface ITeamDAO {
 	//----------------------------------------------------------------
 	
 	//임시 동호회 멤버 추가
-	public int addtempTeamMember(int team_apply_id);
+	public int addtempTeamMember(@PathParam("team_apply_id") int team_apply_id);
 	
 	//정식 동호회 멤버 추가
-	public int addteamMember(int team_apply_id);
+	public int addteamMember(@PathParam("team_apply_id") int team_apply_id);
 	//----------------------------------------------------------------
 }

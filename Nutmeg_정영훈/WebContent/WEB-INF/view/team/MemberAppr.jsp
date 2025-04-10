@@ -163,7 +163,7 @@
 						            <td>${teamApply.team_apply_at}</td>
 						            <td>${teamApply.position_name}</td>
 									<td>
-			                        	<a href="AddMember.action?team_apply_id=${teamApply.team_apply_id}" class="btn-primary btn-small approve-btn" data-id="1">승인</button>
+			                        	<a href="AddMember.action?team_apply_id=${teamApply.team_apply_id}&user_code_id=${teamApply.user_code_id}" class="btn-primary btn-small approve-btn" data-id="1">승인</button>
 			                        	<button class="btn-danger btn-small reject-btn" data-id="1">거절</button>
 			                    	</td>
 				                </tr>

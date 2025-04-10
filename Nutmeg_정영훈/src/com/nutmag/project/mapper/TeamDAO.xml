@@ -111,13 +111,15 @@
     	SELECT *
 		FROM TEMP_TEAM_MEMBER_VIEW
 		WHERE TEMP_TEAM_ID =#{team_id}
+		ORDER BY TEAM_APPLY_APPR_AT ASC
     </select>
     
     <!-- 정식 동호회 인원 -->
     <select id="teamMemberList" resultType="com.nutmag.project.dto.TeamApplyDTO">
     	SELECT *
     	FROM TEAM_MEMBER_VIEW
-    	WHERE TEAM_ID =#{team_id} 
+    	WHERE TEAM_ID =#{team_id}
+    	ORDER BY TEAM_APPLY_APPR_AT ASC 
     </select>
     
     <!-- ================================================================================================= -->
@@ -138,12 +140,17 @@
 	</select>
 
 
-	<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 임시 동호회 멤버 수락 -->
-	<update id="updateUser" parameterType="com.nutmag.project.dto.TeamApplyDTO">
-    UPDATE TEMP_TEAM_APPLY
-    SET
-        TEMP_TEAM_APPLY_APPR_AT =SYSDATE 
-    WHERE USER_ID = #{user_id}
-</update>
+	<!--임시 동호회 멤버 수락 -->
+	<update id="addtempTeamMember" parameterType="com.nutmag.project.dto.TeamApplyDTO">
+	    UPDATE TEMP_TEAM_APPLY
+	    SET TEMP_TEAM_APPLY_APPR_AT =SYSDATE 
+	    WHERE TEMP_TEAM_APPLY_ID = #{team_apply_id}
+	</update>
+	
+	<update id="addteamMember" parameterType="com.nutmag.project.dto.TeamApplyDTO">
+		UPDATE TEAM_MEMBER
+	    SET TEAM_MEMBER_REG_AT =SYSDATE 
+	    WHERE TEAM_MEMBER_ID = #{team_apply_id}
+	</update>
     
 </mapper>
