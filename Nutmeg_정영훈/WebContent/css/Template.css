@@ -145,7 +145,13 @@ body
 /* 오른쪽 메뉴 (로그인 or 사람 아이콘) */
 .right-menu
 {
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	z-index: 50;
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 }
 
@@ -166,7 +172,12 @@ main
 	display: flex;
 	justify-content: center;
 	min-height: 100vh;
-	margin-top: -50px;
+}
+
+.main-background
+{
+	background-color: white;
+	width: 100%;
 }
 
 /* 컨텐츠 박스 */
@@ -206,18 +217,6 @@ main
 .menu-icon .line-2
 {
 	margin: 5px 0;
-}
-
-.right-menu
-{
-	width: 30px;
-	height: auto;
-	cursor: pointer;
-	z-index: 50;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 }
 
 /* Hover 효과 */
@@ -560,13 +559,13 @@ main
 	width: 150px;
 }
 
-.myInformation, .myTeam, .logout
+.myInformation, .myTeam, .operatorSignUp, .myStadium, .logout
 {
 	cursor: pointer;
 	color: #494949;
 }
 
-.myInformation:hover, .myTeam:hover, .logout:hover
+.myInformation:hover, .myTeam:hover, .operatorSignUp:hover, .myStadium:hover, .logout:hover
 {
 	color: black;
 }

@@ -3,13 +3,10 @@
 /* 기본 배경 */
 body
 {
-	background-color: #f9f9f9;
 	background-size: cover;
 	background-attachment: fixed;
 	background-position: center;
 	margin-top: 1rem;
-	font-family: 'Poppins', sans-serif;
-	color: #2e3d3d;
 }
 
 /* 카드 박스 */
@@ -96,8 +93,9 @@ body
 /* 새싹 아이콘 */
 .temp-icon
 {
-	margin-right: 250px;
-	height: 30px;
+	margin-top: 5px;
+	margin-right: 235px;
+	height: 20px;
 }
 
 /* 플로팅 버튼 */
