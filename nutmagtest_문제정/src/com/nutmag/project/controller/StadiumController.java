@@ -365,8 +365,14 @@ public class StadiumController
 	            // 웹 애플리케이션 루트 경로
 	            String root = request.getServletContext().getRealPath("");
 	            String uploadDir = Path.getUploadFieldDir();  // 예: "resources/uploads/fields/"
-	            String uploadPath = Paths.get(root, uploadDir).toString();
-
+	            
+	            // 전체 업로드 경로 생성
+	            String uploadPath = root + uploadDir;
+	            if (!uploadDir.endsWith(File.separator)) {
+	                uploadPath = root + uploadDir + File.separator;
+	            }
+	            
+	            
 	            // 폴더 없으면 생성
 	            File uploadDirFile = new File(uploadPath);
 	            if (!uploadDirFile.exists()) {
@@ -377,25 +383,37 @@ public class StadiumController
 	            // 파일명 생성 및 저장
 	            String originalFileName = file.getOriginalFilename();
 	            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-	            String savedFileName = fieldDTO.getField_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
-	            String saveFullPath = Paths.get(uploadPath, savedFileName).toString();
+	            String fieldFileName = fieldDTO.getField_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
 
-	            System.out.println("저장될 파일 경로: " + saveFullPath);
-	            file.transferTo(new File(saveFullPath));
+	            String filePath = uploadPath + fieldFileName;
+	            
+	            System.out.println("저장될 파일 경로: " + filePath);
+	            File dest = new File(filePath);
+	            file.transferTo(dest);
 	            System.out.println("파일 저장 완료");
-
+	            
+	            System.out.println("웹 애플리케이션 루트: " + root);
+	            
 	            // DB 저장용 웹 경로 설정 (슬래시로 바꾸고, / 붙여줌)
-	            String dbWebPath = "/" + (uploadDir + savedFileName).replace("\\", "/");
-	            fieldDTO.setField_image(dbWebPath);
-	            System.out.println("DB에 저장할 파일 경로: " + dbWebPath);
+	            String dbFilePath = uploadDir;
+	            if (!uploadDir.endsWith("/") && !uploadDir.endsWith("\\")) {
+	                dbFilePath += "/";
+	            }
+	            dbFilePath += fieldFileName;
+	            
+	            System.out.println("/n=====[파일 업로드]=====");
+	            System.out.println("전체 업로드 경로: " + uploadPath);
+	            System.out.println("설정된 업로드 경로: " + uploadDir);
+	            System.out.println("DB에 저장할 파일 경로: " + dbFilePath);
 
+	            fieldDTO.setField_image(dbFilePath);	
 	        } catch (Exception e) {
 	            System.out.println("파일 저장 중 오류 발생:");
 	            e.printStackTrace();
 	        }
-	    } 
+	    }
 	    else {
-	        fieldDTO.setField_image("/resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
+	    	fieldDTO.setField_image("/");
 	    }
 
 	    try {
@@ -406,10 +424,12 @@ public class StadiumController
 	        System.out.println("DB 저장 중 오류 발생:");
 	        e.printStackTrace();
 	    }
-
+	    
 	    System.out.println("===================================================================================================");
+
 	    return "redirect:MainPage.action";
 	}
+	
 	/* 구장 휴무 */
 	@RequestMapping(value = "/StadiumHoliday.action", method = RequestMethod.POST)
 	public String stadiumHoliday(Model model, StadiumHolidayInsertDTO stadiumHolidayDTO)
