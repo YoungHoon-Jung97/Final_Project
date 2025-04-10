@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nutmag.project.dao.IBankDAO;
+import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.UserDTO;
@@ -100,18 +101,6 @@ public class UserController
 	{
 		IBankDAO bankDAO = sqlSession.getMapper(IBankDAO.class);
 		
-		String message = "";
-		HttpSession session = request.getSession();
-		Integer operator_id = (Integer) session.getAttribute("operator_id");
-		
-		// 구장 운영자 여부
-		if (operator_id != null)
-		{
-			message = "이미 운영자 가입을 완료 했습니다.";
-			model.addAttribute("message", message);
-			return "redirect:MainPage.action";
-		}
-		
 		model.addAttribute("bankList", bankDAO.bankList());
 		
 		return "/user/OperatorSignupForm";
@@ -165,14 +154,11 @@ public class UserController
 	@RequestMapping(value = "/OperatorInsert.action", method = RequestMethod.POST)
 	public String operatorInsert(OperatorDTO operator)
 	{
-		String result = null;
-		
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		
 		dao.operatorInsert(operator);
 		
-		result = "redirect:MainPage.action";
-		return result;
+		return "redirect:MainPage.action";
 	};
 	
 	//==================================================================
@@ -191,17 +177,18 @@ public class UserController
 						@RequestParam(value = "saveEmailKo", required = false) String saveEmail,
 						@RequestParam(value = "logEmailEn", required = false) String logEmailEn,
 						@RequestParam(value = "logPwEn", required = false) String logPwEn,
-						@RequestParam("lang") String lang,
-						HttpSession session, HttpServletResponse response) throws Exception
+						@RequestParam("lang") String lang, HttpSession session, HttpServletResponse response) throws Exception
 	{
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
 		UserDTO dto = null;
 		
 		if ("ko".equals(lang))
-			dto = dao.userLoginKo(logEmailKo, logPwKo);
+			dto = userDAO.userLoginKo(logEmailKo, logPwKo);
 		
 		else
-			dto = dao.userLoginEn(logEmailEn, logPwEn);
+			dto = userDAO.userLoginEn(logEmailEn, logPwEn);
 		
 		if (dto != null && dto.getUser_id() > 0)
 		{
@@ -209,10 +196,22 @@ public class UserController
 			session.setAttribute("user_name", dto.getUser_name());
 			session.setAttribute("user_email", dto.getUser_email());
 			session.setAttribute("user_code_id", dto.getUser_code_id());
-			session.setAttribute("operator_id", dao.operatorSearchId(dto.getUser_code_id()));
+			session.setAttribute("operator_id", userDAO.operatorSearchId(dto.getUser_code_id()));
+
+			if (teamDAO.searchMyTempTeam(dto.getUser_code_id()) != null)
+				session.setAttribute("team_id", teamDAO.searchMyTempTeam(dto.getUser_code_id()));
+			
+			else if (teamDAO.searchMyTeam(dto.getUser_code_id()) != null)
+				session.setAttribute("team_id", teamDAO.searchTempTeam(teamDAO.searchMyTeam(dto.getUser_code_id())));
+			
+			else
+				session.setAttribute("team_id", 0);
 			
 			// 로그인 상태 플래그 남기기
 			session.setAttribute("loginFlag", "1");
+			
+			teamDAO.searchMyTeam(dto.getUser_code_id());
+			teamDAO.searchMyTempTeam(dto.getUser_code_id());
 			
 			if ("on".equals(saveEmail))
 			{

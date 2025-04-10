@@ -22,7 +22,6 @@ $(function()
     $('form').on('submit', function(event)
     {
         event.preventDefault();
-        
         // 모든 조건 충족 시 폼 제출
         if (isEmailValid && isNickNameValid && isPasswordValid)
         {

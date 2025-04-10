@@ -12,23 +12,6 @@
 
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
-<style type="text/css">
-
-#ssn1
-{
-	width: 200px;
-	flex: none;
-}
-
-.result
-{
-	display: none;
-	color: red;
-	font-size:small;
-	margin-top: 5px;
-}
-
-</style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -52,6 +35,7 @@
 	});
 
 </script>
+
 <script type="text/javascript" src="<%=cp %>/js/UserSignupForm.js?after"></script>
 
 </head>
@@ -71,7 +55,7 @@
 					
 					<div class="form__input--wrapper">
 						<input type="email" class="form__input" id="email" name="user_email"
-							placeholder="예: example@google.com" maxlength="100" required />
+							placeholder="예: example@google.com" maxlength="100" required>
 						<button type="button" class="btn btn--check" onclick="checkEmail()">중복확인</button>
 					</div>
 				</div>
@@ -86,7 +70,7 @@
 					
 					<div class="form__input--wrapper">
 						<input type="password" class="form__input" id="password" name="user_pwd"
-						placeholder="영문, 숫자, 특수문자 조합 8-20자" maxlength="20" minlength="8" required />
+						placeholder="영문, 숫자, 특수문자 조합 8-20자" maxlength="20" minlength="8" required>
 					</div>
 				</div>
 				
@@ -100,7 +84,7 @@
 					 
 					<div class="form__input--wrapper">
 						<input type="password" class="form__input" id="passwordConfirm"
-						placeholder="비밀번호 확인" maxlength="20" minlength="8" required />
+						placeholder="비밀번호 확인" maxlength="20" minlength="8" required>
 					</div>
 				</div>
 				
@@ -114,7 +98,7 @@
 					
 					<div class="form__input--wrapper">
 						<input type="text" class="form__input" id="name" placeholder="이름을 입력하세요."
-						maxlength="10" name="user_name" required />
+						maxlength="10" name="user_name" required>
 					</div>
 				</div>
 				
@@ -128,7 +112,7 @@
 					
 					<div class="form__input--wrapper">
 						<input type="text" class="form__input" id="nickName"
-							placeholder="닉네임" maxlength="20" name="user_nick_name" required />
+							placeholder="닉네임을 입력하세요." maxlength="20" name="user_nick_name" required>
 						<button type="button" class="btn btn--check" onclick="checkNickName()">중복확인</button>
 					</div>
 				</div>
@@ -142,8 +126,8 @@
 					<label for="tel" class="form__label">전화번호</label> 
 					
 					<div class="form__input--wrapper">
-						<input type="tel" class="form__input" id="tel" placeholder="전화번호"
-						name="user_tel" />
+						<input type="tel" class="form__input" id="tel" placeholder="전화번호를 입력하세요."
+						name="user_tel">
 					</div>
 				</div>
 			</div>
@@ -155,10 +139,10 @@
 					
 					<div class="form__input--wrapper jumin-section">
 						<input type="text" class="form__input ssn1-input" id="ssn1" maxlength="6"
-						minlength="6" placeholder="생년월일(6자리)" required name="user_ssn1"/> 
+						minlength="6" placeholder="생년월일(6자리)" required name="user_ssn1"> 
 						<span class="dash">-</span>
 						<input type="text" class="form__input ssn2-input" id="ssn2"
-						name="user_ssn2" maxlength="1" required />
+						name="user_ssn2" maxlength="1" required>
 						
 						<span style="padding-left:3px; ">●</span>
 						<span style="padding-left:3px; ">●</span>
@@ -183,8 +167,7 @@
 					<label for="post" class="form__label required">우편번호</label>
 					
 					<div class="form__input--wrapper">
-						<input type="text" class="form__input form__input--sm" readonly
-						id="post" required name="user_postal_addr" disabled>
+						<input type="text" class="form__input form__input--sm" readonly id="post" required name="user_postal_addr">
 						
 						<button type="button" class="btn btn--search" onclick="execPostCode()">우편번호 찾기</button>
 					</div>
@@ -198,7 +181,7 @@
 					
 					<div class="form__input--wrapper">
 						<input type="text" class="form__input" id="address1"
-						placeholder="주소 입력" readonly required name="user_addr" disabled>
+						placeholder="주소 입력" readonly required name="user_addr">
 					</div>
 				</div>
 			</div>
@@ -209,7 +192,7 @@
 					
 					<div class="form__input--wrapper">
 						<input type="text" class="form__input" id="address2"
-						placeholder="상세주소 입력" required name="user_detailed_addr" />
+						placeholder="상세주소 입력" required name="user_detailed_addr">
 					</div>
 				</div>
 			</div>

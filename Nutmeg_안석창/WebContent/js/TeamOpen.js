@@ -4,6 +4,8 @@
 
 $(function()
 {
+	$('#submitBtn').prop('disabled', true);
+	
 	//팀이름 입력시 에러메시지 제거
 	$('#teamName').on('input', function()
 	{

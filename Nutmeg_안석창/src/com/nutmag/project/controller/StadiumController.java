@@ -1,6 +1,7 @@
 package com.nutmag.project.controller;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +24,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nutmag.project.dao.IFieldDAO;
+import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.IStadiumDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
+import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 
 import util.Path;
@@ -69,8 +72,11 @@ public class StadiumController
 			model.addAttribute("message", message);
 			return "redirect:MainPage.action";
 		}
-			
+		
+		
+		
 		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
+		model.addAttribute("message", message);
 		
 		result = "/stadium/StadiumRegInsertForm";
 		return result;
@@ -91,7 +97,7 @@ public class StadiumController
 	                            Model model) throws SQLException
 	{
 	    String result = null;
-
+	    String message= "";
 	    try
 	    {
 	        // 디버그 코드
@@ -150,7 +156,7 @@ public class StadiumController
 	            System.out.println("/n=====[파일 경로]=====");
 	            System.out.println("파일 저장 경로 (uploadPath) : " + uploadPath);
 	            System.out.println("파일 이름 (savedFileName) : " + savedFileName);
-	            System.out.println("데이터 베이스에 저장된 경고(fileWebPath) : "+fileWebPath);
+	            System.out.println("데이터 베이스에 저장된 경로(fileWebPath) : "+fileWebPath);
 	        }
 
 	        // 3. DB 저장
@@ -161,7 +167,9 @@ public class StadiumController
 	        // 4. 결과 처리
 	        if (row > 0)
 	        {
-	            result = "redirect:/StadiumRegInsertForm.action";
+	        	message = "구장 개설이 완료 되었습니다.";
+	        	model.addAttribute("message",message);
+	            result = "redirect:MainPage.action";
 	        }
 	        else
 	        {
@@ -301,7 +309,7 @@ public class StadiumController
 	
 	
 	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.POST)
-	public String FieldInsertForm(Model model,HttpServletRequest request,HttpServletResponse response) throws SQLException
+	public String fieldInsertForm(Model model,HttpServletRequest request,HttpServletResponse response) throws SQLException
 	{
 		String result =null;
 		
@@ -331,18 +339,107 @@ public class StadiumController
 	
 	
 	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
-	public String FieldInsert(Model model, FieldRegInsertDTO fieldDTO)
+	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request) {
+
+	    MultipartFile file = fieldDTO.getField_reg_image();
+
+	    System.out.println("===================================================================================================");
+	    System.out.println("파일 업로드 시작: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
+
+	    // 파일이 있을 시
+	    if (file != null && !file.isEmpty()) {
+	        try {
+	            System.out.println("======= [DEBUG] 폼 파라미터 로그 =======");
+	            if (fieldDTO != null) {
+	                System.out.println("Field_reg_name (경기장 이름) = " + fieldDTO.getField_reg_name());
+	                System.out.println("Field_reg_price(경기장 가격) = " + fieldDTO.getField_reg_price());
+	                System.out.println("Field_reg_garo(가로) = " + fieldDTO.getField_reg_garo());
+	                System.out.println("Field_reg_sero(세로) = " + fieldDTO.getField_reg_sero());
+	                System.out.println("Field_reg_at(등록일) = " + fieldDTO.getField_reg_at());
+	            }
+
+	            System.out.println("======= 파일 업로드 상태 =======");
+	            System.out.println("파일 비어 있음? : " + file.isEmpty());
+	            System.out.println("파일 원래 이름 : " + file.getOriginalFilename());
+
+	            // 웹 애플리케이션 루트 경로
+	            String root = request.getServletContext().getRealPath("");
+	            String uploadDir = Path.getUploadFieldDir();  // 예: "resources/uploads/fields/"
+	            String uploadPath = Paths.get(root, uploadDir).toString();
+
+	            // 폴더 없으면 생성
+	            File uploadDirFile = new File(uploadPath);
+	            if (!uploadDirFile.exists()) {
+	                boolean created = uploadDirFile.mkdirs();
+	                System.out.println("디렉토리 생성 결과: " + created);
+	            }
+
+	            // 파일명 생성 및 저장
+	            String originalFileName = file.getOriginalFilename();
+	            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	            String savedFileName = fieldDTO.getField_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
+	            String saveFullPath = Paths.get(uploadPath, savedFileName).toString();
+
+	            System.out.println("저장될 파일 경로: " + saveFullPath);
+	            file.transferTo(new File(saveFullPath));
+	            System.out.println("파일 저장 완료");
+
+	            // DB 저장용 웹 경로 설정 (슬래시로 바꾸고, / 붙여줌)
+	            String dbWebPath = "/" + (uploadDir + savedFileName).replace("\\", "/");
+	            fieldDTO.setField_image(dbWebPath);
+	            System.out.println("DB에 저장할 파일 경로: " + dbWebPath);
+
+	        } catch (Exception e) {
+	            System.out.println("파일 저장 중 오류 발생:");
+	            e.printStackTrace();
+	        }
+	    } 
+	    else {
+	        fieldDTO.setField_image("/resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
+	    }
+
+	    try {
+	        IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+	        dao.fieldInsert(fieldDTO);
+	        System.out.println("DB 저장 완료");
+	    } catch (Exception e) {
+	        System.out.println("DB 저장 중 오류 발생:");
+	        e.printStackTrace();
+	    }
+
+	    System.out.println("===================================================================================================");
+	    return "redirect:MainPage.action";
+	}
+	/* 구장 휴무 */
+	@RequestMapping(value = "/StadiumHoliday.action", method = RequestMethod.POST)
+	public String stadiumHoliday(Model model, StadiumHolidayInsertDTO stadiumHolidayDTO)
 	{
 		String result = null;
 		
-		IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+		IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
 		
-		dao.fieldInsert(fieldDTO);
+		dao.stadiumHolidayInsert(stadiumHolidayDTO);
 		
-		result = "redirect:MainPage.action";
+		result = "/main/mainPage";
 		
 		return result;
 	}
 	
+	
+	@RequestMapping(value = "/StadiumMainPage.action",method = RequestMethod.GET)
+	public String stadiumMainPage(Model model)
+	{
+		String result = null;
+		
+		IRegionDAO regionDAO = sqlSession.getMapper(IRegionDAO.class);
+		IFieldDAO fieldDAO = sqlSession.getMapper(IFieldDAO.class);
+		
+		model.addAttribute("regionList", regionDAO.regionList());
+		model.addAttribute("cityList", regionDAO.cityList(1));
+		model.addAttribute("fieldApprOkList", fieldDAO.fieldApprOkList());
+		
+		result = "/stadium/StadiumMainPage";
+		return result;
+	}
 	
 }

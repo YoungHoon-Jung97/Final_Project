@@ -25,6 +25,7 @@
 	        FIELD_REG_AT,
 	        FIELD_REG_GARO,
 	        FIELD_REG_SERO,
+	        FIELD_REG_IMAGE,
 	        FIELD_TYPE_ID,
 	        FIELD_ENVIRONMENT_ID,
 	        FIELD_REG_PRICE,
@@ -33,9 +34,10 @@
 	    VALUES (
 	    	FIELD_REG_SEQ.NEXTVAL,
 	        #{field_reg_name},
-	        ,
+	        SYSDATE,
 	        #{field_reg_garo},
 	        #{field_reg_sero},
+	        #{field_image},
 	        #{field_type_id},
 	        #{field_environment_id},
 	        #{field_reg_price},
@@ -45,6 +47,28 @@
 	
 	<!-- 경기장 등록시 보유한 경기장 목록 보여주기 -->
 	<select id="fieldSearchList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+		SELECT *
+		FROM FIELD_REG_VIEW
+		WHERE STADIUM_REG_ID=#{stadium_reg_id}
+	</select>
+	
+	<!-- <select id="fieldSearchList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+	SELECT FIELD_REG_ID,
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE,
+	        FIELD_ENVIRONMENT_TYPE,
+	        FIELD_REG_PRICE,
+	        STADIUM_REG_NAME,
+	        STADIUM_REG_ID,
+	        FIELD_REG_IMAGE
+	FROM FIELD_REG_VIEW
+	WHERE STADIUM_REG_ID=#{stadium_reg_id}
+	</select> -->
+	
+	<select id="fieldAllList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
 	SELECT FIELD_REG_ID,
 	        FIELD_REG_NAME,
 	        FIELD_REG_AT,
@@ -56,7 +80,41 @@
 	        STADIUM_REG_NAME,
 	        STADIUM_REG_ID
 	FROM FIELD_REG_VIEW
-	WHERE STADIUM_REG_ID=#{stadium_reg_id}
+	</select>
+	
+	<select id="fieldBeforeApprList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+	SELECT FIELD_REG_ID,
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE,
+	        FIELD_ENVIRONMENT_TYPE,
+	        FIELD_REG_PRICE,
+	        STADIUM_REG_NAME,
+	        STADIUM_REG_ID,
+	        USER_CODE_ID
+	FROM FIELD_APPR_VALID_VIEW
+	</select>
+	
+	<select id="fieldApprOkList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
+		SELECT
+		    FIELD_REG_ID,
+		    FIELD_REG_NAME,
+		    FIELD_REG_AT,
+		    FIELD_REG_PRICE,
+		    FIELD_REG_GARO,
+		    FIELD_REG_SERO,
+		    FIELD_TYPE,
+		    FIELD_REG_IMAGE,
+		    FIELD_ENVIRONMENT_TYPE,
+		    STADIUM_REG_NAME,
+		    STADIUM_REG_ID,
+		    STADIUM_REG_ADDR,
+		    STADIUM_REG_DETAILED_ADDR,
+		    SUBSTR(STADIUM_TIME_NAME1, 1, 2) AS STADIUM_TIME_NAME1,
+		    TO_NUMBER(SUBSTR(STADIUM_TIME_NAME2, 1, 2)) + 1 AS STADIUM_TIME_NAME2
+		FROM FIELD_APPR_OK_VIEW
 	</select>
 	
 </mapper>

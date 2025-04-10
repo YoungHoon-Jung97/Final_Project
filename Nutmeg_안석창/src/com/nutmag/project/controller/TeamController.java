@@ -25,10 +25,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutmag.project.dao.IBankDAO;
+import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.CityDTO;
+import com.nutmag.project.dto.PositionDTO;
+import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.UserDTO;
 
@@ -57,16 +60,20 @@ public class TeamController
 	public String createTeam(Model model, HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session = request.getSession();
-		//로그인 여부 확인
-		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
-		{
-			return "redirect:Login.action";
+	
+		
+		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
+		String message = "";
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
 		}
 		
 		//동호회 가입여부 확인
-		String message= "";
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
-		int user_code_id = (Integer)session.getAttribute("user_code_id");
 		
 		int TeamTeam = dao.searchTempTeamMember(user_code_id);
 		int Team = dao.searchTeamMember(user_code_id);
@@ -93,28 +100,107 @@ public class TeamController
 	
 	//동호회 참여 페이지 호출
 	@RequestMapping(value="/TeamApply.action", method = RequestMethod.GET)
-	public String applyTeam(HttpServletRequest request,Model model){
-		
-		
-		
+	public String applyOpenTeam(HttpServletRequest request,Model model){
+
+		//필요 정보 가져오기
 		HttpSession session = request.getSession();
-		//로그인 여부 확인
-		if (session.getAttribute("user_email") == null)		//로그인 안되어 있을 경우
-		{
-			return "redirect:Login.action";
+		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
+		String strTeam_id =(String)request.getParameter("teamId");
+		int team_id = Integer.parseInt(strTeam_id);
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			String message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
 		}
 		
-		String strTeamId =(String)request.getParameter("teamId");
-		int teamId = Integer.parseInt(strTeamId);
+		//동호회 정보 가져오기
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		TeamDTO team =  teamDAO.getTeamInfo(team_id);
+		model.addAttribute("team",team);
 		
-		System.out.println("동호회 참여 페이지 확인 : "+strTeamId);
+		//포지션 정보 가져오기
+		IPositionDAO positionDAO = sqlSession.getMapper(IPositionDAO.class);
 		
-		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
-		TeamDTO team =  dao.getTeam(teamId);
+		//System.out.println("동호회 참여 페이지 확인 : "+strTeamId);
+		ArrayList<PositionDTO> positionList = new ArrayList<PositionDTO>();
+		
+		positionList = positionDAO.positionList();
+		model.addAttribute("positionList", positionList);
 		model.addAttribute("team", team);
+		model.addAttribute("team_id", team_id);
 		
-		return "/team/TeamApply";
+		//동호회원 가져오기
+		if(team.getTeam_id() == 0) {
+			
+			//임시동호회 인원 찾기
+			List<TeamApplyDTO> teamMemberList = teamDAO.tempTeamMemberList(team_id);
+			model.addAttribute("teamMemberList" ,teamMemberList);
+			return "/team/TeamApply";
+			
+		}
+		else if(team.getTeam_id() !=0) {
+			
+			//정식동호회 인원 찾기
+			List<TeamApplyDTO> teamMemberList = teamDAO.teamMemberList(team.getTeam_id());
+			model.addAttribute("teamMemberList" ,teamMemberList);
+			return "/team/TeamApply";
+		}
+		
+		 
+		return "redirect:/MainPage.action";
 	}
+	
+	//동호회 가입
+	@RequestMapping(value="/TeamApplyInsert.action", method = RequestMethod.POST)
+	public String applyTeam(TeamApplyDTO teamApply, HttpServletRequest request,Model model){
+		
+		HttpSession session = request.getSession();
+		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			String message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		String strTeam_id =(String)request.getParameter("teamId");
+		int team_id = Integer.parseInt(strTeam_id);
+		
+		System.out.println("==========동호회 가입==========");
+		System.out.println("user_code_id = "+user_code_id);
+		System.out.println("temp_team_apply_desc = "+teamApply.getTemp_team_apply_desc());
+		System.out.println("team_id = "+ team_id);
+		System.out.println("position_id = " + teamApply.getPosition_id());
+		System.out.println("===============================");
+		
+		TeamDTO team =  teamDAO.getTeamInfo(team_id);
+		teamApply.setUser_code_id(user_code_id);
+		
+		
+		//임시 동호회 가입
+		if(team.getTeam_id() == 0) {
+			
+			teamApply.setTeam_id(team_id);
+			teamDAO.addTempTeam(teamApply);
+			
+		}
+		//정식 동호회 가입
+		else if(team.getTeam_id() !=0) {
+			
+			teamApply.setTeam_id(team.getTeam_id());
+		}
+		
+		
+			
+		String message = "동호회 신청이 완료되었습니다.";
+		model.addAttribute("message", message);
+		return "redirect:MainPage.action";
+	}
+
 	
 	//구 선택지 리스트
 	@RequestMapping(value="/SearchCity.action", method = RequestMethod.GET)
@@ -196,7 +282,7 @@ public class TeamController
 		        {
 		            System.out.println("stadiumDTO is null");
 		        }
-
+	
 		        System.out.println("======= 파일 업로드 상태 =======");
 		        if (file != null)
 		        {
@@ -279,8 +365,35 @@ public class TeamController
 
 	//동호회 메인 페이지 호출
 	@RequestMapping(value="/MyTeam.action", method = RequestMethod.GET)
-	public String teamMain() {
-		return "/team/TeamMain";
+	public String teamMain(HttpServletRequest request,Model model) {
+		HttpSession session = request.getSession();
+		Integer  team_id = (Integer)session.getAttribute("team_id");
+		
+		//동호회 정보 가져오기
+		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
+		TeamDTO team =  dao.getTeamInfo(team_id);
+		model.addAttribute("team",team);
+		
+		//동호회원 가져오기
+		if(team.getTeam_id() == 0) {
+			
+			//임시동호회 인원 찾기
+			List<TeamApplyDTO> teamMemberList = dao.tempTeamMemberList(team_id);
+			
+			model.addAttribute("teamMemberList" ,teamMemberList);
+			return "/team/TeamMain";
+			
+		}
+		else if(team.getTeam_id() !=0) {
+			
+			//정식동호회 인원 찾기
+			List<TeamApplyDTO> teamMemberList = dao.teamMemberList(team.getTeam_id());
+			model.addAttribute("teamMemberList" ,teamMemberList);
+			return "/team/TeamMain";
+		}
+		
+		 
+		return "redirect:/MainPage.action";
 	}
 	
 	//일정 호출
@@ -300,4 +413,12 @@ public class TeamController
 	public String teamBoard() {
 		return "/team/TeamBoard";
 	}
+	
+	//팀원 승인 호출
+	@RequestMapping(value="/MemberAppr.action" , method = RequestMethod.GET)
+	public String approveMember() {
+		return "/team/MemberAppr";
+	}
+	
+	
 }

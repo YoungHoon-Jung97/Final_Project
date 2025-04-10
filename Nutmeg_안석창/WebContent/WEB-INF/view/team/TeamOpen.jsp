@@ -11,28 +11,33 @@
 <meta charset="UTF-8">
 <title>TeamOpen.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 
-	var user_code_id = "<%=user_code_id%>";
+	var user_code_id = "<%=user_code_id %>";
+	
+	$(function()
+	{
+		// 뒤로 가기
+		$('.btn--back').on('click', function()
+		{
+			var prevPage = "<%=session.getAttribute("prevPage") %>";
+			var fallback = "<%=cp %>/MainPage.action";
+
+			if (prevPage && prevPage !== "null")
+				window.location.href = prevPage;
+			
+			else
+		        window.location.href = fallback;
+		});
+	});
 
 </script>
-<script type="text/javascript" src="<%=cp%>/js/TeamOpen.js?after"></script>
+<script type="text/javascript" src="<%=cp %>/js/TeamOpen.js?after"></script>
 
-<style type="text/css">
-
-.result
-{
-	display: none;
-	color: red;
-	font-size: small;
-	margin-top: 5px;
-}
-
-</style>
 </head>
 <body>
 <div class="content">
@@ -104,10 +109,10 @@
 				<div class="form__field">
 					<label class="form__label">동호회 앰블럼</label>
 					
-					<div class="form__input--wrapper file-upload-wrapper">
+					<div class="file-upload-wrapper">
 						<input type="file" id="image" name="temp_team_emblem" class="file-upload-input" />
-						<label for="image" class="file-upload-label">파일 선택</label>
-						<span id="file-name" class="file-upload-name">선택된 파일 없음</span>
+						<button type="button" class="file-upload-btn" onclick="document.getElementById('image').click();">파일 선택</button>
+						<span id="file-name" class="file-upload-filename">선택된 파일 없음</span>
 					</div>
 				</div>
 			</div>
