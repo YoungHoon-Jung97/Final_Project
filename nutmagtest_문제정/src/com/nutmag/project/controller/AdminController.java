@@ -21,6 +21,7 @@ import com.nutmag.project.dao.IFieldDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.AdminDTO;
 import com.nutmag.project.dto.AdminFieldApprDTO;
+import com.nutmag.project.dto.AdminFieldCancelDTO;
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -262,6 +263,7 @@ public class AdminController
 		return result;
 	}
 	
+	// 미승인 경기장 페이지 호출
 	@RequestMapping(value="AdminFieldApprForm.action", method=RequestMethod.GET)
 	public String adminFieldApprForm(Model model,HttpServletRequest request, HttpServletResponse response)
 	{
@@ -276,6 +278,7 @@ public class AdminController
 	}
 	
 	
+	// 경기장 승인 처리
 	@RequestMapping(value="FieldApprInsert.action", method=RequestMethod.POST)
 	public String adminFieldApprInsert(AdminFieldApprDTO dto)
 	{
@@ -285,7 +288,59 @@ public class AdminController
 		
 		dao.fieldApprInsert(dto);
 		
-		result = "AdminFieldApprForm.action";
+		result = "redirect:AdminFieldApprForm.action";
+		return result;
+	}
+	
+	
+	
+	// 경기장 반려 처리 폼
+	@RequestMapping(value = "FieldApprCancelForm.action", method = RequestMethod.POST)
+	public String adminFieldApprCancel(Model model,HttpServletRequest request)
+	{
+		String result = null;
+		
+		IAdminDAO dao = sqlSession.getMapper(IAdminDAO.class);
+		
+		String field_reg_id = request.getParameter("field_reg_id");
+	    String user_code_id = request.getParameter("user_code_id");
+
+	    
+	    model.addAttribute("field_reg_id", field_reg_id);
+	    model.addAttribute("user_code_id", user_code_id);
+		model.addAttribute("cancelTypeList", dao.fieldApprCancelTypeList());
+		
+		result = "/admin/AdminFieldApprCancelForm";
+		
+		return result;
+	}
+	
+	// 경기장 반려 처리
+	@RequestMapping(value="FieldApprCancelInsert.action", method = RequestMethod.POST)
+	public String adminFieldApprCancelInsert(Model model,AdminFieldCancelDTO dto)
+	{
+		String result = null;
+		
+		IAdminDAO dao = sqlSession.getMapper(IAdminDAO.class);
+		
+		dao.fieldApprCancelInsert(dto);
+		
+		result = "/admin/AdminFieldApprCancelForm";
+		
+		return result;
+	}
+	
+	
+	
+	
+	// 유저 관리 페이지
+	@RequestMapping(value="UserManage.action", method=RequestMethod.GET)
+	public String userManagePage()
+	{
+		String result = null;
+		
+		result = "/admin/UserManagePage";
+		
 		return result;
 	}
 	

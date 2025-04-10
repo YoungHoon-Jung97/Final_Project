@@ -1,42 +1,51 @@
 @charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+
 /* General Reset */
-* {
+*
+{
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Nanum Gothic', sans-serif;
+	font-family: 'Poppins', sans-serif;
 }
 
-body {
+body
+{
 	background-color: #f5f5f5;
 }
 
 /* Main Container */
-.main {
-    max-width: 1200px;
-    margin: 100px auto; /* 가로, 세로 중앙 정렬 */
-    padding: 20px;
+.main
+{
+	max-width: 1200px;
+	margin: 100px auto;
+	padding: 20px;
 }
 
-
-.main-content {
+.main-content
+{
 	width: 100%;
 }
 
 /* Team Menu */
-.tean-menu {
-	display:flex; /*영역 나누기*/
+.tean-menu
+{
+	display: flex;
 	list-style: none;
 	border-bottom: 1px solid #ddd;
 	margin-bottom: 20px;
 }
 
-.teampage-link {
-	flex:1; /*부모 여역 균등하게 나누기*/
+.teampage-link
+{
+	flex: 1;
 	text-align: center;
 }
 
-.teampage-link a {
+.teampage-link a
+{
 	display: block;
 	padding: 15px 0;
 	text-decoration: none;
@@ -45,28 +54,32 @@ body {
 	transition: all 0.3s;
 }
 
-
-.teampage-link a:hover {
+.teampage-link a:hover
+{
 	color: #ff4500;
 }
 
 /* Team Info Wrap */
-.team-info-wrap {
+.team-info-wrap
+{
 	display: flex;
 	margin-bottom: 20px;
 }
 
-.left {
+.left
+{
 	flex: 0 0 40%;
 	margin-right: 20px;
 }
 
-.right {
+.right
+{
 	flex: 0 0 60%;
 }
 
 /* Team Box */
-.team_box {
+.team_box
+{
 	background-color: #ff4500;
 	border-radius: 5px;
 	color: white;
@@ -75,12 +88,14 @@ body {
 	margin-bottom: 20px;
 }
 
-.team01 {
+.team01
+{
 	margin-bottom: 20px;
 }
 
 /*이미지 원*/
-.team01 .img {
+.team01 .img
+{
 	width: 120px;
 	height: 120px;
 	background-color: white;
@@ -91,24 +106,28 @@ body {
 	justify-content: center;
 }
 
-.team01 dt {
+.team01 dt
+{
 	font-size: 24px;
 	font-weight: bold;
 	margin-bottom: 10px;
 }
 
-.team01 dd {
+.team01 dd
+{
 	font-size: 14px;
 }
 
-.team02 ul {
+.team02 ul
+{
 	list-style: none;
 	display: flex;
 	justify-content: center;
 	margin-bottom: 15px;
 }
 
-.team02 .comment {
+.team02 .comment
+{
 	background: rgba(255, 255, 255, 0.2);
 	padding: 10px;
 	border-radius: 5px;
@@ -116,81 +135,87 @@ body {
 }
 
 /* Team Table */
-.team-table {
+.team-table
+{
 	width: 100%;
 	border-collapse: collapse;
 	background-color: white;
 	border: 1px solid #ddd;
 }
 
-.team-table caption {
+.team-table caption
+{
 	display: none;
 }
 
-.team-table th {
+.team-table th
+{
 	background-color: #777;
 	color: white;
 	padding: 12px 8px;
 	text-align: center;
 }
 
-.team-table td {
+.team-table td
+{
 	padding: 12px 8px;
 	border-bottom: 1px solid #ddd;
 	text-align: center;
 }
 
-.center {
+.center
+{
 	text-align: center;
 }
 
-
 /* Team Modify Button */
-.team-modify {
+.team-modify
+{
 	text-align: center;
 	margin-top: 30px;
 }
 
-.team-modify a, .team-modify button {
-    display: inline-block;
-    padding: 10px 30px;
-    border: 1px solid #ff4500;
-    color: #ff4500;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.3s;
+.team-modify a, .team-modify button
+{
+	display: inline-block;
+	padding: 10px 30px;
+	border: 1px solid #ff4500;
+	color: #ff4500;
+	text-decoration: none;
+	border-radius: 4px;
+	transition: all 0.3s;
 }
 
-.team-modify a:hover {
+.team-modify a:hover
+{
 	background-color: #ff4500;
 	color: white;
 }
 
-/* Additional styles for the team info table at the bottom */
-table {
+table
+{
 	width: 100%;
 	border-collapse: collapse;
 	border: 1px solid #ddd;
 }
 
-table td {
+table td
+{
 	padding: 8px 12px;
-	
 }
 
 .team-img img
 {
-	width: 100px; /* 원하는 크기로 조절 */
-    height: 100px; /* 원하는 크기로 조절 */
-    object-fit: cover; /* 이미지 비율 유지 */
-    border-radius: 50%; /* 원형으로 만들기 */
-    border: 2px solid #ccc; /* 테두리 추가 (선택사항) */
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 50%;
+	border: 2px solid #ccc;
 }
 
 .container
 {
 	width: 100%;
-    height: 1000px;
+	height: 1000px;
 	background-color: white;
-	
 }

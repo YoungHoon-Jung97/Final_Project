@@ -17,7 +17,7 @@
 <body>
 
 	<div class="content">
-		<form id="joinForm" class="form form--join" method="post" action="FieldRegInsert.action">
+		<form id="joinForm" class="form form--join" method="post" action="FieldRegInsert.action" enctype="multipart/form-data">
 			<h2 class="form__title">경기장 정보 입력</h2>
 			<!-- 기본 정보 섹션 -->
 			<div class="form__section">
@@ -109,7 +109,7 @@
 					<div class="form__field">
 						<label for="image" class="form__label ">첨부파일</label>
 						<div class="form__input-wrapper file-upload">
-							<input type="file"  class="form__input file-upload-input" id="image"/>
+							<input type="file"  class="form__input file-upload-input" id="image" name="field_reg_image"/>
 						</div>
 					</div>
 				</div>

@@ -27,7 +27,6 @@ body {
 </style>
 
 <script>
-	
 	$(document).ready(function()
 	{
 		var user_code_id = "<%= user_code_id %>";
@@ -55,46 +54,6 @@ body {
 	            }
 	        });
 	    });
-		
-		$("#stadium_time_id2").change(function()
-		{
-			if ($("#stadium_time_id1").val() >$("#stadium_time_id2").val())
-			{
-				alert("종료 시간이 시작 시간보다 뒤에 있을 수 없습니다.");
-				$("#stadium_time_id2").val("");
-				return;
-			}
-			
-			
-		});
-		
-		$(".btn--submit").click(function () {
-		    // 각 입력값 가져오기
-		    var name = $("#name").val();
-		    var post = $("#post").val();
-		    var address1 = $("#address1").val();
-		    var address2 = $("#address2").val();
-		    var time1 = $("#stadium_time_id1").val();
-		    var time2 = $("#stadium_time_id2").val();
-		    var image = $("#image").val();
-
-		    // 필수 항목이 하나라도 비어있으면
-		    if (!name || !post || !address1 || !address2 || !time1 || !time2 || !image) {
-		        alert("모든 필수 항목을 입력해주세요.");
-		        return;
-		    }
-
-		    // 시간 유효성은 이미 change 이벤트에서 체크하고 있으나, 재확인할 수도 있음
-		    if (time1 >= time2) {
-		        alert("운영시간을 올바르게 선택해주세요.");
-		        return;
-		    }
-
-		    // 전부 입력되어 있으면 폼 제출
-		    $("#joinForm").submit();
-		});
-		
-		
 	});
 	
 	function execPostCode(){
@@ -220,7 +179,7 @@ body {
 			<input type="hidden" id="user_code_id" name="user_code_id" value="">
 
 			<div class="form__actions">
-				<button type="button" class="btn btn--submit">구장 등록</button>
+				<button type="submit" class="btn btn--submit">구장 등록</button>
 				<button type="reset" class="btn btn--reset">취소</button>
 				<button type="button" class="btn btn--back" onclick="location.href='MainPage.action'">뒤로가기</button>
 			</div>

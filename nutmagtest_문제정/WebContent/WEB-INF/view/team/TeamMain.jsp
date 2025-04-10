@@ -19,6 +19,8 @@
 	color: #ff4500;
 	border-bottom: 2px solid #ff4500;
 }
+
+
 </style>
 
 </head>
@@ -40,17 +42,17 @@
 					<div class="left">
 						<div class="team_box">
 							<div class="team01">
-								<p class="img">
-									<img src="" alt="" />
-								</p>
-								<dt>팀 이름</dt>
+								<div class="team-img">
+									<img src="${team.emblem}" alt="" />
+								</div>
+								<dt>${team.temp_team_name }</dt>
 								<dd>경기 판수</dd>
 							</div>
 							<div class="team02">
 								<ul>
 									<li></li>
 								</ul>
-								<p class="comment">설명없음</p>
+								<p class="comment">${team.temp_team_desc }</p>
 							</div>
 						</div>
 					</div>
@@ -73,12 +75,14 @@
 								</tr>
 							</thead>
 							<tbody class="center">
-								<tr>
-									<td>정영훈</td>
-									<td></td>
-									<td>팀 개설자</td>
-									<td></td>
-								</tr>
+								<c:forEach var="teamMember" items="${teamMemberList}">
+									<tr>
+										<td>${teamMember.user_name}</td>
+										<td>${teamMember.position_name}</td>
+										<td>팀 개설자</td>
+										<td></td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
@@ -87,6 +91,9 @@
 				<div class="team-modify">
 					<a href=""> 
 						<span>팀 정보 수정</span>
+					</a>
+					<a href="MemberAppr.action"> 
+						<span>팀원 수락</span>
 					</a>
 				</div>
 			</div>

@@ -15,7 +15,7 @@
 <body>
 
 	<div class="content">
-		<form id="joinForm" class="form form--join" method="post" action="StadiumHoliday.action">
+		<form id="joinForm" class="form form--join" method="post" action="FieldRegInsert.action">
 			<h2 class="form__title">구장 휴무 정보 입력</h2>
 
 			<!-- 구장 휴무 시작 일시 -->
@@ -23,7 +23,7 @@
 				<div class="form__field">
 					<label for="holiday_start" class="form__label">구장 휴무 시작 일시</label>
 					<div class="form__input--wrapper">
-						<input type="datetime-local" class="form__input" name="stadium_holiday_start" required />
+						<input type="datetime-local" class="form__input" name="holiday_start" required />
 					</div>
 				</div>
 			</div>
@@ -33,7 +33,7 @@
 				<div class="form__field">
 					<label for="holiday_end" class="form__label">구장 휴무 종료 일시</label>
 					<div class="form__input--wrapper">
-						<input type="datetime-local" class="form__input" name="stadium_holiday_end" required />
+						<input type="datetime-local" class="form__input" name="holiday_end" required />
 					</div>
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 				<div class="form__field">
 					<label for="holiday_description" class="form__label">구장 휴무 상세 설명</label>
 					<div class="form__input--wrapper">
-						<textarea class="form__input" name="stadium_holiday_desc" placeholder="휴무에 대한 상세 설명을 입력하세요" required></textarea>
+						<textarea class="form__input" name="holiday_description" placeholder="휴무에 대한 상세 설명을 입력하세요" required></textarea>
 					</div>
 				</div>
 			</div>

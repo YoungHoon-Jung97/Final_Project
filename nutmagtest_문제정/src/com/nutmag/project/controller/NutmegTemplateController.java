@@ -1,6 +1,5 @@
 package com.nutmag.project.controller;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,21 +13,6 @@ public class NutmegTemplateController
 	public String template(Model model)
 	{
 		return "Template";
-	}
-	
-	
-	// 동호회 모집
-	@RequestMapping(value="/Team.action", method = RequestMethod.GET)
-	public String team(Model model)
-	{
-		return "Team";
-	}
-	
-	// 동호회 개설
-	@RequestMapping(value="/TempTeam.action", method = RequestMethod.GET)
-	public String temp_team(Model model)
-	{
-		return "TempTeam";
 	}
 	
 	// 경기장 예약
@@ -66,6 +50,10 @@ public class NutmegTemplateController
 		return "Match";
 	}
 	
-	
-		
+	// 에러
+	@RequestMapping(value="/Error.action", method = RequestMethod.GET)
+	public String error(Model model)
+	{
+		return "Error";
+	}
 }

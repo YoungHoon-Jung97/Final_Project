@@ -1,7 +1,9 @@
 package com.nutmag.project.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.UserDTO;
 
@@ -23,5 +25,30 @@ public interface ITeamDAO {
 	public List<TeamDTO> getTeamList();
 	
 	// 팀 정보 출력
-	public TeamDTO getTeam(int teamId);
+	public TeamDTO getTeamInfo(int teamId);
+	
+	//임시 팀 가입 
+	public int addTempTeam(TeamApplyDTO teamApply);
+	
+	//정식 팀 가입 
+	public int addTeam(TeamApplyDTO teamApply);
+
+	//-------------------------------------------------
+	//my임시 동호회 찾기
+	public Integer searchMyTempTeam(int userCode);
+	
+	//my정식 동호회 찾기
+	public Integer searchMyTeam(int userCode);
+	
+	//정식 동호회 정보 찾기
+	public Integer searchTempTeam(int teamId);
+	//----------------------------------------------------
+	
+	//임시 동호회 인원 
+	public ArrayList<TeamApplyDTO> tempTeamMemberList(int teamId);
+	
+	//정식 동호회 인원
+	public ArrayList<TeamApplyDTO> teamMemberList(int teamId);
+	
+	
 }

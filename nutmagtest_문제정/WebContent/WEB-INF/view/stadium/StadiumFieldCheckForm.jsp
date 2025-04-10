@@ -106,17 +106,21 @@ body {
 		<div class="match-card">
 		<strong>구장에 포함된 경기장 표시</strong>
 		</div>
+		
 		<c:forEach var="field" items="${fieldSearchId}">
 		<div class="match-card">
 	        <div class="d-flex justify-content-between align-items-center">
             <div style="display: flex; align-items: center;">
-               
-                <div style="max-width: 500px;">
-                    <strong>${field.field_reg_name}</strong><br>
-                    등록일 : ${field.field_reg_at} <br>
-                    가로 : ${field.field_reg_garo}, 세로 : ${field.field_reg_sero } <br>
-                    바닥 종류 : ${field.field_type }, 환경 : ${field.field_environment_type }<br>
-                    2시간당 가격 : ${field.field_reg_price }
+               <div style="display: flex; align-items: center;">
+		                <img src="${field.field_reg_image}" alt="" 
+		                    style="height: 150px; width: 150px; object-fit: cover; margin-right: 15px;"/>
+	                <div style="max-width: 500px;">
+	                    <strong>${field.field_reg_name}</strong><br>
+	                    등록일 : ${field.field_reg_at} <br>
+	                    가로 : ${field.field_reg_garo}, 세로 : ${field.field_reg_sero } <br>
+	                    바닥 종류 : ${field.field_type }, 환경 : ${field.field_environment_type }<br>
+	                    2시간당 가격 : ${field.field_reg_price }
+	                </div>
                 </div>
             </div>
             <!-- 버튼 -->

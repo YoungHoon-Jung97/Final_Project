@@ -14,20 +14,20 @@
 	session.setAttribute("previousPage", previousPage);
 	
 	// 세션에서 로그인 정보를 확인
-    // (LoginCheck.jsp 등에서 session.setAttribute("user_id", dto.getSid()); 한 값)
-    Integer user_id = (Integer) session.getAttribute("user_id");
     String user_name = (String) session.getAttribute("user_name");
     String user_email = (String) session.getAttribute("user_email");
     Integer user_code_id = (Integer) session.getAttribute("user_code_id");
     Integer operator_id = (Integer) session.getAttribute("operator_id");
+    Integer team_id = (Integer)session.getAttribute("team_id");
     
     System.out.println("==========DEBUG==========");
-    System.out.println("DEBUG: user_id = " + user_id);
 	System.out.println("DEBUG: user_name = " + user_name);
 	System.out.println("DEBUG: user_email = " + user_email);
 	System.out.println("DEBUG: user_code_id = " + user_code_id);
 	System.out.println("DEBUG: operator_id = " + operator_id);
+	System.out.println("DEBUG: temp_team_id = " + team_id);
 	System.out.println("=========================");
+	
 	session.setAttribute("user_code_id", user_code_id);
 %>
 <!DOCTYPE html>
@@ -38,12 +38,14 @@
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
-	var user_id = "<%=user_id %>";
+	var user_code_id = "<%=user_code_id %>";
+	var user_name = "<%=user_name %>";
 	var operator_id = "<%=operator_id %>";
 
 </script>
@@ -52,6 +54,7 @@
 </head>
 <body>
 <%	String logoutFlag = (String) session.getAttribute("logoutFlag");
+	String loginFlag = (String) session.getAttribute("loginFlag");
 
 	if ("1".equals(logoutFlag))
 	{
@@ -59,6 +62,15 @@
 %>
 	<script>
 		swal("로그아웃", "로그아웃 되었습니다.", "success");
+	</script>
+<%	}
+	
+	if ("1".equals(loginFlag))
+	{
+		session.removeAttribute("loginFlag");
+%>
+	<script>
+		swal("로그인", user_name + "님 환영합니다!", "success");
 	</script>
 <%	}
 %>
@@ -112,7 +124,7 @@
 	
 	<div class="right-menu">
 		<!-- 로그인 버튼 / 사람 아이콘 -->
-<%		if (user_id != null)
+<%		if (user_code_id != null)
 		{
 %>
 			<div class="line-4"></div>
@@ -132,7 +144,7 @@
 %>
 	</div>
 	
-<%	if (user_id != null && operator_id==null)
+<%	if (user_code_id != null && operator_id==null)
 	{
 %>
 	<div class="user-menu" style="display: none;">
@@ -142,7 +154,7 @@
 		<div class="logout">로그아웃</div>
 	</div>
 <%	}
-	else if(user_id != null && operator_id!=null){
+	else if(user_code_id != null && operator_id!=null){
 %>
 	<div class="user-menu" style="display: none;">
 		<span class="myInformation">내 정보</span>

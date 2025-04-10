@@ -1,112 +1,166 @@
-/* 투표 버튼 */
+@charset "UTF-8";
 
-/* 모달 스타일 */
-.modal {
-    display: flex; /* 플렉스 박스 사용 */
-    justify-content: center; /* 수평 중앙 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    overflow: auto;
+/* 모달 배경 */
+.modal
+{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(2px);
 }
 
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    width: 60%;
-    max-width: 600px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s;
+/* 모달 본체 */
+.modal-content
+{
+	background: white;
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	padding: 24px;
+	width: 90%;
+	max-width: 500px;
+	animation: fadeIn 0.3s ease;
+	backdrop-filter: blur(4px);
+	border: 1px solid #d7f0e2;
+	color: #2e3d3d;
 }
 
-textarea {
-    width: 100%;
-    height: 80px;
-    margin: 10px 0;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+/* 입력 필드 */
+textarea
+{
+	width: 100%;
+	height: 100px;
+	margin: 10px 0;
+	padding: 10px;
+	border: 1px solid #cce3d8;
+	border-radius: 12px;
+	background-color: #f5fdfb;
+	font-family: 'Poppins', sans-serif;
+	font-size: 0.95em;
+	color: #355e3b;
+	resize: vertical;
 }
 
-.modal-header, .modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
+/* 모달 헤더/푸터 */
+.modal-header, .modal-footer
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 0;
+	border-bottom: 1px solid #e2f0ea;
 }
 
- /* 모달 제목 스타일 */
-.modal-title {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #1a73e8;
-  padding-bottom: 10px;
+.modal-footer
+{
+	border-top: 1px solid #e2f0ea;
 }
 
-.modal-body {
-     padding: 15px 0;
- }
-
- .modal-footer {
-     border-top: 1px solid #ddd;
- }
-
- .modal-button {
-     padding: 8px 16px;
-     margin: 5px;
-     font-size: 16px;
-     border: none;
-     border-radius: 4px;
-     transition: background-color 0.2s;
- }
-
- .modal-submit {
-     background-color: #007bff;
-     color: white;
- }
-
- .modal-cancel {
-     background-color: #dc3545;
-     color: white;
- }
-
- .modal-button:hover {
-     opacity: 0.8;
- }
-
- .close-modal {
-     font-size: 20px;
-     cursor: pointer;
- }
- 
- /* 이미지 컨테이너 스타일 */
-.modal-img {
-  margin: 15px auto;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid #eaeaea;
-  background-color: #f9f9f9;
+/* 제목 */
+.modal-title
+{
+	font-size: 1.4em;
+	font-weight: bold;
+	color: #356859;
+	margin: 0;
 }
 
-/* 원형 이미지 스타일 */
-.circle-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+/* 내용 */
+.modal-body
+{
+	padding: 20px 0;
+	font-size: 0.95em;
 }
 
-.circle-img:hover {
-  transform: scale(1.05);
+/* 버튼 기본 */
+.modal-button
+{
+	padding: 10px 20px;
+	margin: 5px;
+	font-size: 1em;
+	border: none;
+	border-radius: 10px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	font-family: 'Poppins', sans-serif;
 }
 
+/* 확인 버튼 */
+.modal-submit
+{
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
+	color: white;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-submit:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+}
+
+/* 취소 버튼 */
+.modal-cancel
+{
+	background-color: #f48989;
+	color: white;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-cancel:hover
+{
+	background-color: #e07575;
+}
+
+/* 닫기 버튼 */
+.close-modal
+{
+	font-size: 30px;
+	color: #84b6f4;
+	transition: color 0.3s ease;
+}
+
+.close-modal:hover
+{
+	color: #5a94db;
+}
+
+/* 이미지 컨테이너 */
+.modal-img
+{
+	margin: 20px auto;
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	overflow: hidden;
+	border: 4px solid #d7f0e2;
+	background-color: #ecf9f6;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 원형 이미지 */
+.circle-img
+{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.3s ease;
+}
+
+.circle-img:hover
+{
+	transform: scale(1.08);
+}
+
+.blur-background
+{
+	pointer-events: none;
+	opacity: 0.3;
+	filter: blur(2px);
+}
