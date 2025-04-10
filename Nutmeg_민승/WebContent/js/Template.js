@@ -28,7 +28,7 @@ $(function()
 			$(this).removeClass("active").addClass("inactive");
 			$(this).find(".user-icon").removeClass("shrink").addClass("inshrink");
 			
-			if (user_id != null)
+			if (user_code_id != null)
 				$(".user-menu").hide();
 		}
 		
@@ -37,31 +37,55 @@ $(function()
 			$(this).removeClass("inactive").addClass("active");
 			$(this).find(".user-icon").removeClass("inshrink").addClass("shrink");
 			
-			if (user_id != null)
+			if (user_code_id != null)
 				$(".user-menu").show();
 		}
 	});
 	
+	//동호회 모집
 	$(".team").click(function()
 	{
-		window.location.href = "Team.action";
+		window.location.href = "MainPage.action";
 	});
 	
+	//동호회 개설
 	$(".temp-team").click(function()
 	{
-		window.location.href = "TempTeam.action";
+		window.location.href = "TeamOpen.action";
 	});
 	
+	//경기장 예약
 	$(".field").click(function()
 	{
-		window.location.href = "Field.action";
+		window.location.href = "";
 	});
 	
-	$(".stadium").click(function()
+	
+	//구장운영자 가입
+	$(".operatorSignUp").click(function()
 	{
-		window.location.href = "Stadium.action";
+		window.location.href = "OperatorSignupForm.action";
 	});
 	
+	// 내 구장
+	$(".myStadium").click(function()
+	{
+		window.location.href = "";
+	});
+
+	
+	//경기장 등록
+	$(".field_reg").click(function()
+	{
+		window.location.href = "StadiumListForm.action";
+	});
+	
+	//구장등록
+	$(".stadium_reg").click(function()
+	{
+		window.location.href = "StadiumRegInsertForm.action";
+	});
+
 	$(".mercenary-offer").click(function()
 	{
 		window.location.href = "MercenaryOffer.action";

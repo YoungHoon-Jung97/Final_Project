@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nutmag.project.dao.IMercenaryDAO">
+
+	<!-- 전체 조회 -->
+	<select id="mercenaryList" resultType="com.nutmag.project.dto.MercenaryDTO">
+		SELECT *
+		FROM MERCENARY_VIEW
+	</select>
+
+	<!-- 검색 기능 -->
+<select id="searchMercenaryList" parameterType="map" resultType="com.nutmag.project.dto.MercenaryDTO">
+    SELECT *
+    FROM MERCENARY_VIEW
+    <where>
+        <if test="field != null and keyword != null and field == 'user_name'">
+            AND "user_name" LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="field != null and keyword != null and field == 'position_name'">
+            AND "position_name" LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="field != null and keyword != null and field == 'team_name'">
+            AND "team_name" LIKE '%' || #{keyword} || '%'
+        </if>
+    </where>
+</select>
+	
+<select id="searchMercenaryListPaginated" parameterType="map" resultType="com.nutmag.project.dto.MercenaryDTO">
+    SELECT *
+    FROM (
+        SELECT A.*, ROWNUM RNUM
+        FROM (
+            SELECT *
+            FROM MERCENARY_VIEW
+            <where>
+                <choose>
+                    <when test="field == 'user_name'">
+                        AND "user_name" LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="field == 'position_name'">
+                        AND "position_name" LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="field == 'team_name'">
+                        AND "team_name" LIKE '%' || #{keyword} || '%'
+                    </when>
+                </choose>
+            </where>
+            ORDER BY "user_name"
+        ) A
+        WHERE ROWNUM &lt;= #{offset} + #{limit}
+    )
+    WHERE RNUM &gt; #{offset}
+</select>
+
+<select id="searchCount" parameterType="map" resultType="int">
+    SELECT COUNT(*)
+    FROM MERCENARY_VIEW
+    <where>
+        <choose>
+            <when test="field == 'user_name'">
+                AND "user_name" LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="field == 'position_name'">
+                AND "position_name" LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="field == 'team_name'">
+                AND "team_name" LIKE '%' || #{keyword} || '%'
+            </when>
+        </choose>
+    </where>
+</select>
+	
+ <select id="mercenaryListPaginated" parameterType="map" resultType="com.nutmag.project.dto.MercenaryDTO">
+    SELECT *
+FROM (
+    SELECT A.*, ROWNUM RNUM
+    FROM (
+        SELECT *
+        FROM MERCENARY_VIEW
+        ORDER BY 1
+    ) A
+    WHERE ROWNUM &lt;= #{offset} + #{limit}
+)
+WHERE RNUM &gt; #{offset}
+</select> 
+
+
+
+<select id="totalCount" resultType="int">
+    SELECT COUNT(*) FROM MERCENARY_VIEW
+</select>
+
+
+
+</mapper>

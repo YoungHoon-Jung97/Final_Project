@@ -14,14 +14,21 @@
 	session.setAttribute("previousPage", previousPage);
 	
 	// 세션에서 로그인 정보를 확인
-    // (LoginCheck.jsp 등에서 session.setAttribute("user_id", dto.getSid()); 한 값)
-    Integer user_id = (Integer) session.getAttribute("user_id");
     String user_name = (String) session.getAttribute("user_name");
     String user_email = (String) session.getAttribute("user_email");
+    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+    Integer operator_id = (Integer) session.getAttribute("operator_id");
+    Integer team_id = (Integer)session.getAttribute("team_id");
     
-    System.out.println("DEBUG: user_id = " + user_id);
+    System.out.println("==========DEBUG==========");
 	System.out.println("DEBUG: user_name = " + user_name);
 	System.out.println("DEBUG: user_email = " + user_email);
+	System.out.println("DEBUG: user_code_id = " + user_code_id);
+	System.out.println("DEBUG: operator_id = " + operator_id);
+	System.out.println("DEBUG: team_id = " + team_id);
+	System.out.println("=========================");
+	
+	session.setAttribute("user_code_id", user_code_id);
 %>
 <!DOCTYPE html>
 <html>
@@ -30,127 +37,24 @@
 <title>Template.jsp</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
-	var user_id = "<%=user_id %>";
+	var user_code_id = "<%=user_code_id %>";
+	var user_name = "<%=user_name %>";
+	var operator_id = "<%=operator_id %>";
 
 </script>
-<%-- <script type="text/javascript" src="<%=cp %>/js/Template.js"></script> --%>
-<script type="text/javascript">
-
-/*
-Template.js
-*/
-
-$(function()
-	{
-	$(".menu-icon").click(function()
-	{
-		if ($(this).hasClass("active"))
-		{
-			$(this).removeClass("active").addClass("inactive");
-			$(".nav-menu").removeClass("active");
-			$(".nav-sub").hide();
-		}
-		
-		else
-		{
-			$(this).removeClass("inactive").addClass("active");
-			$(".nav-menu").addClass("active");
-			$(".nav-sub").show();
-		}
-	});
-	
-	$(".right-menu").on("click", function ()
-	{
-		if ($(this).hasClass("active"))
-		{
-			$(this).removeClass("active").addClass("inactive");
-			$(this).find(".user-icon").removeClass("shrink").addClass("inshrink");
-			
-			if (user_id != null)
-				$(".user-menu").hide();
-		}
-		
-		else
-		{
-			$(this).removeClass("inactive").addClass("active");
-			$(this).find(".user-icon").removeClass("inshrink").addClass("shrink");
-			
-			if (user_id != null)
-				$(".user-menu").show();
-		}
-	});
-	
-	$(".team").click(function()
-	{
-		window.location.href = "Team.action";
-	});
-	
-	$(".temp-team").click(function()
-	{
-<<<<<<< HEAD
-		window.location.href = "TempOpen.action";
-=======
-		window.location.href = "TempTeam.action";
->>>>>>> c6073aca0348adfe2fdf1a94e187a96ae165c74b
-	});
-	
-	$(".field").click(function()
-	{
-		window.location.href = "Field.action";
-	});
-	
-	$(".stadium").click(function()
-	{
-		window.location.href = "Stadium.action";
-	});
-	
-	$(".mercenary-offer").click(function()
-	{
-		window.location.href = "MercenaryOffer.action";
-	});
-	
-	$(".mercenary").click(function()
-	{
-		window.location.href = "Mercenary.action";
-	});
-	
-	$(".match").click(function()
-	{
-		window.location.href = "Match.action";
-	});
-	
-	$(".myInformation").click(function()
-	{
-		window.location.href = "MyInformation.action";
-	});
-	
-	$(".myTeam").click(function()
-	{
-		window.location.href = "MyTeam.action";
-	});
-	
-	$(".logout").click(function()
-	{
-		var currentPath = window.location.pathname.replace("/Nutmeg", "");
-		var currentUrl = currentPath + window.location.search;
-		var returnUrl = currentUrl + (currentUrl.includes('?') ? '&' : '?') + "logoutMsg=1";
-		
-		window.location.href = "/Nutmeg" + "/Logout.action?returnUrl=" + encodeURIComponent(returnUrl);
-	});
-});
-
-</script>
+<script type="text/javascript" src="<%=cp %>/js/Template.js?after"></script>
 
 </head>
 <body>
-<%
-	String logoutFlag = (String) session.getAttribute("logoutFlag");
+<%	String logoutFlag = (String) session.getAttribute("logoutFlag");
+	String loginFlag = (String) session.getAttribute("loginFlag");
 
 	if ("1".equals(logoutFlag))
 	{
@@ -159,9 +63,18 @@ $(function()
 	<script>
 		swal("로그아웃", "로그아웃 되었습니다.", "success");
 	</script>
-<%
-	}
+<%	}
+	
+	if ("1".equals(loginFlag))
+	{
+		session.removeAttribute("loginFlag");
 %>
+	<script>
+		swal("로그인", user_name + "님 환영합니다!", "success");
+	</script>
+<%	}
+%>
+<div class="background-banner"></div>
 
 <header class="menu-bar">
 	<div class="left-menu">
@@ -180,10 +93,12 @@ $(function()
 				<div class="nav-sub temp-team">동호회 개설</div>
 			</div>
 			
+			
 			<div class="nav-item">
 				<span class="nav-title field">경기장</span>
 				<div class="nav-sub field">경기장 예약</div>
-				<div class="nav-sub stadium">경기장 등록</div>
+				<div class="nav-sub field_reg">경기장 등록</div>
+				<div class="nav-sub stadium_reg">구장 등록</div>
 			</div>
 			
 			<div class="nav-item">
@@ -209,7 +124,7 @@ $(function()
 	
 	<div class="right-menu">
 		<!-- 로그인 버튼 / 사람 아이콘 -->
-<%		if (user_id != null)
+<%		if (user_code_id != null)
 		{
 %>
 			<div class="line-4"></div>
@@ -229,15 +144,26 @@ $(function()
 %>
 	</div>
 	
-<%	if (user_id != null)
+<%	if (user_code_id != null && operator_id==null)
 	{
 %>
 	<div class="user-menu" style="display: none;">
 		<span class="myInformation">내 정보</span>
 		<div class="myTeam">내 동호회</div>
+		<div class="operatorSignUp">구장 운영자 가입</div>
 		<div class="logout">로그아웃</div>
 	</div>
 <%	}
+	else if(user_code_id != null && operator_id!=null){
+%>
+	<div class="user-menu" style="display: none;">
+		<span class="myInformation">내 정보</span>
+		<div class="myTeam">내 동호회</div>
+		<div class="myStadium">내 구장</div>
+		<div class="logout">로그아웃</div>
+	</div>
+<%
+	}
 %>
 </header>
 </body>

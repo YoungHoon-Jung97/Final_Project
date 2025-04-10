@@ -1,14 +1,13 @@
 @charset "UTF-8";
 
-
 *
 {
 	font-size: 18px;
 	color: #334433;
 	font-family: 맑은 고딕;
 	font-weight: bold;
+	cursor: url('../images/soccerballcursor.png') 2 2, auto !important;
 }
-
 
 input
 {
@@ -22,7 +21,7 @@ button:hover
 
 .table
 {
-	border-collapse: collapse;	
+	border-collapse: collapse;
 }
 
 .table th, .table td
@@ -30,11 +29,9 @@ button:hover
 	border: 1px solid gray;
 	border-left: 0px;
 	border-right: 0px;
-	
 	padding: 3px;
 	line-height: 150%;
 	text-align: center;
-	
 }
 
 .table th
@@ -50,6 +47,7 @@ button:hover
 	width: 45px;
 	height: 38px;
 }
+
 .btnSmallNon
 {
 	font-size: 10pt;
@@ -72,7 +70,7 @@ button:hover
 
 .nameTh
 {
-	width:100px;
+	width: 100px;
 }
 
 .txtScore
@@ -85,8 +83,3 @@ a
 {
 	text-decoration: none;
 }
-
-
-
-
-

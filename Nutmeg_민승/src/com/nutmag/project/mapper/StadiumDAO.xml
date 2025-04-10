@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IStadiumDAO">
+	
+	<!-- 필드 타입 리스트  -->
+	<select id="fieldTypeList" resultType="com.nutmag.project.dto.FieldTypeDTO">
+	SELECT FIELD_TYPE_ID,
+	       FIELD_TYPE
+	FROM FIELD_TYPE
+	ORDER BY FIELD_TYPE_ID
+	</select>
+	
+	<!-- 경기장 환경 리스트 -->
+	<select id="fieldEnviromentList" resultType="com.nutmag.project.dto.FieldEnvironmentDTO">
+	SELECT FIELD_ENVIRONMENT_ID,
+	       FIELD_ENVIRONMENT_TYPE
+	FROM FIELD_ENVIRONMENT
+	ORDER BY FIELD_ENVIRONMENT_ID
+	</select>
+    
+    <!-- 구장 시간 리스트 -->
+    <select id="stadiumTimeList" resultType="com.nutmag.project.dto.StadiumTimeDTO">
+    SELECT STADIUM_TIME_ID,STADIUM_TIME_AT
+    FROM STADIUM_TIME
+    </select>
+	
+	 <!-- 구장 인서트 -->
+	<insert id="stadiumInsert" parameterType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	INSERT INTO STADIUM_REG (STADIUM_REG_ID
+						,STADIUM_REG_NAME
+						,STADIUM_REG_POSTAL_ADDR
+						,STADIUM_REG_ADDR
+                        ,STADIUM_REG_DETAILED_ADDR
+                        ,STADIUM_REG_IMAGE
+                        ,STADIUM_REG_APPLY_AT
+                        ,STADIUM_TIME_ID1
+                        ,STADIUM_TIME_ID2
+                        ,USER_CODE_ID)
+	VALUES (STADIUM_REG_SEQ.NEXTVAL
+			,#{stadium_reg_name},#{stadium_reg_postal_addr},#{stadium_reg_addr}
+			,#{stadium_reg_detailed_addr},#{stadium_reg_image},SYSDATE
+			,#{stadium_time_id1},#{stadium_time_id2},#{user_code_id})
+	</insert>
+	
+	 <!-- 구장 전체 리스트 -->
+	<select id="stadiumList" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+    SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE
+    FROM STADIUM_REG
+	</select>
+	
+	 <!-- 구장 이름 중복체크 -->
+	<select id="stadiumNameCheck" resultType="int" parameterType="String">
+    SELECT COUNT(*) 
+    FROM STADIUM_REG 
+    WHERE STADIUM_REG_NAME = #{stadium_reg_name}
+	</select>
+	
+	 <!-- 구장 검색 리스트 -->
+	<select id="stadiumSearchList" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE,STADIUM_REG_DETAILED_ADDR,STADIUM_REG_ADDR
+	FROM STADIUM_REG
+	WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	 <!-- 구장 검색 갯수 -->
+	<select id="stadiumSearchCount" resultType="Integer">
+	SELECT COUNT(*)
+	FROM STADIUM_REG
+	WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	 <!-- 구장 검색 -->
+	<select id="stadiumSearchId" resultType="com.nutmag.project.dto.StadiumRegInsertDTO">
+	SELECT STADIUM_REG_ID, STADIUM_REG_NAME, STADIUM_REG_IMAGE,STADIUM_REG_DETAILED_ADDR,STADIUM_REG_ADDR
+	FROM STADIUM_REG
+	WHERE STADIUM_REG_ID = #{stadium_reg_id}
+	</select>
+	
+	<!-- 구장 휴무 -->
+	<insert id="stadiumHoliday" parameterType="com.nutmag.project.dto.StadiumHolidayInsertDTO">
+	    INSERT INTO FIELD_REG (
+	    	STADIUM_HOLIDAY_ID,
+	    	STADIUM_HOLIDAY_START_AT,
+	    	STADIUM_HOLIDAY_END_AT,
+	    	STADIUM_HOLIDAY_DESC,
+	    	STADIUM_HOLIDAY_TYPE_ID,
+	    	STADIUM_REG_ID
+	    )
+	    VALUES (
+        	FIELD_REG_SEQ.NEXTVAL,
+	        #{stadiumHolidayStartAt},
+	        #{stadiumHolidayEndAt},
+	        #{stadiumHolidayDesc},
+	        #{stadiumHolidayTypeId},
+	        #{stadiumRegId}
+    )
+	</insert>
+	
+	
+</mapper>

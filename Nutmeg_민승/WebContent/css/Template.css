@@ -9,6 +9,7 @@
 	padding: 0;
 	box-sizing: border-box;
 	white-space: nowrap;
+	cursor: url('../images/soccerballcursor.png') 2 2, auto !important;
 }
 
 body
@@ -24,6 +25,21 @@ body
 	background-color: #ebedec;
 }
 
+.background-banner
+{
+	background-image: url('../images/background.png');
+	background-size: cover;
+	background-position: center 55%;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 250px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	bottom: 20px;
+}
+
 .menu-bar, main
 {
 	width: 90%;
@@ -37,10 +53,10 @@ body
 	background-color: #3ea152;
 	padding: 15px 15px;
 	position: fixed;
-	top: 10px;
+	top: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	z-index: 100;
+	z-index: 1001;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -147,11 +163,10 @@ body
 /* 중앙 컨텐츠 */
 main
 {
-	padding: 100px 0 0;
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	min-height: 100vh;
+	margin-top: -50px;
 }
 
 /* 컨텐츠 박스 */
@@ -166,7 +181,8 @@ main
 }
 
 /* 햄버거 메뉴 아이콘 */
-.menu-icon {
+.menu-icon
+{
 	width: 30px;
 	height: auto;
 	cursor: pointer;
@@ -436,32 +452,6 @@ main
 	{
 		transform: translate3d(0, 0, 0) rotate(0deg);
 	}
-}
-
-::-webkit-scrollbar
-{
-	width: 14px;
-	height: 14px;
-}
-
-::-webkit-scrollbar-thumb
-{
-	outline: none;
-	border-radius: 10px;
-	border: 4px solid transparent;
-	box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
-}
-
-::-webkit-scrollbar-thumb:hover
-{
-	border: 4px solid transparent;
-	box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
-}
-
-::-webkit-scrollbar-track
-{
-	box-shadow: none;
-	background-color: transparent;
 }
 
 .login-form

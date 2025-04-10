@@ -30,7 +30,7 @@ $(document).ready(function(){
 		$('#emailCheck').css('display','none');
 		$('#submitBtn').prop('disabled', true);
 	});
-	$('#nickName').on('input', function(){
+	$('#admin_nickName').on('input', function(){
 		$('#nickNameCheck').css('display','none');
 		$('#submitBtn').prop('disabled', true);
 	});
@@ -101,7 +101,7 @@ function checkPassword(){
 </head>
 <body>
 	<div class="content">
-		<form id="joinForm" class="form form--join" method="get" action="">
+		<form id="joinForm" class="form form--join" method="post" action="AdminInsert.action">
 			<h2 class="form__title">관리자 정보 입력</h2>
 		
 			<!-- 기본 정보 섹션 -->
@@ -113,7 +113,7 @@ function checkPassword(){
 					<div class="form__field">
 						<label for="email" class="form__label required">이메일</label>
 						<div class="form__input--wrapper">
-							<input type="email" class="form__input" id="email" name="email"
+							<input type="email" class="form__input" id="email" name="admin_email"
 							       placeholder="예: example@google.com" maxlength="100" required />
 							<button type="button" class="btn btn--check" onclick="checkEmail()">중복확인</button>
 						</div>
@@ -151,7 +151,7 @@ function checkPassword(){
 						<label for="nickName" class="form__label required">닉네임</label>
 						<div class="form__input--wrapper">
 							<input type="text" class="form__input" id="nickName"
-							       placeholder="닉네임" maxlength="20" name="nickName" required />
+							       placeholder="닉네임" maxlength="20" name="admin_nickName" required />
 							<button type="button" class="btn btn--check" onclick="checkNickName()">중복확인</button>
 						</div>
 					</div>
@@ -164,7 +164,7 @@ function checkPassword(){
 						<label for="tel" class="form__label">전화번호</label> 
 						<div class="form__input-wrapper">
 							<input type="tel" class="form__input" id="tel"
-							       placeholder="전화번호" name="tel" data-type="tel" />
+							       placeholder="전화번호" name="admin_tel" data-type="tel" />
 						</div>
 					</div>
 				</div>
