@@ -41,7 +41,7 @@ $(function()
 		var statusText = (teamInfo.status == 0) ? '임시' : '정식';
 		
 		$('#descTeamStaus').text(statusText);
-		$('#teamApply').attr('href', 'TeamApply.action?teamId='+teamInfo.id);
+		$('#teamApply').attr('href', 'TeamApply.action?team_id='+teamInfo.id);
 		
 		// 모달 열기
 		$('#descModal').css('display', 'flex');
@@ -52,7 +52,7 @@ $(function()
     });
 	
 	// 모달 닫기 버튼
-	$("#cancel, #cancel-desc").on("click", function()
+	$("#cancel-desc").on("click", function()
 	{
 		$('#descModal').css('display', 'none');
 		$("#descModal").hide(); // 모달 숨기기

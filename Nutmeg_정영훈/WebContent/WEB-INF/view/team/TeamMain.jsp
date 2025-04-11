@@ -71,16 +71,30 @@
 									<th>이름</th>
 									<th>포지션</th>
 									<th>역할</th>
+									<th>나이</th>
+									<th>성별</th>
 									<th>관리</th>
 								</tr>
 							</thead>
 							<tbody class="center">
 								<c:forEach var="teamMember" items="${teamMemberList}">
 									<tr>
-										<td>${teamMember.user_name}</td>
+										<td>${teamMember.user_nick_name}</td>
 										<td>${teamMember.position_name}</td>
-										<td>팀 개설자</td>
-										<td></td>
+										<td>${teamMember.member_status}</td>
+										<td>${teamMember.age}</td>
+										<td>${teamMember.gender}</td>
+										<c:choose>
+											<c:when test="${team.status==1 }">
+												<td>
+													<a href="DropMember.action">강퇴</a>
+												</td>
+											</c:when>
+											<c:when test="${team.status==0 }">
+												<td>
+												</td>
+											</c:when>
+										</c:choose>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -89,12 +103,14 @@
 				</div>
 				<!-- .team-info-wrap -->
 				<div class="team-modify">
-					<a href=""> 
-						<span>팀 정보 수정</span>
-					</a>
-					<a href="MemberAppr.action"> 
-						<span>팀원 수락</span>
-					</a>
+					<c:if test="${team.status ==1}">					
+						<a href=""> 
+							<span>팀 정보 수정</span>
+						</a>
+						<a href="MemberAppr.action"> 
+							<span>팀원 수락</span>
+						</a>
+					</c:if>
 				</div>
 			</div>
 			<!-- .main-content  -->

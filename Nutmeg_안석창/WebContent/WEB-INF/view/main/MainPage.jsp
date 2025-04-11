@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -14,36 +15,58 @@
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/MainPage.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="<%=cp %>/js/MainPage.js?after"></script>
 
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
+
 </head>
 <body>
-<%	if(request.getParameter("message") != null)
-	{
-%>
-		<script type="text/javascript">
-			if (history.replaceState)
-				history.replaceState({}, '', location.pathname);
+<c:if test="${not empty sessionScope.message}">
+	<script type="text/javascript">
+		var message = "${fn:escapeXml(sessionScope.message)}";
+		var parts = message.split(":");
+		
+		if (parts.length > 1)
+		{
+			var type = parts[0].trim();
+			var content = parts[1].trim();
 			
-			else
+			switch (type)
 			{
-				var cleanUrl = location.protocol + '//' + location.host + location.pathname;
-				location.href = cleanUrl;
+				case "SUCCESS_INSERT":
+				case "SUCCESS_APPLY":
+					swal("성공", content, "success");
+					break;
+				
+				case "NEED_REGISTER_STADIUM":
+					swal("주의", content, "warning");
+					break;
+					
+				case "ERROR_DUPLICATE_JOIN":
+				case "ERROR_AUTH_REQUIRED":
+					swal("에러", content, "error");
+					break;
+				
+				default:
+					swal("알림", content, "info");
 			}
-			
-			swal("warning", "<%= request.getParameter("message") %>", "warning");
-			
-		</script>
-<%	}
-%>
+		}
+		
+		else
+		{
+			// fallback: 구분자 없는 일반 메시지
+			swal("처리 필요", message, "info");
+		}
+	</script>
+	
+	<c:remove var="message" scope="session"></c:remove>
+</c:if>
+
 <!-- 상세설명 모달 -->
 <div id="descModal" class="modal">
 	<div class="modal-content">
@@ -52,10 +75,6 @@
 				<span id="descTeamStaus"></span>
 				동호회 정보
 			</h4>
-			
-			<span id="cancel" class="close-modal">
-				<i class="uil uil-times"></i>
-			</span>
 		</div>
 		
 		<!-- 동호회 정보 폼 -->

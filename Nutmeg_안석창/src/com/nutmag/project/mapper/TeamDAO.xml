@@ -51,6 +51,7 @@
         WHERE TEMP_TEAM_ID=#{teamId}
     </select>
     
+ <!--===============================================동호회 가입=========================================================  -->   
     <!-- 임시 동호회 가입 신청 -->
 	<insert id="addTempTeam" parameterType="com.nutmag.project.dto.TeamApplyDTO">
    	 	INSERT INTO TEMP_TEAM_APPLY(
@@ -59,7 +60,7 @@
 		USER_CODE_ID,TEMP_TEAM_ID,POSITION_ID
     	)
   		VALUES(
-        	TEMP_TEAM_APPLY_SEQ.NEXTVAL,#{temp_team_apply_desc},SYSDATE,NULL,
+        	TEMP_TEAM_APPLY_SEQ.NEXTVAL,#{team_apply_desc},SYSDATE,NULL,
         	#{user_code_id},#{team_id},#{position_id}
     	)
     </insert>
@@ -71,13 +72,13 @@
 		USER_CODE_ID,TEAM_ID,POSITION_ID
     	)
   		VALUES(
-        	TEAM_MEMBER_SEQ.NEXTVAL,SYSDATE,NULL,#{team_member_desc},
+        	TEAM_MEMBER_SEQ.NEXTVAL,SYSDATE,NULL,#{team_apply_desc},
         	#{user_code_id},#{team_id},#{position_id}
     	)
     </insert>
     
-    
-    <!-- ================================================================================================= -->
+    <!--========================================================================================================  -->   
+    <!-- =============================================my동호회 찾기==================================================== -->
     
     <!-- my임시 동호회 찾기 -->
     <select id="searchMyTempTeam" resultType="Integer">
@@ -109,16 +110,47 @@
     <select id="tempTeamMemberList" resultType="com.nutmag.project.dto.TeamApplyDTO">
     	SELECT *
 		FROM TEMP_TEAM_MEMBER_VIEW
-		WHERE TEMP_TEAM_ID =#{team_Id}
+		WHERE TEMP_TEAM_ID =#{team_id}
+		ORDER BY TEAM_APPLY_APPR_AT ASC
     </select>
     
     <!-- 정식 동호회 인원 -->
     <select id="teamMemberList" resultType="com.nutmag.project.dto.TeamApplyDTO">
     	SELECT *
     	FROM TEAM_MEMBER_VIEW
-    	WHERE TEAM_ID =#{team_id} 
+    	WHERE TEAM_ID =#{team_id}
+    	ORDER BY TEAM_APPLY_APPR_AT ASC 
     </select>
     
     <!-- ================================================================================================= -->
+    
+    <!-- 임시 동호회 신청자 명단 -->
+   	<select id="tempTeamApplyList" resultType="com.nutmag.project.dto.TeamApplyDTO">
+   		SELECT *
+		FROM  TEMP_TEAM_APPLY_VIEW
+		WHERE  TEMP_TEAM_ID =#{team_id}
+   	</select>
+    
+   
+	<!-- 정식 동호회 신청자 명단  -->
+	<select id="teamApplyList" resultType="com.nutmag.project.dto.TeamApplyDTO">
+		SELECT *
+		FROM TEAM_MEMBER_APPLY_VIEW
+		WHERE TEAM_ID=#{team_id}
+	</select>
+
+
+	<!--임시 동호회 멤버 수락 -->
+	<update id="addtempTeamMember" parameterType="com.nutmag.project.dto.TeamApplyDTO">
+	    UPDATE TEMP_TEAM_APPLY
+	    SET TEMP_TEAM_APPLY_APPR_AT =SYSDATE 
+	    WHERE TEMP_TEAM_APPLY_ID = #{team_apply_id}
+	</update>
+	
+	<update id="addteamMember" parameterType="com.nutmag.project.dto.TeamApplyDTO">
+		UPDATE TEAM_MEMBER
+	    SET TEAM_MEMBER_REG_AT =SYSDATE 
+	    WHERE TEAM_MEMBER_ID = #{team_apply_id}
+	</update>
     
 </mapper>

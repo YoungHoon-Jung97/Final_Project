@@ -47,19 +47,24 @@ textarea
 	resize: vertical;
 }
 
-/* 모달 헤더/푸터 */
+/* 모달 헤더 / 푸터 */
 .modal-header, .modal-footer
 {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 	padding: 10px 0;
 	border-bottom: 1px solid #e2f0ea;
 }
 
+.modal-header
+{
+	justify-content: center;
+}
+
 .modal-footer
 {
 	border-top: 1px solid #e2f0ea;
+	justify-content: space-between;
 }
 
 /* 제목 */

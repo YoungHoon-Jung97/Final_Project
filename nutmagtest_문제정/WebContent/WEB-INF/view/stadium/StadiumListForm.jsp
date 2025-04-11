@@ -77,7 +77,10 @@ body {
 	<!-- 스타디움 -->
 	<div class="container mt-4">
 	<div class="match-card">
-	현재 만들어진 전체 구장 : ${stadiumCount } 개
+	<strong>경기장을 등록할 구장을 선택 해주세요</strong>
+	</div>
+	<div class="match-card">
+	현재 만들어진 전체 구장 : ${stadiumCount }
 	</div>
 		<c:forEach var="stadium" items="${stadiumSearchList}">
 			<form method="post" action="StadiumFieldCheckForm.action">
@@ -96,7 +99,7 @@ body {
 			            </div>
 			            <!-- 버튼 -->
 			            <input type="hidden" id="stadium_reg_id" name="stadium_reg_id" value="${stadium.stadium_reg_id}" />
-			            <button type="submit" class="btn btn-secondary" >클릭</button>
+			            <button type="submit" class="btn btn-secondary" >이 구장 선택</button>
 			        </div>
 			        <div>
 			        	<c:forEach var="field" items="${fieldSearchList }"></c:forEach>

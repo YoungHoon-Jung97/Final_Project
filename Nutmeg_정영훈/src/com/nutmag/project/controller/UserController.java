@@ -190,6 +190,13 @@ public class UserController
 		else
 			dto = userDAO.userLoginEn(logEmailEn, logPwEn);
 		
+		System.out.println("=========================[로그인 확인]======================================");
+		System.out.println("user_name"+ dto.getUser_name());
+		System.out.println("user_email"+ dto.getUser_email());
+		System.out.println("user_code_id"+ dto.getUser_code_id());
+		System.out.println("operator_id"+ userDAO.operatorSearchId(dto.getUser_code_id()));
+		System.out.println("==========================================================================");
+		
 		if (dto != null && dto.getUser_id() > 0)
 		{
 			// 로그인 성공
@@ -198,12 +205,13 @@ public class UserController
 			session.setAttribute("user_code_id", dto.getUser_code_id());
 			session.setAttribute("operator_id", userDAO.operatorSearchId(dto.getUser_code_id()));
 
-			if (teamDAO.searchMyTempTeam(dto.getUser_code_id()) != null)
+			if (teamDAO.searchMyTempTeam(dto.getUser_code_id()) != null) {
+				
 				session.setAttribute("team_id", teamDAO.searchMyTempTeam(dto.getUser_code_id()));
-			
-			else if (teamDAO.searchMyTeam(dto.getUser_code_id()) != null)
-				session.setAttribute("team_id", teamDAO.searchTempTeam(teamDAO.searchMyTeam(dto.getUser_code_id())));
-			
+			}else if (teamDAO.searchMyTeam(dto.getUser_code_id()) != null) {
+				
+				session.setAttribute("team_id", teamDAO.searchMyTeam(dto.getUser_code_id()));
+			}
 			else
 				session.setAttribute("team_id", 0);
 			
