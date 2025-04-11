@@ -1,7 +1,5 @@
 package com.nutmag.project.dto;
 
-import java.util.ArrayList;
-
 public class CityDTO
 {
 	private int city_id, region_id;

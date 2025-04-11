@@ -271,9 +271,5 @@ String cp = request.getContextPath();
 	</section>
 
 
-
-
-
-
 </body>
 </html>
