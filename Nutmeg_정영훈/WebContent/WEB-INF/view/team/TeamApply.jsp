@@ -43,7 +43,6 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title">팀 신청</h3>
-            <span id="apply-cancel" class="close-modal">&times;</span>
         </div>
         <div class="modal-body">
         	<form action="TeamApplyInsert.action" method="post">
