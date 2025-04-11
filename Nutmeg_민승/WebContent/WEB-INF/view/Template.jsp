@@ -14,18 +14,23 @@
 	session.setAttribute("previousPage", previousPage);
 	
 	// 세션에서 로그인 정보를 확인
-    String user_name = (String) session.getAttribute("user_name");
-    String user_email = (String) session.getAttribute("user_email");
-    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-    Integer operator_id = (Integer) session.getAttribute("operator_id");
-    Integer team_id = (Integer)session.getAttribute("team_id");
-    
-    System.out.println("==========DEBUG==========");
+	String user_name      = (session.getAttribute("user_name") != null)
+							? session.getAttribute("user_name").toString() : "";
+	String user_email     = (session.getAttribute("user_email") != null)
+							? session.getAttribute("user_email").toString() : "";
+	Integer user_code_id  = (session.getAttribute("user_code_id") != null)
+							? Integer.parseInt(session.getAttribute("user_code_id").toString()) : -1;
+	Integer operator_id   = (session.getAttribute("operator_id") != null)
+							? Integer.parseInt(session.getAttribute("operator_id").toString()) : -1;
+	Integer team_id       = (session.getAttribute("team_id") != null)
+							? Integer.parseInt(session.getAttribute("team_id").toString()) : -1;
+	
+	System.out.println("==========DEBUG==========");
 	System.out.println("DEBUG: user_name = " + user_name);
 	System.out.println("DEBUG: user_email = " + user_email);
 	System.out.println("DEBUG: user_code_id = " + user_code_id);
 	System.out.println("DEBUG: operator_id = " + operator_id);
-	System.out.println("DEBUG: team_id = " + team_id);
+	System.out.println("DEBUG: temp_team_id = " + team_id);
 	System.out.println("=========================");
 	
 	session.setAttribute("user_code_id", user_code_id);
@@ -41,6 +46,7 @@
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- alert 대신 사용 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
@@ -60,6 +66,7 @@
 	{
 		session.removeAttribute("logoutFlag");
 %>
+	<!-- alert 대신 사용  -->
 	<script>
 		swal("로그아웃", "로그아웃 되었습니다.", "success");
 	</script>
@@ -90,15 +97,26 @@
 			<div class="nav-item">
 				<span class="nav-title team">동호회</span>
 				<div class="nav-sub team">동호회 모집</div>
-				<div class="nav-sub temp-team">동호회 개설</div>
+				
+<%				if (team_id == 0)
+				{
+%>
+					<div class="nav-sub temp-team">동호회 개설</div>
+<%				}
+%>
 			</div>
-			
 			
 			<div class="nav-item">
 				<span class="nav-title field">경기장</span>
 				<div class="nav-sub field">경기장 예약</div>
-				<div class="nav-sub field_reg">경기장 등록</div>
-				<div class="nav-sub stadium_reg">구장 등록</div>
+				
+<%				if (operator_id != -1)
+				{
+%>
+					<div class="nav-sub field_reg">경기장 등록</div>
+					<div class="nav-sub stadium_reg">구장 등록</div>
+<%				}
+%>
 			</div>
 			
 			<div class="nav-item">
@@ -124,7 +142,7 @@
 	
 	<div class="right-menu">
 		<!-- 로그인 버튼 / 사람 아이콘 -->
-<%		if (user_code_id != null)
+<%		if (user_code_id != -1)
 		{
 %>
 			<div class="line-4"></div>
@@ -144,27 +162,35 @@
 %>
 	</div>
 	
-<%	if (user_code_id != null && operator_id==null)
+<%	if (user_code_id != -1)
 	{
 %>
-	<div class="user-menu" style="display: none;">
-		<span class="myInformation">내 정보</span>
-		<div class="myTeam">내 동호회</div>
-		<div class="operatorSignUp">구장 운영자 가입</div>
-		<div class="logout">로그아웃</div>
-	</div>
+		<div class="user-menu" style="display: none;">
+			<span class="myInformation">내 정보</span>
+			
+<%			if (team_id != 0)
+			{
+%>
+				<div class="myTeam">내 동호회</div>
+<%			}
+			
+			if (operator_id == -1)
+			{
+%>
+				<div class="operatorSignUp">구장 운영자 가입</div>
+<%			}
+			
+			else
+			{
+%>
+				<div class="myStadium">내 구장</div>
+<%			}
+%>
+			<div class="logout">로그아웃</div>
+		</div>
 <%	}
-	else if(user_code_id != null && operator_id!=null){
 %>
-	<div class="user-menu" style="display: none;">
-		<span class="myInformation">내 정보</span>
-		<div class="myTeam">내 동호회</div>
-		<div class="myStadium">내 구장</div>
-		<div class="logout">로그아웃</div>
-	</div>
-<%
-	}
-%>
+
 </header>
 </body>
 </html>

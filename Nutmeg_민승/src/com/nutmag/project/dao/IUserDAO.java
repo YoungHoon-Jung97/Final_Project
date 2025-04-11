@@ -36,5 +36,9 @@ public interface IUserDAO
 	
 	//구장 운영자 인증
 	public Integer operatorSearchId(int user_code_id);
+
+	public UserDTO getUser(Integer user_code_id);
+
+	public UserDTO userUpdate(Integer user_code_id);
 	
 }

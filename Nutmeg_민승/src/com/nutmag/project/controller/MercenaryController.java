@@ -2,12 +2,14 @@ package com.nutmag.project.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nutmag.project.dao.IMercenaryDAO;
@@ -19,8 +21,47 @@ public class MercenaryController
     @Autowired
     private IMercenaryDAO dao;
     
+    @RequestMapping(value = "/MercenaryInsert.action", method = RequestMethod.GET)
+    public String insertMercenary(MercenaryDTO dto,HttpServletRequest request,Model model)
+    {
+		HttpSession session = request.getSession();
+			
+		
+		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
+		String message = "";
+		
+		// 로그인 여부
+		if(user_code_id == null) {
+			message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+        dao.insertMercenary(dto);
+        return "/MercenaryInsertForm";
+    }
     
-    @RequestMapping("/MercenaryList.action")
+    @RequestMapping(value = "/MercenaryInsertForm.action", method = RequestMethod.GET)
+    public String insertFromMercenary(HttpServletRequest request,Model model)
+    {
+		HttpSession session = request.getSession();
+			
+		
+		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
+		String message = "";
+		
+		// 로그인 여부
+		if(user_code_id < 0) {
+			message = "로그인을 해야 합니다.";
+			model.addAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+        
+        return "/MercenaryInsertForm";
+    }
+
+    
+    
+    @RequestMapping("/MercenaryOffer.action")
     public String mercenaryList(@RequestParam(value = "searchField", required = false) String searchField,
                                 @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
                                 @RequestParam(value = "page", required = false, defaultValue = "1") int page,
@@ -63,7 +104,7 @@ public class MercenaryController
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         
-        return "/mercenary/mercenaryHire";
+        return "/MercenaryOffer";
     }
 	
    

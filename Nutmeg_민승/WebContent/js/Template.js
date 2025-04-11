@@ -42,26 +42,67 @@ $(function()
 		}
 	});
 	
-	//동호회 모집
+	// 동호회 모집
 	$(".team").click(function()
 	{
 		window.location.href = "MainPage.action";
 	});
 	
-	//동호회 개설
+	// 동호회 개설
 	$(".temp-team").click(function()
 	{
 		window.location.href = "TeamOpen.action";
 	});
 	
-	//경기장 예약
+	// 경기장 예약
 	$(".field").click(function()
 	{
-		window.location.href = "";
+		window.location.href = "StadiumMainPage.action";
 	});
 	
+	// 경기장 등록
+	$(".field_reg").click(function()
+	{
+		window.location.href = "StadiumListForm.action";
+	});
 	
-	//구장운영자 가입
+	// 구장 등록
+	$(".stadium_reg").click(function()
+	{
+		window.location.href = "StadiumRegInsertForm.action";
+	});
+	
+	// 용병 게시판
+	$(".mercenary-offer").click(function()
+	{
+		window.location.href = "MercenaryOffer.action";
+	});
+	
+	// 용병 등록
+	$(".mercenary").click(function()
+	{
+		window.location.href = "MercenaryInsertForm.action";
+	});
+	
+	// 매치 참가
+	$(".match").click(function()
+	{
+		window.location.href = "Match.action";
+	});
+	
+	// 내 정보
+	$(".myInformation").click(function()
+	{
+		window.location.href = "MyInformation.action";
+	});
+	
+	// 내 동호회
+	$(".myTeam").click(function()
+	{
+		window.location.href = "MyTeam.action";
+	});
+	
+	// 구장운영자 가입
 	$(".operatorSignUp").click(function()
 	{
 		window.location.href = "OperatorSignupForm.action";
@@ -72,45 +113,8 @@ $(function()
 	{
 		window.location.href = "";
 	});
-
 	
-	//경기장 등록
-	$(".field_reg").click(function()
-	{
-		window.location.href = "StadiumListForm.action";
-	});
-	
-	//구장등록
-	$(".stadium_reg").click(function()
-	{
-		window.location.href = "StadiumRegInsertForm.action";
-	});
-
-	$(".mercenary-offer").click(function()
-	{
-		window.location.href = "MercenaryOffer.action";
-	});
-	
-	$(".mercenary").click(function()
-	{
-		window.location.href = "Mercenary.action";
-	});
-	
-	$(".match").click(function()
-	{
-		window.location.href = "Match.action";
-	});
-	
-	$(".myInformation").click(function()
-	{
-		window.location.href = "MyInformation.action";
-	});
-	
-	$(".myTeam").click(function()
-	{
-		window.location.href = "MyTeam.action";
-	});
-	
+	// 로그아웃
 	$(".logout").click(function()
 	{
 		var currentPath = window.location.pathname.replace("/Nutmeg", "");

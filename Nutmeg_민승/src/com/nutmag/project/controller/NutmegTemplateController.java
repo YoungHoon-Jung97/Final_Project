@@ -28,7 +28,7 @@ public class NutmegTemplateController
 	{
 		return "Stadium";
 	}
-	
+	/*
 	// 용병 게시판
 	@RequestMapping(value="/MercenaryOffer.action", method = RequestMethod.GET)
 	public String mercenary_offer(Model model)
@@ -42,7 +42,7 @@ public class NutmegTemplateController
 	{
 		return "Mercenary";
 	}
-	
+	*/
 	// 매치 참가
 	@RequestMapping(value="/Match.action", method = RequestMethod.GET)
 	public String match(Model model)
