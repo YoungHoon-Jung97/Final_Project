@@ -9,49 +9,37 @@
 
 ## 기술 스택
 
-💻 어플리케이션
-Java 8+
+##### 어플리케이션
+- Java
+- JSP (Java Server Pages)
+- Servlet
+- HTML5 / CSS3 / JavaScript
+- jQuery / AJAX
 
-JSP (Java Server Pages)
+##### Build Tool
+- Apache Tomcat
 
-Servlet
+##### Database
+- Oracle
+- JDBC(Java Database Connectivity)
+- MyBatis(SQL Mapper Framework)
 
-HTML5 / CSS3 / JavaScript
+##### Server
+- Apache Tomcat 8.x
 
-jQuery / AJAX
+##### 주요 라이브러리
+- Spring Framework (MVC / DI / AOP 등)
+- MyBatis (SQL 매핑)
+- jQuery (DOM 조작 / AJAX 통신)
+- Daum 주소 API (우편번호 검색)
 
-⚙️ Build Tool
-Apache Maven 또는 Gradle
+##### 개발 환경
+- Eclipse / IntelliJ IDEA
+- Git / GitHub
+- JDK 1.8+
 
-(※ 실제 사용하는 거에 맞춰서 하나만 넣어줘!)
-
-🗄 Database
-Oracle DB
-
-JDBC (Java Database Connectivity)
-
-MyBatis (SQL Mapper Framework)
-
-🌐 Server
-Apache Tomcat 9.x
-
-📦 주요 라이브러리 & 프레임워크
-Spring Framework (MVC / DI / AOP 등)
-
-MyBatis (SQL 매핑)
-
-jQuery (DOM 조작 / AJAX 통신)
-
-Daum 주소 API (우편번호 검색)
-
-🧰 개발 환경 (선택사항)
-Eclipse / IntelliJ IDEA
-
-Git / GitHub
-
-JDK 1.8+
-
-
+##### 외부 API
+- 공공데이터포털
 
 ##### 외부 API
 - 공공데이터포털
