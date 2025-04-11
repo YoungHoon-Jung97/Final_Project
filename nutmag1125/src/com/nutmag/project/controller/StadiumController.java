@@ -27,8 +27,8 @@ import com.nutmag.project.dao.IStadiumDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
+import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
-import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 
 import util.Path;
@@ -214,7 +214,7 @@ public class StadiumController
 	    return result;
 	}
 	
-	// 구장 전체 리스트 확인용 폼
+	// 구장 등록 전체 리스트 확인 폼
 	@RequestMapping("/StadiumListForm.action")
 	public String stadiumListForm(Model model,HttpServletRequest request, HttpServletResponse response)
 	{
@@ -264,6 +264,7 @@ public class StadiumController
 	    HttpSession session = request.getSession();
 		
 	    IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+	    IFieldDAO fielddao = sqlSession.getMapper(IFieldDAO.class);
 	    
 	    String message= "";
 		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
@@ -286,9 +287,11 @@ public class StadiumController
 		};
 	    
 	    
-		ArrayList<StadiumRegInsertDTO> list = dao.stadiumSearchId(stadium_reg_id);
+		ArrayList<StadiumRegInsertDTO> stadiumList = dao.stadiumSearchId(stadium_reg_id);
+		ArrayList<FieldRegSearchDTO> fieldList = fielddao.fieldSearchList(stadium_reg_id);
 		
-	    model.addAttribute("stadiumSearchId", list);
+	    model.addAttribute("stadiumSearchId", stadiumList);
+	    model.addAttribute("fieldSearchId", fieldList);
 	    
 	    result = "/stadium/StadiumFieldCheckForm";
 	    return result;
@@ -337,21 +340,6 @@ public class StadiumController
 		dao.fieldInsert(fieldDTO);
 		
 		result = "redirect:MainPage.action";
-		
-		return result;
-	}
-
-	/* 구장 휴무 */
-	@RequestMapping(value = "/StadiumHoliday.action", method = RequestMethod.POST)
-	public String StadiumHoliday(Model model, StadiumHolidayInsertDTO stadiumHolidayDTO)
-	{
-		String result = null;
-		
-		IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
-		
-		dao.stadiumHolidayInsert(stadiumHolidayDTO);
-		
-		result = "/main/mainPage";
 		
 		return result;
 	}

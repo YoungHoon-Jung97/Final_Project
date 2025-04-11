@@ -5,21 +5,40 @@ import org.springframework.web.multipart.MultipartFile;
 public class TeamDTO {
 	private int temp_team_id,user_code_id,bank_id,region_id,city_id,temp_team_person_count;
 	private String temp_team_name,temp_team_desc,emblem,temp_team_apply_at,
-	temp_team_account,temp_team_account_holder;
-	
-
+	temp_team_account,temp_team_account_holder,region_name,city_name,team_id;
 	
 	private MultipartFile temp_team_emblem;
 	
-
+	public String getRegion_name()
+	{
+		return region_name;
+	}
+	public void setRegion_name(String region_name)
+	{
+		this.region_name = region_name;
+	}
+	public String getTeam_id()
+	{
+		return team_id;
+	}
+	public void setTeam_id(String team_id)
+	{
+		this.team_id = team_id;
+	}
+	public String getCity_name()
+	{
+		return city_name;
+	}
+	public void setCity_name(String city_name)
+	{
+		this.city_name = city_name;
+	}
 	public int getTemp_team_person_count() {
 		return temp_team_person_count;
 	}
 	public void setTemp_team_person_count(int temp_team_person_count) {
 		this.temp_team_person_count = temp_team_person_count;
 	}
-	
-	
 	public String getEmblem() {
 		return emblem;
 	}
@@ -80,7 +99,6 @@ public class TeamDTO {
 	public void setTemp_team_desc(String temp_team_desc) {
 		this.temp_team_desc = temp_team_desc;
 	}
-	
 	public String getTemp_team_apply_at() {
 		return temp_team_apply_at;
 	}
@@ -99,6 +117,4 @@ public class TeamDTO {
 	public void setTemp_team_account_holder(String temp_team_account_holder) {
 		this.temp_team_account_holder = temp_team_account_holder;
 	}
-	
-	
 }

@@ -36,4 +36,18 @@
 		FROM TEMP_TEAM
 		WHERE TEMP_TEAM_NAME=#{teamName}
 	</select>
+	
+	<!-- 동호회 목록 조회 -->
+    <select id="getTeamList" resultType="com.nutmag.project.dto.TeamDTO">
+        SELECT *
+        FROM TEAM_VIEW
+        ORDER BY DBMS_RANDOM.RANDOM
+    </select>
+    
+    <!-- 동호회 정보 조회 -->
+    <select id="getTeam" resultType="com.nutmag.project.dto.TeamDTO">
+    	SELECT *
+        FROM TEAM_VIEW
+        WHERE TEMP_TEAM_ID=#{teamId}
+    </select>
 </mapper>

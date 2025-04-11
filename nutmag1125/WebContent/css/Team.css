@@ -1,0 +1,181 @@
+@charset "UTF-8";
+
+/* 기본 배경 */
+body {
+    background-color: #f9f9f9;
+    font-family: 'Poppins', sans-serif;
+    color: #2e3d3d;
+    margin-top: 1rem;
+}
+
+/* 메인 컨테이너 */
+.main {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 20px;
+}
+
+/* 팀 메뉴 */
+.tean-menu {
+    display: flex;
+    list-style: none;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.teampage-link {
+    flex: 1;
+    text-align: center;
+}
+
+.teampage-link a {
+    display: block;
+    padding: 15px 0;
+    text-decoration: none;
+    color: #356859;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.teampage-link a:hover {
+    color: #ff4500;
+}
+
+/* 팀 정보 박스 */
+.team-info-wrap {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.left {
+    flex: 0 0 40%;
+    margin-right: 20px;
+}
+
+.right {
+    flex: 0 0 60%;
+}
+
+/* 팀 박스 스타일 */
+.team_box {
+    background: #a8d5ba; /* 초록색으로 변경 */
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    backdrop-filter: blur(2px);
+    border: 1px solid #c8e1d1; /* 밝은 초록색으로 테두리 색 변경 */
+    transition: transform 0.2s, box-shadow 0.3s ease-in-out;
+}
+
+.team_box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* 이미지 원형 처리 */
+.team01 .img {
+    width: 120px;
+    height: 120px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.team01 dt {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.team01 dd {
+    font-size: 0.9em;
+    color: #d1e2e1;
+}
+
+/* 팀 댓글 영역 */
+.team02 ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.team02 .comment {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    color: #ffffff;
+}
+
+/* 팀 테이블 */
+.team-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.team-table caption {
+    display: none;
+}
+
+.team-table th {
+    background-color: #356859;
+    color: white;
+    padding: 12px 8px;
+    text-align: center;
+}
+
+.team-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+/* 팀 수정 버튼 */
+.team-modify {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.team-modify a, .team-modify button {
+    display: inline-block;
+    padding: 10px 30px;
+    border: 1px solid #53a67d; /* 초록색 테두리로 변경 */
+    color: #53a67d; /* 버튼 색상도 초록으로 변경 */
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.team-modify a:hover, .team-modify button:hover {
+    background-color: #53a67d; /* 초록색 배경으로 변경 */
+    color: white;
+}
+
+/* 팀 이미지 원형 */
+.team-img img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* 추가 스타일 */
+.container {
+    width: 100%;
+    background-color: white;
+}

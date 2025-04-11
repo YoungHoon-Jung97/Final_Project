@@ -222,6 +222,7 @@ public class UserController
 	) throws Exception
 	
 	{
+
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		UserDTO dto = null;
 		
@@ -305,6 +306,7 @@ public class UserController
 		session.removeAttribute("user_name");
 		session.removeAttribute("user_email");
 		session.removeAttribute("user_code_id");
+		session.removeAttribute("operator_id");
 		
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");
@@ -338,10 +340,66 @@ public class UserController
 	}
 	
 	// 내 정보
-	@RequestMapping(value="/MyInformation.action", method = RequestMethod.GET)
-	public String myInformation(Model model)
+	@RequestMapping("/MyInformation.action")
+	public String MyInformation(Model model, HttpServletRequest request)
 	{
-		return "MyInformation";
+	    HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
+	    UserDTO userInfo = dao.getUser(user_code_id);   // 정보 불러오기
+
+	    if (userInfo == null) {
+	        message = "회원 정보를 찾을 수 없습니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";
+	    }
+
+	    model.addAttribute("userInfo", userInfo);
+
+	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
 	}
 	
+	// 내 정보 수정 폼 페이지 요청
+	@RequestMapping(value = "/UserInfoEdit.action")
+	public String userInfoEdit(Model model, HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
+	    UserDTO userEdit = dao.userUpdate(user_code_id);   // 정보 불러오기
+
+	    if (userEdit == null) {
+	        message = "회원 정보를 찾을 수 없습니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";
+	    }
+
+	    model.addAttribute("userInfo", userEdit);
+
+	    return "/user/UserInfoEdit"; // 수정 폼 JSP로 이동
+	}
+	
+
+
+
 }

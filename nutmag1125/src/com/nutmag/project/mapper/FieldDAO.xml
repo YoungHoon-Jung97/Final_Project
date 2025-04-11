@@ -43,5 +43,20 @@
 	    )
 	</insert>
 	
+	<!-- 경기장 등록시 보유한 경기장 목록 보여주기 -->
+	<select id="fieldSearchList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+	SELECT FIELD_REG_ID,
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE,
+	        FIELD_ENVIRONMENT_TYPE,
+	        FIELD_REG_PRICE,
+	        STADIUM_REG_NAME,
+	        STADIUM_REG_ID
+	FROM FIELD_REG_VIEW
+	WHERE STADIUM_REG_ID=#{stadium_reg_id}
+	</select>
 	
 </mapper>
