@@ -57,7 +57,7 @@ $(function()
 	// 경기장 예약
 	$(".field").click(function()
 	{
-		window.location.href = "";
+		window.location.href = "StadiumMainPage.action";
 	});
 	
 	// 경기장 등록

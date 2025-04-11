@@ -1,0 +1,268 @@
+@charset "UTF-8";
+
+.navbar
+{
+	background-color: rgba(255, 255, 255, 0.8);
+	backdrop-filter: blur(6px);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+	border-radius: 1rem;
+	padding: 1rem 2rem;
+	margin-bottom: 20px;
+}
+
+.nav-link
+{
+	margin-right: 20px;
+	color: #355e3b;
+	font-weight: 600;
+	transition: color 0.3s ease;
+}
+
+.nav-link:hover
+{
+	color: #5b8c5a;
+}
+
+.filter-bar button
+{
+	margin: 0 5px;
+	background-color: #e0f2e9;
+	border: none;
+	color: #355e3b;
+	font-weight: 500;
+	padding: 6px 14px;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	transition: all 0.3s ease;
+}
+
+.filter-bar button:hover
+{
+	background-color: #cce7db;
+}
+
+.match-card, .match-card1, .match-card2
+{
+	background: rgba(255, 255, 255, 0.75);
+	backdrop-filter: blur(6px);
+	border-radius: 16px;
+	padding: 1.2rem 1.5rem;
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+	transition: transform 0.2s ease;
+}
+
+.match-card, .match-card1
+{
+	margin-bottom: 1.2rem;
+}
+
+.match-card2
+{
+	margin-bottom: 10px;
+}
+
+.match-card:hover
+{
+	transform: translateY(-3px);
+}
+
+.stadium-card
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.stadium-img-wrapper
+{
+	display: flex;
+	align-items: center;
+	flex: 1;
+	min-width: 300px;
+}
+
+.stadium-img
+{
+	height: 140px;
+	width: 140px;
+	object-fit: cover;
+	border-radius: 12px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	margin-right: 20px;
+}
+
+.stadium-info
+{
+	display: flex;
+	flex-direction: column;
+	color: #444;
+	font-size: 0.95rem;
+	gap: 4px;
+}
+
+.stadium-info strong
+{
+	font-size: 1.1rem;
+	color: #2e6b4c;
+	margin-bottom: 4px;
+}
+
+.card-action
+{
+	margin-top: 16px;
+    background: linear-gradient(to right, #7dcfb6, #80cfa9);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.card-action:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+}
+
+/* 플로팅 버튼 */
+.floatingButton-wrapper
+{
+	position: fixed;
+	bottom: 30px;
+	right: 40px;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.floatingButton-wrapper:hover
+{
+	width: 120px;
+}
+
+.floatingButton
+{
+	background-color: #a8d5ba;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	font-size: 20px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+	padding: 0;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background-color 0.3s;
+}
+
+.floatingButton:hover
+{
+	background-color: #94c9ab;
+}
+
+.floatingButton-img
+{
+	width: 70%;
+	height: 70%;
+	object-fit: contain;
+	transition: transform 0.2s ease;
+}
+
+/* 서브 아이콘들 */
+.top-icon-slide, .left-icon-slide
+{
+	background-color: rgba(128, 128, 128, 0.7);
+	color: white;
+	font-size: 24px;
+	border: none;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.4s ease;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	pointer-events: none;
+}
+
+.top-icon-slide
+{
+	transform: translateY(10px);
+	margin-bottom: 10px;
+	margin-right: 5px;
+}
+
+.top-icon-slide:hover
+{
+	background-color: #84b6f4;
+}
+
+.left-icon-slide
+{
+	position: absolute;
+	transform: translateX(10px);
+	right: 60px;
+	bottom: 5px;
+}
+
+.left-icon-slide:hover
+{
+	background-color: #f48989;
+}
+
+.floatingButton-wrapper:hover .top-icon-slide
+{
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+}
+
+.floatingButton-wrapper:hover .left-icon-slide
+{
+	opacity: 1;
+	transform: translateX(0);
+	pointer-events: auto;
+}
+
+.bi-funnel-fill
+{
+	margin-top: 5px;
+}
+
+/* 필터 패널 */
+.filter-panel
+{
+	position: fixed;
+	top: 0;
+	left: -300px;
+	width: 260px;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+	box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	z-index: 1100;
+	transition: left 0.3s ease;
+	overflow-y: auto;
+	backdrop-filter: blur(4px);
+}
+
+/* 활성화 시 왼쪽으로 슬라이드 인 */
+.filter-panel.active
+{
+	left: 0;
+}
+
+/* 필터 안에 있는 텍스트 기본 스타일 보정 */
+.filter-panel label, .filter-panel input, .filter-panel select
+{
+	color: #355e3b;
+	font-weight: 500;
+	font-size: 0.95em;
+}

@@ -46,6 +46,7 @@
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- alert 대신 사용 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
@@ -65,6 +66,7 @@
 	{
 		session.removeAttribute("logoutFlag");
 %>
+	<!-- alert 대신 사용  -->
 	<script>
 		swal("로그아웃", "로그아웃 되었습니다.", "success");
 	</script>
@@ -188,7 +190,6 @@
 		</div>
 <%	}
 %>
-
 </header>
 </body>
 </html>

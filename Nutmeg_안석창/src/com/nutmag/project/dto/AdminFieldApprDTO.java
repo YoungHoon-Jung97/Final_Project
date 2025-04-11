@@ -46,7 +46,6 @@ public class AdminFieldApprDTO
 	{
 		this.field_appr_at = field_appr_at;
 	}
-
 	
 	
 }

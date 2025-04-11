@@ -258,10 +258,6 @@ public class UserController
 		else
 		{
 			// 로그인 실패
-			Cookie c = new Cookie("key", null);
-			c.setMaxAge(0);
-			response.addCookie(c);
-
 			session.setAttribute("lang", lang);
 			return "redirect:/Login.action?msg=fail";
 		}
@@ -282,18 +278,7 @@ public class UserController
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");
 		
-		// 리다이렉트 (이전 페이지 or 기본 Template)
-		String returnUrl = request.getParameter("returnUrl");
-		
-		// logoutMsg 파라미터 제거
-		if (returnUrl != null && returnUrl.contains("logoutMsg"))
-		{
-			returnUrl = returnUrl.replaceAll("[&?]logoutMsg=1", "");
-			// 끝에 ?나 &가 남으면 제거
-			returnUrl = returnUrl.replaceAll("[?&]$", "");
-		}
-		
-		return "redirect:" + (returnUrl != null ? returnUrl : "/Error.action");
+		return "redirect:/MainPage.action?logoutMsg=1";
 	}
 	
 	// 이메일 찾기

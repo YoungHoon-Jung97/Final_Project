@@ -60,7 +60,9 @@
 					</div>
 				</div>
 				
-				<p id="emailCheck" class="result"></p>
+				<div class="error">
+					<p id="emailCheck" class="result"></p>
+				</div>
 			</div>
 
 			<!-- 비밀번호 입력 -->
@@ -74,7 +76,9 @@
 					</div>
 				</div>
 				
-				<p class="form__error pwd1--error"></p>
+				<div class="error">
+					<p class="form__error pwd1--error"></p>
+				</div>
 			</div>
 
 			<!-- 비밀번호 확인 입력 -->
@@ -88,7 +92,9 @@
 					</div>
 				</div>
 				
-				<p id="passwordCheck" class="result">비밀번호가 일치하지 않습니다.</p>
+				<div class="error">
+					<p id="passwordCheck" class="result">비밀번호가 일치하지 않습니다.</p>
+				</div>
 			</div>
 
 			<!-- 이름 입력-->
@@ -102,7 +108,9 @@
 					</div>
 				</div>
 				
-				<p class="form__error name--error"></p>
+				<div class="error">
+					<p class="form__error name--error"></p>
+				</div>
 			</div>
 
 			<!-- 닉네임 입력 -->
@@ -117,7 +125,9 @@
 					</div>
 				</div>
 				
-				<p id="nickNameCheck" class="result"></p>
+				<div class="error">
+					<p id="nickNameCheck" class="result"></p>
+				</div>
 			</div>
 
 			<!-- 전화번호 입력 -->
@@ -153,7 +163,9 @@
 					</div>
 				</div>
 				
-				<div class="form__error"></div>
+				<div class="error">
+					<div class="form__error"></div>
+				</div>
 			</div>
 		</div>
 		

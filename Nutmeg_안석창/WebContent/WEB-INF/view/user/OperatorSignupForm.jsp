@@ -12,6 +12,7 @@
 <title>OperatorSignupForm.jsp</title>
 
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
@@ -62,7 +63,9 @@
 					</div>
 				</div>
 				
-				<p id="emailCheck" class="result"></p>
+				<div class="error">
+					<p id="emailCheck" class="result"></p>
+				</div>
 			</div>
 			
 			<!-- 이름 입력-->
@@ -76,7 +79,9 @@
 					</div>
 				</div>
 				
-				<p class="form__error name--error"></p>
+				<div class="error">
+					<p class="form__error name--error"></p>
+				</div>
 			</div>
 			
 			<!-- 전화번호 입력 -->
@@ -133,7 +138,9 @@
 					</div>
 				</div>
 				
-				<p id="accountNoCheck" class="result"></p>
+				<div class="error">
+					<p id="accountNoCheck" class="result"></p>
+				</div>
 			</div>
 			
 			<!-- 버튼 그룹 -->

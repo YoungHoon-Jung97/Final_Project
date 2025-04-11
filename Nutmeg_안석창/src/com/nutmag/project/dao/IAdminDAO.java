@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.nutmag.project.dto.AdminDTO;
 import com.nutmag.project.dto.AdminFieldApprDTO;
+import com.nutmag.project.dto.AdminFieldCancelDTO;
+import com.nutmag.project.dto.AdminFieldApprCancelTypeDTO;
 import com.nutmag.project.dto.UserDTO;
 
 public interface IAdminDAO
@@ -27,6 +29,10 @@ public interface IAdminDAO
 	
 	public ArrayList<AdminDTO> adminLoginInfo (int admin_id);
 	
+	
+	public ArrayList<AdminFieldApprCancelTypeDTO> fieldApprCancelTypeList();
 	public int fieldApprInsert(AdminFieldApprDTO dto);
+	public int fieldApprCancelInsert(AdminFieldCancelDTO dto);
+	
 	
 }
