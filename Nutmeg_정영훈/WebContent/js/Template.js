@@ -78,11 +78,6 @@ $(function()
 		window.location.href = "MercenaryOffer.action";
 	});
 	
-	// 용병 등록
-	$(".mercenary").click(function()
-	{
-		window.location.href = "Mercenary.action";
-	});
 	
 	// 매치 참가
 	$(".match").click(function()

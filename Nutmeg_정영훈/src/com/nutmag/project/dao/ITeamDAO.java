@@ -75,4 +75,15 @@ public interface ITeamDAO {
 	//정식 동호회 멤버 추가
 	public int addteamMember(@PathParam("team_apply_id") int team_apply_id);
 	//----------------------------------------------------------------
+	//임시 동호회 신청 삭제
+	public int canceledApplyTempTeam(@PathParam("team_apply_id") int team_apply_id);
+	
+	//정식 동호회 신청 삭제
+	public int canceledApplyTeam(@PathParam("team_apply_id") int team_apply_id);
+	
+	//임시 동호회 인원 삭제
+	public int dropTempTeamMember(@PathParam("team_member_id") int team_member_id);
+	
+	//정식 동호회 인원 삭제
+	public int dropTeamMember(@PathParam("team_member_id") int team_member_id);
 }

@@ -16,6 +16,7 @@ $(function()
 	// 사용자 코드 넣기 위한 코드
 	$('#user_code_id').val(user_code_id);
 	
+	
 	// city select의 option을 나열하기 위한 코드
 	var region = $("#regions").val();
 	
@@ -25,11 +26,11 @@ $(function()
 	$("#regions").on('change', function()
 	{
 		region = $("#regions").val();
-		
+		//alert("확인");
 		$.ajax(
 		{
 			url : "SearchCity.action",
-			type : "get",
+			type : "GET",
 			data : { region : region },
 			dataType : "JSON",
 			success : function(result)
@@ -53,6 +54,8 @@ $(function()
 			}
 		});
 	});
+		
+	
 	
 	// submit하기전 이름 중복확인
 	$('form').on('submit', function(event)

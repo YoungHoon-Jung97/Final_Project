@@ -13,6 +13,8 @@
 
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<script type="text/javascript" src="<%=cp %>/js/TeamOpen.js?after"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
@@ -36,7 +38,6 @@
 	});
 
 </script>
-<script type="text/javascript" src="<%=cp %>/js/TeamOpen.js?after"></script>
 
 </head>
 <body>

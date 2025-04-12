@@ -13,8 +13,8 @@
 <style type="text/css">
 /*팀 메뉴 넘어갔을 때 표시*/
 .teampage-link:nth-child(4) a {
-    color: #ff4500;
-    border-bottom: 2px solid #ff4500;
+    color: #a8d5ba;
+    border-bottom: 2px solid #a8d5ba;
 }
 </style>
 </head>

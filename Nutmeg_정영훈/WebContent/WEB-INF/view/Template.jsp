@@ -122,7 +122,6 @@
 			<div class="nav-item">
 				<span class="nav-title mercenary-offer">용병</span>
 				<div class="nav-sub mercenary-offer">용병 게시판</div>
-				<div class="nav-sub mercenary">용병 등록</div>
 			</div>
 			
 			<div class="nav-item">
