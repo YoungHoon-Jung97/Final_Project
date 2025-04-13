@@ -22,44 +22,74 @@
             box-sizing: border-box;
         }
         
-        /* 검색 영역 스타일 */
-        .search-container {
+        /* 캘린더 스타일 */
+        .calendar-container {
             width: 100%;
-            
             max-width: 1000px;
             margin: 20px auto;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
         }
         
-        .search-form {
+        .calendar-nav {
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            margin-bottom: 20px;
         }
         
-        .date-input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .nav-arrow {
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .date-list {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            justify-content: space-between;
+            width: 100%;
+            overflow-x: auto;
+        }
+        
+        .date-item {
+            min-width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 10px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .date-item .day-number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .date-item .day-name {
             font-size: 14px;
         }
         
-        .btn-search {
+        .date-item.active {
             background-color: #1a73e8;
             color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
         }
         
-        .btn-search:hover {
-            background-color: #1557b0;
+        .date-item:not(.active):hover {
+            background-color: #f0f0f0;
         }
         
         /* 용병 게시판 테이블 스타일 */
@@ -73,30 +103,10 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
         h1 {
-            margin: 0;
+            text-align: center;
+            margin-bottom: 20px;
             color: #333;
-        }
-        
-        .btn-add {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn-add:hover {
-            background-color: #3e8e41;
         }
         
         .table {
@@ -132,6 +142,28 @@
         
         .btn-hire:hover {
             background-color: #1557b0;
+        }
+        
+        /* 헤더 컨테이너 스타일 */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .btn-add {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-add:hover {
+            background-color: #3e8e41;
         }
         
         /* 모달 스타일 */
@@ -171,42 +203,18 @@
             color: #333;
         }
         
-        /* 폼 스타일 */
-        .form {
-            width: 100%;
-        }
-        
-        .form__section {
-            margin-bottom: 20px;
-        }
-        
-        .form__group {
-            margin-bottom: 20px;
-        }
-        
-        .form__field {
+        .form-group {
             margin-bottom: 15px;
         }
         
-        .form__label {
+        .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
         
-        .form__label.required:after {
-            content: "*";
-            color: red;
-            margin-left: 3px;
-        }
-        
-        .form__selection {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .form__input,
-        .selectpicker {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
@@ -214,53 +222,55 @@
             box-sizing: border-box;
         }
         
-        .form__actions {
+        .form-actions {
             display: flex;
             justify-content: flex-end;
             gap: 10px;
             margin-top: 20px;
         }
         
-        .btn {
+        .btn-submit {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
             padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
-            border: none;
         }
         
-        .btn--submit {
-            background-color: #1a73e8;
-            color: white;
-        }
-        
-        .btn--submit:hover {
+        .btn-submit:hover {
             background-color: #1557b0;
         }
         
-        .btn--reset {
+        .btn-cancel {
             background-color: #f1f1f1;
             color: #333;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
         }
         
-        .btn--reset:hover {
+        .btn-cancel:hover {
             background-color: #ddd;
         }
     </style>
 </head>
 <body>
-    <!-- 검색 컨테이너 -->
-    <div class="search-container">
-        <form class="search-form" id="dateSearchForm">
-            <input type="date" class="date-input" id="searchDate" required>
-            <button type="submit" class="btn-search">검색</button>
-        </form>
+    <!-- 캘린더 컨테이너 -->
+    <div class="calendar-container">
+        <div class="calendar-nav">
+            <button class="nav-arrow prev-week">◀</button>
+            <ul class="date-list" id="dateList"></ul>
+            <button class="nav-arrow next-week">▶</button>
+        </div>
     </div>
     
     <!-- 본문 컨테이너 -->
     <div class="merc-container">
         <div class="header-container">
             <h1>용병 게시판</h1>
-            <button id="addMercenaryBtn" class="btn-add">용병 등록</button>
+            <button id="addTimeLogBtn" class="btn-add">시간 기록 추가</button>
         </div>
         <!-- 리스트 출력 -->
         <div class="table">
@@ -276,46 +286,30 @@
         </div>
     </div>
     
-    <!-- 용병 등록 모달 -->
-    <div class="modal">
+    <!-- 시간 기록 모달 -->
+    <div id="timeLogModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h2>용병 등록</h2>
-            <form class="form" method="POST" action="MercenaryInsert.action">
-                <!-- 포지션 -->
-                <div class="form__section">
-                    <select name="position_id" id="position"
-                    class="selectpicker" style="width: 150px; margin-top: 10px; margin-bottom: 10px;">
-                        <option value="">포지션 선택 선택</option>
-                        <c:forEach var="position" items="${positionList}">
-                            <option value="${position.position_id }">${position.position_name}</option>
-                        </c:forEach>
-                    </select> 
+            <h2>용병 시간 기록</h2>
+            <form id="timeLogForm">
+                <div class="form-group">
+                    <label for="mercenaryId">용병 ID</label>
+                    <select id="mercenaryId" name="mercenaryId" required>
+                        <option value="">용병 선택</option>
+                        <!-- AJAX로 용병 목록을 불러옵니다 -->
+                    </select>
                 </div>
-                <!-- 지역 -->
-                <div class="form__group">
-                    <div class="form__field">
-                        <label class="form__label required">지역</label>
-                        
-                        <div class="form__selection">
-                            <select id="regions" name="region_id" class="form__input" required>
-                                <option value="">시를 선택하세요</option>
-                                
-                                <c:forEach var="region" items="${regionList}">
-                                    <option value="${region.region_id}">${region.region_name}</option>
-                                </c:forEach>
-                            </select>
-                            
-                            <select id="citys" name="city_id" class="form__input" required>
-                                <option value="">구를 선택하세요</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="startTime">시작 시간</label>
+                    <input type="datetime-local" id="startTime" name="startTime" required>
                 </div>
-                <!-- 버튼 -->
-                <div class="form__actions">
-                    <button type="submit" class="btn btn--submit">지원하기</button>
-                    <button type="reset" class="btn btn--reset">취소</button>
+                <div class="form-group">
+                    <label for="endTime">종료 시간</label>
+                    <input type="datetime-local" id="endTime" name="endTime" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">저장</button>
+                    <button type="button" class="btn-cancel">취소</button>
                 </div>
             </form>
         </div>
@@ -323,28 +317,70 @@
 
     <script>
         $(document).ready(function() {
-            // 오늘 날짜를 기본값으로 설정
-            let today = new Date();
-            let formattedDate = today.toISOString().split('T')[0];
-            $('#searchDate').val(formattedDate);
+            // 날짜 데이터 관리를 위한 변수
+            let currentDate = new Date();
+            let currentDay = currentDate.getDay(); // 0(일) ~ 6(토)
             
-            // 날짜 제한 설정 (오늘부터 1달 후까지)
-            let oneMonthLater = new Date(today);
-            oneMonthLater.setMonth(today.getMonth() + 1);
-            let maxDate = oneMonthLater.toISOString().split('T')[0];
+            // 오늘 날짜를 기준으로 한 주의 시작일 계산 (일요일 기준)
+            let weekStart = new Date(currentDate);
+            weekStart.setDate(currentDate.getDate() - currentDay);
             
-            $('#searchDate').attr('min', formattedDate);
-            $('#searchDate').attr('max', maxDate);
+            // 달력 생성 함수
+            function generateCalendar(startDate) {
+                let dateList = $('#dateList');
+                dateList.empty();
+                
+                // 요일 이름 배열
+                const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+                
+                // 주별 7일 생성
+                for (let i = 0; i < 7; i++) {
+                    let date = new Date(startDate);
+                    date.setDate(startDate.getDate() + i);
+                    
+                    // 날짜 포맷팅
+                    let dayNumber = date.getDate();
+                    let dayName = dayNames[date.getDay()];
+                    
+                    // 오늘 날짜 확인
+                    let isToday = date.toDateString() === currentDate.toDateString();
+                    
+                    // 날짜 아이템 생성
+                    let dateItem = $('<li>', {
+                        class: 'date-item' + (isToday ? ' active' : ''),
+                        'data-date': formatDate(date)
+                    });
+                    
+                    dateItem.append($('<div>', {
+                        class: 'day-number',
+                        text: dayNumber
+                    }));
+                    
+                    dateItem.append($('<div>', {
+                        class: 'day-name',
+                        text: dayName
+                    }));
+                    
+                    dateList.append(dateItem);
+                }
+                
+                // 날짜 클릭 이벤트 처리
+                $('.date-item').click(function() {
+                    $('.date-item').removeClass('active');
+                    $(this).addClass('active');
+                    
+                    let selectedDate = $(this).data('date');
+                    loadMercenaryData(selectedDate);
+                });
+            }
             
-            // 초기 데이터 로드
-            loadMercenaryData(formattedDate);
-            
-            // 날짜 검색 폼 제출 이벤트
-            $('#dateSearchForm').submit(function(event) {
-                event.preventDefault();
-                let selectedDate = $('#searchDate').val();
-                loadMercenaryData(selectedDate);
-            });
+            // 날짜 포맷 함수 (YYYY-MM-DD)
+            function formatDate(date) {
+                let year = date.getFullYear();
+                let month = String(date.getMonth() + 1).padStart(2, '0');
+                let day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
             
             // AJAX로 용병 데이터 불러오기
             function loadMercenaryData(selectedDate) {
@@ -420,7 +456,7 @@
                         if (response.success) {
                             alert('용병 고용이 완료되었습니다.');
                             // 현재 선택된 날짜의 데이터 다시 로드
-                            let selectedDate = $('#searchDate').val();
+                            let selectedDate = $('.date-item.active').data('date');
                             loadMercenaryData(selectedDate);
                         } else {
                             alert('용병 고용 중 오류가 발생했습니다: ' + response.message);
@@ -436,67 +472,122 @@
             // 모달 관련 함수들
             // 모달 열기
             function openModal() {
-                $('.modal').css('display', 'block');
+                $('#timeLogModal').css('display', 'block');
+                loadMercenaryOptions();
             }
             
             // 모달 닫기
             function closeModal() {
-                $('.modal').css('display', 'none');
-                $('.form')[0].reset();
+                $('#timeLogModal').css('display', 'none');
+                $('#timeLogForm')[0].reset();
             }
             
-            // 지역에 따른 도시 로드
-            function loadCities(regionId) {
-                if (!regionId) {
-                    $('#citys').html('<option value="">구를 선택하세요</option>');
-                    return;
-                }
-                
+            // 용병 옵션 로드
+            function loadMercenaryOptions() {
                 $.ajax({
-                    url: '/city/by-region', // 실제 API 엔드포인트로 변경해야 합니다
+                    url: '/mercenary/all', // 실제 API 엔드포인트로 변경해야 합니다
                     type: 'GET',
-                    data: { region_id: regionId },
                     dataType: 'json',
                     success: function(data) {
-                        let citySelect = $('#citys');
-                        citySelect.html('<option value="">구를 선택하세요</option>');
+                        let mercenarySelect = $('#mercenaryId');
+                        mercenarySelect.find('option:not(:first)').remove();
                         
-                        data.forEach(function(city) {
-                            citySelect.append(
+                        data.forEach(function(mercenary) {
+                            mercenarySelect.append(
                                 $('<option>', {
-                                    value: city.city_id,
-                                    text: city.city_name
+                                    value: mercenary.mercenary_id,
+                                    text: mercenary.user_nick_name + ' (' + mercenary.position_name + ')'
                                 })
                             );
                         });
                     },
                     error: function(xhr, status, error) {
-                        console.error('도시 목록 로드 오류:', error);
-                        alert('도시 목록을 불러오는 중 오류가 발생했습니다.');
+                        console.error('용병 목록 로드 오류:', error);
+                        alert('용병 목록을 불러오는 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+            
+            // 시간 기록 저장
+            function saveTimeLog(formData) {
+                $.ajax({
+                    url: '/mercenary/time-log/add', // 실제 API 엔드포인트로 변경해야 합니다
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            alert('시간 기록이 저장되었습니다.');
+                            closeModal();
+                            // 현재 선택된 날짜의 데이터 다시 로드
+                            let selectedDate = $('.date-item.active').data('date');
+                            loadMercenaryData(selectedDate);
+                        } else {
+                            alert('시간 기록 저장 중 오류가 발생했습니다: ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('시간 기록 저장 요청 중 오류가 발생했습니다.');
+                        console.error('저장 오류:', error);
                     }
                 });
             }
             
             // 모달 이벤트 리스너
-            $('#addMercenaryBtn').click(function() {
+            $('#addTimeLogBtn').click(function() {
                 openModal();
             });
             
-            $('.close-modal, .btn--reset').click(function() {
+            $('.close-modal, .btn-cancel').click(function() {
                 closeModal();
             });
             
             $(window).click(function(event) {
-                if ($(event.target).is('.modal')) {
+                if ($(event.target).is('#timeLogModal')) {
                     closeModal();
                 }
             });
             
-            // 지역 변경 이벤트
-            $('#regions').change(function() {
-                let regionId = $(this).val();
-                loadCities(regionId);
+            // 폼 제출 이벤트
+            $('#timeLogForm').submit(function(event) {
+                event.preventDefault();
+                
+                // 시작 시간과 종료 시간 유효성 검사
+                let startTime = new Date($('#startTime').val());
+                let endTime = new Date($('#endTime').val());
+                
+                if (startTime >= endTime) {
+                    alert('종료 시간은 시작 시간보다 나중이어야 합니다.');
+                    return;
+                }
+                
+                // 폼 데이터 수집
+                let formData = {
+                    mercenary_id: $('#mercenaryId').val(),
+                    start_time: $('#startTime').val(),
+                    end_time: $('#endTime').val()
+                };
+                
+                saveTimeLog(formData);
             });
+            
+            // 이전 주 버튼 클릭 이벤트
+            $('.prev-week').click(function() {
+                weekStart.setDate(weekStart.getDate() - 7);
+                generateCalendar(weekStart);
+            });
+            
+            // 다음 주 버튼 클릭 이벤트
+            $('.next-week').click(function() {
+                weekStart.setDate(weekStart.getDate() + 7);
+                generateCalendar(weekStart);
+            });
+            
+            // 초기 달력 생성
+            generateCalendar(weekStart);
+            
+            // 초기 데이터 로드 (오늘 날짜)
+            loadMercenaryData(formatDate(currentDate));
         });
     </script>
 </body>

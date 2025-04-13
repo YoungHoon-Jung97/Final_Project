@@ -352,89 +352,89 @@ public class StadiumController
 	}
 	
 	// 경기장 예약 메인페이지 연결
-		@RequestMapping(value = "/StadiumMainPage.action",method = RequestMethod.GET)
-		public String stadiumMainPage(Model model)
-		{
-			String result = null;
-			
-			IRegionDAO regionDAO = sqlSession.getMapper(IRegionDAO.class);
-			IFieldDAO fieldDAO = sqlSession.getMapper(IFieldDAO.class);
-			
-			model.addAttribute("regionList", regionDAO.regionList());
-			model.addAttribute("fieldApprOkList", fieldDAO.fieldApprOkList());
-			
-			result = "/stadium/StadiumMainPage";
-			return result;
-		}
+	@RequestMapping(value = "/StadiumMainPage.action",method = RequestMethod.GET)
+	public String stadiumMainPage(Model model)
+	{
+		String result = null;
 		
-		// 지역 선택 시 도시 목록 반환
-		@RequestMapping(value = "/GetCityListByRegionId.action", method = RequestMethod.GET)
-		public String getCityListByRegionId(@RequestParam("region_id") int regionId, Model model) 
-		{
-		    ArrayList<CityDTO> cityList = sqlSession.getMapper(IRegionDAO.class).cityList(regionId);
-		    model.addAttribute("cityList", cityList);
-		    return "/stadium/CityTabList"; // → 도시 탭 JSP 조각
-		}
+		IRegionDAO regionDAO = sqlSession.getMapper(IRegionDAO.class);
+		IFieldDAO fieldDAO = sqlSession.getMapper(IFieldDAO.class);
+		
+		model.addAttribute("regionList", regionDAO.regionList());
+		model.addAttribute("fieldApprOkList", fieldDAO.fieldApprOkList());
+		
+		result = "/stadium/StadiumMainPage";
+		return result;
+	}
+		
+	// 지역 선택 시 도시 목록 반환
+	@RequestMapping(value = "/GetCityListByRegionId.action", method = RequestMethod.GET)
+	public String getCityListByRegionId(@RequestParam("region_id") int regionId, Model model) 
+	{
+	    ArrayList<CityDTO> cityList = sqlSession.getMapper(IRegionDAO.class).cityList(regionId);
+	    model.addAttribute("cityList", cityList);
+	    return "/stadium/CityTabList"; // → 도시 탭 JSP 조각
+	}
 
-		// 검색 조건에 따라 경기장 목록 반환
-		@RequestMapping(value = "/SearchStadiumList.action", method = RequestMethod.GET)
-		public String searchStadiumList(Model model,
-		    @RequestParam(value = "region_name", required = false) String regionName,
-		    @RequestParam(value = "city_name", required = false) String cityName,
-		    @RequestParam(value = "keyword", required = false) String keyword
-		    ) 
-		{
+	// 검색 조건에 따라 경기장 목록 반환
+	@RequestMapping(value = "/SearchStadiumList.action", method = RequestMethod.GET)
+	public String searchStadiumList(Model model,
+	    @RequestParam(value = "region_name", required = false) String regionName,
+	    @RequestParam(value = "city_name", required = false) String cityName,
+	    @RequestParam(value = "keyword", required = false) String keyword
+	    ) 
+	{
 
-		    Map<String, Object> params = new HashMap<>();
-		    if (regionName != null && !regionName.isEmpty()) params.put("region_name", regionName);
-		    if (cityName != null && !cityName.isEmpty()) params.put("city_name", cityName);
-		    if (keyword != null && !keyword.isEmpty()) params.put("keyword", "%" + keyword + "%");
+	    Map<String, Object> params = new HashMap<>();
+	    if (regionName != null && !regionName.isEmpty()) params.put("region_name", regionName);
+	    if (cityName != null && !cityName.isEmpty()) params.put("city_name", cityName);
+	    if (keyword != null && !keyword.isEmpty()) params.put("keyword", "%" + keyword + "%");
 
-		    ArrayList<FieldResMainPageDTO> fieldList = sqlSession.getMapper(IFieldDAO.class).searchFieldList(params);
-		    model.addAttribute("fieldList", fieldList);
-		    return "/stadium/FieldCardList";
-		}
+	    ArrayList<FieldResMainPageDTO> fieldList = sqlSession.getMapper(IFieldDAO.class).searchFieldList(params);
+	    model.addAttribute("fieldList", fieldList);
+	    return "/stadium/FieldCardList";
+	}
 		
 		
-		// 클릭한 경기장 예약 페이지로 이동
-		@RequestMapping(value = "/FieldReservationForm.action", method = RequestMethod.POST)
-		public String fieldReservation(@RequestParam("field_code_id") int field_code_id, Model model) 
-		{
-			String result = null;
-			IFieldDAO fieldDAO = sqlSession.getMapper(IFieldDAO.class);
-			
-			model.addAttribute("fieldApprOkSearchList", fieldDAO.fieldApprOkSearchList(field_code_id));
-			model.addAttribute("field_code_id", field_code_id);
-			
-			result = "/stadium/FieldReservationForm";
-		    return result;
-		}
+	// 클릭한 경기장 예약 페이지로 이동
+	@RequestMapping(value = "/FieldReservationForm.action", method = RequestMethod.POST)
+	public String fieldReservation(@RequestParam("field_code_id") int field_code_id, Model model) 
+	{
+		String result = null;
+		IFieldDAO fieldDAO = sqlSession.getMapper(IFieldDAO.class);
 		
-		@RequestMapping(value = "/GetUnavailableTimeRange.action", method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-		@ResponseBody
-		public List<Map<String, Object>> getUnavailableTimeRange(
-		        @RequestParam("field_code_id") int fieldCodeId,
-		        @RequestParam("match_date") String matchDate) 
-		{
-			System.out.println("🟡 [컨트롤러] 예약 불가능 시간 조회 요청 도착");
-		    System.out.println("➡️ field_code_id: " + fieldCodeId);
-		    System.out.println("➡️ match_date: " + matchDate);
+		model.addAttribute("fieldApprOkSearchList", fieldDAO.fieldApprOkSearchList(field_code_id));
+		model.addAttribute("field_code_id", field_code_id);
+		
+		result = "/stadium/FieldReservationForm";
+	    return result;
+	}
+		
+	@RequestMapping(value = "/GetUnavailableTimeRange.action", method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public List<Map<String, Object>> getUnavailableTimeRange(
+	        @RequestParam("field_code_id") int fieldCodeId,
+	        @RequestParam("match_date") String matchDate) 
+	{
+		System.out.println("🟡 [컨트롤러] 예약 불가능 시간 조회 요청 도착");
+	    System.out.println("➡️ field_code_id: " + fieldCodeId);
+	    System.out.println("➡️ match_date: " + matchDate);
 
-			
-		    Map<String, Object> params = new HashMap<>();
-		    params.put("field_code_id", fieldCodeId);
-		    params.put("match_date", matchDate);
-		    
-		    List<Map<String, Object>> result = sqlSession.getMapper(IFieldDAO.class).FieldUnavailableTime(params);
-		    
-		    System.out.println("🟢 조회된 예약 불가 시간 개수: " + result.size());
-		    for (Map<String, Object> row : result) {
-		        System.out.println("🧾 결과 row: " + row);
-		    }
-		    
+		
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("field_code_id", fieldCodeId);
+	    params.put("match_date", matchDate);
+	    
+	    List<Map<String, Object>> result = sqlSession.getMapper(IFieldDAO.class).FieldUnavailableTime(params);
+	    
+	    System.out.println("🟢 조회된 예약 불가 시간 개수: " + result.size());
+	    for (Map<String, Object> row : result) {
+	        System.out.println("🧾 결과 row: " + row);
+	    }
+	    
 
-		    return sqlSession.getMapper(IFieldDAO.class).FieldUnavailableTime(params);
-		}
+	    return sqlSession.getMapper(IFieldDAO.class).FieldUnavailableTime(params);
+	}
 	
 	
 	
