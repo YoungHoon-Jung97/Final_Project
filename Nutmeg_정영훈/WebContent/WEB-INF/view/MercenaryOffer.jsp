@@ -114,19 +114,40 @@
             if (selectedRegionName == '전체') selectedRegionName = '';
             if (selectedCityName == '전체') selectedCityName = '';
 
+         	// AJAX 코드 수정
             $.ajax({
-                url: "${pageContext.request.contextPath}/SearchMercenary.action", // 절대 경로로 변경
+                url: "${pageContext.request.contextPath}/SearchMercenary.action",
                 type: "GET",
                 data: {
                     region_name: selectedRegionName,
                     city_name: selectedCityName
                 },
-                beforeSend: function() {
-                    console.log("AJAX 요청 전송 중...");
-                },
-                success: function (html) {
-                    console.log("AJAX 성공");
-                    $('#mercenaryList').html(html); // ID 선택자로 변경
+                dataType: 'json',
+                success: function (data) {
+                    console.log("AJAX 성공", data);
+                    
+                    // HTML 생성
+                    var html = '';
+                    if (data && data.length > 0) {
+                        data.forEach(function(mercenary) {
+                            html += '<div class="table-row">';
+                            html += '<div class="table-cell">' + mercenary.user_nick_name + '</div>';
+                            html += '<div class="table-cell">' + mercenary.position_name + '</div>';
+                            html += '<div class="table-cell">' + mercenary.region_name + '</div>';
+                            html += '<div class="table-cell">' + mercenary.city_name + '</div>';
+                            html += '<div class="table-cell">';
+                            html += '<form action="hireMercenary.action" method="POST">';
+                            html += '<input type="hidden" name="mercenary_id" value="' + mercenary.mercenary_id + '">';
+                            html += '<button type="submit" class="btn-hire">고용</button>';
+                            html += '</form>';
+                            html += '</div>';
+                            html += '</div>';
+                        });
+                    } else {
+                        html = '<div class="table-row"><div class="table-cell" style="grid-column: span 5; text-align: center;">해당 지역에 등록된 용병이 없습니다.</div></div>';
+                    }
+                    
+                    $('#mercenaryList').html(html);
                 },
                 error: function(xhr, status, error) {
                     console.error("AJAX 오류 발생:", status, error);

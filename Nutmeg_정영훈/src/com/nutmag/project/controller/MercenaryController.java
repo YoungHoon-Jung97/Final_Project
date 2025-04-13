@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nutmag.project.dao.IFieldDAO;
 import com.nutmag.project.dao.IMercenaryDAO;
@@ -179,8 +180,9 @@ public class MercenaryController
     }
     
     //용병 지역 검색
-    @RequestMapping(value ="/SearchMercenary.action", method = RequestMethod.GET)
-    public String searchMercenary(Model model, 
+    @RequestMapping(value ="/SearchMercenary.action", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<MercenaryDTO> searchMercenary(Model model, 
             @RequestParam(value = "region_name", required = false) String regionName,
             @RequestParam(value = "city_name", required = false) String cityName)
     {
@@ -198,10 +200,8 @@ public class MercenaryController
         System.out.println("반환 값 : " +mercenaryList.size());
         System.out.println("===================================================");
         
-        System.out.println("Found " + (mercenaryList != null ? mercenaryList.size() : 0) + " mercenaries"); // Debug count
-        
-        model.addAttribute("mercenaryList", mercenaryList);
-        return "/mercenary/MercenaryList";
+       
+        return mercenaryList;
     }
     
 }
