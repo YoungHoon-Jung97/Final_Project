@@ -3,11 +3,30 @@ package com.nutmag.project.dto;
 public class TeamApplyDTO
 {
 	private int team_apply_id, user_code_id, position_id,temp_team_id,team_id,
-	team_member_id;
+	team_member_id,age;
 	private String team_apply_desc,team_apply_at,team_apply_appr_at,position_name
-	,user_name,team_name,user_nick_name;
+	,user_name,team_name,user_nick_name,gender,
+	member_status="동호회원";
 	
 	
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getMember_status() {
+		return member_status;
+	}
+	public void setMember_status(String member_status) {
+		this.member_status = member_status;
+	}
 	public String getUser_nick_name()
 	{
 		return user_nick_name;

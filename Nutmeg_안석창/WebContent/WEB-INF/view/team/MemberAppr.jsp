@@ -6,10 +6,9 @@
 %>
 <%
 	Integer team_id = (Integer)session.getAttribute("team_id");
-	System.out.println("==========동호회 멤버 승인==========");
-	System.out.println("DEBUG: temp_team_id = " + team_id);
-	System.out.println("====================================");
+	
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -163,7 +162,7 @@
 						            <td>${teamApply.team_apply_at}</td>
 						            <td>${teamApply.position_name}</td>
 									<td>
-			                        	<a href="AddMember.action?team_apply_id=${teamApply.team_apply_id}&user_code_id=${teamApply.user_code_id}" class="btn-primary btn-small approve-btn" data-id="1">승인</button>
+			                        	<a href="AddMember.action?team_apply_id=${teamApply.team_apply_id}&user_code_id=${teamApply.user_code_id}&team_id=${team.temp_team_id}" class="btn-primary btn-small approve-btn" data-id="1">승인</button>
 			                        	<button class="btn-danger btn-small reject-btn" data-id="1">거절</button>
 			                    	</td>
 				                </tr>
@@ -191,4 +190,22 @@
 	
 
 </body>
+<%	if(request.getParameter("message") != null)
+	{
+%>
+		<script type="text/javascript">
+			if (history.replaceState)
+				history.replaceState({}, '', location.pathname);
+			
+			else
+			{
+				var cleanUrl = location.protocol + '//' + location.host + location.pathname;
+				location.href = cleanUrl;
+			}
+			
+			swal("warning", "<%= request.getParameter("message") %>", "warning");
+			
+		</script>
+<%	}
+%>
 </html>

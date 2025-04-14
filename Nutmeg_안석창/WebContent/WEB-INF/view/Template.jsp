@@ -66,9 +66,14 @@
 	{
 		session.removeAttribute("logoutFlag");
 %>
-	<!-- alert 대신 사용  -->
+	<!-- alert 대신 사용 -->
 	<script>
-		swal("로그아웃", "로그아웃 되었습니다.", "success");
+		window.addEventListener("pageshow", function(event)
+		{
+			if (!event.persisted && performance.navigation.type !== 2)
+				// 캐시된 페이지에서 불린 게 아니라면 알림 띄우기
+				swal("로그아웃", "로그아웃 되었습니다.", "success");
+		});
 	</script>
 <%	}
 	
@@ -77,7 +82,11 @@
 		session.removeAttribute("loginFlag");
 %>
 	<script>
-		swal("로그인", user_name + "님 환영합니다!", "success");
+		window.addEventListener("pageshow", function(event)
+		{
+			if (!event.persisted && performance.navigation.type !== 2)
+				swal("로그인", user_name + "님 환영합니다!", "success");
+		});
 	</script>
 <%	}
 %>
@@ -190,6 +199,7 @@
 		</div>
 <%	}
 %>
+
 </header>
 </body>
 </html>

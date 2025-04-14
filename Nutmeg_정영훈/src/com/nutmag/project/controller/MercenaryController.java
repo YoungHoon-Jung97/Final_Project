@@ -109,7 +109,7 @@ public class MercenaryController
     
 
     //용병 게시판 호출
-    @RequestMapping("/MercenaryOffer.action")
+    @RequestMapping("/MercenaryBoard.action")
     public String mercenaryList(Model model, HttpServletRequest request, 
                                @RequestParam(required = false) String searchDate)
     {
@@ -139,7 +139,7 @@ public class MercenaryController
             time = now.format(formatter);
         }
         
-        List<MercenaryDTO> mercenaryList = mercenaryDAO.mercenaryList(time); 
+        List<MercenaryDTO> mercenaryList = mercenaryDAO.searchTimeMercenary(time); 
         
         // 포지션 정보 가져오기
         IPositionDAO positionDAO = sqlSession.getMapper(IPositionDAO.class);        
@@ -149,7 +149,7 @@ public class MercenaryController
         model.addAttribute("positionList", positionDAO.positionList());
         model.addAttribute("mercenaryList", mercenaryList);
         
-        return "/MercenaryOffer";
+        return "mercenary/MercenaryOffer";
     }
 	
     //용병 시간 업데이트
@@ -182,20 +182,22 @@ public class MercenaryController
     //용병 지역 검색
     @RequestMapping(value ="/SearchMercenary.action", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<MercenaryDTO> searchMercenary(Model model, 
+    public List<MercenaryDTO> searchRegionMercenary(Model model, 
             @RequestParam(value = "region_name", required = false) String regionName,
-            @RequestParam(value = "city_name", required = false) String cityName)
+            @RequestParam(value = "city_name", required = false) String cityName,
+            @RequestParam(value = "time", required = false) String time)
     {
         Map<String, Object> params = new HashMap<>();
         if (regionName != null && !regionName.isEmpty()) params.put("region_name", regionName);
         if (cityName != null && !cityName.isEmpty()) params.put("city_name", cityName);
-        
+        if (time != null && !time.isEmpty()) params.put("time", time);
         
         IMercenaryDAO dao = sqlSession.getMapper(IMercenaryDAO.class);
         ArrayList<MercenaryDTO> mercenaryList = dao.searchMercenary(params);
         System.out.println("======================확인[00]=====================");
         System.out.println("regionName : " +regionName);
         System.out.println("cityName : "+ cityName);
+        System.out.println("time : "+ time);
         System.out.println("params: " + params); 
         System.out.println("반환 값 : " +mercenaryList.size());
         System.out.println("===================================================");
@@ -204,6 +206,7 @@ public class MercenaryController
         return mercenaryList;
     }
     
+
 }
     
    

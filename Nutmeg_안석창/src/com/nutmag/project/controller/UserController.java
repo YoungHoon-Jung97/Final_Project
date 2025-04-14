@@ -83,14 +83,11 @@ public class UserController
 	@RequestMapping(value = "/UserInsert.action", method = RequestMethod.POST)
 	public String userInsert(UserDTO user)
 	{
-		String result = null;
-		
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		
 		dao.userInsert(user);
 		
-		result = "redirect:MainPage.action";
-		return result;
+		return "redirect:MainPage.action";
 	};
 	
 	//===============================================================================	
@@ -152,11 +149,16 @@ public class UserController
 	
 	// 구장 운영자 회원가입 인서트
 	@RequestMapping(value = "/OperatorInsert.action", method = RequestMethod.POST)
-	public String operatorInsert(OperatorDTO operator)
+	public String operatorInsert(OperatorDTO operator, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
+		
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		
 		dao.operatorInsert(operator);
+		
+		String message = "SUCCESS_INSERT: 구장 운영자 회원가입이 완료되었습니다.";
+		session.setAttribute("message", message);
 		
 		return "redirect:MainPage.action";
 	};
@@ -202,7 +204,7 @@ public class UserController
 				session.setAttribute("team_id", teamDAO.searchMyTempTeam(dto.getUser_code_id()));
 			
 			else if (teamDAO.searchMyTeam(dto.getUser_code_id()) != null)
-				session.setAttribute("team_id", teamDAO.searchTempTeam(teamDAO.searchMyTeam(dto.getUser_code_id())));
+				session.setAttribute("team_id", teamDAO.searchMyTeam(dto.getUser_code_id()));
 			
 			else
 				session.setAttribute("team_id", 0);
@@ -278,7 +280,7 @@ public class UserController
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");
 		
-		return "redirect:/MainPage.action?logoutMsg=1";
+		return "redirect:/MainPage.action";
 	}
 	
 	// 이메일 찾기

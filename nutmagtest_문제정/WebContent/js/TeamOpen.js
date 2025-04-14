@@ -6,17 +6,18 @@ $(function()
 {
 	$('#submitBtn').prop('disabled', true);
 	
-	//팀이름 입력시 에러메시지 제거
+	// 팀이름 입력시 에러메시지 제거
 	$('#teamName').on('input', function()
 	{
 		$('#teamNameCheck').css('display', 'none');
 		$('#submitBtn').prop('disabled', false);
 	});
 	
-	//사용자 코드 넣기 위한 코드
+	// 사용자 코드 넣기 위한 코드
 	$('#user_code_id').val(user_code_id);
 	
-	//city select의 option을 나열하기 위한 코드
+	
+	// city select의 option을 나열하기 위한 코드
 	var region = $("#regions").val();
 	
 	if (region == "")
@@ -25,11 +26,11 @@ $(function()
 	$("#regions").on('change', function()
 	{
 		region = $("#regions").val();
-		
+		//alert("확인");
 		$.ajax(
 		{
 			url : "SearchCity.action",
-			type : "get",
+			type : "GET",
 			data : { region : region },
 			dataType : "JSON",
 			success : function(result)
@@ -53,8 +54,10 @@ $(function()
 			}
 		});
 	});
+		
 	
-	//submit하기전 이름 중복확인
+	
+	// submit하기전 이름 중복확인
 	$('form').on('submit', function(event)
 	{
 		event.preventDefault();
@@ -67,8 +70,9 @@ $(function()
 		});
 	});
 	
-	$('#image').on('change', function () {
-		const fileName = this.files.length > 0 ? this.files[0].name : '선택된 파일 없음';
+	$('#image').on('change', function ()
+	{
+		var fileName = this.files.length > 0 ? this.files[0].name : '선택된 파일 없음';
 		$('#file-name').text(fileName);
 	});
 });

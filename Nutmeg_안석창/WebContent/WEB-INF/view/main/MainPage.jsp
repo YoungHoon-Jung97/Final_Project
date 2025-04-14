@@ -12,9 +12,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>풋살 매칭 서비스</title>
 
-<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/MainPage.css?after">
 
@@ -28,40 +28,45 @@
 <body>
 <c:if test="${not empty sessionScope.message}">
 	<script type="text/javascript">
-		var message = "${fn:escapeXml(sessionScope.message)}";
-		var parts = message.split(":");
-		
-		if (parts.length > 1)
+		window.addEventListener("pageshow", function(event)
 		{
-			var type = parts[0].trim();
-			var content = parts[1].trim();
-			
-			switch (type)
+			if (!event.persisted && performance.navigation.type !== 2)
 			{
-				case "SUCCESS_INSERT":
-				case "SUCCESS_APPLY":
-					swal("성공", content, "success");
-					break;
+				var message = "${fn:escapeXml(sessionScope.message)}";
+				var parts = message.split(":");
 				
-				case "NEED_REGISTER_STADIUM":
-					swal("주의", content, "warning");
-					break;
+				if (parts.length > 1)
+				{
+					var type = parts[0].trim();
+					var content = parts[1].trim();
 					
-				case "ERROR_DUPLICATE_JOIN":
-				case "ERROR_AUTH_REQUIRED":
-					swal("에러", content, "error");
-					break;
+					switch (type)
+					{
+						case "SUCCESS_INSERT":
+						case "SUCCESS_APPLY":
+							swal("성공", content, "success");
+							break;
+						
+						case "NEED_REGISTER_STADIUM":
+							swal("주의", content, "warning");
+							break;
+							
+						case "ERROR_DUPLICATE_JOIN":
+						case "ERROR_AUTH_REQUIRED":
+						case "ERROR_DUPLICATE_REQUEST":
+							swal("에러", content, "error");
+							break;
+						
+						default:
+							swal("알림", content, "info");
+					}
+				}
 				
-				default:
-					swal("알림", content, "info");
+				else
+					// fallback: 구분자 없는 일반 메시지
+					swal("처리 필요", message, "info");
 			}
-		}
-		
-		else
-		{
-			// fallback: 구분자 없는 일반 메시지
-			swal("처리 필요", message, "info");
-		}
+		});
 	</script>
 	
 	<c:remove var="message" scope="session"></c:remove>

@@ -57,7 +57,7 @@ function checkEmail()
 		},
 		error : function()
 		{
-			$('#emailCheck').text("이메일을 입력하세요.").css(
+			$('#emailCheck').text("이메일을 입력하세요").css(
 			{
 				'display' : 'inline',
 				'color' : 'red'
