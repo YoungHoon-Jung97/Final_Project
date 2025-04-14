@@ -56,23 +56,21 @@
         <div class="sidebar">
             <!-- 관리자 로그인 정보 -->
             <div class="profile-box text-center">
-            <c:forEach var="info" items="${operatorInfo}">
-                <h5 class="mb-1">"${info.operator_name }</h5>님 반갑습니다!
-            </c:forEach>    
-                <div class="text-muted" style="font-size: 13px;">구장 운영자</div>
+                <h5 class="mb-1">홍길동</h5>
+                <div class="text-muted" style="font-size: 13px;">사용자</div>
                 <div class="mt-3">
-                    <span class="badge bg-primary text-dark">구장 운영자 로그인</span>
+                    <span class="badge bg-primary text-dark">사용자 로그인</span>
                 </div>
             </div>
 			<!-- 관리자 메뉴 탭 -->
             <div class="menu-section-title">관리 메뉴</div>
             <nav class="nav flex-column">
-                <a class="nav-link" href="#"><i class="bi bi-speedometer2 me-2"></i>구장 예약 승인 처리</a>
-               <!--  <a class="nav-link" href="#"><i class="bi bi-people-fill me-2"></i>정보 관리</a>
+                <a class="nav-link" href="#"><i class="bi bi-speedometer2 me-2"></i>내 정보</a>
+                <a class="nav-link" href="#"><i class="bi bi-people-fill me-2"></i>정보 관리</a>
                 <a class="nav-link" href="#"><i class="bi bi-flag-fill me-2"></i>경기 기록</a>
                 <a class="nav-link" href="#"><i class="bi bi-building me-2"></i>결제 내역</a>
                 <a class="nav-link" href="#"><i class="bi bi-chat-dots-fill me-2"></i>나의 동호회</a>
-                <a class="nav-link" href="#"><i class="bi bi-file-earmark-text me-2"></i>동호회 신청 내역</a> -->
+                <a class="nav-link" href="#"><i class="bi bi-file-earmark-text me-2"></i>동호회 신청 내역</a>
             </nav>
 			<!-- 사이드바 설정 개인설정 탭 -->
             <div class="menu-section-title">설정</div>

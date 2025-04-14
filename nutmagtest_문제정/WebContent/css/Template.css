@@ -1,0 +1,571 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+
+/* 기본 스타일 */
+*
+{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	white-space: nowrap;
+	cursor: url('../images/soccerballcursor.png') 2 2, auto !important;
+}
+
+body
+{
+	font-family: 'Poppins', sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 100vh;
+	overflow-y: overlay;
+	background-color: #ebedec;
+}
+
+.background-banner
+{
+	background-image: url('../images/background.png');
+	background-size: cover;
+	background-position: center 55%;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 250px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	bottom: 20px;
+}
+
+.menu-bar, main
+{
+	width: 90%;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+/* 메뉴바 스타일 */
+.menu-bar
+{
+	background-color: #3ea152;
+	padding: 15px 15px;
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 1001;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 10px;
+	height: 60px;
+}
+
+/* 왼쪽 메뉴 그룹 (햄버거 + 네비) */
+.left-menu
+{
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+/* 네비게이션 메뉴 */
+.nav-menu
+{
+	display: flex;
+	gap: 15px;
+}
+
+.nav-menu.active
+{
+	position: absolute;
+	top: 65px;
+	left: 0;
+	background-color: #3ea152;
+	padding: 15px;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 150px;
+}
+
+.nav-title
+{
+	color: black;
+	text-decoration: none;
+	font-size: 17px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.nav-sub
+{
+	display: none;
+	font-size: 15px;
+	color: #494949;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+.nav-sub:hover
+{
+	color: black;
+}
+
+/* 넛맥 로고 */
+.logo
+{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.logo a
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.logo img
+{
+	height: 75px;
+	width: auto;
+	cursor: pointer;
+}
+
+/* 오른쪽 메뉴 (로그인 or 사람 아이콘) */
+.right-menu
+{
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	z-index: 50;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.login-btn
+{
+	padding: 5px 10px;
+	border: 0;
+	border-radius: 5px;
+	background: white;
+	cursor: pointer;
+	font-weight: bold;
+	margin-right: 30px;
+}
+
+/* 중앙 컨텐츠 */
+main
+{
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+}
+
+.main-background
+{
+	background-color: white;
+	width: 100%;
+}
+
+/* 컨텐츠 박스 */
+.center
+{
+	width: 100%;
+	background: white;
+	padding: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	text-align: center;
+}
+
+/* 햄버거 메뉴 아이콘 */
+.menu-icon
+{
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	z-index: 50;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.menu-icon .line-1, .menu-icon .line-2, .menu-icon .line-3, .right-menu .line-4, .right-menu .line-5 
+{
+	height: 5px;
+	width: 100%;
+	background-color: #fff;
+	border-radius: 3px;
+	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.3);
+	transition: background-color 0.2s ease-in-out;
+}
+
+.menu-icon .line-2
+{
+	margin: 5px 0;
+}
+
+/* Hover 효과 */
+.menu-icon:hover .line-1, .menu-icon:hover .line-2, .menu-icon:hover .line-3
+{
+	background-color: #888;
+}
+
+/* Active 상태 - 애니메이션 적용 */
+.menu-icon.active .line-1
+{
+	animation: animate-line-1 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+.menu-icon.active .line-2
+{
+	animation: animate-line-2 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+.menu-icon.active .line-3
+{
+	animation: animate-line-3 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+.right-menu.active .line-4
+{
+	animation: animate-line-4 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+.right-menu.active .line-5
+{
+	animation: animate-line-5 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+/* Inactive 상태 - 역방향 애니메이션 적용 */
+.menu-icon.inactive .line-1
+{
+	animation: animate-line-1-rev 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+.menu-icon.inactive .line-2
+{
+	animation: animate-line-2-rev 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+.menu-icon.inactive .line-3
+{
+	animation: animate-line-3-rev 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+.right-menu.inactive .line-4
+{
+	animation: animate-line-4-rev 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+.right-menu.inactive .line-5
+{
+	animation: animate-line-5-rev 0.7s cubic-bezier(0.3, 1, 0.7, 1) forwards;
+}
+
+/* Keyframes */
+@keyframes animate-line-1
+{
+	0%
+	{
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+	
+	50%
+	{
+		transform: translate3d(0, 10px, 0) rotate(0);
+	}
+	
+	100%
+	{
+		transform: translate3d(0, 10px, 0) rotate(45deg);
+	}
+}
+
+@keyframes animate-line-2
+{
+	0%
+	{
+		transform: scale(1);
+		opacity: 1;
+	}
+	
+	100%
+	{
+		transform: scale(0);
+		opacity: 0;
+	}
+}
+
+@keyframes animate-line-3
+{
+	0%
+	{
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+	
+	50%
+	{
+		transform: translate3d(0, -10px, 0) rotate(0);
+	}
+	
+	100%
+	{
+		transform: translate3d(0, -10px, 0) rotate(135deg);
+	}
+}
+
+@keyframes animate-line-4
+{
+	0%
+	{
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+	
+	50%
+	{
+		transform: translate3d(0, 7.5px, 0) rotate(0);
+	}
+	
+	100%
+	{
+		transform: translate3d(0, 7.5px, 0) rotate(45deg);
+	}
+}
+
+@keyframes animate-line-5
+{
+	0%
+	{
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+	
+	50%
+	{
+		transform: translate3d(0, -7.5px, 0) rotate(0);
+	}
+	
+	100%
+	{
+		transform: translate3d(0, -7.5px, 0) rotate(135deg);
+	}
+}
+
+/* 역방향 애니메이션 */
+@keyframes animate-line-1-rev
+{
+	0%
+	{
+		transform: translate3d(0, 10px, 0) rotate(45deg);
+	}
+	
+	50%
+	{
+		transform: translate3d(0, 10px, 0) rotate(0);
+	}
+	
+	100%
+	{
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+}
+
+@keyframes animate-line-2-rev
+{
+	0%
+	{
+		transform: scale(0);
+		opacity: 0;
+	}
+	
+	100%
+	{
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes animate-line-3-rev
+{
+	0%
+	{
+		transform: translate3d(0, -10px, 0) rotate(135deg);
+	}
+	
+	50%
+	{
+		transform: translate3d(0, -10px, 0) rotate(0);
+	}
+	
+	100%
+	{
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+}
+
+@keyframes animate-line-4-rev
+{
+	0%
+	{
+		transform: translate3d(0, 7.5px, 0) rotate(45deg);
+	}
+	
+	50%
+	{
+		transform: translate3d(0, 7.5px, 0) rotate(0);
+	}
+	
+	100%
+	{
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+}
+
+@keyframes animate-line-5-rev
+{
+	0%
+	{
+		transform: translate3d(0, -7.5px, 0) rotate(135deg);
+	}
+	
+	50%
+	{
+		transform: translate3d(0, -7.5px, 0) rotate(0);
+	}
+	
+	100%
+	{
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+}
+
+.login-form
+{
+	display: flex;
+	align-items: center;
+}
+
+.user-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	color: white;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+@keyframes shrink
+{
+	0%
+	{
+        transform: scaleY(1);
+        opacity: 1;
+	}
+	
+	100%
+	{
+		transform: scaleY(0);
+		opacity: 0;
+	}
+}
+
+@keyframes shrink-rev
+{
+	0%
+	{
+        transform: scaleY(0);
+        opacity: 0;
+	}
+	
+	100%
+	{
+		transform: scaleY(1);
+		opacity: 1;
+	}
+}
+
+.user-icon.shrink
+{
+	animation: shrink 0.5s forwards;
+}
+
+.user-icon.inshrink
+{
+	animation: shrink-rev 1.25s forwards;
+}
+
+.line-4
+{
+	margin-bottom: -10px;
+}
+
+.line-5
+{
+	margin-top: -10px;
+}
+
+.line-4, .line-5
+{
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-5px);
+	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s linear 0.3s;
+}
+
+.right-menu.active .line-4, .right-menu.active .line-5
+{
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+	transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0s;
+}
+
+.right-menu.inactive .line-4, .right-menu.inactive .line-5
+{
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-5px);
+	transition: opacity 0.75s ease-in-out, transform 0.75s ease-in-out, visibility 0s linear 0.75s;
+}
+
+.user-menu
+{
+	position: absolute;
+	top: 65px;
+	right: 0;
+	background-color: #3ea152;
+	padding: 15px;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 150px;
+}
+
+.myInformation, .myTeam, .operatorSignUp, .myStadium, .logout
+{
+	cursor: pointer;
+	color: #494949;
+}
+
+.myInformation:hover, .myTeam:hover, .operatorSignUp:hover, .myStadium:hover, .logout:hover
+{
+	color: black;
+}

@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+::-webkit-scrollbar
+{
+	width: 10px;
+}
+
+::-webkit-scrollbar-track
+{
+	box-shadow: none;
+	background-color: black;
+}
+
+::-webkit-scrollbar-thumb
+{
+	outline: none;
+	border-radius: 10px;
+	background: linear-gradient(180deg, #ffb3ba, #ffdfba, #ffffba, #baffc9, #bae1ff, #e4c1f9);
+	background-size: 300% 300%;
+	transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover
+{
+	background: linear-gradient(180deg, #ff9aa2, #ffcba4, #fff799, #a4f5c1, #add8ff, #d7b1fa);
+	background-size: 300% 300%;
+}
