@@ -12,7 +12,7 @@
 	<select id="cityList" resultType="com.nutmag.project.dto.CityDTO">
 	    SELECT CITY_ID, CITY_NAME, REGION_ID
 	    FROM CITY
-	    WHERE REGION_ID = #{region_id}
+	    WHERE REGION_ID = #{region}
 	</select>
 
     

@@ -52,7 +52,7 @@ $(function()
     });
 	
 	// 모달 닫기 버튼
-	$("#cancel, #cancel-desc").on("click", function()
+	$("#cancel-desc").on("click", function()
 	{
 		$('#descModal').css('display', 'none');
 		$("#descModal").hide(); // 모달 숨기기

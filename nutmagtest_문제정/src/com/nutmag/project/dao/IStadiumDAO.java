@@ -2,11 +2,9 @@ package com.nutmag.project.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
 
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
-import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
 import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
@@ -46,9 +44,5 @@ public interface IStadiumDAO
 	
 	// 구장 휴무
 	public int stadiumHolidayInsert(StadiumHolidayInsertDTO holidayDTO);
-	
-	
-	
-	
 	
 }

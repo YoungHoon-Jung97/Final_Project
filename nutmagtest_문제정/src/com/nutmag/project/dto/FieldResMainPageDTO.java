@@ -2,10 +2,11 @@ package com.nutmag.project.dto;
 
 public class FieldResMainPageDTO
 {
-	private int field_reg_id,stadium_reg_id,field_code_id;
+	private int field_reg_id,stadium_reg_id,field_code_id,match_inwon_id;
 	private String field_reg_name,field_reg_at,field_reg_price,field_reg_garo,field_reg_image,
 					field_reg_sero,field_type,field_environment_type,stadium_reg_name,
-					stadium_reg_addr,stadium_reg_detailed_addr,stadium_time_name1,stadium_time_name2;
+					stadium_reg_addr,stadium_reg_detailed_addr,stadium_time_name1,stadium_time_name2,
+					match_inwon_type;
 	
 	
 	public int getField_reg_id()
@@ -135,6 +136,22 @@ public class FieldResMainPageDTO
 	public void setField_code_id(int field_code_id)
 	{
 		this.field_code_id = field_code_id;
+	}
+	public int getMatch_inwon_id()
+	{
+		return match_inwon_id;
+	}
+	public void setMatch_inwon_id(int match_inwon_id)
+	{
+		this.match_inwon_id = match_inwon_id;
+	}
+	public String getMatch_inwon_type()
+	{
+		return match_inwon_type;
+	}
+	public void setMatch_inwon_type(String match_inwon_type)
+	{
+		this.match_inwon_type = match_inwon_type;
 	}
     
 	
