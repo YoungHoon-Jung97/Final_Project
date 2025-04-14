@@ -418,6 +418,15 @@ public class StadiumController
 	    System.out.println("team_id in session: " + team_id);
 	    System.out.println("user_code_id in session: " + user_code_id);
 	    
+	    if (user_code_id == null || user_code_id == -1)
+		{
+	    	message = "ERROR_AUTH_REQUIRED: 로그인을 해야 합니다.";
+			session.setAttribute("message", message);
+			
+			return "redirect:MainPage.action";
+		}
+	    
+	    
 	    ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		
 		TeamDTO team = teamDAO.getTeamInfo(team_id);
