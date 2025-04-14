@@ -68,6 +68,7 @@
 	WHERE STADIUM_REG_ID=#{stadium_reg_id}
 	</select> -->
 	
+	<!-- 경기장 전체 리스트 -->
 	<select id="fieldAllList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
 	SELECT FIELD_REG_ID,
 	        FIELD_REG_NAME,
@@ -82,6 +83,8 @@
 	FROM FIELD_REG_VIEW
 	</select>
 	
+	
+	<!-- 경기장 미승인 리스트 -->
 	<select id="fieldBeforeApprList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
 	SELECT FIELD_REG_ID,
 	        FIELD_REG_NAME,
@@ -97,6 +100,8 @@
 	FROM FIELD_APPR_VALID_VIEW
 	</select>
 	
+	
+	<!-- 경기장 메인페이지 승인 완료 된 경기장 리스트 -->
 	<select id="fieldApprOkList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
 		SELECT
 		    FIELD_REG_ID,
@@ -118,6 +123,7 @@
 		FROM FIELD_APPR_OK_VIEW
 	</select>
 	
+	<!-- 경기장 예약 메인 페이지 검색 기능 -->
 	<select id="searchFieldList" resultType="com.nutmag.project.dto.FieldResMainPageDTO" parameterType="map">
 	     SELECT *
 	    FROM FIELD_REG_VIEW
@@ -133,6 +139,7 @@
 	    </if>
 	</select>
 	
+	<!-- 승인된 경기장 필드 코드로 찾기 -->
 	<select id="fieldApprOkSearchList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
 		SELECT
 		    FIELD_REG_ID,
@@ -155,6 +162,7 @@
 		WHERE FIELD_CODE_ID = #{field_code_id}
 	</select>
 	
+	<!-- 예약 불가능한 시간 찾기 -->
 	<select id="FieldUnavailableTime" resultType="map" parameterType="map">
 	    SELECT STADIUM_TIME_ID1,STADIUM_TIME_ID2
 	    FROM UNAVAILABLE_STADIUM_TIME_VIEW
@@ -163,4 +171,27 @@
 	</select>
 	
 	
+	<!-- 필드 코드로 구장 운영자 정보 찾기 -->
+	<select id="fieldOperatorInfo" parameterType="int" resultType="com.nutmag.project.dto.FieldResOperatorDTO">
+	  SELECT * 
+	  FROM FIELD_OPERATOR_VIEW
+	  WHERE FIELD_CODE_ID = #{field_code_id}
+	</select>
+	
+	<!-- 인원수 리스트 -->
+	<select id="inwonList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
+		SELECT *
+		FROM MATCH_INWON
+	</select>
+	
+	<insert id="fieldResInsert" parameterType="com.nutmag.project.dto.FieldResInsertDTO">
+		INSERT INTO FIELD_RES (FIELD_RES_ID,FIELD_RES_AT,FIELD_RES_MATCH_AT
+		,STADIUM_TIME_ID1,STADIUM_TIME_ID2,TEAM_ID,
+		FIELD_CODE_ID,MATCH_INWON_ID
+		,FIELD_RES_PAY_AMOUNT,FIELD_RES_PAY_AT)
+		
+		VALUES (FIELD_RES_SEQ.NEXTVAL,SYSDATE,#{field_res_match_at},#{stadium_time_id1}
+		,#{stadium_time_id2},#{team_id},#{field_code_id},#{match_inwon_id},#{field_res_pay_amount},NULL)
+	</insert>
+		
 </mapper>

@@ -2,8 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
+	String cp = request.getContextPath();
 %>
+
+<%
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    String today = sdf.format(new java.util.Date());
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,7 +98,7 @@ String cp = request.getContextPath();
 
             const clickedTimeId = parseInt($(this).attr("data-time-id"));
             console.log("⏱ 클릭된 시간 ID:", clickedTimeId);
-
+			
             if (selectionMode === "start") {
                 resetSelection();
                 startTimeId = clickedTimeId;
@@ -126,11 +132,13 @@ String cp = request.getContextPath();
                 selectionMode = "start";
                 $("#submit-button").prop("disabled", false);
             }
+            
         });
 
         $("#reset-button").click(function () {
             resetSelection();
         });
+		
 
         function resetSelection() {
             $('.time-container')
@@ -165,6 +173,8 @@ String cp = request.getContextPath();
                 $(this).val(""); // 날짜 초기화
                 return;
             }
+            
+            resetSelection();
             
             console.log("날짜 변경됨:", match_date);
             console.log("Ajax 요청 주소:", baseUrl + "/GetUnavailableTimeRange.action");
@@ -232,7 +242,40 @@ String cp = request.getContextPath();
                 });
             }
         });
+        
+        // 폼 전송 구문
+        $("#submit-button").click(function (e) {
+            e.preventDefault(); // 기본 동작 막고
+            
+            
+            if (startTimeId == null || endTimeId == null) {
+                alert("시간을 선택해 주세요.");
+                return;
+            }
+            
+            // 시작 시간 텍스트 추출 (예: "12:00")
+            const startText = $('.time-container[data-time-id="' + startTimeId + '"]').find('.time-title').text();
+            const startOnly = startText.split('~')[0].trim();
+
+            // 종료 시간 텍스트 추출 (예: "15:50")
+            const endText = $('.time-container[data-time-id="' + endTimeId + '"]').find('.time-title').text();
+            const endOnly = endText.split('~')[1].trim();
+
+            console.log("✅ 설정된 시간 ID:", startTimeId, "~", endTimeId);
+            console.log("🕒 설정된 시간 텍스트:", startOnly, "~", endOnly);
+
+            // hidden 필드에 값 넣기
+            $("#start_time_id").val(startTimeId);
+            $("#end_time_id").val(endTimeId);
+            $("#start_time_text").val(startOnly);
+            $("#end_time_text").val(endOnly);
+            
+            // 폼 전송
+            $(this).closest("form")[0].submit();
+        });
+        
     });
+    
 </script>
 
 
@@ -240,9 +283,9 @@ String cp = request.getContextPath();
 <body>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 <div class="container mt-4">
+	<form action="FieldReservationCheckForm.action" method="post">
 		<div class="main">
 		<c:forEach var="field" items="${fieldApprOkSearchList}">
-			<input type="hidden" id="field_code_id" value="${field.field_code_id}" />
 		    <div class="main-top">
 		        <div class="left">
 		            <div class="field-img w-100 mb-3">
@@ -259,7 +302,7 @@ String cp = request.getContextPath();
 		            </ul>
 		        </div>
 		        </div>
-		        
+		        <input type="hidden" name="field_code_id" id="field_code_id" value="${field.field_code_id}" />
 		    </div>
 		</c:forEach>
 			<div class="time-table-wrap">
@@ -269,7 +312,7 @@ String cp = request.getContextPath();
 					    <div class="d-flex align-items-center gap-3">
 					        <label for="matchDateInput" class="form-label mb-0"><strong>예약 날짜 선택</strong></label>
 					        <input type="date" id="matchDateInput" name="match_date"
-					               class="form-control" style="max-width: 250px;">
+					               class="form-control" style="max-width: 250px;" value="<%= today %>" min="<%= today %>">
 					    </div>
 					</div>
 					<br>
@@ -305,9 +348,13 @@ String cp = request.getContextPath();
 						</div>
 					</div> 
 				</div>
-				<div class="mt-3">
-			        <button id="submit-button" class="btn btn-primary" disabled>선택 완료</button>
-			        <button id="reset-button" class="btn btn-secondary ms-2">초기화</button>
+				<input type="hidden" name="start_time_id" id="start_time_id" value=""/>
+				<input type="hidden" name="end_time_id" id="end_time_id" value="" />
+				<input type="hidden" name="start_time_text" id="start_time_text"  value=""  />
+				<input type="hidden" name="end_time_text" id="end_time_text"  value=""  />
+				<div class="mt-3 d-flex justify-content-end">
+			        <button type="button" id="submit-button" class="btn btn-primary" disabled>예약하기</button>
+			        <button type="button" id="reset-button" class="btn btn-secondary ms-2">초기화</button>
 				</div>
 			
 			</div>
@@ -374,6 +421,7 @@ String cp = request.getContextPath();
 			
 			</div>	
 			
+			</form>
 		</div>
 	
 
