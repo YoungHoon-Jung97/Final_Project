@@ -27,7 +27,7 @@ $(function()
         {
         	swal(
         	{
-        		title: "회원가입 성공",
+        		title: "성공",
         		text: "회원가입이 완료되었습니다.",
         		icon: "success",
         		button: "확인"

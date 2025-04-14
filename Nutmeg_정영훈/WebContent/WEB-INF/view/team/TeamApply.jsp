@@ -43,7 +43,6 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title">팀 신청</h3>
-            <span id="apply-cancel" class="close-modal">&times;</span>
         </div>
         <div class="modal-body">
         	<form action="TeamApplyInsert.action" method="post">
@@ -99,26 +98,29 @@
 						<table class="team-table">
 							<caption>팀원정보</caption>
 							<colgroup>
-								<col style="width: 45%" />
-								<col style="width: 10%" />
-								<col style="width: 15%" />
-								<col style="width: 30%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
 							</colgroup>
 							<thead>
 								<tr class="center">
+									<th>역할</th>
 									<th>이름</th>
 									<th>포지션</th>
-									<th>역할</th>
-									<th>관리</th>
+									<th>나이</th>
+									<th>성별</th>
 								</tr>
 							</thead>
 							<tbody class="center">
 								<c:forEach var="teamMember" items="${teamMemberList}">
 									<tr>
-										<td>${teamMember.user_name}</td>
+										<td>${teamMember.member_status}</td>
+										<td>${teamMember.user_nick_name}</td>
 										<td>${teamMember.position_name}</td>
-										<td>팀 개설자</td>
-										<td></td>
+										<td>${teamMember.age}</td>
+										<td>${teamMember.gender}</td>
 									</tr>
 								</c:forEach>
 							</tbody>

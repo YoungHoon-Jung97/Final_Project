@@ -16,9 +16,8 @@
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/modal.css">
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("#applyModal").css('display','none');
-	    
 		$("#teamApply").on("click",function(){
+			$('#applyModal').css('display', 'flex');
 			$("#applyModal").show();
 	    	$("body").css("overflow", "hidden"); // 페이지 스크롤 방지
 			
@@ -26,6 +25,7 @@
 	
 	    // 모달 닫기 버튼
 	    $("#apply-cancel").on("click", function() {
+	    	$('#applyModal').css('display', 'none');
 	        $("#applyModal").hide(); // 모달 숨기기
 	        $("body").css("overflow", "auto"); // 페이지 스크롤 복원
 	    });
@@ -58,8 +58,8 @@
 					</select> 
 	            
 	                <h4 class="section-title">신청자 설명</h4>
-	                <textarea id="apply-content" placeholder="자신의 정보를 입력하세요" name="temp_team_apply_desc"></textarea>
-	                <input type="hidden" name="teamId" value="${teamId}" />
+	                <textarea id="apply-content" placeholder="자신의 정보를 입력하세요" name="team_apply_desc"></textarea>
+	                <input type="hidden" name="team_id" value="${team_id}" />
 	            </div>
 	            <div class="modal-footer">
 	                <button type="submit" id="submit-apply" class="modal-button modal-submit">신청</button>
@@ -113,12 +113,14 @@
 								</tr>
 							</thead>
 							<tbody class="center">
-								<tr>
-									<td>${team.temp_team_name}</td>
-									<td></td>
-									<td>팀 개설자</td>
-									<td></td>
-								</tr>
+								<c:forEach var="teamMember" items="${teamMemberList}">
+									<tr>
+										<td>${teamMember.user_name}</td>
+										<td>${teamMember.position_name}</td>
+										<td>팀 개설자</td>
+										<td></td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>

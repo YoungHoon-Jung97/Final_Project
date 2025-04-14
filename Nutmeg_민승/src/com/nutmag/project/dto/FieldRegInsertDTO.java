@@ -1,12 +1,16 @@
 package com.nutmag.project.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class FieldRegInsertDTO
 {
 	private int field_reg_id, field_size_id
 			  , stadium_reg_id, field_reg_price,field_reg_garo,field_reg_sero,field_type_id
 			  , field_environment_id;
 	
-	private String field_reg_name, field_reg_at, field_size_capacity;
+	private String field_reg_name, field_reg_at, field_size_capacity, field_image;
+	
+	private MultipartFile field_reg_image;
 	
 	
 	public int getField_reg_id()
@@ -98,9 +102,22 @@ public class FieldRegInsertDTO
 		this.field_size_capacity = field_size_capacity;
 	}
 	
-	
-	
-	
-	
+	public MultipartFile getField_reg_image()
+	{
+		return field_reg_image;
+	}
+	public void setField_reg_image(MultipartFile field_reg_image)
+	{
+		this.field_reg_image = field_reg_image;
+	}
+	public String getField_image()
+	{
+		return field_image;
+	}
+	public void setField_image(String field_image)
+	{
+		this.field_image = field_image;
+	}
+
 	
 }

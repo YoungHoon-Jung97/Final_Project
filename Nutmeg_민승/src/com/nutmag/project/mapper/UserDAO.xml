@@ -4,62 +4,57 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutmag.project.dao.IUserDAO">
 	
-	<!-- 유저 정보 입력 프로시저  -->
+	<!-- 정보 입력 프로시저  -->
 	<insert id="userInsert" parameterType="com.nutmag.project.dto.UserDTO" statementType="CALLABLE">
         CALL PRC_USER_INSERT(
-            #{user_name, jdbcType=VARCHAR},
-            #{user_pwd, jdbcType=VARCHAR},
-            #{user_email, jdbcType=VARCHAR},
-            #{user_ssn1, jdbcType=VARCHAR},
-            #{user_ssn2, jdbcType=VARCHAR},
-            #{user_tel, jdbcType=VARCHAR},
-            #{user_postal_addr, jdbcType=VARCHAR},
-            #{user_addr, jdbcType=VARCHAR},
-            #{user_detailed_addr, jdbcType=VARCHAR},
-            #{user_nick_name, jdbcType=VARCHAR}
+            #{user_name,			jdbcType=VARCHAR},
+            #{user_pwd,				jdbcType=VARCHAR},
+            #{user_email,			jdbcType=VARCHAR},
+            #{user_ssn1,			jdbcType=VARCHAR},
+            #{user_ssn2,			jdbcType=VARCHAR},
+            #{user_tel,				jdbcType=VARCHAR},
+            #{user_postal_addr,		jdbcType=VARCHAR},
+            #{user_addr,			jdbcType=VARCHAR},
+            #{user_detailed_addr,	jdbcType=VARCHAR},
+            #{user_nick_name,		jdbcType=VARCHAR}
         )
     </insert>
 	
-	<!-- 유저 아이디/비밀번호 찾기 select  -->
-	<!-- <select id="userLoginKo" resultType="com.nutmag.project.dto.UserDTO">
-		SELECT USER_ID,USER_NAME,USER_EMAIL,USER_CODE_ID
-		FROM USER_INFO
-		WHERE USER_EMAIL = UPPER(#{logEmailKo}) AND USER_PWD = #{logPwKo}
-	</select> -->
+	<!-- 로그인 -->
 	<select id="userLoginKo" resultType="com.nutmag.project.dto.UserDTO">
-		SELECT USER_ID,USER_NAME,USER_EMAIL,USER_CODE_ID
+		SELECT USER_ID, USER_NAME, USER_EMAIL, USER_CODE_ID
 		FROM USER_INFO
 		WHERE USER_EMAIL = #{logEmailKo} AND USER_PWD = #{logPwKo}
 	</select>
 	
 	<select id="userLoginEn" resultType="com.nutmag.project.dto.UserDTO">
-		SELECT USER_ID,USER_NAME,USER_EMAIL,USER_CODE_ID
+		SELECT USER_ID, USER_NAME, USER_EMAIL, USER_CODE_ID
 		FROM USER_INFO
 		WHERE USER_EMAIL = #{logEmailEn} AND USER_PWD = #{logPwEn}
 	</select>
 	
-	<!-- 유저 아이디 찾기 select(중복확인)  -->
+	<!-- 아이디 중복 확인 -->
 	<select id="searchEmail" resultType="int">
 		SELECT COUNT(*)
 		FROM USER_INFO
 		WHERE USER_EMAIL = #{email}
 	</select>
 
-	<!-- 유저 닉네임 중복 찾기  -->
+	<!-- 닉네임 중복 확인 -->
 	<select id="searchnickName" resultType="int">
 		SELECT COUNT(*)
 		FROM USER_INFO
 		WHERE USER_NICK_NAME = #{nickName}
 	</select>
 	
-	<!-- 구장운영자 이메일 중복 찾기-->
+	<!-- 구장 운영자 이메일 중복 확인-->
 	<select id="searchEmailOperator" resultType="int">
 		SELECT COUNT(*)
 		FROM OPERATOR_INFO
 		WHERE OPERATOR_EMAIL = #{email}
 	</select>
 	
-	<!-- 계좌번호 중복 찾기 -->
+	<!-- 계좌번호 중복 확인 -->
 	<select id="searchAccountOperator" resultType="int">
 		SELECT COUNT(*)
 		FROM OPERATOR_INFO
@@ -68,11 +63,11 @@
 	
 	<!-- 운영자 등록  -->
 	<insert id="operatorInsert" parameterType="com.nutmag.project.dto.StadiumRegInsertDTO">
-		INSERT INTO OPERATOR_INFO (OPERATOR_ID,OPERATOR_EMAIL,OPERATOR_NAME
-								, OPERATOR_TEL,OPERATOR_ACCOUNT_NO,OPERATOR_ACCOUNT_HOLDER
-								, BANK_ID, USER_CODE_ID)
-		VALUES (OPERATOR_INFO_SEQ.NEXTVAL,#{operator_email},#{operator_name},#{operator_tel}
-				,#{operator_account_no},#{operator_account_holder},#{bank_id},#{user_code_id})
+		INSERT INTO OPERATOR_INFO (OPERATOR_ID, OPERATOR_EMAIL, OPERATOR_NAME
+								 , OPERATOR_TEL, OPERATOR_ACCOUNT_NO
+								 , OPERATOR_ACCOUNT_HOLDER , BANK_ID, USER_CODE_ID)
+		VALUES (OPERATOR_INFO_SEQ.NEXTVAL, #{operator_email}, #{operator_name}, #{operator_tel}
+				, #{operator_account_no}, #{operator_account_holder}, #{bank_id}, #{user_code_id})
 	</insert>
 	
 	<!-- 운영자 인증 -->
@@ -81,6 +76,5 @@
 		FROM OPERATOR_INFO
 		WHERE USER_CODE_ID = #{user_code_id}
 	</select>
-	
 	
 </mapper>

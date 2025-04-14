@@ -186,7 +186,7 @@
 				</div>
 			</div>
 
-			<!-- 상세주소 -->
+			<!-- 주소 -->
 			<div class="form__group">
 				<div class="form__field">
 					<label for="address" class="form__label required">주소</label>
@@ -198,6 +198,7 @@
 				</div>
 			</div>
 			
+			<!-- 상세 주소 -->
 			<div class="form__group">
 				<div class="form__field">
 					<label for="address" class="form__label required">상세주소</label>

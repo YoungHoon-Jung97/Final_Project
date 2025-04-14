@@ -75,14 +75,15 @@ $(function()
 	// 용병 게시판
 	$(".mercenary-offer").click(function()
 	{
-		window.location.href = "MercenaryOffer.action";
+		window.location.href = "MercenaryBoard.action";
 	});
 	
 	// 용병 등록
 	$(".mercenary").click(function()
 	{
-		window.location.href = "Mercenary.action";
+		window.location.href = "MercenaryInsertForm.action";
 	});
+	
 	
 	// 매치 참가
 	$(".match").click(function()

@@ -3,10 +3,18 @@ package com.nutmag.project.dto;
 import org.springframework.web.multipart.MultipartFile;
 
 public class TeamDTO {
-	private int temp_team_id,user_code_id,bank_id,region_id,city_id,temp_team_person_count;
+	private int temp_team_id,user_code_id,bank_id,region_id,city_id,temp_team_person_count,team_id,
+	status;
 	private String temp_team_name,temp_team_desc,emblem,temp_team_apply_at,
-	temp_team_account,temp_team_account_holder,region_name,city_name,team_id;
+	temp_team_account,temp_team_account_holder,region_name,city_name;
 	
+	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 	private MultipartFile temp_team_emblem;
 	
 	public String getRegion_name()
@@ -17,12 +25,10 @@ public class TeamDTO {
 	{
 		this.region_name = region_name;
 	}
-	public String getTeam_id()
-	{
+	public int getTeam_id() {
 		return team_id;
 	}
-	public void setTeam_id(String team_id)
-	{
+	public void setTeam_id(int team_id) {
 		this.team_id = team_id;
 	}
 	public String getCity_name()

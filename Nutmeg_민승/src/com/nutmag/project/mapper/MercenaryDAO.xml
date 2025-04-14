@@ -5,6 +5,17 @@
 
 <mapper namespace="com.nutmag.project.dao.IMercenaryDAO">
 
+	<!-- 입력 기능 -->
+ 	<insert id="insertMercenary" parameterType="com.nutmag.project.dto.MercenaryDTO">
+    	CALL PRC_MERCENARY_INSERT(
+	        #{user_name,         jdbcType=VARCHAR},
+	        #{temp_team_name,    jdbcType=VARCHAR},
+	        #{position_name,     jdbcType=VARCHAR},
+	        #{region_name,       jdbcType=VARCHAR},
+	        #{city_name,         jdbcType=VARCHAR},
+	        #{mercenary_time_start_at, jdbcType=VARCHAR}
+    )	
+	</insert>  
 	<!-- 전체 조회 -->
 	<select id="mercenaryList" resultType="com.nutmag.project.dto.MercenaryDTO">
 		SELECT *
@@ -21,9 +32,6 @@
         </if>
         <if test="field != null and keyword != null and field == 'position_name'">
             AND "position_name" LIKE '%' || #{keyword} || '%'
-        </if>
-        <if test="field != null and keyword != null and field == 'team_name'">
-            AND "team_name" LIKE '%' || #{keyword} || '%'
         </if>
     </where>
 </select>
@@ -42,10 +50,7 @@
                     </when>
                     <when test="field == 'position_name'">
                         AND "position_name" LIKE '%' || #{keyword} || '%'
-                    </when>
-                    <when test="field == 'team_name'">
-                        AND "team_name" LIKE '%' || #{keyword} || '%'
-                    </when>
+                    </when> 
                 </choose>
             </where>
             ORDER BY "user_name"
@@ -65,9 +70,6 @@
             </when>
             <when test="field == 'position_name'">
                 AND "position_name" LIKE '%' || #{keyword} || '%'
-            </when>
-            <when test="field == 'team_name'">
-                AND "team_name" LIKE '%' || #{keyword} || '%'
             </when>
         </choose>
     </where>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nutmag.project.dao.IMercenaryDAO">
+
+	<!-- 입력 기능 -->
+ 	<insert id="insertMercenary" parameterType="com.nutmag.project.dto.MercenaryDTO" statementType="CALLABLE">
+     CALL PRC_INSERT_MERCENARY_WITH_TIME(
+		    #{user_code_id},
+		    #{position_id},
+		    #{region_id},
+		    #{city_id},
+		    #{mercenary_time_start_at},
+		    #{mercenary_time_end_at}
+		)
+	</insert>  
+	
+	
+	<!-- 용병 조회 -->
+	<select id="searchTimeMercenary" resultType="com.nutmag.project.dto.MercenaryDTO">
+	    SELECT *
+	    FROM MERCENARY_VIEW
+	    WHERE mercenary_time_start_at &lt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
+	      AND mercenary_time_end_at &gt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
+	</select>
+
+	<!-- 용병 등록 확인 -->
+	<select id="checkedMercenary" resultType="int">
+		SELECT NVL(MAX(MERCENARY_ID), 0) AS "MERCENARY_ID"
+		FROM MERCENARY_VIEW
+		WHERE USER_CODE_ID =#{user_code_id}
+	</select>
+
+	<!-- 용병 시간 변경 -->
+	<update id="updateMercenaryTime" parameterType="com.nutmag.project.dto.MercenaryDTO">
+		UPDATE MERCENARY_TIME_LOG
+		SET MERCENARY_TIME_START_AT = #{mercenary_time_start_at},
+		MERCENARY_TIME_END_AT = #{mercenary_time_end_at} 
+		WHERE MERCENARY_ID =#{mercenary_id}
+	</update>
+	
+	<!-- 용병 지역 검색  -->
+	<select id="searchMercenary" resultType="com.nutmag.project.dto.MercenaryDTO" parameterType="map">
+	    SELECT *
+	    FROM MERCENARY_VIEW
+	    WHERE 1=1
+	    <if test="region_name != null and region_name != ''">
+	        AND REGION_NAME LIKE #{region_name} || '%'
+	    </if>
+	    <if test="city_name != null and city_name != ''">
+	        AND CITY_NAME LIKE '%' || #{city_name} || '%'
+	    </if>
+	    <if test="time != null and time != ''">
+	        AND mercenary_time_start_at &lt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
+	      	AND mercenary_time_end_at &gt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
+	    </if>
+	</select>
+	
+	
+</mapper>

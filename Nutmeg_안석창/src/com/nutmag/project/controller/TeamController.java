@@ -164,16 +164,22 @@ public class TeamController
 	}
 	
 	// 동호회 가입
-	@RequestMapping(value = "/TeamApplyInsert.action", method = RequestMethod.POST)
+	@RequestMapping(value="/TeamApplyInsert.action", method = RequestMethod.POST)
 	public String applyTeam(TeamApplyDTO teamApply, HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
+		
+		//데이터베이스 연력 객체 생성
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		
-		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		//가입 유저 코드
+		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
 		
-		int team_id = teamApply.getTeam_id();
+		//임시 동호회 코드(동호호 정보을 알아내기 위함)
+		String strTeam_id =(String)request.getParameter("team_id");
+		int team_id = Integer.parseInt(strTeam_id);
 		
+		//디버그 코드
 		System.out.println("==========[동호회 가입]==========");
 		System.out.println("user_code_id = " + user_code_id);
 		System.out.println("temp_team_apply_desc = " + teamApply.getTeam_apply_desc());
@@ -187,13 +193,39 @@ public class TeamController
 		// 임시 동호회 가입
 		if (team.getTeam_id() == 0)
 		{
+			System.out.println("확인===============================================================================================");
+			System.out.println(teamDAO.checkedTempTeamApply(user_code_id,team.getTemp_team_id()));
+			System.out.println("===================================================================================================");
+			
+			// 가입 신청 중복 방지
+			if(teamDAO.checkedTempTeamApply(user_code_id,team.getTemp_team_id()) > 0)
+			{
+				String message = "ERROR_DUPLICATE_REQUEST: 이미 접수 된 동호회입니다.";
+				session.setAttribute("message", message);
+				
+				return "redirect:MainPage.action";
+			}
+			
 			teamApply.setTeam_id(team_id);
-			teamDAO.addTempTeam(teamApply);
+			teamDAO.applyedTempTeam(teamApply);
+			
 		}
 		
 		// 정식 동호회 가입
-		else if (team.getTeam_id() != 0)
+		else if(team.getTeam_id() !=0)
+		{
+			// 가입 신청 중복 방지
+			if(teamDAO.checkedTeamApply(user_code_id,team.getTeam_id()) > 0)
+			{
+				String message = "ERROR_DUPLICATE_REQUEST: 이미 접수 된 동호회입니다.";
+				session.setAttribute("message", message);
+				
+				return "redirect:MainPage.action";
+			}
+			
 			teamApply.setTeam_id(team.getTeam_id());
+			teamDAO.applyedTeam(teamApply);
+		}
 		
 		String message = "SUCCESS_APPLY: 동호회 신청이 완료되었습니다.";
 		session.setAttribute("message", message);
@@ -355,7 +387,7 @@ public class TeamController
 		
 		return "redirect:/MainPage.action";
 	}
-	
+
 	// 내 동호회 메인 페이지 호출
 	@RequestMapping(value = "/MyTeam.action", method = RequestMethod.GET)
 	public String teamMain(HttpServletRequest request, Model model)

@@ -123,19 +123,6 @@ textarea
 	background-color: #e07575;
 }
 
-/* 닫기 버튼 */
-.close-modal
-{
-	font-size: 30px;
-	color: #84b6f4;
-	transition: color 0.3s ease;
-}
-
-.close-modal:hover
-{
-	color: #5a94db;
-}
-
 /* 이미지 컨테이너 */
 .modal-img
 {

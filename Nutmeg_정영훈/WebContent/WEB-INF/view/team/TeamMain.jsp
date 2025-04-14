@@ -16,8 +16,8 @@
 <style type="text/css">
 /*팀 메뉴 넘어갔을 때 표시*/
 .teampage-link:first-child a {
-	color: #ff4500;
-	border-bottom: 2px solid #ff4500;
+	color: #a8d5ba;
+	border-bottom: 2px solid #a8d5ba;
 }
 
 
@@ -61,16 +61,18 @@
 						<table class="team-table">
 							<caption>팀원정보</caption>
 							<colgroup>
-								<col style="width: 45%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
+								<col style="width: 20%" />
 								<col style="width: 10%" />
-								<col style="width: 15%" />
-								<col style="width: 30%" />
+								<col style="width: 10%" />
+								<col style="width: 20%" />
 							</colgroup>
 							<thead>
 								<tr class="center">
-									<th>이름</th>
-									<th>포지션</th>
 									<th>역할</th>
+									<th>닉네임</th>
+									<th>포지션</th>
 									<th>나이</th>
 									<th>성별</th>
 									<th>관리</th>
@@ -79,21 +81,25 @@
 							<tbody class="center">
 								<c:forEach var="teamMember" items="${teamMemberList}">
 									<tr>
+										<td>${teamMember.member_status}</td>
 										<td>${teamMember.user_nick_name}</td>
 										<td>${teamMember.position_name}</td>
-										<td>${teamMember.member_status}</td>
 										<td>${teamMember.age}</td>
 										<td>${teamMember.gender}</td>
 										<c:choose>
-											<c:when test="${team.status==1 }">
+											<c:when test="${team.status == 1 && teamMember.member_status != '회장'}">
 												<td>
-													<a href="DropMember.action">강퇴</a>
+													<a href="DropMember.action?team_member_id=${teamMember.team_member_id}">강퇴</a>
 												</td>
 											</c:when>
-											<c:when test="${team.status==0 }">
-												<td>
-												</td>
+											<c:when test="${team.status == 0}">
+												<td></td>
 											</c:when>
+											<c:otherwise>
+												<td>
+													
+												</td>
+											</c:otherwise>
 										</c:choose>
 									</tr>
 								</c:forEach>

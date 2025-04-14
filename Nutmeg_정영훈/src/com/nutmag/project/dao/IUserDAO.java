@@ -37,4 +37,10 @@ public interface IUserDAO
 	//구장 운영자 인증
 	public Integer operatorSearchId(int user_code_id);
 	
+	//사용자 비밀번호 확인
+	public int checkUserForPwd(@Param("email") String email, @Param("tel") String tel);
+	
+	//임시 비밀번호로 변경
+    public void updateTempPassword(@Param("email") String email, @Param("pwd") String pwd);
+	
 }

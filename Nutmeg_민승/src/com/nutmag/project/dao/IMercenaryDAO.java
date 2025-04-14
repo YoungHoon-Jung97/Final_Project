@@ -21,6 +21,6 @@ public interface IMercenaryDAO
 	                                                @Param("offset") int offset, @Param("limit") int limit);
 	int searchCount(@Param("field") String field, @Param("keyword") String keyword);
 
-	
+	void insertMercenary(MercenaryDTO dto);
 
 }

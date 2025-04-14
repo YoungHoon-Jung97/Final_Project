@@ -2,6 +2,7 @@ package com.nutmag.project.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -83,14 +84,11 @@ public class UserController
 	@RequestMapping(value = "/UserInsert.action", method = RequestMethod.POST)
 	public String userInsert(UserDTO user)
 	{
-		String result = null;
-		
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		
 		dao.userInsert(user);
 		
-		result = "redirect:MainPage.action";
-		return result;
+		return "redirect:MainPage.action";
 	};
 	
 	//===============================================================================	
@@ -152,11 +150,16 @@ public class UserController
 	
 	// 구장 운영자 회원가입 인서트
 	@RequestMapping(value = "/OperatorInsert.action", method = RequestMethod.POST)
-	public String operatorInsert(OperatorDTO operator)
+	public String operatorInsert(OperatorDTO operator, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
+		
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		
 		dao.operatorInsert(operator);
+		
+		String message = "SUCCESS_INSERT: 구장 운영자 회원가입이 완료되었습니다.";
+		session.setAttribute("message", message);
 		
 		return "redirect:MainPage.action";
 	};
@@ -190,13 +193,6 @@ public class UserController
 		else
 			dto = userDAO.userLoginEn(logEmailEn, logPwEn);
 		
-		System.out.println("=========================[로그인 확인]======================================");
-		System.out.println("user_name"+ dto.getUser_name());
-		System.out.println("user_email"+ dto.getUser_email());
-		System.out.println("user_code_id"+ dto.getUser_code_id());
-		System.out.println("operator_id"+ userDAO.operatorSearchId(dto.getUser_code_id()));
-		System.out.println("==========================================================================");
-		
 		if (dto != null && dto.getUser_id() > 0)
 		{
 			// 로그인 성공
@@ -205,13 +201,12 @@ public class UserController
 			session.setAttribute("user_code_id", dto.getUser_code_id());
 			session.setAttribute("operator_id", userDAO.operatorSearchId(dto.getUser_code_id()));
 
-			if (teamDAO.searchMyTempTeam(dto.getUser_code_id()) != null) {
-				
+			if (teamDAO.searchMyTempTeam(dto.getUser_code_id()) != null)
 				session.setAttribute("team_id", teamDAO.searchMyTempTeam(dto.getUser_code_id()));
-			}else if (teamDAO.searchMyTeam(dto.getUser_code_id()) != null) {
-				
+			
+			else if (teamDAO.searchMyTeam(dto.getUser_code_id()) != null)
 				session.setAttribute("team_id", teamDAO.searchMyTeam(dto.getUser_code_id()));
-			}
+			
 			else
 				session.setAttribute("team_id", 0);
 			
@@ -266,10 +261,6 @@ public class UserController
 		else
 		{
 			// 로그인 실패
-			Cookie c = new Cookie("key", null);
-			c.setMaxAge(0);
-			response.addCookie(c);
-
 			session.setAttribute("lang", lang);
 			return "redirect:/Login.action?msg=fail";
 		}
@@ -290,18 +281,7 @@ public class UserController
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");
 		
-		// 리다이렉트 (이전 페이지 or 기본 Template)
-		String returnUrl = request.getParameter("returnUrl");
-		
-		// logoutMsg 파라미터 제거
-		if (returnUrl != null && returnUrl.contains("logoutMsg"))
-		{
-			returnUrl = returnUrl.replaceAll("[&?]logoutMsg=1", "");
-			// 끝에 ?나 &가 남으면 제거
-			returnUrl = returnUrl.replaceAll("[?&]$", "");
-		}
-		
-		return "redirect:" + (returnUrl != null ? returnUrl : "/Error.action");
+		return "redirect:/MainPage.action";
 	}
 	
 	// 이메일 찾기
@@ -311,11 +291,58 @@ public class UserController
 		return "ForgotEmail";
 	}
 	
-	// 비밀번호 찾기
+	// 비밀번호 찾기 폼 띄우기 (GET)
 	@RequestMapping(value = "/ForgotPassword.action", method = RequestMethod.GET)
-	public String forgotPassword(Model model)
+	public String forgotPasswordForm() 
 	{
-		return "ForgotPassword";
+	    return "/user/ForgotPassword";
+	}
+	
+	// 비밀번호 찾기 처리 (POST)
+	@RequestMapping(value = "/ForgotPassword.action", method = RequestMethod.POST)
+	public String forgotPassword(HttpServletRequest request, Model model) {
+
+	    String email = request.getParameter("email");
+	    String tel = request.getParameter("tel");
+
+	    System.out.println("비밀번호 찾기 요청 도착!");
+	    System.out.println("email = " + email);
+	    System.out.println("tel = " + tel);
+
+	    // DAO 꺼내오기
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+
+	    // 사용자 유효성 검사
+	    int result = dao.checkUserForPwd(email, tel);
+	    boolean isValid = result > 0;
+
+	    if (isValid) {
+	        // 임시 비밀번호 생성
+	        String tempPwd = createTempPassword();
+
+	        // 비밀번호 업데이트
+	        dao.updateTempPassword(email, tempPwd);
+
+	        // 메일 발송 (실제로 메일 로직이 있으면 여기에 작성)
+	        System.out.println("임시 비밀번호 [" + tempPwd + "]를 이메일로 보냅니다.");
+
+	        model.addAttribute("message", "임시 비밀번호가 이메일로 전송되었습니다.");
+	    } else {
+	        model.addAttribute("message", "입력하신 정보와 일치하는 회원이 없습니다.");
+	    }
+
+	    return "/user/ForgotPassword"; // 결과 출력용 JSP
+	}
+	
+	// 임시 비밀번호 생성
+	private String createTempPassword() {
+	    String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	    StringBuilder sb = new StringBuilder();
+	    Random rnd = new Random();
+	    for (int i = 0; i < 10; i++) {
+	        sb.append(chars.charAt(rnd.nextInt(chars.length())));
+	    }
+	    return sb.toString();
 	}
 	
 	// 내 정보

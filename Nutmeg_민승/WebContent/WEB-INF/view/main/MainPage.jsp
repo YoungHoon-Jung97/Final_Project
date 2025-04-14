@@ -26,6 +26,24 @@
 
 </head>
 <body>
+<%	if(request.getParameter("message") != null)
+	{
+%>
+		<script type="text/javascript">
+			if (history.replaceState)
+				history.replaceState({}, '', location.pathname);
+			
+			else
+			{
+				var cleanUrl = location.protocol + '//' + location.host + location.pathname;
+				location.href = cleanUrl;
+			}
+			
+			swal("warning", "<%= request.getParameter("message") %>", "warning");
+			
+		</script>
+<%	}
+%>
 <!-- 상세설명 모달 -->
 <div id="descModal" class="modal">
 	<div class="modal-content">
@@ -62,55 +80,55 @@
 	</div>
 </div>
 
-<main>
-	<!-- 동호회 리스트 -->
-	<div class="container mt-4">
-		<div class="row justify-content-center">
-			<c:forEach var="team" items="${teamList}">
-				<div class="col-md-4 d-flex justify-content-center">
-					<div class="card">
-						<div class="card-img">
-							<div class="temp">
-								<c:if test="${team.team_id == 'TEMP_TEAM'}">
-									🌱
-								</c:if>
+<div class="main-background">
+	<main>
+		<!-- 동호회 리스트 -->
+		<div class="container mt-4">
+			<div class="row justify-content-center">
+				<c:forEach var="team" items="${teamList}">
+					<div class="col-md-4 d-flex justify-content-center">
+						<div class="card">
+							<div class="card-img">
+								<div class="temp-icon">
+									<c:if test="${team.team_id == 0}">
+										🌱
+									</c:if>
+								</div>
+								
+								<!-- 동호회 앰블럼 -->
+								<c:choose>
+								    <c:when test="${team.emblem != '/'}">
+								        <img src="${team.emblem}" alt="${team.temp_team_name} 앰블럼">
+								    </c:when>
+								    
+								    <c:when test="${team.emblem == '/' || team.emblem == null}">
+								        <img src="images/noEmblem.png" alt="${team.temp_team_name} 앰블럼">
+								    </c:when>
+								</c:choose>
 							</div>
 							
-							<!-- 동호회 앰블럼 (이미지 경로는 동적으로 바꿀 수 있음) -->
-							<img src="${team.emblem}" alt="${team.temp_team_name} 앰블럼">
-						</div>
-						
-						<div class="card-content">
-							<h2 value="${team.temp_team_name}">${team.temp_team_name}</h2>
-							<!-- 동호회 이름 -->
-							<p>${team.region_name} / ${team.city_name}</p>
-							<!-- 동호회 지역 -->
-							<input id="teamName" type="hidden" value="${team.temp_team_name}">
-							<input id="teamDesc" type="hidden" value="${team.temp_team_desc}">
-							<input id="teamRegion" type="hidden" value="${team.region_name}">
-							<input id="teamCity" type="hidden" value="${team.city_name}">
-							<input id="teamMemberCount" type="hidden" value="${team.temp_team_person_count}">
-							<input id="teamEmblem" type="hidden"  value="${team.emblem}"/>
-							<input id="teamStaus" type="hidden" value="${team.team_id}">
-							<input id="teamId" type="hidden" value="${team.temp_team_id}">
-							<button class="card-action">자세히 보기</button>
+							<div class="card-content">
+								<h2 value="${team.temp_team_name}">${team.temp_team_name}</h2>
+								<!-- 동호회 이름 -->
+								<p>${team.region_name} / ${team.city_name}</p>
+								<!-- 동호회 지역 -->
+								<input id="teamName" type="hidden" value="${team.temp_team_name}">
+								<input id="teamDesc" type="hidden" value="${team.temp_team_desc}">
+								<input id="teamRegion" type="hidden" value="${team.region_name}">
+								<input id="teamCity" type="hidden" value="${team.city_name}">
+								<input id="teamMemberCount" type="hidden" value="${team.temp_team_person_count}">
+								<input id="teamEmblem" type="hidden"  value="${team.emblem}"/>
+								<input id="teamStaus" type="hidden" value="${team.team_id}">
+								<input id="teamId" type="hidden" value="${team.temp_team_id}">
+								<button class="card-action">자세히 보기</button>
+							</div>
 						</div>
 					</div>
-				</div>
-			</c:forEach>
+				</c:forEach>
+			</div>
 		</div>
-	</div>
-
-<%	if(request.getParameter("message") != null)
-	{
-%>
-		<script type="text/javascript">
-			alert("<%= request.getParameter("message") %>");
-			window.location.href = "MainPage.action";
-		</script>
-<%	}
-%>
-</main>
+	</main>
+</div>
 
 <div id="filterPanel" class="filter-panel">
 	<h4>필터</h4>
@@ -148,20 +166,20 @@
 
 <script type="text/javascript">
 
-document.getElementById("topIconButton").addEventListener("click", function ()
-{
-	window.scrollTo(
+	document.getElementById("topIconButton").addEventListener("click", function ()
 	{
-		top: 0,
-		behavior: "smooth"
+		window.scrollTo(
+		{
+			top: 0,
+			behavior: "smooth"
+		});
 	});
-});
-
-document.getElementById("leftIconButton").addEventListener("click", function ()
-{
-	var panel = document.getElementById("filterPanel");
-	panel.classList.toggle("active");
-});
+	
+	document.getElementById("leftIconButton").addEventListener("click", function ()
+	{
+		var panel = document.getElementById("filterPanel");
+		panel.classList.toggle("active");
+	});
 
 </script>
 
