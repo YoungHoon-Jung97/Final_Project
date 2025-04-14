@@ -50,7 +50,7 @@ public interface ITeamDAO {
 	public ArrayList<TeamApplyDTO> teamMemberList(int teamId);
 	
 	//임시 동호회 신청자 명단
-	public ArrayList<TeamApplyDTO> tempTeamApplyList(int teamId);
+	public ArrayList<TeamApplyDTO> tempTeamApplyList(int team_id);
 	
 	// 임시 동호회 중복 신청 검사
     int checkedTempTeamApply(@Param("user_code_id") int user_code_id,

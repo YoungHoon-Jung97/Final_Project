@@ -200,7 +200,7 @@ public class TeamController
 			// 가입 신청 중복 방지
 			if(teamDAO.checkedTempTeamApply(user_code_id,team.getTemp_team_id()) > 0)
 			{
-				String message = "ERROR_DUPLICATE_REQUEST: 이미 접수 된 동호회입니다.";
+				String message = "ERROR_DUPLICATE_REQUEST: 이미 접수된 동호회입니다.";
 				session.setAttribute("message", message);
 				
 				return "redirect:MainPage.action";
@@ -217,7 +217,7 @@ public class TeamController
 			// 가입 신청 중복 방지
 			if(teamDAO.checkedTeamApply(user_code_id,team.getTeam_id()) > 0)
 			{
-				String message = "ERROR_DUPLICATE_REQUEST: 이미 접수 된 동호회입니다.";
+				String message = "ERROR_DUPLICATE_REQUEST: 이미 접수된 동호회입니다.";
 				session.setAttribute("message", message);
 				
 				return "redirect:MainPage.action";
@@ -562,20 +562,20 @@ public class TeamController
 		
 		// 동호회원 가져오기
 		if (team.getTeam_id() == 0)
-		{
 			// 임시동호회 멤버 추가
 			dao.addtempTeamMember(team_apply_id);
-			
-			return "/team/TeamMain";
-		}
 		
 		else if (team.getTeam_id() != 0)
-		{
 			// 정식동호회 멤버 추가
 			dao.addteamMember(team_apply_id);
-			return "/team/TeamMain";
-		}
 		
 		return "redirect:/MemberAppr.action";
+	}
+	
+	// 동호회 정보 수정
+	@RequestMapping(value = "/TeamUpdate.action", method = RequestMethod.GET)
+	public String teamUpdate()
+	{
+		return "/team/TeamUpdate";
 	}
 }

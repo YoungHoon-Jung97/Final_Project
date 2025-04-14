@@ -58,6 +58,6 @@ $(function()
 		$("#descModal").hide(); // 모달 숨기기
 		$("body").css("overflow", "auto"); // 페이지 스크롤 복원
 		$(".floatingButton-wrapper").removeClass("blur-background");
-		$("header, .navbar").removeClass("blur-background");
+		$("header").removeClass("blur-background");
 	});
 });
