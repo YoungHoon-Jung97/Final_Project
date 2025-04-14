@@ -80,15 +80,23 @@
                 <h3 class="form__section-title">회원 정보 확인</h3>
 
                 <!-- 이메일 입력 -->
-                <div class="form__group">
-                    <div class="form__field">
-                        <label for="email" class="form__label required">이메일</label>
-                        <div class="form__input--wrapper">
-                            <input type="email" class="form__input" id="email" name="email"
-                                placeholder="예: example@domain.com" maxlength="100" required />
-                        </div>
-                    </div>
-                </div>
+				<div class="form__group">
+				    <div class="form__field">
+				        <label for="email" class="form__label required">이메일</label>
+				        <div class="form__input--wrapper">
+				            <input type="email" class="form__input" id="email" name="email"
+				                   placeholder="예: example@domain.com" maxlength="100" required
+				                   value="${user_email}" />
+				            <script>
+				                // user_email 값이 있으면 readonly 속성 추가
+				                if ("${user_email}" !== "") {
+				                    document.getElementById("email").setAttribute("readonly", "readonly");
+				                }
+				            </script>
+				        </div>
+				    </div>
+				</div>
+				
 
                 <!-- 전화번호 입력 -->
                 <div class="form__group">
