@@ -28,41 +28,45 @@
 <body>
 <c:if test="${not empty sessionScope.message}">
 	<script type="text/javascript">
-		var message = "${fn:escapeXml(sessionScope.message)}";
-		var parts = message.split(":");
-		
-		if (parts.length > 1)
+		window.addEventListener("pageshow", function(event)
 		{
-			var type = parts[0].trim();
-			var content = parts[1].trim();
-			
-			switch (type)
+			if (!event.persisted && performance.navigation.type !== 2)
 			{
-				case "SUCCESS_INSERT":
-				case "SUCCESS_APPLY":
-					swal("성공", content, "success");
-					break;
+				var message = "${fn:escapeXml(sessionScope.message)}";
+				var parts = message.split(":");
 				
-				case "NEED_REGISTER_STADIUM":
-					swal("주의", content, "warning");
-					break;
+				if (parts.length > 1)
+				{
+					var type = parts[0].trim();
+					var content = parts[1].trim();
 					
-				case "ERROR_DUPLICATE_JOIN":
-				case "ERROR_AUTH_REQUIRED":
-				case "ERROR_DUPLICATE_REQUEST":
-					swal("에러", content, "error");
-					break;
+					switch (type)
+					{
+						case "SUCCESS_INSERT":
+						case "SUCCESS_APPLY":
+							swal("성공", content, "success");
+							break;
+						
+						case "NEED_REGISTER_STADIUM":
+							swal("주의", content, "warning");
+							break;
+							
+						case "ERROR_DUPLICATE_JOIN":
+						case "ERROR_AUTH_REQUIRED":
+						case "ERROR_DUPLICATE_REQUEST":
+							swal("에러", content, "error");
+							break;
+						
+						default:
+							swal("알림", content, "info");
+					}
+				}
 				
-				default:
-					swal("알림", content, "info");
+				else
+					// fallback: 구분자 없는 일반 메시지
+					swal("처리 필요", message, "info");
 			}
-		}
-		
-		else
-		{
-			// fallback: 구분자 없는 일반 메시지
-			swal("처리 필요", message, "info");
-		}
+		});
 	</script>
 	
 	<c:remove var="message" scope="session"></c:remove>

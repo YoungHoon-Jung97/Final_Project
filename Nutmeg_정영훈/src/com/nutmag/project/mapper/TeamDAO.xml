@@ -35,7 +35,7 @@
 	<select id="searchTeamName" resultType="String">
 		SELECT TEMP_TEAM_NAME
 		FROM TEMP_TEAM
-		WHERE TEMP_TEAM_NAME=#{teamName}
+		WHERE TEMP_TEAM_NAME=#{team_name}
 	</select>
 	<!--==============================================동호회 가져오기=========================================================  -->
 	
@@ -50,7 +50,7 @@
     <select id="getTeamInfo" resultType="com.nutmag.project.dto.TeamDTO">
     	SELECT *
         FROM TEAM_VIEW
-        WHERE TEMP_TEAM_ID=#{teamId}
+        WHERE TEMP_TEAM_ID=#{team_id}
     </select>
     
  <!--=================================================동호회 가입=========================================================  -->   

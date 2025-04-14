@@ -19,7 +19,7 @@
 	
 	
 	<!-- 용병 조회 -->
-	<select id="mercenaryList" resultType="com.nutmag.project.dto.MercenaryDTO">
+	<select id="searchTimeMercenary" resultType="com.nutmag.project.dto.MercenaryDTO">
 	    SELECT *
 	    FROM MERCENARY_VIEW
 	    WHERE mercenary_time_start_at &lt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
@@ -52,5 +52,11 @@
 	    <if test="city_name != null and city_name != ''">
 	        AND CITY_NAME LIKE '%' || #{city_name} || '%'
 	    </if>
+	    <if test="time != null and time != ''">
+	        AND mercenary_time_start_at &lt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
+	      	AND mercenary_time_end_at &gt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
+	    </if>
 	</select>
+	
+	
 </mapper>
