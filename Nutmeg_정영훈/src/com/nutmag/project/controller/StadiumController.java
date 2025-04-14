@@ -243,6 +243,7 @@ public class StadiumController
 		return "/stadium/StadiumFieldCheckForm";
 	}
 	
+	// 경기장 인서트 폼
 	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.POST)
 	public String fieldInsertForm(Model model, HttpServletRequest request, HttpServletResponse response) throws SQLException
 	{
@@ -258,6 +259,7 @@ public class StadiumController
 		return "/stadium/FieldRegInsertForm";
 	}
 	
+	// 경기장 인서트 
 	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
 	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request)
 	{
@@ -417,6 +419,15 @@ public class StadiumController
 	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
 	    System.out.println("team_id in session: " + team_id);
 	    System.out.println("user_code_id in session: " + user_code_id);
+	    
+	    if (user_code_id == null || user_code_id == -1)
+		{
+	    	message = "ERROR_AUTH_REQUIRED: 로그인을 해야 합니다.";
+			session.setAttribute("message", message);
+			
+			return "redirect:MainPage.action";
+		}
+	    
 	    
 	    ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		

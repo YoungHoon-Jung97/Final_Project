@@ -125,8 +125,24 @@
 	
 	<!-- 경기장 예약 메인 페이지 검색 기능 -->
 	<select id="searchFieldList" resultType="com.nutmag.project.dto.FieldResMainPageDTO" parameterType="map">
-	     SELECT *
-	    FROM FIELD_REG_VIEW
+	      SELECT
+		    FIELD_REG_ID,
+		    FIELD_REG_NAME,
+		    FIELD_REG_AT,
+		    FIELD_REG_PRICE,
+		    FIELD_REG_GARO,
+		    FIELD_REG_SERO,
+		    FIELD_TYPE,
+		    FIELD_REG_IMAGE,
+		    FIELD_ENVIRONMENT_TYPE,
+		    STADIUM_REG_NAME,
+		    STADIUM_REG_ID,
+		    STADIUM_REG_ADDR,
+		    STADIUM_REG_DETAILED_ADDR,
+		    SUBSTR(STADIUM_TIME_NAME1, 1, 2) AS STADIUM_TIME_NAME1,
+		    TO_NUMBER(SUBSTR(STADIUM_TIME_NAME2, INSTR(STADIUM_TIME_NAME2, '~') + 1, 2)) + 1 AS STADIUM_TIME_NAME2,
+			FIELD_CODE_ID
+		FROM FIELD_APPR_OK_VIEW
 	    WHERE 1=1
 	    <if test="region_name != null and region_name != ''">
 	        AND stadium_reg_addr LIKE #{region_name} || '%'

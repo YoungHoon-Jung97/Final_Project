@@ -112,7 +112,7 @@ $(function()
 	// 내 구장
 	$(".myStadium").click(function()
 	{
-		window.location.href = "";
+		window.location.href = "OperatorMainPage.action";
 	});
 	
 	// 로그아웃

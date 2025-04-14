@@ -91,6 +91,7 @@ public class UserController
 		return "redirect:MainPage.action";
 	};
 	
+	
 	//===============================================================================	
 	
 	// 구장 운영자 회원가입 폼
@@ -163,6 +164,23 @@ public class UserController
 		
 		return "redirect:MainPage.action";
 	};
+	
+	// 구장 운영자 메인 페이지
+	@RequestMapping(value = "/OperatorMainPage.action", method = RequestMethod.GET)
+	public String operatorMainPage(Model model,HttpServletRequest request)
+	{
+		String result = null;
+
+		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		HttpSession session = request.getSession();
+		int user_code_id = (int) session.getAttribute("user_code_id");
+		
+		model.addAttribute("operatorInfo", dao.operatorLoginInfo(user_code_id));
+		
+		
+		result = "/user/OperatorMainPage";
+		return result;
+	}
 	
 	//==================================================================
 	
