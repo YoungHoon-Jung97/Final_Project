@@ -361,8 +361,11 @@ public class UserController
    
 	// 비밀번호 찾기 폼 띄우기 (GET)
 	@RequestMapping(value = "/ForgotPassword.action", method = RequestMethod.GET)
-	public String forgotPasswordForm() 
+	public String forgotPasswordForm(HttpServletRequest request,Model model) 
 	{
+		String user_email =(String)request.getParameter("user_email");
+		
+		model.addAttribute("user_email", user_email);
 	    return "/user/ForgotPassword";
 	}
 	
@@ -372,6 +375,7 @@ public class UserController
 
 	    String email = request.getParameter("email");
 	    String tel = request.getParameter("tel");
+	    
 
 	    System.out.println("비밀번호 찾기 요청 도착!");
 	    System.out.println("email = " + email);

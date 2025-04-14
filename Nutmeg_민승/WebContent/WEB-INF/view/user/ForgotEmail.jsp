@@ -21,7 +21,7 @@
             <!-- 생년월일 입력 -->
             <div class="form__group">
                 <label for="birth" class="form__label required">생년월일</label>
-                <input type="text" class="form__input" id="birth" name="birth" required />
+                <input type="text" class="form__input" id="birth" placeholder="000000" name="birth" required />
             </div>
 
             <!-- 휴대폰 번호 입력 -->
