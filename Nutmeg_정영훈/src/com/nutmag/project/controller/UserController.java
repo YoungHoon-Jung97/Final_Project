@@ -2,6 +2,7 @@ package com.nutmag.project.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.Cookie;
@@ -22,6 +23,8 @@ import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.UserDTO;
+
+import util.MailUtil;
 
 @Controller
 public class UserController
@@ -302,17 +305,46 @@ public class UserController
 		return "redirect:/MainPage.action";
 	}
 	
-	// 이메일 찾기
-	@RequestMapping(value = "/ForgotEmail.action", method = RequestMethod.GET)
-	public String forgotEmail(Model model)
-	{
-		return "ForgotEmail";
-	}
 	
+	// 이메일 찾기 폼 띄우기(get)
+   @RequestMapping(value="/ForgotEmail.action", method = RequestMethod.GET)
+   public String forgotEmail(Model model)
+   {
+	  model.addAttribute("searched", true);
+      return "/user/ForgotEmail";
+   }
+   
+   // 이메일 찾기 처리 (POST)
+   @RequestMapping(value = "/ForgotEmail.action", method = RequestMethod.POST)
+   public String forgotEmail(HttpServletRequest request, Model model)
+   {
+       String birth = request.getParameter("birth");
+       String tel = request.getParameter("tel");
+       System.out.println("입력값 확인 → birth: " + birth + ", tel: " + tel);
+
+       IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+       List<String> emailList = dao.findEmailsByBirthAndTel(tel, birth);
+       
+       System.out.println("조회된 이메일 수: " + emailList.size());
+
+       if (emailList == null || emailList.isEmpty()) {
+           model.addAttribute("message", "입력하신 정보와 일치하는 이메일이 없습니다.");
+           model.addAttribute("emailList", null);
+       } else {
+           model.addAttribute("emailList", emailList);
+       }  	
+	       return "/user/ForgotEmailResult";
+	   }
+
+   
+   
 	// 비밀번호 찾기 폼 띄우기 (GET)
 	@RequestMapping(value = "/ForgotPassword.action", method = RequestMethod.GET)
-	public String forgotPasswordForm() 
+	public String forgotPasswordForm(HttpServletRequest request,Model model) 
 	{
+		String user_email =(String)request.getParameter("user_email");
+		
+		model.addAttribute("user_email", user_email);
 	    return "/user/ForgotPassword";
 	}
 	
@@ -322,6 +354,7 @@ public class UserController
 
 	    String email = request.getParameter("email");
 	    String tel = request.getParameter("tel");
+	    
 
 	    System.out.println("비밀번호 찾기 요청 도착!");
 	    System.out.println("email = " + email);
@@ -340,10 +373,11 @@ public class UserController
 
 	        // 비밀번호 업데이트
 	        dao.updateTempPassword(email, tempPwd);
+	        
+	        // 이메일 전송
+	        MailUtil.sendEmail(email, tempPwd);
 
-	        // 메일 발송 (실제로 메일 로직이 있으면 여기에 작성)
-	        System.out.println("임시 비밀번호 [" + tempPwd + "]를 이메일로 보냅니다.");
-
+	        // 안내 메시지 출력
 	        model.addAttribute("message", "임시 비밀번호가 이메일로 전송되었습니다.");
 	    } else {
 	        model.addAttribute("message", "입력하신 정보와 일치하는 회원이 없습니다.");
@@ -351,7 +385,8 @@ public class UserController
 
 	    return "/user/ForgotPassword"; // 결과 출력용 JSP
 	}
-	
+
+
 	// 임시 비밀번호 생성
 	private String createTempPassword() {
 	    String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -362,6 +397,9 @@ public class UserController
 	    }
 	    return sb.toString();
 	}
+	
+
+
 	
 	// 내 정보
 	@RequestMapping(value = "/MyInformation.action", method = RequestMethod.GET)

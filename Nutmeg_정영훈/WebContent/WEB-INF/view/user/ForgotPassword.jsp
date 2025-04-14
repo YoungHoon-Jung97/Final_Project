@@ -11,7 +11,64 @@
 <title>비밀번호 찾기</title>
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css">
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/Login.css">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/modal.css">
+<style>
+/* 모달 배경 */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(2px);
+}
+
+/* 모달 박스 */
+.modal-content {
+	background-color: #fff;
+	margin: 15% auto;
+	padding: 30px 25px;
+	border-radius: 12px;
+	width: 320px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+	text-align: center;
+	font-family: 'Noto Sans KR', sans-serif;
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 모달 텍스트 */
+#modalMessageText {
+	font-size: 16px;
+	color: #333;
+	margin-bottom: 20px;
+	line-height: 1.6;
+	word-break: keep-all;
+	white-space: pre-wrap;
+}
+
+/* 확인 버튼 */
+.modal-content button {
+	background-color: #2e8bff;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.2s ease;
+}
+
+.modal-content button:hover {
+	background-color: #1a6ed8;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; transform: scale(0.95); }
+	to { opacity: 1; transform: scale(1); }
+}
+</style>
 </head>
 <body>
     <div class="content">
@@ -23,15 +80,23 @@
                 <h3 class="form__section-title">회원 정보 확인</h3>
 
                 <!-- 이메일 입력 -->
-                <div class="form__group">
-                    <div class="form__field">
-                        <label for="email" class="form__label required">이메일</label>
-                        <div class="form__input--wrapper">
-                            <input type="email" class="form__input" id="email" name="email"
-                                placeholder="예: example@domain.com" maxlength="100" required />
-                        </div>
-                    </div>
-                </div>
+				<div class="form__group">
+				    <div class="form__field">
+				        <label for="email" class="form__label required">이메일</label>
+				        <div class="form__input--wrapper">
+				            <input type="email" class="form__input" id="email" name="email"
+				                   placeholder="예: example@domain.com" maxlength="100" required
+				                   value="${user_email}" />
+				            <script>
+				                // user_email 값이 있으면 readonly 속성 추가
+				                if ("${user_email}" !== "") {
+				                    document.getElementById("email").setAttribute("readonly", "readonly");
+				                }
+				            </script>
+				        </div>
+				    </div>
+				</div>
+				
 
                 <!-- 전화번호 입력 -->
                 <div class="form__group">

@@ -1,6 +1,7 @@
 package com.nutmag.project.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -14,10 +15,7 @@ public interface IUserDAO
 	public int userInsert(UserDTO user);
 	
 	//유저 이메일 비밀번호 찾기
-	/*
-	 * public UserDTO userLogin(@Param("logEmailKo") String email, @Param("logPwKo")
-	 * String pw);
-	 */
+	
 	UserDTO userLoginKo(@Param("logEmailKo") String logEmailKo, @Param("logPwKo") String logPwKo);
 	UserDTO userLoginEn(@Param("logEmailEn") String logEmailEn, @Param("logPwEn") String logPwEn);
 	
@@ -42,10 +40,13 @@ public interface IUserDAO
 	//구장 운영자 정보
 	public ArrayList<OperatorDTO> operatorLoginInfo (int user_code_id);
 	
-	//사용자 비밀번호 확인
-	public int checkUserForPwd(@Param("email") String email, @Param("tel") String tel);
+	//가입중인 이메일 출력
+    public List<String> findEmailsByBirthAndTel(@Param("tel") String tel, @Param("birth") String birth);
 	
-	//임시 비밀번호로 변경
+	// 유저 이메일,전화번호 확인
+    public int checkUserForPwd(@Param("email") String email, @Param("tel") String tel);
+    
+    // 유저 비밀번호 업데이트
     public void updateTempPassword(@Param("email") String email, @Param("pwd") String pwd);
 	
 }
