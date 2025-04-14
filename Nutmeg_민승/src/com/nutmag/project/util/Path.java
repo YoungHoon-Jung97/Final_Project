@@ -1,4 +1,4 @@
-package util;
+package com.nutmag.project.util;
 
 public class Path {
 	private static final String UPLOAD_EMBLEM_DIR = "resources/uploads/emblems/";

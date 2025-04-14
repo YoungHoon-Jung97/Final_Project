@@ -33,8 +33,7 @@ import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
 import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
-
-import util.Path;
+import com.nutmag.project.util.Path;
 
 
 

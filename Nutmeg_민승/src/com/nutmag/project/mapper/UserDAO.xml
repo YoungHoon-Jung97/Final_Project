@@ -6,19 +6,19 @@
 	
 	<!-- 정보 입력 프로시저  -->
 	<insert id="userInsert" parameterType="com.nutmag.project.dto.UserDTO" statementType="CALLABLE">
-        CALL PRC_USER_INSERT(
-            #{user_name,			jdbcType=VARCHAR},
-            #{user_pwd,				jdbcType=VARCHAR},
-            #{user_email,			jdbcType=VARCHAR},
-            #{user_ssn1,			jdbcType=VARCHAR},
-            #{user_ssn2,			jdbcType=VARCHAR},
-            #{user_tel,				jdbcType=VARCHAR},
-            #{user_postal_addr,		jdbcType=VARCHAR},
-            #{user_addr,			jdbcType=VARCHAR},
-            #{user_detailed_addr,	jdbcType=VARCHAR},
-            #{user_nick_name,		jdbcType=VARCHAR}
-        )
-    </insert>
+    CALL PRC_USER_INSERT(
+        #{user_name},
+        #{user_pwd},
+        #{user_email},
+        #{user_ssn1},
+        #{user_ssn2},
+        #{user_tel},
+        #{user_postal_addr},
+        #{user_addr},
+        #{user_detailed_addr},
+        #{user_nick_name}
+    )
+</insert>
 	
 	<!-- 로그인 -->
 	<select id="userLoginKo" resultType="com.nutmag.project.dto.UserDTO">
@@ -77,4 +77,28 @@
 		WHERE USER_CODE_ID = #{user_code_id}
 	</select>
 	
+<!-- 이메일, 전화번호 확인 -->
+<select id="findEmailsByBirthAndTel" resultType="string">
+    SELECT USER_EMAIL
+    FROM USER_INFO
+    WHERE USER_TEL = #{tel}
+      AND USER_SSN1 = #{birth}
+</select>
+
+	
+	
+	<!--  이메일, 비밀번호 확인  -->
+	<select id="checkUserForPwd" resultType="int"> 
+	SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END 
+	FROM USER_INFO 
+	WHERE USER_EMAIL = #{email} 
+	AND USER_TEL = #{tel} 
+	</select>
+	
+	<!--  임시 비밀번호  -->
+	<update id="updateTempPassword">
+	UPDATE USER_INFO SET USER_PWD = #{pwd} 
+	WHERE USER_EMAIL = #{email} 
+	</update>
+		
 </mapper>

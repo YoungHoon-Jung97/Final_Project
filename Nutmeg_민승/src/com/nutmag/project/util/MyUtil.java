@@ -6,7 +6,7 @@
 //학습을 마친 이후에... 꼭 추가적으로 개념을 정리하고
 //확장시키고, 다른 방법들도 찾아보고 공부해야 한다.
 
-package util;
+package com.nutmag.project.util;
 
 public class MyUtil
 {

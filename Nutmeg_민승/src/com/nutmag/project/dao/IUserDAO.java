@@ -1,5 +1,7 @@
 package com.nutmag.project.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.nutmag.project.dto.OperatorDTO;
@@ -10,6 +12,15 @@ public interface IUserDAO
 {
 	//유저 정보 입력
 	public int userInsert(UserDTO user);
+	
+	// 유저 생년월일,전화번호 확인 
+	List<String> findEmailsByBirthAndTel(@Param("tel") String tel, @Param("birth") String birth);
+	
+	// 유저 이메일,전화번호 확인
+    public int checkUserForPwd(@Param("email") String email, @Param("tel") String tel);
+    
+    // 유저 비밀번호 업데이트
+    public void updateTempPassword(@Param("email") String email, @Param("pwd") String pwd);
 	
 	//유저 이메일 비밀번호 찾기
 	/*

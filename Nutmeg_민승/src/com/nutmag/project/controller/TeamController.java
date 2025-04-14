@@ -34,8 +34,7 @@ import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.UserDTO;
-
-import util.Path;
+import com.nutmag.project.util.Path;
 
 @Controller
 public class TeamController
