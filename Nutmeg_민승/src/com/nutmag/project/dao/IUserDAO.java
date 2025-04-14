@@ -13,6 +13,7 @@ public interface IUserDAO
 	//유저 정보 입력
 	public int userInsert(UserDTO user);
 	
+	//===========================================민승================================================
 	// 유저 생년월일,전화번호 확인 
 	List<String> findEmailsByBirthAndTel(@Param("tel") String tel, @Param("birth") String birth);
 	
@@ -21,7 +22,8 @@ public interface IUserDAO
     
     // 유저 비밀번호 업데이트
     public void updateTempPassword(@Param("email") String email, @Param("pwd") String pwd);
-	
+  //===========================================================================================
+    
 	//유저 이메일 비밀번호 찾기
 	/*
 	 * public UserDTO userLogin(@Param("logEmailKo") String email, @Param("logPwKo")

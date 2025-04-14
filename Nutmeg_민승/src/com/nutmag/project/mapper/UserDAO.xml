@@ -76,17 +76,15 @@
 		FROM OPERATOR_INFO
 		WHERE USER_CODE_ID = #{user_code_id}
 	</select>
-	
-<!-- 이메일, 전화번호 확인 -->
-<select id="findEmailsByBirthAndTel" resultType="string">
-    SELECT USER_EMAIL
-    FROM USER_INFO
-    WHERE USER_TEL = #{tel}
-      AND USER_SSN1 = #{birth}
-</select>
+<!--=======================================민승=======================================-->	
+	<!-- 이메일, 전화번호 확인 -->
+	<select id="findEmailsByBirthAndTel" resultType="string">
+	    SELECT USER_EMAIL
+	    FROM USER_INFO
+	    WHERE USER_TEL = #{tel}
+	      AND USER_SSN1 = #{birth}
+	</select>
 
-	
-	
 	<!--  이메일, 비밀번호 확인  -->
 	<select id="checkUserForPwd" resultType="int"> 
 	SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END 
@@ -100,5 +98,5 @@
 	UPDATE USER_INFO SET USER_PWD = #{pwd} 
 	WHERE USER_EMAIL = #{email} 
 	</update>
-		
+<!--=================================================================================-->		
 </mapper>
