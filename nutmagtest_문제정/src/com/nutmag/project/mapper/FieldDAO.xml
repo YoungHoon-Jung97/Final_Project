@@ -125,7 +125,7 @@
 	
 	<!-- 경기장 예약 메인 페이지 검색 기능 -->
 	<select id="searchFieldList" resultType="com.nutmag.project.dto.FieldResMainPageDTO" parameterType="map">
-	     SELECT
+	      SELECT
 		    FIELD_REG_ID,
 		    FIELD_REG_NAME,
 		    FIELD_REG_AT,
@@ -171,6 +171,8 @@
 		    STADIUM_REG_ID,
 		    STADIUM_REG_ADDR,
 		    STADIUM_REG_DETAILED_ADDR,
+		    STADIUM_TIME_ID1,
+		    STADIUM_TIME_ID2,
 		    SUBSTR(STADIUM_TIME_NAME1, 1, 2) AS STADIUM_TIME_NAME1,
 		    TO_NUMBER(SUBSTR(STADIUM_TIME_NAME2, INSTR(STADIUM_TIME_NAME2, '~') + 1, 2)) + 1 AS STADIUM_TIME_NAME2,
 			FIELD_CODE_ID
@@ -189,7 +191,7 @@
 	
 	<!-- 필드 코드로 구장 운영자 정보 찾기 -->
 	<select id="fieldOperatorInfo" parameterType="int" resultType="com.nutmag.project.dto.FieldResOperatorDTO">
-	  SELECT * 
+	  SELECT *
 	  FROM FIELD_OPERATOR_VIEW
 	  WHERE FIELD_CODE_ID = #{field_code_id}
 	</select>
@@ -198,7 +200,6 @@
 	<select id="inwonList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
 		SELECT *
 		FROM MATCH_INWON
-	
 	</select>
 	
 	<insert id="fieldResInsert" parameterType="com.nutmag.project.dto.FieldResInsertDTO">

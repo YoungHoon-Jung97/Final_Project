@@ -38,59 +38,62 @@ $(document).ready(function () {
 $(document).on("click", "#rejectModal .btn-danger", function () {
     const type = $('#rejectModal select').val();
     const reason = $('#rejectModal textarea').val();
-    const fieldRegId = $('#rejectModal input[name="field_reg_id"]').val(); // form에 숨겨진 input 필요
-    const userCodeId = $('#rejectModal input[name="user_code_id"]').val(); // form에 숨겨진 input 필요
+    const fieldResId = $('#rejectModal input[name="field_res_id"]').val(); // form에 숨겨진 input 필요
 
     if (!reason) {
         alert("반려 사유를 선택해주세요");
         return;
     }
 
-    $.post('<%=cp%>/FieldApprCancelInsert.action', {
-    	field_appr_cancel_type_id: type,
-    	field_appr_cancel_reason: reason,
-        field_reg_id: fieldRegId,
-        user_code_id: userCodeId
-    }, function () {
+    $.post('<%=cp%>/FieldResApprCancelInsert.action', {
+        field_pay_cancel_reason: reason,
+        field_res_id: fieldResId,
+    })
+    .done(function () {
         alert("반려 처리 완료");
         const modal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
+        console.log("모달 닫기 시작");
         modal.hide();
-        // 목록 갱신
-        $.get('<%=cp%>/AdminFieldApprForm.action', function (data) {
+        console.log("모달 닫기 완료");
+        $.post('<%=cp%>/OperatorFieldResApprForm.action', function (data) {
             $('#content-area').html(data);
         });
+    })
+    .fail(function (xhr, status, error) {
+        console.error("반려 처리 실패:", status, error);
+        console.error("응답 내용:", xhr.responseText);
+        alert("서버 오류로 반려에 실패했습니다.");
     });
+ 
+    
+    
 });
 </script>
 
 
 <h4 class="mb-4">경기장 승인 요청</h4>
 
-<c:forEach var="field" items="${fieldAllList}">
+<c:forEach var="field" items="${fieldBeforeResApprList}">
     <div class="match-card border rounded p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <!-- 왼쪽: 경기장 정보 -->
             <div>
                 <strong>${field.field_reg_name}</strong><br>
-                등록일 : ${field.field_reg_at} <br>
-                크기 : ${field.field_reg_garo} x ${field.field_reg_sero} <br>
-                바닥 : ${field.field_type}, 환경 : ${field.field_environment_type} <br>
-                가격 : ${field.field_reg_price} 원
+                예약 신청 일시 : ${field.field_res_at} <br>
+             	시작 시간 : ${field.stadium_time_at1 } 종료 시간 : ${field.stadium_time_at2 }
             </div>
 
             <!-- 오른쪽: 승인/반려 버튼 -->
             <div class="text-end">
                 <!-- 승인 form -->
-                <form class="approve-form d-inline" method="post" action="FieldApprInsert.action">
-                    <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
-                    <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
+                <form class="approve-form d-inline" method="post" action="FieldResApprInsert.action">
+                    <input type="hidden" name="field_res_id" value="${field.field_res_id }" />
                     <button type="button" class="btn btn-primary approve-btn">승인</button>
                 </form>
 
                 <!-- 반려 form -->
-                <form class="reject-form d-inline" method="post" action="FieldApprCancelForm.action">
-                    <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
-                    <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
+                <form class="reject-form d-inline" method="post" action="FieldResApprCancelForm.action">
+                	<input type="hidden" name="field_res_id" value="${field.field_res_id}" />
                     <button type="button" class="btn btn-danger reject-btn">반려</button>
                 </form>
             </div>

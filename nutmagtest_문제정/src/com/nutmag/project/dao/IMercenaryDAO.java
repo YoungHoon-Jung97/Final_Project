@@ -13,7 +13,7 @@ import com.nutmag.project.dto.MercenaryDTO;
 public interface IMercenaryDAO
 {
     // 전체 용병 조회
-	public ArrayList<MercenaryDTO> mercenaryList(String time);
+	public ArrayList<MercenaryDTO> searchTimeMercenary(String time);
 
 	//용병등록
 	public void insertMercenary(MercenaryDTO dto);
@@ -26,5 +26,6 @@ public interface IMercenaryDAO
 	
 	//용병 지역 검색
 	public ArrayList<MercenaryDTO> searchMercenary(Map<String, Object> params);
+	
 
 }

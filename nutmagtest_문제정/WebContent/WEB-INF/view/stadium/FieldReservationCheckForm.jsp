@@ -63,7 +63,7 @@
 	<p><strong>계좌번호 : </strong> ${operator.operator_account_no}</p>
 	<p><strong>예금주 : </strong> ${operator.operator_account_holder}</p>
 	<p><strong>은행명 : </strong> ${operator.bank_name}</p>
-	<p><strong>금액(2시간 당) : </strong> ${operator.field_reg_price}</p>
+	<p><strong>금액(2시간 당) : </strong> ${field_reg_price}</p>
 	
 	<p><strong>총 금액 : </strong> ${totalPrice}</p>
 	

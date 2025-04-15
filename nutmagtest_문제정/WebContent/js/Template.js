@@ -75,7 +75,7 @@ $(function()
 	// 용병 게시판
 	$(".mercenary-offer").click(function()
 	{
-		window.location.href = "MercenaryOffer.action";
+		window.location.href = "MercenaryBoard.action";
 	});
 	
 	// 용병 등록

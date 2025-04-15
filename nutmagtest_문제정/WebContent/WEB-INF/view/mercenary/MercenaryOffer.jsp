@@ -16,6 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="<%=cp %>/js/Time.js?after"></script>
+<script type="text/javascript" src="<%=cp %>/js/Modal.js?after"></script>
 
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/Board.css?after">
@@ -26,13 +27,6 @@
     	let selectedRegionId = '';
         let selectedCityId = '';
     	
-        
-        // 모달 관련 함수들
-        // 모달 열기
-        function openModal() {
-            $('.modal').css('display', 'block');
-        }
-        
         // 모달 닫기
         function closeModal() {
             $('.modal').css('display', 'none');
@@ -41,25 +35,6 @@
             // 모달 닫을 때 날짜 초기화
             $('#stardate').val(formattedDate);
         }
-        
-        
-        // 모달 이벤트 리스너
-        $('#addTimeLogBtn').click(function() {
-            openModal();
-        });
-        
-        $('.close-modal, .btn--reset').click(function() {
-            closeModal();
-        });
-        
-        
-        
-        $(window).click(function(event) {
-            if ($(event.target).is('.modal')) {
-                closeModal();
-            }
-        });
-        
         
         //지역 검색
         $('#regionTabs').on('click', '.nav-link', function (e) {
@@ -101,26 +76,30 @@
             searchMercenary();
         });
 
+        //지역, 시간 용병 검색
         function searchMercenary() {
             let selectedRegionName = $('#regionTabs .nav-link.active').text().trim();
             let selectedCityName = $('#cityTabs .nav-link.active').text().trim();
+            let time = $('#searchDate').val();
 
             // 디버깅 로그 추가
             console.log("AJAX 요청 시작");
             console.log("지역:", selectedRegionName);
             console.log("도시:", selectedCityName);
+            console.log("검색 시간:", time);
 
             // '전체'는 공백 처리
             if (selectedRegionName == '전체') selectedRegionName = '';
             if (selectedCityName == '전체') selectedCityName = '';
-
+            
          	// AJAX 코드 수정
             $.ajax({
                 url: "${pageContext.request.contextPath}/SearchMercenary.action",
                 type: "GET",
                 data: {
                     region_name: selectedRegionName,
-                    city_name: selectedCityName
+                    city_name: selectedCityName,
+                    time:time
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -155,7 +134,7 @@
                 }
             });
         };
-        
+
     });
 </script>
     
@@ -233,7 +212,7 @@
     <div class="search-container">
         <form class="search-form" id="dateSearchForm" action="mercenary.action" method="GET">
             <input type="date" class="date-input" id="searchDate" name="searchDate" required>
-            <button type="submit" class="btn-search">검색</button>
+            <button id="searchBtn" type="submit" class="btn-search">검색</button>
         </form>
     </div>
     
@@ -267,7 +246,7 @@
     <div class="board-container">
         <div class="header-container">
             <h1>용병 게시판</h1>
-            <button id="addTimeLogBtn" class="btn-add">시간 기록 추가</button>
+            <button id="addTimeLogBtn" class="btn-add open-modal">시간 기록 추가</button>
         </div>
         
         <!-- 리스트 출력 -->

@@ -35,7 +35,7 @@ public interface IFieldDAO
 	// 선택된 구장의 경기장 리스트 검색
 	public ArrayList<FieldRegSearchDTO> fieldSearchList(int stadium_reg_id);
 	
-	// 경기장 미승인 리스트
+	// 경기장 운영자 미승인 리스트
 	public ArrayList<FieldRegSearchDTO> fieldBeforeApprList();
 	
 	// 승인된 경기장 리스트
@@ -56,6 +56,8 @@ public interface IFieldDAO
 	// 경기장 인원수 리스트
 	public ArrayList<FieldResMainPageDTO> inwonList();
 	
+	// 경기장 예약 인서트
 	public int fieldResInsert(FieldResInsertDTO dto);
 	
+
 }

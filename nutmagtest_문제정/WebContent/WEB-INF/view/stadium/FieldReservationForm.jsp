@@ -6,8 +6,11 @@
 %>
 
 <%
-    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-    String today = sdf.format(new java.util.Date());
+	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+	
+	java.util.Calendar cal = java.util.Calendar.getInstance(); // 오늘 날짜 기준
+	cal.add(java.util.Calendar.DATE, 1); // 하루 더하기
+	String tomorrow = sdf.format(cal.getTime());
 %>
 
 <!DOCTYPE html>
@@ -232,6 +235,7 @@
                         });
 
                         console.log(`✅ 총 예약 불가 시간 슬롯 수: ${totalDisabled}`);
+                        blockUnavailableTimeByStadiumTimeId();
                     },
                     error: function (xhr, status, error) {
                  
@@ -242,7 +246,7 @@
                 });
             }
         });
-        
+         
         // 폼 전송 구문
         $("#submit-button").click(function (e) {
             e.preventDefault(); // 기본 동작 막고
@@ -252,6 +256,12 @@
                 alert("시간을 선택해 주세요.");
                 return;
             }
+            
+            if ($("#matchDateInput").val() == null || $("#matchDateInput").val() == "")
+			{
+            	alert("날짜를 선택해 주세요.");
+                return;
+			}
             
             // 시작 시간 텍스트 추출 (예: "12:00")
             const startText = $('.time-container[data-time-id="' + startTimeId + '"]').find('.time-title').text();
@@ -274,9 +284,36 @@
             $(this).closest("form")[0].submit();
         });
         
+        
+        
+        
     });
     
+    function blockUnavailableTimeByStadiumTimeId() {
+        const minTimeId = parseInt($("#timeStartLimit").val()); // 예: 2
+        const maxTimeId = parseInt($("#timeEndLimit").val());   // 예: 6
+
+        $(".time-container").each(function () {
+            const timeId = parseInt($(this).attr("data-time-id"));
+
+            if (timeId < minTimeId || timeId > maxTimeId) {
+                $(this).addClass("resv-disabled").css({
+                    "background-color": "red",
+                    "color": "white",
+                    "cursor": "not-allowed",
+                    "pointer-events": "none"
+                });
+
+                if ($(this).find(".unavailable-label").length === 0) {
+                    $(this).append('<div class="unavailable-label">이용불가</div>');
+                }
+            }
+        });
+    }
+    
+    
 </script>
+
 
 
 
@@ -296,13 +333,17 @@
 		            <ul class="field-info-wrap">
 		                <li><strong>이름 : </strong> ${field.field_reg_name}</li>
 		                <li><strong>경기장 코드 : </strong> ${field.field_code_id}</li>
+		                
 		                <li><strong>위치 : </strong> ${field.stadium_reg_addr}, ${field.stadium_reg_detailed_addr}</li>
 		                <li><strong>가격 : </strong> ${field.field_reg_price}원</li>
 		                <li><strong>가로 : </strong> ${field.field_reg_garo}m X 세로 : ${field.field_reg_sero}m</li>
 		            </ul>
+		            <input type="hidden" id="timeStartLimit" value="${field.stadium_time_id1}" />
+					<input type="hidden" id="timeEndLimit" value="${field.stadium_time_id2}" />
 		        </div>
 		        </div>
 		        <input type="hidden" name="field_code_id" id="field_code_id" value="${field.field_code_id}" />
+		        <input type="hidden" name="field_reg_price" id="field_reg_price" value="${field.field_reg_price}" />
 		    </div>
 		</c:forEach>
 			<div class="time-table-wrap">
@@ -312,7 +353,7 @@
 					    <div class="d-flex align-items-center gap-3">
 					        <label for="matchDateInput" class="form-label mb-0"><strong>예약 날짜 선택</strong></label>
 					        <input type="date" id="matchDateInput" name="match_date"
-					               class="form-control" style="max-width: 250px;" value="<%= today %>" min="<%= today %>">
+					               class="form-control" style="max-width: 250px;" value="" min="<%= tomorrow %>">
 					    </div>
 					</div>
 					<br>

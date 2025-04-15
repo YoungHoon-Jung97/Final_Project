@@ -243,6 +243,7 @@ public class StadiumController
 		return "/stadium/StadiumFieldCheckForm";
 	}
 	
+	// 경기장 인서트 폼
 	@RequestMapping(value = "/FieldRegInsertForm.action", method = RequestMethod.POST)
 	public String fieldInsertForm(Model model, HttpServletRequest request, HttpServletResponse response) throws SQLException
 	{
@@ -258,6 +259,7 @@ public class StadiumController
 		return "/stadium/FieldRegInsertForm";
 	}
 	
+	// 경기장 등록
 	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
 	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request)
 	{
@@ -328,7 +330,7 @@ public class StadiumController
 		}
 		
 		else
-			fieldDTO.setField_image("/resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
+			fieldDTO.setField_image("resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
 		
 		try
 		{
@@ -501,6 +503,7 @@ public class StadiumController
 	    @RequestParam("end_time_id") int end_time_id,
 	    @RequestParam("start_time_text") String start_time_text,
 	    @RequestParam("end_time_text") String end_time_text,
+	    @RequestParam("field_reg_price") int field_reg_price,
 	    Model model,
 	    HttpServletRequest request)
 	{
@@ -529,9 +532,8 @@ public class StadiumController
 	        System.out.println("===== [DEBUG] 운영자 정보 조회 실패 (null) =====");
 	    }
 	    
-	    int reg_price = operator.getField_reg_price();
 	    
-	    int totalPrice = ((end_time_id-start_time_id)+1)*reg_price;
+	    int totalPrice = ((end_time_id-start_time_id)+1)*field_reg_price;
 	    
 	    model.addAttribute("field_code_id", field_code_id);
 	    model.addAttribute("match_date", match_date);
@@ -540,6 +542,7 @@ public class StadiumController
 	    model.addAttribute("start_time_text", start_time_text);
 	    model.addAttribute("end_time_text", end_time_text);
 	    model.addAttribute("operator", operator);
+	    model.addAttribute("field_reg_price", field_reg_price);
 	    model.addAttribute("totalPrice", totalPrice);
 	    model.addAttribute("inwonList", dao.inwonList());
 		

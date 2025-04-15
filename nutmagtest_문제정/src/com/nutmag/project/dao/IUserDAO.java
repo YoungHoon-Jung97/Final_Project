@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.nutmag.project.dto.FieldResInsertDTO;
+import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.OperatorDTO;
+import com.nutmag.project.dto.OperatorResCancelDTO;
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -42,5 +45,19 @@ public interface IUserDAO
 	//구장 운영자 정보
 	public ArrayList<OperatorDTO> operatorLoginInfo (int user_code_id);
 	
+	//사용자 비밀번호 확인
+	public int checkUserForPwd(@Param("email") String email, @Param("tel") String tel);
 	
+	//임시 비밀번호로 변경
+    public void updateTempPassword(@Param("email") String email, @Param("pwd") String pwd);
+    
+    
+    // 구장 운영자 경기장 미승인 리스트
+ 	public ArrayList<FieldResMainPageDTO> fieldBeforeResApprList(int operator_id);
+	
+ 	// 구장 운영자 경기장 예약 승인
+ 	public int fieldResApprInsert(int field_res_id);
+ 	
+ 	public int fieldResApprCancelInsert(OperatorResCancelDTO dto);
+ 	
 }

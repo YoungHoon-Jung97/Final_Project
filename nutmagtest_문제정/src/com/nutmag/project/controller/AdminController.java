@@ -263,7 +263,7 @@ public class AdminController
 		return result;
 	}
 	
-	// 미승인 경기장 페이지 호출
+	// 경기장 승인처리 페이지 호출
 	@RequestMapping(value="AdminFieldApprForm.action", method=RequestMethod.GET)
 	public String adminFieldApprForm(Model model,HttpServletRequest request, HttpServletResponse response)
 	{
