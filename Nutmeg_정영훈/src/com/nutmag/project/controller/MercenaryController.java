@@ -57,17 +57,8 @@ public class MercenaryController
     public String insertFromMercenary(HttpServletRequest request,Model model)
     {
 		HttpSession session = request.getSession();
-			
 		
 		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
-		
-		// 로그인 여부
-		if (user_code_id == -1)
-		{
-			String message = "ERROR_AUTH_REQUIRED: 로그인을 해야 합니다.";
-			session.setAttribute("message", message);
-			return "redirect:MainPage.action";
-		}
 		
 		//용병 가입 확인 
         IMercenaryDAO mercenaryDAO = sqlSession.getMapper(IMercenaryDAO.class);

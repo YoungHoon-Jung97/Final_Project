@@ -1,5 +1,9 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +13,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 	body {
 	    background-color: #f8f9fb;
@@ -49,6 +54,27 @@
 	}
 </style>
 
+<script>
+$(document).ready(function () {
+    $('.menu-link').click(function (e) {
+        e.preventDefault();
+        const url = $(this).data('url');
+
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function (result) {
+                $('#content-area').html(result);
+            },
+            error: function () {
+                alert("콘텐츠를 불러오는 데 실패했습니다.");
+            }
+        });
+    });
+});
+</script>
+
+
 <body>
 <div class="wrapper">
     <div class="d-flex flex-row-reverse">
@@ -66,14 +92,14 @@
             </div>
 			<!-- 관리자 메뉴 탭 -->
             <div class="menu-section-title">관리 메뉴</div>
-            <nav class="nav flex-column">
-                <a class="nav-link" href="#"><i class="bi bi-speedometer2 me-2"></i>구장 예약 승인 처리</a>
+            <a class="nav-link menu-link" data-url="<%=cp %>/OperatorFieldResApprForm.action">
+                <i class="bi bi-building me-2"></i>경기장 승인관리
+            </a>
                <!--  <a class="nav-link" href="#"><i class="bi bi-people-fill me-2"></i>정보 관리</a>
                 <a class="nav-link" href="#"><i class="bi bi-flag-fill me-2"></i>경기 기록</a>
                 <a class="nav-link" href="#"><i class="bi bi-building me-2"></i>결제 내역</a>
                 <a class="nav-link" href="#"><i class="bi bi-chat-dots-fill me-2"></i>나의 동호회</a>
                 <a class="nav-link" href="#"><i class="bi bi-file-earmark-text me-2"></i>동호회 신청 내역</a> -->
-            </nav>
 			<!-- 사이드바 설정 개인설정 탭 -->
             <div class="menu-section-title">설정</div>
             <nav class="nav flex-column">
@@ -82,7 +108,7 @@
             </nav>
         </div>
         <div class="flex-grow-1 me-4">
-            <div class="content-area">
+            <div class="content-area" id="content-area">
                 <h4 class="mb-4">관리자 대시보드</h4>
                 <p>여기다가 내용 넣을 예정</p>
             </div>

@@ -62,7 +62,7 @@
 						placeholder="경기장이름" maxlength="20" name="field_reg_name" required>
 					</div>
 				</div>
-			</div>
+			</div>	
 			
 			<div class="form__group">
 				<div class="form__field">
@@ -155,7 +155,7 @@
 					<label for="image" class="form__label required">첨부파일</label>
 					
 					<div class="file-upload-wrapper">
-						<input type="file" id="image" name="stadium_reg_image" class="file-upload-input" />
+						<input type="file" id="image" name="field_reg_image" class="file-upload-input" />
 						
 						<button type="button" class="file-upload-btn" onclick="document.getElementById('image').click();">파일 선택</button>
 						

@@ -157,8 +157,8 @@
 						
 						<span class="dash">-</span>
 						
-						<input type="number" class="form__input ssn2-input no-spinner" id="ssn2"
-						name="user_ssn2" maxlength="1" required>
+						<input type="text" class="form__input ssn2-input no-spinner" id="ssn2"
+						name="user_ssn2" maxlength="1" inputmode="numeric" required>
 						
 						<span style="padding-left:3px; ">●</span>
 						<span style="padding-left:3px; ">●</span>

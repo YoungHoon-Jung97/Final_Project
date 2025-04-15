@@ -259,7 +259,7 @@ public class StadiumController
 		return "/stadium/FieldRegInsertForm";
 	}
 	
-	// 경기장 인서트 
+	// 경기장 등록
 	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
 	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request)
 	{
@@ -330,7 +330,7 @@ public class StadiumController
 		}
 		
 		else
-			fieldDTO.setField_image("/resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
+			fieldDTO.setField_image("resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
 		
 		try
 		{
@@ -379,11 +379,14 @@ public class StadiumController
 		
 	// 지역 선택 시 도시 목록 반환
 	@RequestMapping(value = "/GetCityListByRegionId.action", method = RequestMethod.GET)
-	public String getCityListByRegionId(@RequestParam("region_id") int regionId, Model model) 
+	@ResponseBody
+	public List<CityDTO> getCityListByRegionId(@RequestParam("region_id") int regionId)
 	{
-	    ArrayList<CityDTO> cityList = sqlSession.getMapper(IRegionDAO.class).cityList(regionId);
-	    model.addAttribute("cityList", cityList);
-	    return "/stadium/CityTabList"; // → 도시 탭 JSP 조각
+		// DAO를 통해 도시 목록 가져오기
+		List<CityDTO> cityList = sqlSession.getMapper(IRegionDAO.class).cityList(regionId);
+		
+		// 도시 목록을 반환
+		return cityList;
 	}
 
 	// 검색 조건에 따라 경기장 목록 반환
@@ -503,6 +506,7 @@ public class StadiumController
 	    @RequestParam("end_time_id") int end_time_id,
 	    @RequestParam("start_time_text") String start_time_text,
 	    @RequestParam("end_time_text") String end_time_text,
+	    @RequestParam("field_reg_price") int field_reg_price,
 	    Model model,
 	    HttpServletRequest request)
 	{
@@ -531,9 +535,8 @@ public class StadiumController
 	        System.out.println("===== [DEBUG] 운영자 정보 조회 실패 (null) =====");
 	    }
 	    
-	    int reg_price = operator.getField_reg_price();
 	    
-	    int totalPrice = ((end_time_id-start_time_id)+1)*reg_price;
+	    int totalPrice = ((end_time_id-start_time_id)+1)*field_reg_price;
 	    
 	    model.addAttribute("field_code_id", field_code_id);
 	    model.addAttribute("match_date", match_date);
@@ -542,6 +545,7 @@ public class StadiumController
 	    model.addAttribute("start_time_text", start_time_text);
 	    model.addAttribute("end_time_text", end_time_text);
 	    model.addAttribute("operator", operator);
+	    model.addAttribute("field_reg_price", field_reg_price);
 	    model.addAttribute("totalPrice", totalPrice);
 	    model.addAttribute("inwonList", dao.inwonList());
 		

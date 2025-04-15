@@ -84,6 +84,35 @@
 		WHERE USER_CODE_ID = #{user_code_id}
 	</select>
 	
+	<!-- 구장 운영자 예약 미승인 경기장 불러오기 -->
+	<select id="fieldBeforeResApprList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
+		SELECT *
+		FROM FIELD_OPERATOR_RES_VIEW V
+		WHERE V.FIELD_RES_PAY_AT IS NULL
+		  AND V.OPERATOR_ID = #{operator_id}
+		  AND NOT EXISTS (
+		      SELECT 1
+		      FROM FIELD_PAY_CANCEL C
+		      WHERE C.FIELD_RES_ID = V.FIELD_RES_ID
+		  )
+	</select>
+	
+	<!-- 구장 운영자 경기장 예약 승인 -->
+	<update id="fieldResApprInsert">
+		UPDATE FIELD_RES
+		SET FIELD_RES_PAY_AT = SYSDATE
+		WHERE FIELD_RES_ID = #{field_res_id}
+	</update>
+	
+	<!-- 구장 운영자 경기장 예약 반려  -->
+	<insert id="fieldResApprCancelInsert" parameterType="com.nutmag.project.dto.OperatorResCancelDTO">
+		INSERT INTO FIELD_PAY_CANCEL (FIELD_PAY_CANCEL_ID,FIELD_PAY_CANCEL_AT
+									,FIELD_PAY_CANCEL_REASON,FIELD_RES_ID)
+		
+		VALUES (FIELD_PAY_CANCEL_SEQ.NEXTVAL,SYSDATE,#{field_pay_cancel_reason, jdbcType=VARCHAR},#{field_res_id})
+	</insert>
+	
+	
 	<!-- 이메일, 전화번호 확인 -->
 	<select id="findEmailsByBirthAndTel" resultType="string">
 	    SELECT USER_EMAIL
