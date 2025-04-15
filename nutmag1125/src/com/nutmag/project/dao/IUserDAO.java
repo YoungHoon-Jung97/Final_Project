@@ -12,11 +12,6 @@ public interface IUserDAO
 	//유저 정보 입력
 	public int userInsert(UserDTO user);
 	
-	//유저 이메일 비밀번호 찾기
-	/*
-	 * public UserDTO userLogin(@Param("logEmailKo") String email, @Param("logPwKo")
-	 * String pw);
-	 */
 	UserDTO userLoginKo(@Param("logEmailKo") String logEmailKo, @Param("logPwKo") String logPwKo);
 	UserDTO userLoginEn(@Param("logEmailEn") String logEmailEn, @Param("logPwEn") String logPwEn);
 	
@@ -44,5 +39,7 @@ public interface IUserDAO
 	//유저 정보 업데이트 입력
 	public UserDTO userUpdate(int user_code_id);
 
+	void updateUser(UserDTO userDTO);
+    
 	
 }

@@ -157,10 +157,6 @@ h4, h5 {
                     <div class="table-responsive">
                         <div class="d-flex flex-column gap-2">
                             <div class="d-flex justify-content-between border-bottom pb-2">
-                                <strong>아이디</strong>
-                                <span>${userInfo.user_code_id}</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom pb-2">
                                 <strong>이름</strong>
                                 <span>${userInfo.user_name}</span>
                             </div>
@@ -180,19 +176,16 @@ h4, h5 {
 							    <strong>주민등록번호</strong>
 							    <span>${fn:substring(userInfo.user_ssn1, 0, 6)}-${fn:substring(userInfo.user_ssn2, 0, 1)}●●●●●●</span>
 							</div>
-							<!-- 우편번호 -->
 							<div class="d-flex justify-content-between border-bottom pb-2">
 							    <strong>우편번호</strong>
 							    <span>${userInfo.user_postal_addr}</span>
 							</div>
 							
-							<!-- 기본 주소 -->
 							<div class="d-flex justify-content-between border-bottom pb-2">
 							    <strong>기본 주소</strong>
 							    <span>${userInfo.user_addr}</span>
 							</div>
 							
-							<!-- 상세 주소 -->
 							<div class="d-flex justify-content-between border-bottom pb-2">
 							    <strong>상세 주소</strong>
 							    <span>${userInfo.user_detailed_addr}</span>

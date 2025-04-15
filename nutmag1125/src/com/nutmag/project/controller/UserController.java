@@ -10,8 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -397,6 +399,19 @@ public class UserController
 	    model.addAttribute("userInfo", userEdit);
 
 	    return "/user/UserInfoEdit"; // 수정 폼 JSP로 이동
+	}
+	
+	@RequestMapping(value = "/UserUpdate.action", method = RequestMethod.POST)
+	public String updateUser(UserDTO userDTO, HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+	    userDTO.setUser_code_id(user_code_id);
+	    IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+	    userDAO.updateUser(userDTO);  // 비밀번호 업데이트 수행
+
+	    return "redirect:MainPage.action";  // 업데이트 완료 후 메인 페이지로 리다이렉트
 	}
 	
 

@@ -84,7 +84,7 @@
 	
 	<select id="getUser" parameterType="int" resultType="com.nutmag.project.dto.UserDTO">
 	SELECT USER_NAME,USER_EMAIL,USER_PWD,USER_TEL,USER_NICK_NAME,USER_SSN1,USER_SSN2
-		 , USER_ADDR, USER_POSTAL_ADDR, USER_DETAILED_ADDR
+		 , USER_ADDR, USER_POSTAL_ADDR, USER_DETAILED_ADDR, USER_CODE_ID
 	FROM USER_INFO
 	WHERE user_id = #{user_code_id}
 	</select>
@@ -95,6 +95,21 @@
 	FROM USER_INFO
 	WHERE user_id = #{user_code_id}
 	</select>
+	
+	<!-- 이메일로 사용자 정보 조회 -->
+	<select id="getUserByEmail" resultType="com.nutmag.project.dto.UserDTO">
+	    SELECT * FROM users WHERE user_email = #{email}
+	</select>
+	
+	<update id="updateUser" parameterType="com.nutmag.project.dto.UserDTO">
+        UPDATE user_info
+        SET user_pwd = #{user_pwd}, user_tel = #{user_tel}
+          , user_addr = #{user_addr}, user_detailed_addr = #{user_detailed_addr}
+          , user_postal_addr = #{user_postal_addr} 
+        WHERE user_code_id = #{user_code_id}
+    </update>
+	
+	
 	
 	
 </mapper>
