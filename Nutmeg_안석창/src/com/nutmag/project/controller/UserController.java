@@ -2,6 +2,8 @@ package com.nutmag.project.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,8 @@ import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.UserDTO;
+
+import util.MailUtil;
 
 @Controller
 public class UserController
@@ -89,6 +93,7 @@ public class UserController
 		
 		return "redirect:MainPage.action";
 	};
+	
 	
 	//===============================================================================	
 	
@@ -162,6 +167,23 @@ public class UserController
 		
 		return "redirect:MainPage.action";
 	};
+	
+	// 구장 운영자 메인 페이지
+	@RequestMapping(value = "/OperatorMainPage.action", method = RequestMethod.GET)
+	public String operatorMainPage(Model model,HttpServletRequest request)
+	{
+		String result = null;
+
+		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		HttpSession session = request.getSession();
+		int user_code_id = (int) session.getAttribute("user_code_id");
+		
+		model.addAttribute("operatorInfo", dao.operatorLoginInfo(user_code_id));
+		
+		
+		result = "/user/OperatorMainPage";
+		return result;
+	}
 	
 	//==================================================================
 	
@@ -276,6 +298,7 @@ public class UserController
 		session.removeAttribute("user_email");
 		session.removeAttribute("user_code_id");
 		session.removeAttribute("operator_id");
+		session.removeAttribute("team_id");
 		
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");
@@ -283,19 +306,101 @@ public class UserController
 		return "redirect:/MainPage.action";
 	}
 	
-	// 이메일 찾기
-	@RequestMapping(value = "/ForgotEmail.action", method = RequestMethod.GET)
-	public String forgotEmail(Model model)
+	
+	// 이메일 찾기 폼 띄우기(get)
+   @RequestMapping(value="/ForgotEmail.action", method = RequestMethod.GET)
+   public String forgotEmail(Model model)
+   {
+	  model.addAttribute("searched", true);
+      return "/user/ForgotEmail";
+   }
+   
+   // 이메일 찾기 처리 (POST)
+   @RequestMapping(value = "/ForgotEmail.action", method = RequestMethod.POST)
+   public String forgotEmail(HttpServletRequest request, Model model)
+   {
+       String birth = request.getParameter("birth");
+       String tel = request.getParameter("tel");
+       System.out.println("입력값 확인 → birth: " + birth + ", tel: " + tel);
+
+       IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+       List<String> emailList = dao.findEmailsByBirthAndTel(tel, birth);
+       
+       System.out.println("조회된 이메일 수: " + emailList.size());
+
+       if (emailList == null || emailList.isEmpty()) {
+           model.addAttribute("message", "입력하신 정보와 일치하는 이메일이 없습니다.");
+           model.addAttribute("emailList", null);
+       } else {
+           model.addAttribute("emailList", emailList);
+       }  	
+	       return "/user/ForgotEmailResult";
+	   }
+
+   
+   
+	// 비밀번호 찾기 폼 띄우기 (GET)
+	@RequestMapping(value = "/ForgotPassword.action", method = RequestMethod.GET)
+	public String forgotPasswordForm(HttpServletRequest request,Model model) 
 	{
-		return "ForgotEmail";
+		String user_email =(String)request.getParameter("user_email");
+		
+		model.addAttribute("user_email", user_email);
+	    return "/user/ForgotPassword";
 	}
 	
-	// 비밀번호 찾기
-	@RequestMapping(value = "/ForgotPassword.action", method = RequestMethod.GET)
-	public String forgotPassword(Model model)
-	{
-		return "ForgotPassword";
+	// 비밀번호 찾기 처리 (POST)
+	@RequestMapping(value = "/ForgotPassword.action", method = RequestMethod.POST)
+	public String forgotPassword(HttpServletRequest request, Model model) {
+
+	    String email = request.getParameter("email");
+	    String tel = request.getParameter("tel");
+	    
+
+	    System.out.println("비밀번호 찾기 요청 도착!");
+	    System.out.println("email = " + email);
+	    System.out.println("tel = " + tel);
+
+	    // DAO 꺼내오기
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+
+	    // 사용자 유효성 검사
+	    int result = dao.checkUserForPwd(email, tel);
+	    boolean isValid = result > 0;
+
+	    if (isValid) {
+	        // 임시 비밀번호 생성
+	        String tempPwd = createTempPassword();
+
+	        // 비밀번호 업데이트
+	        dao.updateTempPassword(email, tempPwd);
+	        
+	        // 이메일 전송
+	        MailUtil.sendEmail(email, tempPwd);
+
+	        // 안내 메시지 출력
+	        model.addAttribute("message", "임시 비밀번호가 이메일로 전송되었습니다.");
+	    } else {
+	        model.addAttribute("message", "입력하신 정보와 일치하는 회원이 없습니다.");
+	    }
+
+	    return "/user/ForgotPassword"; // 결과 출력용 JSP
 	}
+
+
+	// 임시 비밀번호 생성
+	private String createTempPassword() {
+	    String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	    StringBuilder sb = new StringBuilder();
+	    Random rnd = new Random();
+	    for (int i = 0; i < 10; i++) {
+	        sb.append(chars.charAt(rnd.nextInt(chars.length())));
+	    }
+	    return sb.toString();
+	}
+	
+
+
 	
 	// 내 정보
 	@RequestMapping(value = "/MyInformation.action", method = RequestMethod.GET)

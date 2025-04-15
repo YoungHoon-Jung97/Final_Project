@@ -70,11 +70,40 @@
 				, #{operator_account_no}, #{operator_account_holder}, #{bank_id}, #{user_code_id})
 	</insert>
 	
-	<!-- 운영자 인증 -->
+	<!-- 구장 운영자 인증 -->
 	<select id="operatorSearchId" resultType="Integer">
 		SELECT OPERATOR_ID
 		FROM OPERATOR_INFO
 		WHERE USER_CODE_ID = #{user_code_id}
 	</select>
+	
+	<!-- 구장 운영자 정보 불러오기 -->
+	<select id="operatorLoginInfo" resultType="com.nutmag.project.dto.OperatorDTO">
+		SELECT *
+		FROM OPERATOR_INFO
+		WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	<!-- 이메일, 전화번호 확인 -->
+	<select id="findEmailsByBirthAndTel" resultType="string">
+	    SELECT USER_EMAIL
+	    FROM USER_INFO
+	    WHERE USER_TEL = #{tel}
+	      AND USER_SSN1 = #{birth}
+	</select>
+
+	<!--  이메일, 비밀번호 확인  -->
+	<select id="checkUserForPwd" resultType="int"> 
+	SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END 
+	FROM USER_INFO 
+	WHERE USER_EMAIL = #{email} 
+	AND USER_TEL = #{tel} 
+	</select>
+	
+	<!--  임시 비밀번호  -->
+	<update id="updateTempPassword">
+	UPDATE USER_INFO SET USER_PWD = #{pwd} 
+	WHERE USER_EMAIL = #{email} 
+	</update>
 	
 </mapper>

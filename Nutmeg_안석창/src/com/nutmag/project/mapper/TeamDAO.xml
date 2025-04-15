@@ -35,7 +35,7 @@
 	<select id="searchTeamName" resultType="String">
 		SELECT TEMP_TEAM_NAME
 		FROM TEMP_TEAM
-		WHERE TEMP_TEAM_NAME=#{teamName}
+		WHERE TEMP_TEAM_NAME=#{team_name}
 	</select>
 	<!--==============================================동호회 가져오기=========================================================  -->
 	
@@ -50,7 +50,7 @@
     <select id="getTeamInfo" resultType="com.nutmag.project.dto.TeamDTO">
     	SELECT *
         FROM TEAM_VIEW
-        WHERE TEMP_TEAM_ID=#{teamId}
+        WHERE TEMP_TEAM_ID=#{team_id}
     </select>
     
  <!--=================================================동호회 가입=========================================================  -->   
@@ -112,8 +112,7 @@
     <select id="teamMemberList" resultType="com.nutmag.project.dto.TeamApplyDTO">
     	SELECT *
     	FROM TEAM_MEMBER_VIEW
-    	WHERE TEAM_ID =#{team_id} AND
-    	TEAM_WITHDRAWAL_ID IS NULL
+    	WHERE TEAM_ID =#{team_id}
     	ORDER BY TEAM_APPLY_APPR_AT ASC 
     </select>
     
@@ -161,5 +160,33 @@
 	    SET TEAM_MEMBER_REG_AT =SYSDATE 
 	    WHERE TEAM_MEMBER_ID = #{team_apply_id}
 	</update>
+    <!--===============================================동호회 신청자 거절==================================================================  -->
+    <delete id="canceledApplyTempTeam" parameterType="int">
+	    DELETE
+		FROM TEMP_TEAM_APPLY
+		WHERE TEMP_TEAM_APPLY_ID = #{team_apply_id}
+    </delete>
+    
+    <delete id="canceledApplyTeam" parameterType="int">
+    	DELETE
+		FROM TEAM_MEMBER
+		WHERE TEAM_MEMBER_ID = #{team_apply_id}
+    </delete>
+    
+    <!--===============================================동호회 회원 강퇴==================================================================  -->
+    
+    <delete id="dropTempTeamMember" parameterType="int">
+	    DELETE
+		FROM TEMP_TEAM_APPLY
+		WHERE TEMP_TEAM_APPLY_ID = #{team_member_id}
+    </delete>
+    
+    <insert id="dropTeamMember" parameterType="int">
+		INSERT INTO TEAM_WITHDRAWAL
+		(TEAM_WITHDRAWAL_ID,TEAM_WITHDRAWAL_AT,TEAM_MEMBER_ID)
+		VALUES(TEAM_WITHDRAWAL_SEQ.nextval,SYSDATE,#{team_member_id})
+    </insert>
+    
+    
     
 </mapper>

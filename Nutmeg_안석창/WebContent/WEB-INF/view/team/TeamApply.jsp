@@ -11,9 +11,9 @@
 <title>TeamApply.jsp</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/TeamTemplate.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/TeamMain.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/modal.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamMain.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,8 +70,8 @@
 					
 					<h4 class="section-title">신청자 설명</h4>
 					
-					<textarea id="apply-content" placeholder="자신의 정보를 입력하세요"
-					name="team_apply_desc"></textarea>
+					<textarea id="apply-content" placeholder="자신의 정보를 입력하세요."
+					name="team_apply_desc" rows="5" style="width: 100%; overflow: hidden; white-space: pre-wrap; word-wrap: break-word;"></textarea>
 						
 					<input type="hidden" name="team_id" value="${team_id}">
 				</div>
@@ -142,8 +142,8 @@
 								<thead>
 									<tr class="center">
 										<th>이름</th>
-										<th>포지션</th>
 										<th>역할</th>
+										<th>포지션</th>
 										<th>나이</th>
 										<th>성별</th>
 									</tr>
@@ -153,8 +153,8 @@
 									<c:forEach var="teamMember" items="${teamMemberList}">
 										<tr>
 											<td>${teamMember.user_nick_name}</td>
-											<td>${teamMember.position_name}</td>
 											<td>${teamMember.member_status}</td>
+											<td>${teamMember.position_name}</td>
 											<td>${teamMember.age}</td>
 											<td>${teamMember.gender}</td>
 										</tr>

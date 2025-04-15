@@ -28,6 +28,8 @@
 	animation: fadeIn 0.3s ease;
 	backdrop-filter: blur(4px);
 	border: 1px solid #d7f0e2;
+	margin: 10% auto;
+	position: relative;
 	color: #2e3d3d;
 }
 
@@ -155,4 +157,159 @@ textarea
 	pointer-events: none;
 	opacity: 0.3;
 	filter: blur(2px);
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+}
+
+/* from css*/
+.form
+{
+	background-color: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(6px);
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	padding: 2.5rem;
+	border: 1px solid #d8f3dc;
+}
+
+.form__title
+{
+	font-size: 1.5rem;
+	font-weight: 600;
+	margin-bottom: 50px;
+	color: #56ab91;
+	text-align: center;
+	position: relative;
+	padding-bottom: 25px;
+}
+
+.form__title:after
+{
+	content: '';
+	position: absolute;
+	width: 60px;
+	height: 3px;
+	background-color: #80cfa9;
+	bottom: -10px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.form__section
+{
+	margin-bottom: 2rem;
+}
+
+.form__section-title
+{
+	color: #56ab91;
+	font-size: 1.3rem;
+	font-weight: 500;
+	margin-bottom: 10px;
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid #c2e5d3;
+}
+
+.form__group
+{
+	margin-bottom: 0.5rem;
+}
+
+.form__field
+{
+	display: flex;
+	flex-direction: column;
+}
+
+.required::after
+{
+	content: '*';
+	color: #ef4444;
+	margin-left: 0.25rem;
+}
+
+.form__label
+{
+	font-size: 0.9rem;
+	font-weight: 500;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	color: #555;
+}
+
+.form__input--wrapper, .form__input-wrapper
+{
+	display: flex;
+	flex: 1;
+	gap: 0.5rem;
+	align-items: center;
+	flex-wrap: nowrap;
+}
+
+.form__input
+{
+	flex: 1;
+	height: 2.5rem;
+	padding: 0 0.5rem;
+	border: 1px solid #cdece2;
+	border-radius: 8px;
+	font-size: 0.875rem;
+	transition: border-color 150ms, box-shadow 150ms;
+	background-color: rgba(255, 255, 255, 0.7);
+	color: #355e3b;
+}
+
+.form__input::placeholder
+{
+	color: #aaa;
+}
+
+.form__input:focus
+{
+	outline: none;
+	border-color: #80cfa9;
+	box-shadow: 0 0 0 3px rgba(128, 207, 169, 0.2);
+}
+
+.form__input--sm
+{
+	width: 10rem;
+	flex: none;
+}
+
+.form__input--md
+{
+	width: 9.375rem;
+	flex: none;
+}
+
+.form__input--lg
+{
+	width: 12.5rem;
+	flex: none;
+}
+
+.form__input[readonly]
+{
+	background-color: #f8fafc;
+	cursor: not-allowed;
+}
+
+select.form__input
+{
+	appearance: none;
+	background-image:
+		url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23555'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	background-size: 20px;
+	padding-right: 30px;
 }
