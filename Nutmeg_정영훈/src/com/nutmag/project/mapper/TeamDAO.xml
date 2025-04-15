@@ -187,6 +187,12 @@
 		VALUES(TEAM_WITHDRAWAL_SEQ.nextval,SYSDATE,#{team_member_id})
     </insert>
     
-    
+     <!--===============================================동호회 일정 출력==================================================================  -->
+     
+     <select id="matchList" resultType="com.nutmag.project.dto.MatchDTO">
+     	SELECT *
+		FROM MATCH_SCHEDULE_VIEW
+		WHERE HOME_TEAM_ID =#{team_id} OR AWAY_TEAM_ID =#{team_id}
+     </select>
     
 </mapper>
