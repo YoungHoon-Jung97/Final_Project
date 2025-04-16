@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nutmag.project.dao.IMatchDAO">
+	
+	<select id="matchRoomList">
+		SELECT
+			FIELD_RES_ID,
+			FIELD_RES_AT,
+			FIELD_RES_MATCH_AT,
+			FIELD_RES_PAY_AMOUNT,
+			FIELD_RES_PAY_AT,
+			STADIUM_TIME_ID1,
+			STADIUM_TIME_ID2,
+			TEAM_ID,
+			FIELD_CODE_ID,
+			MATCH_INWON_ID,
+			STADIUM_TIME_AT,
+			STADIUM_TIME_AT,
+			TEMP_TEAM_NAME,         
+			FIELD_REG_NAME,
+			FIELD_REG_PRICE,
+			FIELD_REG_GARO,
+			FIELD_REG_SERO,
+			STADIUM_REG_NAME,
+			MATCH_INWON_TYPE,
+			STADIUM_REG_ADDR,
+			STADIUM_REG_DETAILED_ADDR,
+			HOME_MATCH_CANCEL_ID
+		FROM FIELD_RES_VIEW
+		WHERE FIELD_RES_PAY_AT IS NOT NULL
+	</select>
+	
+</mapper>
