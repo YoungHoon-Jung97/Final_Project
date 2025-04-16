@@ -9,7 +9,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="css/main.css">
 <!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/Team.css">
@@ -132,34 +131,37 @@
 </style>
 
 <body>
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 <div class="container">
+	<c:forEach var="match" items="${matchRoomList}">
 	<div class="match-item">
 		<div class="match-header"> 
-		    <span class="match-date">  경기 날짜 :   </span> 
+		    <span class="match-date">  경기 날짜 : ${match.match_date }   </span> 
 		    <span class="match-status" style="background-color: #e8f5e9; color: #388e3c;  ">  매치 참여 가능  </span> 
 		</div> 
 		<div class="match-teams"> 
 		    <div class="team"> 
-		        <div class="team-name">  props.homeTeam  </div> 
-		        <div class="team-score">  props.homeScore  </div> 
+		        <div class="team-name">    </div> 
+		        <div class="team-score"> ${match.home_team_name } </div> 
 		    </div> 
 		    <div class="vs">VS</div> 
 		    <div class="team"> 
-		        <div class="team-name">  props.awayTeam  </div> 
-		        <div class="team-score">  props.awayScore  </div> 
+		        <div class="team-name">    </div> 
+		        <div class="team-score">  참가자 모집  </div> 
 		    </div> 
 		</div> 
 		<div class="match-details"> 
 		    <div class="detail-item"> 
-		        <span class="detail-label">경기장:</span> 
-		        <span>  props.venue  </span> 
+		        <span class="detail-label">경기장 주소 : </span> 
+		        <span>  ${match.stadium_addr }, ${match.stadium_detailed_addr }  </span> 
 		    </div> 
 		    <div class="detail-item"> 
 		        <span class="detail-label">참석 인원:</span> 
-		        <span>  props.attendance  </span> 
+		        <span>  ${match.match_inwon } </span> 
 		    </div> 
 		</div><!-- match-header -->
 	</div><!-- match-item -->
+	</c:forEach>
 </div><!-- container -->
 </body>
 </html>

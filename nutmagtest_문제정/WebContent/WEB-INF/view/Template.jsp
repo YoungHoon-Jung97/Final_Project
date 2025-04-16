@@ -104,8 +104,8 @@
 		<!-- 네비게이션 메뉴 -->
 		<nav class="nav-menu">
 			<div class="nav-item">
-				<span class="nav-title team">동호회</span>
-				<div class="nav-sub team">동호회 모집</div>
+				<span class="nav-title teamRecruit">동호회</span>
+				<div class="nav-sub teamRecruit">동호회 모집</div>
 				
 <%				if (team_id == 0)
 				{

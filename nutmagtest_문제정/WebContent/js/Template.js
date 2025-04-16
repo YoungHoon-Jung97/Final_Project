@@ -43,7 +43,7 @@ $(function()
 	});
 	
 	// 동호회 모집
-	$(".team").click(function()
+	$(".teamRecruit").click(function()
 	{
 		window.location.href = "MainPage.action";
 	});
@@ -88,7 +88,7 @@ $(function()
 	// 매치 참가
 	$(".match").click(function()
 	{
-		window.location.href = "Match.action";
+		window.location.href = "MatchMainPage.action";
 	});
 	
 	// 내 정보

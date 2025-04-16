@@ -16,7 +16,7 @@ public class MatchController
 	private SqlSession sqlSession;
     
 	
-	@RequestMapping(value ="/Match.action", method = RequestMethod.GET )
+	@RequestMapping(value ="/MatchMainPage.action", method = RequestMethod.GET )
 	public String matchMainPage(Model model)
 	{
 		String result = null;
