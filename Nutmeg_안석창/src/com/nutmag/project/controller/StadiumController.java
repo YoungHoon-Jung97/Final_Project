@@ -259,7 +259,7 @@ public class StadiumController
 		return "/stadium/FieldRegInsertForm";
 	}
 	
-	// 경기장 인서트 
+	// 경기장 등록
 	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
 	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request)
 	{
@@ -330,7 +330,7 @@ public class StadiumController
 		}
 		
 		else
-			fieldDTO.setField_image("/resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
+			fieldDTO.setField_image("resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
 		
 		try
 		{
@@ -391,27 +391,24 @@ public class StadiumController
 
 	// 검색 조건에 따라 경기장 목록 반환
 	@RequestMapping(value = "/SearchStadiumList.action", method = RequestMethod.GET)
-	public String searchStadiumList(Model model, @RequestParam(value = "region_name", required = false) String regionName,
-									@RequestParam(value = "city_name", required = false) String cityName,
-									@RequestParam(value = "keyword", required = false) String keyword) 
+	public String searchStadiumList(Model model,
+	    @RequestParam(value = "region_name", required = false) String regionName,
+	    @RequestParam(value = "city_name", required = false) String cityName,
+	    @RequestParam(value = "keyword", required = false) String keyword
+	    ) 
 	{
-		Map<String, Object> params = new HashMap<>();
-		
-		if (regionName != null && !regionName.isEmpty())
-			params.put("region_name", regionName);
-		
-		if (cityName != null && !cityName.isEmpty())
-			params.put("city_name", cityName);
-		
-		if (keyword != null && !keyword.isEmpty())
-			params.put("keyword", "%" + keyword + "%");
-		
-		ArrayList<FieldResMainPageDTO> fieldList = sqlSession.getMapper(IFieldDAO.class).searchFieldList(params);
-		model.addAttribute("fieldList", fieldList);
-		
-		return "/stadium/FieldCardList";
+
+	    Map<String, Object> params = new HashMap<>();
+	    if (regionName != null && !regionName.isEmpty()) params.put("region_name", regionName);
+	    if (cityName != null && !cityName.isEmpty()) params.put("city_name", cityName);
+	    if (keyword != null && !keyword.isEmpty()) params.put("keyword", "%" + keyword + "%");
+
+	    ArrayList<FieldResMainPageDTO> fieldList = sqlSession.getMapper(IFieldDAO.class).searchFieldList(params);
+	    model.addAttribute("fieldList", fieldList);
+	    return "/stadium/FieldCardList";
 	}
-	
+		
+		
 	// 클릭한 경기장 예약 페이지로 이동
 	@RequestMapping(value = "/FieldReservationForm.action", method = RequestMethod.POST)
 	public String fieldReservation(@RequestParam("field_code_id") int field_code_id, Model model
@@ -426,13 +423,14 @@ public class StadiumController
 	    System.out.println("team_id in session: " + team_id);
 	    System.out.println("user_code_id in session: " + user_code_id);
 	    
-	    if (user_code_id == -1)
+	    if (user_code_id == null || user_code_id == -1)
 		{
 	    	message = "ERROR_AUTH_REQUIRED: 로그인을 해야 합니다.";
 			session.setAttribute("message", message);
 			
 			return "redirect:MainPage.action";
 		}
+	    
 	    
 	    ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		
@@ -508,6 +506,7 @@ public class StadiumController
 	    @RequestParam("end_time_id") int end_time_id,
 	    @RequestParam("start_time_text") String start_time_text,
 	    @RequestParam("end_time_text") String end_time_text,
+	    @RequestParam("field_reg_price") int field_reg_price,
 	    Model model,
 	    HttpServletRequest request)
 	{
@@ -536,9 +535,8 @@ public class StadiumController
 	        System.out.println("===== [DEBUG] 운영자 정보 조회 실패 (null) =====");
 	    }
 	    
-	    int reg_price = operator.getField_reg_price();
 	    
-	    int totalPrice = ((end_time_id-start_time_id)+1)*reg_price;
+	    int totalPrice = ((end_time_id-start_time_id)+1)*field_reg_price;
 	    
 	    model.addAttribute("field_code_id", field_code_id);
 	    model.addAttribute("match_date", match_date);
@@ -547,6 +545,7 @@ public class StadiumController
 	    model.addAttribute("start_time_text", start_time_text);
 	    model.addAttribute("end_time_text", end_time_text);
 	    model.addAttribute("operator", operator);
+	    model.addAttribute("field_reg_price", field_reg_price);
 	    model.addAttribute("totalPrice", totalPrice);
 	    model.addAttribute("inwonList", dao.inwonList());
 		

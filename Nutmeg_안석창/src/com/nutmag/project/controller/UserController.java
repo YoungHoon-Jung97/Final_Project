@@ -22,6 +22,7 @@ import com.nutmag.project.dao.IBankDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.OperatorDTO;
+import com.nutmag.project.dto.OperatorResCancelDTO;
 import com.nutmag.project.dto.UserDTO;
 
 import util.MailUtil;
@@ -169,21 +170,86 @@ public class UserController
 	};
 	
 	// 구장 운영자 메인 페이지
-	@RequestMapping(value = "/OperatorMainPage.action", method = RequestMethod.GET)
-	public String operatorMainPage(Model model,HttpServletRequest request)
-	{
-		String result = null;
+		@RequestMapping(value = "/OperatorMainPage.action", method = RequestMethod.GET)
+		public String operatorMainPage(Model model,HttpServletRequest request)
+		{
+			String result = null;
 
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		HttpSession session = request.getSession();
-		int user_code_id = (int) session.getAttribute("user_code_id");
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			HttpSession session = request.getSession();
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			int operator_id = (int) session.getAttribute("operator_id");
+			
+			model.addAttribute("operatorInfo", dao.operatorLoginInfo(user_code_id));
+			
+			//System.out.println(operator_id);
+			result = "/user/OperatorMainPage";
+			return result;
+		}
+
+		// 경기장 승인 처리 페이지
+		@RequestMapping(value="OperatorFieldResApprForm.action", method = {RequestMethod.POST, RequestMethod.GET})
+		public String operatorFieldApprForm(Model model,HttpServletRequest request, HttpServletResponse response)
+		{
+			String result = null;
+			
+			HttpSession session = request.getSession();
+			
+			int operator_id = (int) session.getAttribute("operator_id");
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			//System.out.println(operator_id);
+			model.addAttribute("fieldBeforeResApprList", dao.fieldBeforeResApprList(operator_id));
+			
+			result = "/user/OperatorFieldResApprForm";
+			return result;
+		}
 		
-		model.addAttribute("operatorInfo", dao.operatorLoginInfo(user_code_id));
+		// 구장 운영자 경기장 예약 승인 처리
+		@RequestMapping(value = "FieldResApprInsert.action",method = RequestMethod.POST)
+		public String operatorFieldResAppr(@RequestParam("field_res_id") int field_res_id ,Model model,HttpServletRequest request)
+		{
+			String result = null;
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			//System.out.println(field_res_id);
+			dao.fieldResApprInsert(field_res_id);
+			
+			result="redirect:OperatorFieldResApprForm.action";
+			
+			return result;
+		}
 		
-		
-		result = "/user/OperatorMainPage";
-		return result;
-	}
+		// 경기장 예약 반려 처리 폼
+		@RequestMapping(value = "FieldResApprCancelForm.action", method = {RequestMethod.POST, RequestMethod.GET})
+		public String adminResFieldApprCancel(Model model,HttpServletRequest request,@RequestParam("field_res_id") String field_res_id)
+		{
+			String result = null;
+			
+		    model.addAttribute("field_res_id", field_res_id);
+			result = "/user/OperatorFieldResApprCancelForm";
+			
+			return result;
+		}
+			
+		// 경기장 예약 반려 처리
+		@RequestMapping(value="FieldResApprCancelInsert.action", method = {RequestMethod.POST, RequestMethod.GET})
+		public String adminFieldApprCancelInsert(Model model,OperatorResCancelDTO dto,HttpServletRequest request)
+		{
+			String result = null;
+			
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			System.out.println("[DEBUG] 반려 요청 수신");
+			System.out.println("reason : " + request.getParameter("field_pay_cancel_reason"));
+			System.out.println("field_res_id : " + request.getParameter("field_res_id"));
+			
+			dao.fieldResApprCancelInsert(dto);
+			
+			result = "/user/OperatorFieldResApprForm";
+			
+			return result;
+		}
 	
 	//==================================================================
 	
@@ -221,7 +287,8 @@ public class UserController
 			session.setAttribute("user_email", dto.getUser_email());
 			session.setAttribute("user_code_id", dto.getUser_code_id());
 			session.setAttribute("operator_id", userDAO.operatorSearchId(dto.getUser_code_id()));
-
+			session.setAttribute("user_nick_name", dto.getUser_nick_name());
+			
 			if (teamDAO.searchMyTempTeam(dto.getUser_code_id()) != null)
 				session.setAttribute("team_id", teamDAO.searchMyTempTeam(dto.getUser_code_id()));
 			
@@ -298,6 +365,7 @@ public class UserController
 		session.removeAttribute("user_email");
 		session.removeAttribute("user_code_id");
 		session.removeAttribute("operator_id");
+		session.removeAttribute("user_nick_name");
 		session.removeAttribute("team_id");
 		
 		// 로그아웃 상태 플래그 남기기

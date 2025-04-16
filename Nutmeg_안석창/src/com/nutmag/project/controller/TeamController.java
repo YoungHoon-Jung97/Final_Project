@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,6 +27,7 @@ import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dto.CityDTO;
+import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
@@ -462,11 +464,46 @@ public class TeamController
 		return "redirect:/MainPage.action";
 	}
 	
-	// 일정 호출
+	// 동호회 일정 페이지
 	@RequestMapping(value = "/MyTeamSchedule.action", method = RequestMethod.GET)
-	public String teamSchedule()
+	public String teamSchedule(HttpServletRequest request, Model model)
 	{
+		HttpSession session = request.getSession();
+		
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		
+		if (user_code_id == -1)
+		{
+			String message = "ERROR_AUTH_REQUIRED: 로그인을 해야 합니다.";
+			session.setAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
 		return "/team/TeamSchedule";
+	}
+	
+	// 일정 불러오기
+	@RequestMapping(value = "/MatchList.action", method = RequestMethod.GET)
+	@ResponseBody  // 중요: JSON 응답을 자동으로 처리
+	public List<MatchDTO> getMatches(HttpServletRequest request) {
+	    HttpSession session = request.getSession();
+	    Integer teamId = (Integer) session.getAttribute("team_id");
+	    
+	    // 동호회 정보 가져오기
+	    ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
+	    TeamDTO team = dao.getTeamInfo(teamId);
+	    int team_id = team.getTeam_id();
+	    
+	    // 매치 목록 가져오기
+	    List<MatchDTO> matchList = dao.matchList(team_id);
+	    
+	    // 디버깅
+	    for (MatchDTO match : matchList) {
+	        System.out.println("홈 팀 이름: " + match.getHome_team_name());
+	        System.out.println("어웨이 팀 이름: " + match.getAway_team_name());
+	    }
+	    
+	    return matchList; // Spring이 자동으로 JSON으로 변환
 	}
 	
 	// 가게부 호출

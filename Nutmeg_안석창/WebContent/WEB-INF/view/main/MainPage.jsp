@@ -161,7 +161,6 @@
 	<form method="get" action="">
 		<div class="mb-3">
 			<label for="regionSelect" class="form-label">지역</label>
-			
 			<select id="regionSelect" name="region" class="form-select">
 				<option value="">전체</option>
 				<option value="서울">서울</option>

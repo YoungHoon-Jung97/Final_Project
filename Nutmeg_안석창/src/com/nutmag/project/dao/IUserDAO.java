@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.OperatorDTO;
+import com.nutmag.project.dto.OperatorResCancelDTO;
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -39,6 +41,16 @@ public interface IUserDAO
 	
 	//구장 운영자 정보
 	public ArrayList<OperatorDTO> operatorLoginInfo (int user_code_id);
+	
+	// 구장 운영자 경기장 미승인 리스트
+ 	public ArrayList<FieldResMainPageDTO> fieldBeforeResApprList(int operator_id);
+	
+ 	// 구장 운영자 경기장 예약 승인
+ 	public int fieldResApprInsert(int field_res_id);
+ 	
+ 	// 구장 운영자 경기장 반려 인서트
+ 	public int fieldResApprCancelInsert(OperatorResCancelDTO dto);
+	
 	
 	//가입중인 이메일 출력
     public List<String> findEmailsByBirthAndTel(@Param("tel") String tel, @Param("birth") String birth);

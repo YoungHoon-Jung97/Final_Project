@@ -62,7 +62,6 @@
 .approve-btn:hover
 {
 	background-color: #8cc4a0;
-	transform: scale(1.05);
 }
 
 .reject-btn
@@ -75,7 +74,6 @@
 .reject-btn:hover
 {
 	background-color: #e57373;
-	transform: scale(1.05);
 }
 
 /* 페이지 제목 */

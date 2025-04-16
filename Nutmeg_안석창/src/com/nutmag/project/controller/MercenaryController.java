@@ -104,6 +104,18 @@ public class MercenaryController
     public String mercenaryList(Model model, HttpServletRequest request, 
                                @RequestParam(required = false) String searchDate)
     {
+        HttpSession session = request.getSession();      
+       
+        Integer user_code_id = (Integer)session.getAttribute("user_code_id");
+        
+        // 로그인 여부
+		if (user_code_id == -1)
+		{
+			String message = "ERROR_AUTH_REQUIRED: 로그인을 해야 합니다.";
+			session.setAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
 		IMercenaryDAO mercenaryDAO = sqlSession.getMapper(IMercenaryDAO.class);
         
         // 날짜 처리
