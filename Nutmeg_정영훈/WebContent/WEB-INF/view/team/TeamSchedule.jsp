@@ -277,6 +277,7 @@ function updateListView(events) {
 //[3 순서] 경기 목록 아이템 생성
 function createMatchListItem(event, container) {
 const props = event.extendedProps;
+const id = event.id;
 
     // 날짜 추출 및 형식화
     let formattedDate = "날짜 정보 없음";
@@ -311,6 +312,8 @@ const props = event.extendedProps;
     let statusStyle = getStatusStyle(props.status);
     let statusText = getStatusText(props.status);
     
+    
+    
     const matchItem = document.createElement('div');
     matchItem.className = 'match-item';
     
@@ -339,8 +342,8 @@ const props = event.extendedProps;
                 '<span class="detail-label">참석 인원:</span>' +
                 '<span>' + props.attendance + '</span>' +
             '</div>' +
-            '<a class="btn" href="/ApplyMatch.action?field_res_id='+props.id+'">참가하기</a>'+
-            '<a class="btn" href="/Participant.action?field_res_id='+props.id+'">참가인원 보기</a>'
+            '<a class="btn" href="ApplyMatch.action?field_res_id='+id+'">참가하기</a>'+
+            '<a class="btn" href="Participant.action?field_res_id='+id+'">참가인원 보기</a>'
         '</div>';
     
     container.appendChild(matchItem);

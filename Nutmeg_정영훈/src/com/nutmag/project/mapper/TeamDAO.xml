@@ -187,12 +187,19 @@
 		VALUES(TEAM_WITHDRAWAL_SEQ.nextval,SYSDATE,#{team_member_id})
     </insert>
     
-     <!--===============================================동호회 일정 출력==================================================================  -->
      
-     <select id="matchList" resultType="com.nutmag.project.dto.MatchDTO">
-     	SELECT *
-		FROM MATCH_SCHEDULE_VIEW
-		WHERE HOME_TEAM_ID =#{team_id} OR AWAY_TEAM_ID =#{team_id}
+     <!--===============================================동호회 인원수 출력==================================================================  -->
+     
+     <select id="tempTeamMemberCount" resultType="int">
+     	SELECT COUNT(*) AS "TEMP_TEAM_COUNT"
+		FROM TEMP_TEAM_MEMBER_VIEW
+		WHERE TEMP_TEAM_ID =#{temp_team_id}
+     </select>
+     
+     <select id="teamMemberCount" resultType="int">
+		SELECT COUNT(*) AS "TEAM_COUNT"
+		FROM TEAM_MEMBER_VIEW
+		WHERE TEAM_ID =#{team_id}
      </select>
     
 </mapper>

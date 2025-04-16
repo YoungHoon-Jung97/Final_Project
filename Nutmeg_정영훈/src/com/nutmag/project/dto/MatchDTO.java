@@ -3,11 +3,27 @@ package com.nutmag.project.dto;
 public class MatchDTO {
 
 	private int field_res_id,pay_amount,home_team_id,away_team_id,match_result_home_score,
-	match_result_away_score;
-	
+	match_result_away_score,match_pay_id,team_member_id;
 	private String match_date,start_time,end_time,field_name,stadium_name,
 	stadium_addr,stadium_detailed_addr,match_inwon,home_team_name,away_team_name,match_status;
+	
 
+	public int getTeam_member_id() {
+		return team_member_id;
+	}
+
+	public void setTeam_member_id(int team_member_id) {
+		this.team_member_id = team_member_id;
+	}
+
+
+	public int getMatch_pay_id() {
+		return match_pay_id;
+	}
+	
+	public void setMatch_pay_id(int match_pay_id) {
+		this.match_pay_id = match_pay_id;
+	}
 	public int getField_res_id() {
 		return field_res_id;
 	}

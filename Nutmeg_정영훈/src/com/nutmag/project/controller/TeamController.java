@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutmag.project.dao.IBankDAO;
+import com.nutmag.project.dao.IMatchDAO;
 import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
@@ -44,8 +45,27 @@ public class TeamController
 	@RequestMapping(value = "/MainPage.action", method = RequestMethod.GET)
 	public String mainPage(Model model)
 	{
-		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
-		List<TeamDTO> teamList = dao.getTeamList();
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		List<TeamDTO> teamList = teamDAO.getTeamList();
+		
+		for (TeamDTO team : teamList) {
+			
+			//동호회 정보확인
+			int team_id = team.getTeam_id();
+			int temp_team_id = team.getTemp_team_id();
+			
+			//임시 동호회
+			if (team_id == 0) {
+				int temp_team_member_count =teamDAO.tempTeamMemberCount(temp_team_id);
+				team.setMember_count(temp_team_member_count);
+			}
+			//정식 동호회
+			else if(team_id !=0) {
+				int team_member_count = teamDAO.teamMemberCount(team_id);
+				team.setMember_count(team_member_count);
+			}
+			
+		}
 		model.addAttribute("teamList", teamList);
 		
 		return "main/MainPage";
@@ -482,6 +502,7 @@ public class TeamController
 		return "/team/TeamSchedule";
 	}
 	
+	
 	// 일정 불러오기
 	@RequestMapping(value = "/MatchList.action", method = RequestMethod.GET)
 	@ResponseBody  // 중요: JSON 응답을 자동으로 처리
@@ -492,10 +513,11 @@ public class TeamController
 	    // 동호회 정보 가져오기
 	    ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 	    TeamDTO team = dao.getTeamInfo(teamId);
+	    IMatchDAO matchDAO = sqlSession.getMapper(IMatchDAO.class);
 	    int team_id = team.getTeam_id();
 	    
 	    // 매치 목록 가져오기
-	    List<MatchDTO> matchList = dao.matchList(team_id);
+	    List<MatchDTO> matchList = matchDAO.matchList(team_id);
 	    
 	    // 디버깅
 	    for (MatchDTO match : matchList) {
@@ -535,10 +557,11 @@ public class TeamController
 		// 동호회 정보 가져오기
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 		TeamDTO team = dao.getTeamInfo(temp_team_id);
+		int team_id = team.getTeam_id();
 		model.addAttribute("team", team);
 		
 		// 동호회원 가져오기
-		if (team.getTeam_id() == 0)
+		if (team_id == 0)
 		{
 			// 임시동호회 인원 찾기
 			List<TeamApplyDTO> teamApplyList = dao.tempTeamApplyList(temp_team_id);
@@ -561,11 +584,11 @@ public class TeamController
 			
 		}
 		
-		else if (team.getTeam_id() != 0)
+		else if (team_id != 0)
 		{
 			
 			// 정식동호회 인원 찾기
-			List<TeamApplyDTO> teamApplyList = dao.teamApplyList(team.getTeam_id());
+			List<TeamApplyDTO> teamApplyList = dao.teamApplyList(team_id);
 			model.addAttribute("teamApplyList", teamApplyList);
 			System.out.println("\n=======[정식 동호회 팀원 승인 호출]=======");
 			System.out.println("팀 정보_id = " + team_id);
