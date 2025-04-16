@@ -12,10 +12,10 @@ $(function()
 		var selectedRegionName = $('#regionSelect option:selected').text().trim();
 		var selectedCityName = $('#citySelect option:selected').text().trim();
 		
-		if (selectedRegionName === '전체')
+		if (selectedRegionName == '전체')
 			selectedRegionName = '';
 		
-		if (selectedCityName === '전체')
+		if (selectedCityName == '전체')
 			selectedCityName = '';
 		
 		$.ajax(

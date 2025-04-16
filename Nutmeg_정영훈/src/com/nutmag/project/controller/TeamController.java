@@ -506,6 +506,7 @@ public class TeamController
 	    return matchList; // Spring이 자동으로 JSON으로 변환
 	}
 	
+	
 	// 가게부 호출
 	@RequestMapping(value = "/MyTeamFee.action", method = RequestMethod.GET)
 	public String teamFee()
@@ -525,25 +526,25 @@ public class TeamController
 	public String approveMember(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
-		Integer team_id = (Integer) session.getAttribute("team_id");
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
 		
 		System.out.println("\n==========[동호회 승인 페이지 호출]==========");
-		System.out.println("team_id = " + team_id);
+		System.out.println("temp_team_id = " + temp_team_id);
 		System.out.println("============================================");
 		
 		// 동호회 정보 가져오기
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
-		TeamDTO team = dao.getTeamInfo(team_id);
+		TeamDTO team = dao.getTeamInfo(temp_team_id);
 		model.addAttribute("team", team);
 		
 		// 동호회원 가져오기
 		if (team.getTeam_id() == 0)
 		{
 			// 임시동호회 인원 찾기
-			List<TeamApplyDTO> teamApplyList = dao.tempTeamApplyList(team_id);
+			List<TeamApplyDTO> teamApplyList = dao.tempTeamApplyList(temp_team_id);
 			model.addAttribute("teamApplyList", teamApplyList);
 			System.out.println("\n=======[임시 동호회 팀원 승인 호출]=======");
-			System.out.println("팀 정보_id = " + team_id);
+			System.out.println("팀 정보_id = " + temp_team_id);
 			System.out.println("리스트 길이 = " + teamApplyList.size());
 			System.out.println("============================================");
 			
@@ -562,6 +563,7 @@ public class TeamController
 		
 		else if (team.getTeam_id() != 0)
 		{
+			
 			// 정식동호회 인원 찾기
 			List<TeamApplyDTO> teamApplyList = dao.teamApplyList(team.getTeam_id());
 			model.addAttribute("teamApplyList", teamApplyList);

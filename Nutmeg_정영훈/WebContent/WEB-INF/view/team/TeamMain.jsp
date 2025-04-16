@@ -122,7 +122,7 @@
 													</td>
 												</c:when>
 												
-												<c:when test="${teamMember.member_status == '회장'}">
+												<c:when test="${teamMember.member_status == '회장' || teamMember.member_status != '회장'}">
 													<td></td>
 												</c:when>
 											</c:choose>

@@ -22,13 +22,13 @@
 	
 	<!-- 로그인 -->
 	<select id="userLoginKo" resultType="com.nutmag.project.dto.UserDTO">
-		SELECT USER_ID, USER_NAME, USER_EMAIL, USER_CODE_ID
+		SELECT USER_ID, USER_NAME, USER_EMAIL, USER_CODE_ID, USER_NICK_NAME
 		FROM USER_INFO
 		WHERE USER_EMAIL = #{logEmailKo} AND USER_PWD = #{logPwKo}
 	</select>
 	
 	<select id="userLoginEn" resultType="com.nutmag.project.dto.UserDTO">
-		SELECT USER_ID, USER_NAME, USER_EMAIL, USER_CODE_ID
+		SELECT USER_ID, USER_NAME, USER_EMAIL, USER_CODE_ID, USER_NICK_NAME
 		FROM USER_INFO
 		WHERE USER_EMAIL = #{logEmailEn} AND USER_PWD = #{logPwEn}
 	</select>

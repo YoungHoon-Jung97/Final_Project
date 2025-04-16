@@ -53,8 +53,8 @@
 	        AND CITY_NAME LIKE '%' || #{city_name} || '%'
 	    </if>
 	    <if test="time != null and time != ''">
-	        AND mercenary_time_start_at &lt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
-	      	AND mercenary_time_end_at &gt; TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
+	        AND mercenary_time_start_at &lt;= TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
+	      	AND mercenary_time_end_at &gt;= TO_DATE(#{time}, 'YYYY-MM-DD HH24:MI:SS')
 	    </if>
 	</select>
 	

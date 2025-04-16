@@ -143,7 +143,7 @@ body
 
 #descTeamMemberCount::before
 {
-	content: "회원 수: ";
+	content: "현재 회원 수: ";
 }
 
 #descTeamDesc::before
