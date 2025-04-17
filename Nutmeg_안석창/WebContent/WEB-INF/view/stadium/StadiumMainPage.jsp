@@ -31,7 +31,7 @@
 <div class="main-background">
 	<main>
 		<section class="container py-5">
-			<div class="section-header text-center mb-5">
+			<div class="section-header text-center mt-3 mb-3">
 			    <h1 class="display-5 fw-bold text-success">⚽ 경기장 예약하기</h1>
 			    
 			    <p class="text-muted mt-2">원하는 풋살장을 선택하고, 빠르게 예약해보세요!</p>
@@ -107,14 +107,12 @@
 	
 	<div class="mb-3">
 		<form class="row g-2 align-items-center">
-			<label for="text" class="form-label">검색</label>
+			<label for="title" class="form-label">경기장 검색</label>
 			
-			<div class="col-auto">
+			<div class="input-group">
 				<input type="text" class="form-control" name="title" id="title" placeholder="검색어 입력">
-			</div>
-			
-			<div class="col-auto">
-				<button type="submit" class="btn btn-primary w-100 mt-3" id="searchBtn">검색</button>
+				
+				<button type="submit" class="btn btn-success" id="searchBtn">검색</button>
 			</div>
 		</form>
 	</div>

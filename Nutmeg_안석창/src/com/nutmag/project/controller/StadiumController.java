@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -263,6 +264,7 @@ public class StadiumController
 	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
 	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
 		MultipartFile file = fieldDTO.getField_reg_image();
 		
 		System.out.println("=================================================================================");
@@ -282,6 +284,7 @@ public class StadiumController
 					System.out.println("Field_reg_garo(가로) = " + fieldDTO.getField_reg_garo());
 					System.out.println("Field_reg_sero(세로) = " + fieldDTO.getField_reg_sero());
 					System.out.println("Field_reg_at(등록일) = " + fieldDTO.getField_reg_at());
+					System.out.println("Field_reg_fac = " + fieldDTO.getField_reg_facilities());
 				}
 				
 				System.out.println("======= 파일 업로드 상태 =======");
@@ -337,6 +340,9 @@ public class StadiumController
 			IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
 			dao.fieldInsert(fieldDTO);
 			System.out.println("DB 저장 완료");
+			
+			String message = "SUCCESS_INSERT: 경기장 등록이 완료 되었습니다.";
+			session.setAttribute("message", message);
 		}
 		
 		catch (Exception e)
@@ -451,8 +457,38 @@ public class StadiumController
 			if (user_code_id == team.getUser_code_id()) {
 
 			IFieldDAO fieldDAO = sqlSession.getMapper(IFieldDAO.class);
+			ArrayList<FieldResMainPageDTO> fieldList = fieldDAO.fieldApprOkSearchList(field_code_id);
 			
-			model.addAttribute("fieldApprOkSearchList", fieldDAO.fieldApprOkSearchList(field_code_id));
+			String addr = null;
+			
+			// JSON → Map 변환
+			ObjectMapper mapper = new ObjectMapper();
+			for (FieldResMainPageDTO field : fieldList)
+			{
+			    try {
+			    	// JSON 형태로 받은 문자열 Map에 넣어서 형태 변환
+			    	// 이후 key value로 꺼내서 jsp에 표현 key= 샤워실 , value=true or false
+			        String json = field.getField_reg_facilities(); // JSON 문자열
+			        if (json != null && !json.isEmpty()) {
+			            Map<String, Boolean> facilitiesMap = mapper.readValue(json, Map.class);
+			            field.setFacilitiesMap(facilitiesMap);
+			        }
+			    } catch (Exception e) {
+			        e.printStackTrace(); // 에러는 로그로 출력
+			    }
+			    
+			    // 이건 줄 바꾼거 반영하는 코드
+			    // jsp가 아니라 자바에서 바로 줄 바꿔서 보냄
+			    String notice = field.getField_reg_notice();
+				if (notice != null) {
+					field.setField_reg_notice(notice.replace("\n", "<br/>"));
+				}
+				addr = field.getStadium_reg_addr();
+				
+			}
+			System.out.println("주소 확인용 : " + addr);
+			model.addAttribute("field_addr",addr);
+			model.addAttribute("fieldApprOkSearchList", fieldList);
 			model.addAttribute("field_code_id", field_code_id);
 			
 			result = "/stadium/FieldReservationForm";
@@ -536,6 +572,14 @@ public class StadiumController
 	    }
 	    
 	    
+	    ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+	    HttpSession session = request.getSession();
+	    
+	    Integer temp_team_id = (Integer) session.getAttribute("team_id");
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		
+		model.addAttribute("team_id", team.getTeam_id());
+	    
 	    int totalPrice = ((end_time_id-start_time_id)+1)*field_reg_price;
 	    
 	    model.addAttribute("field_code_id", field_code_id);
@@ -565,18 +609,12 @@ public class StadiumController
 		HttpSession session = request.getSession();
 		IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
 		
-		Integer team_id = (Integer) session.getAttribute("team_id");
-	    System.out.println("team_id in session: " + team_id);
-	    
-	    ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
-		
-		TeamDTO team = teamDAO.getTeamInfo(team_id);
 		
 		dao.fieldResInsert(dto);
 		
 		message = "SUCCESS_INSERT: 구장 예약이 완료 되었습니다.";
 		session.setAttribute("message", message);
-		session.setAttribute("team_id", team.getTeam_id());
+		
 		
 		
 		result = "redirect:MainPage.action";

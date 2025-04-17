@@ -37,7 +37,13 @@
 	<main>
 		<div class="board-container">
 			<div class="header-container">
-				<h1>용병 게시판</h1>
+				<div class="section-header text-center mt-3 mb-3">
+					<h1 class="display-5 fw-bold text-success">⚽ 용병 게시판</h1>
+					
+					<p class="text-muted mt-2">원하는 용병을 찾아 고용해보세요!</p>
+					
+				    <div class="underline mt-3 mx-auto"></div>
+				</div>
 			</div>
 			
 			<!-- 리스트 출력 -->
@@ -108,25 +114,15 @@
 	
 	<div class="mb-3">
 		<div class="search-container">
-			<form class="search-form" id="dateSearchForm"
-				action="mercenary.action" method="GET">
-				<input type="date" class="date-input" id="searchDate"
-					name="searchDate" required>
-				<button id="searchBtn" type="submit" class="btn-search">검색</button>
+			<label for="searchDate" class="form-label">용병 요청 날짜</label>
+			
+			<form class="search-form" id="dateSearchForm" action="mercenary.action" method="GET">
+				<div class="input-group">
+					<input type="date" class="date-input form-control" id="searchDate" name="searchDate" required>
+					<button id="searchBtn" type="submit" class="btn-search btn btn-success">검색</button>
+				</div>
 			</form>
 		</div>
-		
-		<!-- <form class="row g-2 align-items-center">
-			<label for="text" class="form-label">검색</label>
-			
-			<div class="col-auto">
-				<input type="text" class="form-control" name="title" id="title" placeholder="검색어 입력">
-			</div>
-			
-			<div class="col-auto">
-				<button type="submit" class="btn btn-primary w-100 mt-3" id="searchBtn">검색</button>
-			</div>
-		</form> -->
 	</div>
 </div>
 

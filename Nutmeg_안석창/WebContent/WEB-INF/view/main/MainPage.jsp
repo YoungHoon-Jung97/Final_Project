@@ -108,6 +108,14 @@
 	<main>
 		<!-- 동호회 리스트 -->
 		<div class="container mt-4">
+			<div class="section-header text-center mt-3 mb-3">
+			    <h1 class="display-5 fw-bold text-success">⚽ 동호회 찾기</h1>
+			    
+			    <p class="text-muted mt-2">지역별 풋살 동호회를 살펴보고, 함께 뛰어볼 팀을 찾아보세요!</p>
+			    
+			    <div class="underline mt-3 mx-auto"></div>
+			</div>
+			
 			<div class="row justify-content-center">
 				<c:forEach var="team" items="${teamList}">
 					<div class="col-md-4 d-flex justify-content-center">
@@ -140,7 +148,7 @@
 								<input id="teamDesc" type="hidden" value="${team.temp_team_desc}">
 								<input id="teamRegion" type="hidden" value="${team.region_name}">
 								<input id="teamCity" type="hidden" value="${team.city_name}">
-								<input id="teamMemberCount" type="hidden" value="${team.temp_team_person_count}">
+								<input id="teamMemberCount" type="hidden" value="${team.member_count}">
 								<input id="teamEmblem" type="hidden"  value="${team.emblem}"/>
 								<input id="teamStaus" type="hidden" value="${team.team_id}">
 								<input id="teamId" type="hidden" value="${team.temp_team_id}">

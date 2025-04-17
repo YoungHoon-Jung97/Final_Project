@@ -29,7 +29,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>AdminLogin</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/Login.css?after">
@@ -84,7 +84,7 @@
 							<div class="card-front">
 								<div class="center-wrap">
 									<div class="section text-center">
-										<h4 class="mb-4 pb-3">어드민 로그인</h4>
+										<h4 class="mb-4 pb-3">관리자 로그인</h4>
 										
 										<form action="AdminLoginCheck.action" method="post" id="loginFormKo">
 											<input type="hidden" name="lang" value="ko">
@@ -143,7 +143,7 @@
 							<div class="card-back">
 								<div class="center-wrap">
 									<div class="section text-center">
-										<h4 class="mb-4 pb-3">Log In</h4>
+										<h4 class="mb-4 pb-3">Admin Log In</h4>
 										
 										<form action="AdminLoginCheck.action" method="post" id="loginFormEn">
 											<input type="hidden" name="lang" value="en">

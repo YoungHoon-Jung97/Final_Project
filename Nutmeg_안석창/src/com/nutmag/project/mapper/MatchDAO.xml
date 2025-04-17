@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IMatchDAO">
+
+	<!-- 동호회원 찾기  -->
+	<select id="searchTeamMember" resultType="com.nutmag.project.dto.TeamApplyDTO">
+	SELECT *
+	FROM TEAM_MEMBER_VIEW
+	WHERE USER_CODE_ID =#{user_code_id}
+	</select>
+    
+	<!-- 동호회 일정 출력 -->
+  	<select id="matchList" resultType="com.nutmag.project.dto.MatchDTO">
+  		SELECT *
+		FROM MATCH_SCHEDULE_VIEW
+		WHERE HOME_TEAM_ID =#{team_id} OR AWAY_TEAM_ID =#{team_id}
+  	</select>
+  
+  	<!-- 매치 정보 출력 -->
+  	<select id="getMatch" resultType="com.nutmag.project.dto.MatchDTO">
+  		SELECT *
+  		FROM MATCH_SCHEDULE_VIEW
+  		WHERE FIELD_RES_ID = #{field_res_id}
+  	</select>
+     
+	<!-- 홈팀 동호회 매치 참여 -->
+	<insert id="addHomeTeamMember" parameterType="com.nutmag.project.dto.MatchDTO">
+  		INSERT INTO HOME_TEAM
+  		(
+	   		HOME_TEAM_ID,
+			FIELD_RES_ID,
+			TEAM_MEMBER_ID,
+			HOME_TEAM_APPLY_AT
+  		)
+  		VALUES(
+	  		HOME_TEAM_SEQ.NEXTVAL,
+	  		#{field_res_id},
+	  		#{team_member_id},
+	  		SYSDATE
+  		)
+  	</insert>
+  	<!-- 어웨이 동호회 매치 참여 -->
+  	<insert id="addAwayTeamMember" parameterType="com.nutmag.project.dto.MatchDTO">
+  		INSERT INTO AWAYTEAM_PARTICIPANT
+  		(
+  			AWAYTEAM_PARTICIPANT_ID,
+			AWAYTEAM_PARTICIPANT_AT,
+			TEAM_MEMBER_ID,
+			MATCH_PAY_ID
+  		)
+  		VALUES(
+  			AWAYTEAM_PARTICIPANT_SEQ.NEXTVAL,
+  			SYSDATE,
+	  		#{team_member_id},
+  			#{match_pay_id}
+  		)
+  	</insert>
+     
+     
+
+</mapper>

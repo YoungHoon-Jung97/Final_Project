@@ -53,6 +53,9 @@ public interface ITeamDAO {
 	//임시 동호회 신청자 명단
 	public ArrayList<TeamApplyDTO> tempTeamApplyList(int team_id);
 	
+	//정식 동호회 신청자 명단
+	public ArrayList<TeamApplyDTO> teamApplyList(int team_id);
+	
 	// 임시 동호회 중복 신청 검사
     int checkedTempTeamApply(@Param("user_code_id") int user_code_id,
                              @Param("team_id") int team_id);
@@ -60,9 +63,6 @@ public interface ITeamDAO {
     // 정식 동호회 중복 신청 검사
     int checkedTeamApply(@Param("user_code_id") int user_code_id,
                          @Param("team_id") int team_id);
-	//정식 동호회 신청자 명단
-	public ArrayList<TeamApplyDTO> teamApplyList(int team_id);
-	
 	//----------------------------------------------------------------
 	//임시 팀 가입 
 	public int applyedTempTeam(TeamApplyDTO teamApply);
@@ -89,6 +89,10 @@ public interface ITeamDAO {
 	public int dropTeamMember(@PathParam("team_member_id") int team_member_id);
 	
 	//------------------------------------------------------------------------
-	//동호회 일정 출력
-	public ArrayList<MatchDTO> matchList(int team_id);
+	
+	//임시 동호회원 수
+	public int tempTeamMemberCount(int temp_team_id);
+	
+	//정식 동호회원 수
+	public int teamMemberCount(int team_id);
 }

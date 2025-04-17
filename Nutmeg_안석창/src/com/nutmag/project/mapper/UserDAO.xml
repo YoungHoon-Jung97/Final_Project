@@ -39,7 +39,7 @@
 		FROM USER_INFO
 		WHERE USER_EMAIL = #{email}
 	</select>
-	
+
 	<!-- 닉네임 중복 확인 -->
 	<select id="searchnickName" resultType="int">
 		SELECT COUNT(*)
@@ -67,7 +67,7 @@
 								 , OPERATOR_TEL, OPERATOR_ACCOUNT_NO
 								 , OPERATOR_ACCOUNT_HOLDER , BANK_ID, USER_CODE_ID)
 		VALUES (OPERATOR_INFO_SEQ.NEXTVAL, #{operator_email}, #{operator_name}, #{operator_tel}
-			  , #{operator_account_no}, #{operator_account_holder}, #{bank_id}, #{user_code_id})
+				, #{operator_account_no}, #{operator_account_holder}, #{bank_id}, #{user_code_id})
 	</insert>
 	
 	<!-- 구장 운영자 인증 -->
@@ -106,11 +106,12 @@
 	
 	<!-- 구장 운영자 경기장 예약 반려  -->
 	<insert id="fieldResApprCancelInsert" parameterType="com.nutmag.project.dto.OperatorResCancelDTO">
-		INSERT INTO FIELD_PAY_CANCEL (FIELD_PAY_CANCEL_ID, FIELD_PAY_CANCEL_AT
-									, FIELD_PAY_CANCEL_REASON, FIELD_RES_ID)
-		VALUES (FIELD_PAY_CANCEL_SEQ.NEXTVAL, SYSDATE, #{field_pay_cancel_reason
-			  , jdbcType=VARCHAR}, #{field_res_id})
+		INSERT INTO FIELD_PAY_CANCEL (FIELD_PAY_CANCEL_ID,FIELD_PAY_CANCEL_AT
+									,FIELD_PAY_CANCEL_REASON,FIELD_RES_ID)
+		
+		VALUES (FIELD_PAY_CANCEL_SEQ.NEXTVAL,SYSDATE,#{field_pay_cancel_reason, jdbcType=VARCHAR},#{field_res_id})
 	</insert>
+	
 	
 	<!-- 이메일, 전화번호 확인 -->
 	<select id="findEmailsByBirthAndTel" resultType="string">
@@ -119,19 +120,19 @@
 	    WHERE USER_TEL = #{tel}
 	      AND USER_SSN1 = #{birth}
 	</select>
-	
+
 	<!--  이메일, 비밀번호 확인  -->
 	<select id="checkUserForPwd" resultType="int"> 
-		SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END 
-		FROM USER_INFO 
-		WHERE USER_EMAIL = #{email} 
-		AND USER_TEL = #{tel} 
+	SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END 
+	FROM USER_INFO 
+	WHERE USER_EMAIL = #{email} 
+	AND USER_TEL = #{tel} 
 	</select>
 	
 	<!--  임시 비밀번호  -->
 	<update id="updateTempPassword">
-		UPDATE USER_INFO SET USER_PWD = #{pwd} 
-		WHERE USER_EMAIL = #{email} 
+	UPDATE USER_INFO SET USER_PWD = #{pwd} 
+	WHERE USER_EMAIL = #{email} 
 	</update>
 	
 </mapper>

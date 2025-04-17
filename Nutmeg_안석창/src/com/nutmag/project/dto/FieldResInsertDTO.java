@@ -4,7 +4,8 @@ public class FieldResInsertDTO
 {
 	private int field_res_id,stadium_time_id1,stadium_time_id2,team_id,match_inwon_id,field_code_id;
 	
-	private String field_res_at,field_res_match_at,field_res_pay_amount,field_res_pay_at;
+	private String field_res_at,field_res_match_at,field_res_pay_amount,field_res_pay_at
+					,field_reg_notice,field_reg_facilities;
 	
 	
 	public int getField_res_id()
@@ -105,6 +106,26 @@ public class FieldResInsertDTO
 	public void setField_res_pay_at(String field_res_pay_at)
 	{
 		this.field_res_pay_at = field_res_pay_at;
+	}
+
+	public String getField_reg_notice()
+	{
+		return field_reg_notice;
+	}
+
+	public void setField_reg_notice(String field_reg_notice)
+	{
+		this.field_reg_notice = field_reg_notice;
+	}
+
+	public String getField_reg_facilities()
+	{
+		return field_reg_facilities;
+	}
+
+	public void setField_reg_facilities(String field_reg_facilities)
+	{
+		this.field_reg_facilities = field_reg_facilities;
 	}
 	
 	
