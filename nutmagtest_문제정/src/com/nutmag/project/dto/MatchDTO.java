@@ -2,12 +2,28 @@ package com.nutmag.project.dto;
 
 public class MatchDTO {
 
-	private int field_res_id,pay_amount,home_team_id,away_team_id,match_result_home_score,
-	match_result_away_score;
-	
+	private int field_res_id,pay_amount,home_team_id,away_team_id,match_result_home_score,field_code_id,
+	match_result_away_score,match_pay_id,team_member_id,awayteam_pay_amount;
 	private String match_date,start_time,end_time,field_name,stadium_name,
 	stadium_addr,stadium_detailed_addr,match_inwon,home_team_name,away_team_name,match_status;
+	
 
+	public int getTeam_member_id() {
+		return team_member_id;
+	}
+
+	public void setTeam_member_id(int team_member_id) {
+		this.team_member_id = team_member_id;
+	}
+
+
+	public int getMatch_pay_id() {
+		return match_pay_id;
+	}
+	
+	public void setMatch_pay_id(int match_pay_id) {
+		this.match_pay_id = match_pay_id;
+	}
 	public int getField_res_id() {
 		return field_res_id;
 	}
@@ -142,6 +158,26 @@ public class MatchDTO {
 
 	public void setMatch_status(String match_status) {
 		this.match_status = match_status;
+	}
+
+	public int getField_code_id()
+	{
+		return field_code_id;
+	}
+
+	public void setField_code_id(int field_code_id)
+	{
+		this.field_code_id = field_code_id;
+	}
+
+	public int getAwayteam_pay_amount()
+	{
+		return awayteam_pay_amount;
+	}
+
+	public void setAwayteam_pay_amount(int awayteam_pay_amount)
+	{
+		this.awayteam_pay_amount = awayteam_pay_amount;
 	}
 	
 	

@@ -140,7 +140,7 @@
 								<input id="teamDesc" type="hidden" value="${team.temp_team_desc}">
 								<input id="teamRegion" type="hidden" value="${team.region_name}">
 								<input id="teamCity" type="hidden" value="${team.city_name}">
-								<input id="teamMemberCount" type="hidden" value="${team.temp_team_person_count}">
+								<input id="teamMemberCount" type="hidden" value="${team.member_count}">
 								<input id="teamEmblem" type="hidden"  value="${team.emblem}"/>
 								<input id="teamStaus" type="hidden" value="${team.team_id}">
 								<input id="teamId" type="hidden" value="${team.temp_team_id}">

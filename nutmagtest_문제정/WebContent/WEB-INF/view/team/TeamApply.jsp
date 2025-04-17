@@ -14,36 +14,12 @@
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamMain.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamApply.css?after">
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script type="text/javascript">
-
-	$(function()
-	{
-		$("#teamApply").on("click", function()
-		{
-			$('#applyModal').css('display', 'flex');
-			$("#applyModal").show();
-			$("body").css("overflow", "hidden"); // 페이지 스크롤 방지
-			$(".floatingButton-wrapper").addClass("blur-background");
-	    	$("header").addClass("blur-background");
-		});
-		
-		// 모달 닫기 버튼
-		$("#reset-apply").on("click", function()
-		{
-			$('#applyModal').css('display', 'none');
-			$("#applyModal").hide(); // 모달 숨기기
-			$("body").css("overflow", "auto"); // 페이지 스크롤 복원
-			$(".floatingButton-wrapper").removeClass("blur-background");
-			$("header").removeClass("blur-background");
-		});
-	});
-
-</script>
+<script type="text/javascript" src="<%=cp %>/js/TeamApply.js?after"></script>
 
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 
@@ -59,14 +35,15 @@
 		<div class="modal-body">
 			<form action="TeamApplyInsert.action" method="post">
 				<div class="content-section">
-					<h4 class="section-title">포지션 선택</h4>
+					<h4 class="section-title" style="margin-bottom: 10px;">포지션 선택</h4>
 					
-					<select name="position_id" id="position" class="selectpicker"
-					style="width: 150px; margin-top: 10px; margin-bottom: 10px;">
+					<div class="btn-group-vertical w-100" role="group" aria-label="Position Selection" style="margin-bottom: 10px;">
 						<c:forEach var="position" items="${positionList}">
-							<option value="${position.position_id}">${position.position_name}</option>
+							<button type="button" class="btn btn-outline-primary position-button w-100" data-position-id="${position.position_id}">
+								${position.position_name}
+							</button>
 						</c:forEach>
-					</select>
+					</div>
 					
 					<h4 class="section-title">신청자 설명</h4>
 					
@@ -74,6 +51,7 @@
 					name="team_apply_desc" rows="5" style="width: 100%; overflow: hidden; white-space: pre-wrap; word-wrap: break-word;"></textarea>
 						
 					<input type="hidden" name="team_id" value="${team_id}">
+					<input type="hidden" name="position_id" id="selected-position-id">
 				</div>
 				
 				<div class="modal-footer">

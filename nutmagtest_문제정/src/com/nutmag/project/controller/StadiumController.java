@@ -412,7 +412,7 @@ public class StadiumController
 		
 		
 	// 클릭한 경기장 예약 페이지로 이동
-	@RequestMapping(value = "/FieldReservationForm.action", method = RequestMethod.POST)
+	@RequestMapping(value = "/FieldReservationForm.action", method = {RequestMethod.GET, RequestMethod.POST})
 	public String fieldReservation(@RequestParam("field_code_id") int field_code_id, Model model
 			, HttpServletRequest request) 
 	{
@@ -568,6 +568,14 @@ public class StadiumController
 	    }
 	    
 	    
+	    ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+	    HttpSession session = request.getSession();
+	    
+	    Integer temp_team_id = (Integer) session.getAttribute("team_id");
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		
+		model.addAttribute("team_id", team.getTeam_id());
+	    
 	    int totalPrice = ((end_time_id-start_time_id)+1)*field_reg_price;
 	    
 	    model.addAttribute("field_code_id", field_code_id);
@@ -597,18 +605,12 @@ public class StadiumController
 		HttpSession session = request.getSession();
 		IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
 		
-		Integer team_id = (Integer) session.getAttribute("team_id");
-	    System.out.println("team_id in session: " + team_id);
-	    
-	    ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
-		
-		TeamDTO team = teamDAO.getTeamInfo(team_id);
 		
 		dao.fieldResInsert(dto);
 		
 		message = "SUCCESS_INSERT: 구장 예약이 완료 되었습니다.";
 		session.setAttribute("message", message);
-		session.setAttribute("team_id", team.getTeam_id());
+		
 		
 		
 		result = "redirect:MainPage.action";

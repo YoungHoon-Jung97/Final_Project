@@ -9,8 +9,10 @@
 <head>
 <meta charset="UTF-8">
 <title>팀 정보</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/Team.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/TeamMain.css">
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/modal.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
+
 <script type="text/javascript" src="<%=cp %>/js/Modal.js?after"></script>
 
 <!-- jQuery -->
@@ -33,16 +35,13 @@
     border-bottom: 2px solid #a8d5ba;
 }
 
-.team-modify {
-    margin-top: 1px;
-    margin-bottom: 10px;
-}
 
 .container1 {
     width: 100%;
     background-color: white;
-    height: 1000px;
+    height: 100%;
 }
+
 
 .view-buttons {
     display: flex;
@@ -121,37 +120,17 @@
     width: 80px;
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-}
 
-.modal-content {
-    background-color: white;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    padding: 20px;
-}
 </style>
 
 <script>
-// JSP EL과 JavaScript 템플릿 리터럴 충돌 방지
-<c:set var="dollar" value="$" />
+
 
 // 스크립트를 CDATA로 감싸서 EL 충돌 방지
 //<![CDATA[
 let calendar;
 
-// 페이지 로드 시 실행
+//[0 순서] 페이지 로드 시 실행 (달력에 일정 표시)
 document.addEventListener('DOMContentLoaded', function() {
     // FullCalendar 초기화
     const calendarEl = document.getElementById('calendar');
@@ -176,41 +155,46 @@ document.addEventListener('DOMContentLoaded', function() {
 	                    console.log("데이터가 없습니다.");
 	                    successCallback([]);
 	                    return;
-	                }
+		              }
 	                
 	                const events = data.map(match => {
 	                    console.log("매치 데이터:", match);
 	                    console.log("날짜:", match.match_date, "시간:", match.start_time);
 	                    
 	                    // 날짜 형식 처리
-	                    let dateStr = match.match_date;
+	                    var dateStr = match.match_date;
 	                    if (dateStr && dateStr.includes(" 00:00:00")) {
 	                        // "2025-04-17 00:00:00" 형식에서 시간 부분 제거
 	                        dateStr = dateStr.split(" ")[0];
 	                    }
 	                    
-	                    // 시간 형식 처리
-	                    let timeStr = match.start_time;
-	                    if (timeStr && timeStr.includes("~")) {
+	                    // 시작 시간 형식 처리
+	                    var startTimeStr = match.start_time;
+	                    if (startTimeStr && startTimeStr.includes("~")) {
 	                        // "10:00~11:50" 형식에서 시작 시간만 추출
-	                        timeStr = timeStr.split("~")[0].trim();
+	                        startTimeStr = startTimeStr.split("~")[0].trim();
+	                    }
+	                    
+	                 	// 종료 시간 형식 처리
+	                    var endTimeStr = match.end_time;
+	                    if (endTimeStr && endTimeStr.includes("~")) {
+	                        // "10:00~11:50" 형식에서 시작 시간만 추출
+	                        endTimeStr = endTimeStr.split("~")[1].trim();
 	                    }
 	                    
 	                    // 완전한 ISO 형식으로 조합 (HH:MM 형식이면 :00 초 추가)
-	                    let startDateTime = dateStr;
-	                    if (timeStr) {
-	                        if (timeStr.split(":").length === 2) {
-	                            timeStr = timeStr + ":00";
-	                        }
-	                        startDateTime = dateStr + "T" + timeStr;
+	                    var startDateTime = dateStr;
+	                    if (startTimeStr) {
+	                        
+	                        // FullCalendar에 맞는 ISO 형식으로 변환 (~ 제거)
+	                        startDateTime = dateStr + "T" + startTimeStr;
 	                    }
-	                    
-	                    console.log("변환된 시작 시간:", startDateTime);
 	                    
 	                    return {
 	                        id: match.field_res_id,
 	                        title: match.home_team_name + ' vs ' + match.away_team_name,
-	                        start: startDateTime,
+	                        start: dateStr + "T" + startTimeStr,  // start 필드에는 시작 시간만
+	                        end: endTimeStr ? dateStr + "T" + endTimeStr : null,  // end 필드 별도 지정
 	                        extendedProps: {
 	                            homeTeam: match.home_team_name,
 	                            awayTeam: match.away_team_name,
@@ -219,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	                            venue: match.stadium_addr,
 	                            attendance: match.match_inwon,
 	                            status: match.match_status,
-	                            fullTime: match.start_time // 원래 시간 범위 저장
+	                            fullTime: startTimeStr + "~" + endTimeStr ||""
 	                        },
 	                        className: 'event-' + (match.match_status ? match.match_status.replace(/\s+/g, '-').toLowerCase() : 'default')
 	                    };
@@ -264,12 +248,121 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// AJAX로 이벤트 데이터 가져오기
+
+//[1 순서] AJAX로 이벤트 데이터 가져오기
 function fetchEvents() {
     loadEvents(null, null, function(events) {
         updateListView(events);
     });
 }
+
+//[2 순서] 목록 뷰 업데이트
+function updateListView(events) {
+    const listView = document.getElementById('listView');
+    listView.innerHTML = '';
+    
+    if (!events || events.length === 0) {
+        listView.innerHTML = '<div class="text-center p-5">등록된 경기 일정이 없습니다.</div>';
+        return;
+    }
+    
+    // 날짜순 정렬
+    events.sort((a, b) => new Date(a.start) - new Date(b.start));
+    
+    events.forEach(event => {
+        createMatchListItem(event, listView);
+    });
+}
+
+//[3 순서] 경기 목록 아이템 생성
+function createMatchListItem(event, container) {
+const props = event.extendedProps;
+const id = event.id;
+
+    // 날짜 추출 및 형식화
+    let formattedDate = "날짜 정보 없음";
+    
+    if (event.start) {
+        let dateObj;
+        if (typeof event.start === 'string') {
+            // ISO 형식의 문자열에서 날짜 부분만 추출
+            const datePart = event.start.split('T')[0];
+            dateObj = new Date(datePart);
+        } else {
+            dateObj = new Date(event.start);
+        }
+        
+        if (!isNaN(dateObj.getTime())) {
+            // 연, 월, 일 추출
+            const year = dateObj.getFullYear();
+            const month = dateObj.getMonth() + 1;
+            const day = dateObj.getDate();
+            
+            // 기본 날짜 형식
+            formattedDate = year + '년 ' + month + '월 ' + day + '일';
+            
+            // 시간 정보 추가 (있는 경우)
+            if (props.fullTime) {
+                formattedDate += ' ' + props.fullTime;
+            }
+        }
+    }
+    
+    // 이하 동일...
+    let statusStyle = getStatusStyle(props.status);
+    let statusText = getStatusText(props.status);
+    
+    
+    
+    const matchItem = document.createElement('div');
+    matchItem.className = 'match-item';
+    
+    matchItem.innerHTML = 
+        '<div class="match-header">' +
+            '<span class="match-date">' + formattedDate + '</span>' +
+            '<span class="match-status" style="' + statusStyle + '">' + statusText + '</span>' +
+        '</div>' +
+        '<div class="match-teams">' +
+            '<div class="team">' +
+                '<div class="team-name">' + props.homeTeam + '</div>' +
+                '<div class="team-score">' + props.homeScore + '</div>' +
+            '</div>' +
+            '<div class="vs">VS</div>' +
+            '<div class="team">' +
+                '<div class="team-name">' + props.awayTeam + '</div>' +
+                '<div class="team-score">' + props.awayScore + '</div>' +
+            '</div>' +
+        '</div>' +
+        '<div class="match-details">' +
+            '<div class="detail-item">' +
+                '<span class="detail-label">경기장:</span>' +
+                '<span>' + props.venue + '</span>' +
+            '</div>' +
+            '<div class="detail-item">' +
+                '<span class="detail-label">참석 인원:</span>' +
+                '<span>' + props.attendance + '</span>' +
+            '</div>' +
+            '<a class="btn" href="ApplyMatch.action?field_res_id='+id+'">참가하기</a>'+
+            '<a class="btn" href="Participant.action?field_res_id='+id+'">참가인원 보기</a>'
+        '</div>';
+    
+    container.appendChild(matchItem);
+}
+
+// 상태별 스타일
+function getStatusStyle(status) {
+    switch(status) {
+        case '예정됨': return 'background-color: #e3f2fd; color: #1976d2;';
+        case '완료됨': return 'background-color: #e8f5e9; color: #388e3c;';
+        case '취소됨': return 'background-color: #ffebee; color: #c62828;';
+        case '결제대기': return 'background-color: #fff3e0; color: #e65100;';
+        case '결과입력대기': return 'background-color: #f3e5f5; color: #7b1fa2;';
+        default: return 'background-color: #e0e0e0; color: #616161;';
+    }
+}
+
+
+
 
 // 날짜 범위에 따른 이벤트 로드
 function loadEvents(start, end, successCallback, failureCallback) {
@@ -301,94 +394,40 @@ function transformEvents(data) {
         return [];
     }
     
-    return data.map(match => ({
-        id: match.field_res_id,
-        title: match.home_team_name + ' vs ' + match.away_team_name,
-        start: match.match_date + 'T' + match.start_time,
-        extendedProps: {
-            homeTeam: match.home_team_name,
-            awayTeam: match.away_team_name,
-            homeScore: match.match_result_home_score || '-',
-            awayScore: match.match_result_away_score || '-',
-            venue: match.stadium_addr,
-            attendance: match.match_inwon,
-            status: match.match_status
-        },
-        className: 'event-' + match.match_status
-    }));
-}
-
-// 목록 뷰 업데이트
-function updateListView(events) {
-    const listView = document.getElementById('listView');
-    listView.innerHTML = '';
-    
-    if (!events || events.length === 0) {
-        listView.innerHTML = '<div class="text-center p-5">등록된 경기 일정이 없습니다.</div>';
-        return;
-    }
-    
-    // 날짜순 정렬
-    events.sort((a, b) => new Date(a.start) - new Date(b.start));
-    
-    events.forEach(event => {
-        createMatchListItem(event, listView);
+    return data.map(match => {
+        // 시작 시간과 종료 시간 처리
+        let startTimeStr = match.start_time;
+        let endTimeStr = match.end_time;
+        
+        if (startTimeStr && startTimeStr.includes("~")) {
+            // "10:00~11:50" 형식에서 분리
+            const timeParts = startTimeStr.split("~");
+            startTimeStr = timeParts[0].trim();
+            endTimeStr = timeParts[1] ? timeParts[1].trim() : endTimeStr;
+        }
+        
+        // 전체 시간 문자열 생성
+        const fullTimeStr = startTimeStr + (endTimeStr ? "~" + endTimeStr : "");
+        
+        return {
+            id: match.field_res_id,
+            title: match.home_team_name + ' vs ' + match.away_team_name,
+            start: match.match_date + 'T' + startTimeStr,
+            extendedProps: {
+                homeTeam: match.home_team_name,
+                awayTeam: match.away_team_name,
+                homeScore: match.match_result_home_score || '-',
+                awayScore: match.match_result_away_score || '-',
+                venue: match.stadium_addr,
+                attendance: match.match_inwon,
+                status: match.match_status,
+                fullTime: fullTimeStr // 전체 시간 문자열 추가
+            },
+            className: 'event-' + match.match_status
+        };
     });
 }
 
-// 경기 목록 아이템 생성
-function createMatchListItem(event, container) {
-    const props = event.extendedProps;
-    const date = new Date(event.start);
-    
-    // 날짜 포맷팅
-    const options = { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric', 
-        weekday: 'short',
-        hour: '2-digit',
-        minute: '2-digit'
-    };
-    const formattedDate = date.toLocaleDateString('ko-KR', options);
-    
-    // 상태에 따른 스타일과 텍스트
-    let statusStyle = getStatusStyle(props.status);
-    let statusText = getStatusText(props.status);
-    
-    const matchItem = document.createElement('div');
-    matchItem.className = 'match-item';
-    
-    // 일반 문자열 연결 사용 (템플릿 리터럴 대신)
-    matchItem.innerHTML = 
-        '<div class="match-header">' +
-            '<span class="match-date">' + formattedDate + '</span>' +
-            '<span class="match-status" style="' + statusStyle + '">' + statusText + '</span>' +
-        '</div>' +
-        '<div class="match-teams">' +
-            '<div class="team">' +
-                '<div class="team-name">' + props.homeTeam + '</div>' +
-                '<div class="team-score">' + props.homeScore + '</div>' +
-            '</div>' +
-            '<div class="vs">VS</div>' +
-            '<div class="team">' +
-                '<div class="team-name">' + props.awayTeam + '</div>' +
-                '<div class="team-score">' + props.awayScore + '</div>' +
-            '</div>' +
-        '</div>' +
-        '<div class="match-details">' +
-            '<div class="detail-item">' +
-                '<span class="detail-label">경기장:</span>' +
-                '<span>' + props.venue + '</span>' +
-            '</div>' +
-            '<div class="detail-item">' +
-                '<span class="detail-label">참석 인원:</span>' +
-                '<span>' + props.attendance + '</span>' +
-            '</div>' +
-        '</div>';
-    
-    container.appendChild(matchItem);
-}
 
 // 경기 상세 정보 표시
 function showMatchDetails(info) {
@@ -441,17 +480,6 @@ function showMatchDetails(info) {
     document.getElementById('matchDetailsModal').style.display = 'flex';
 }
 
-// 상태별 스타일
-function getStatusStyle(status) {
-    switch(status) {
-        case '예정됨': return 'background-color: #e3f2fd; color: #1976d2;';
-        case '완료됨': return 'background-color: #e8f5e9; color: #388e3c;';
-        case '취소됨': return 'background-color: #ffebee; color: #c62828;';
-        case '결제대기': return 'background-color: #fff3e0; color: #e65100;';
-        case '결과입력대기': return 'background-color: #f3e5f5; color: #7b1fa2;';
-        default: return 'background-color: #e0e0e0; color: #616161;';
-    }
-}
 
 // 상태 텍스트
 function getStatusText(status) {
@@ -525,7 +553,7 @@ function submitMatchForm() {
 <div class="container-fluid container1">
     <div class="main">
         <div class="main-content">
-            <ul class="tean-menu">
+            <ul class="team-menu">
                 <li class="teampage-link"><a href="MyTeam.action">팀 정보</a></li>
                 <li class="teampage-link"><a href="MyTeamSchedule.action">팀 매치</a></li>
                 <li class="teampage-link"><a href="MyTeamFee.action">팀 가계부</a></li>

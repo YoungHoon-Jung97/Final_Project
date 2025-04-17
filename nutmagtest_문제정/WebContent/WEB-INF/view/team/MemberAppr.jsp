@@ -69,9 +69,10 @@
 										<td>${teamApply.team_apply_at}</td>
 										<td>
 											<a href="AddMember.action?team_apply_id=${teamApply.team_apply_id}&user_code_id=${teamApply.user_code_id}&team_id=${team.temp_team_id}"
-											class="approve-btn">승인</a>
+											class="approve-btn" style="text-decoration:none;">승인</a>
 											
-											<button class="reject-btn">거절</button>
+											<a href="CancelApply.action?team_apply_id=${teamApply.team_apply_id}&user_code_id=${teamApply.user_code_id}&team_id=${team.temp_team_id}"
+											class="reject-btn" style="text-decoration:none;">거절</a>
 										</td>
 									</tr>
 								</c:forEach>

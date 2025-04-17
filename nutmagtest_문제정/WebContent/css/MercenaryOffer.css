@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+@charset "UTF-8";
+
 /*게시판 테이블 스타일 */
 .board-container
 {
@@ -52,6 +54,7 @@ h1
 {
 	display: flex;
 	border-bottom: 1px solid #eee;
+	align-items: center;
 }
 
 .table-header
@@ -69,7 +72,7 @@ h1
 
 .btn-hire
 {
-	background-color: #1a73e8;
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
 	color: white;
 	border: none;
 	padding: 6px 12px;
@@ -80,5 +83,5 @@ h1
 
 .btn-hire:hover
 {
-	background-color: #1557b0;
+	background: linear-gradient(to right, #65bda2, #6ab797);
 }

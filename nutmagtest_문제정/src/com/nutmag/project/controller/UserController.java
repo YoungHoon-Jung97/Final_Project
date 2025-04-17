@@ -287,7 +287,8 @@ public class UserController
 			session.setAttribute("user_email", dto.getUser_email());
 			session.setAttribute("user_code_id", dto.getUser_code_id());
 			session.setAttribute("operator_id", userDAO.operatorSearchId(dto.getUser_code_id()));
-
+			session.setAttribute("user_nick_name", dto.getUser_nick_name());
+			
 			if (teamDAO.searchMyTempTeam(dto.getUser_code_id()) != null)
 				session.setAttribute("team_id", teamDAO.searchMyTempTeam(dto.getUser_code_id()));
 			
@@ -364,6 +365,7 @@ public class UserController
 		session.removeAttribute("user_email");
 		session.removeAttribute("user_code_id");
 		session.removeAttribute("operator_id");
+		session.removeAttribute("user_nick_name");
 		session.removeAttribute("team_id");
 		
 		// 로그아웃 상태 플래그 남기기
