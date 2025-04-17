@@ -44,4 +44,7 @@ public interface IMatchDAO {
 	
 	//매치방 인서트
 	public int matchAwayTeamInsert(MatchDTO dto);
+	
+	//어웨이 팀 매치 승인
+	public int approveMatch(int field_res_id);
 }

@@ -5,6 +5,11 @@
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
+    
+    int team_status = Integer.parseInt(session.getAttribute("team_status").toString());
+    System.out.println("\n===============[동호회장 확인]===============");
+    System.out.println("동호회장 확인 : " + team_status);
+    System.out.println("=============================================");
 %>
 <!DOCTYPE html>
 <html>
@@ -123,11 +128,38 @@
 }
 
 
+
+.status-filter-container {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.status-filter-btn {
+    padding: 6px 12px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.status-filter-btn:hover {
+    background-color: #e9ecef;
+}
+
+.status-filter-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
 </style>
 
 <script>
-// 스크립트를 CDATA로 감싸서 EL 충돌 방지
-//<![CDATA[
+//currentEvents 변수를 전역으로 선언
+let currentEvents = [];
+
 let calendar;
 
 //[0 순서] 페이지 로드 시 실행 (달력에 일정 표시)
@@ -157,7 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	                    return;
 		              }
 	                
-	                const events = data.map(match => {
+	             	// 데이터 변환 함수에서 화살표 함수를 일반 함수로 변경
+	                const events = data.map(function(match) {
 	                    console.log("매치 데이터:", match);
 	                    console.log("날짜:", match.match_date, "시간:", match.start_time);
 	                    
@@ -225,9 +258,60 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
     
     calendar.render();
+    // 필터 버튼 이벤트 설정
     
-    // 초기 데이터 로드
+    //=================================[필터 기능]=================================
+    // 필터 버튼 이벤트 설정
+    document.querySelectorAll('.status-filter-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const status = this.getAttribute('data-status');
+            filterMatchesByStatus(status);
+            
+            // 활성화된 버튼 스타일 변경
+            document.querySelectorAll('.status-filter-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
+    });
+    
+    // '전체' 필터 버튼 초기 활성화
+    document.querySelector('.status-filter-btn[data-status="all"]').classList.add('active');
+    
+ 	// 초기 데이터 로드
     fetchEvents();
+    
+ 	// [1 순서] AJAX로 이벤트 데이터 가져오기 (기존 코드 유지)
+    function fetchEvents() {
+        loadEvents(null, null, function(events) {
+            updateListView(events);
+        });
+    }
+    
+ 	// [2 순서] 목록 뷰 업데이트 - 수정된 버전으로 교체
+    function updateListView(events) {
+        const listView = document.getElementById('listView');
+        listView.innerHTML = '';
+        
+        if (!events || events.length === 0) {
+            listView.innerHTML = '<div class="text-center p-5">등록된 경기 일정이 없습니다.</div>';
+            return;
+        }
+        
+        // 전체 이벤트 저장
+        currentEvents = events;
+        
+        // 현재 활성화된 필터 찾기
+        const activeFilter = document.querySelector('.status-filter-btn.active');
+        const status = activeFilter ? activeFilter.getAttribute('data-status') : 'all';
+        
+        // 필터링 적용
+        filterMatchesByStatus(status);
+    }
+
+  
+    //==============================================================================
+    
     
     // 보기 전환 버튼 이벤트
     document.getElementById('listViewBtn').addEventListener('click', function() {
@@ -248,6 +332,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+//전역 함수로 정의
+function filterMatchesByStatus(status) {
+    const listView = document.getElementById('listView');
+    listView.innerHTML = '';
+    
+    if (!currentEvents || currentEvents.length === 0) {
+        listView.innerHTML = '<div class="text-center p-5">등록된 경기 일정이 없습니다.</div>';
+        return;
+    }
+    
+    // 필터링된 이벤트
+    let filteredEvents;
+    
+    if (status === 'all') {
+        filteredEvents = currentEvents; // 전체 보기
+    } else {
+        filteredEvents = currentEvents.filter(function(event) {
+            return getStatusText(event.extendedProps.status) === status;
+        });
+    }
+    
+    if (filteredEvents.length === 0) {
+        listView.innerHTML = '<div class="text-center p-5">해당 상태의 경기 일정이 없습니다.</div>';
+        return;
+    }
+    
+    // 날짜순 정렬 - 여기가 문제! events → filteredEvents로 변경
+    filteredEvents.sort(function(a, b) {
+        return new Date(a.start) - new Date(b.start);
+    });
+    
+    // 목록 업데이트 - 여기도 문제! events → filteredEvents로 변경
+    filteredEvents.forEach(function(event) {
+        createMatchListItem(event, listView);
+    });
+}
+
 
 //[1 순서] AJAX로 이벤트 데이터 가져오기
 function fetchEvents() {
@@ -266,12 +387,15 @@ function updateListView(events) {
         return;
     }
     
-    // 날짜순 정렬
-    events.sort((a, b) => new Date(a.start) - new Date(b.start));
+    // 전체 이벤트 저장
+    currentEvents = events;
     
-    events.forEach(event => {
-        createMatchListItem(event, listView);
-    });
+    // 현재 활성화된 필터 찾기
+    const activeFilter = document.querySelector('.status-filter-btn.active');
+    const status = activeFilter ? activeFilter.getAttribute('data-status') : 'all';
+    
+    // 필터링 적용
+    filterMatchesByStatus(status);
 }
 
 //날짜 문자열을 올바르게 파싱하는 함수
@@ -345,35 +469,42 @@ const id = event.id;
     }
 
     // matchItem.innerHTML 내에서 조건 수정
-    matchItem.innerHTML = 
-        '<div class="match-header">' +
-            '<span class="match-date">' + formattedDate + '</span>' +
-            '<span class="match-status" style="' + statusStyle + '">' + statusText + '</span>' +
-        '</div>' +
-        '<div class="match-teams">' +
-            '<div class="team">' +
-                '<div class="team-name">' + props.homeTeam + '</div>' +
-                '<div class="team-score">' + props.homeScore + '</div>' +
-            '</div>' +
-            '<div class="vs">VS</div>' +
-            '<div class="team">' +
-                '<div class="team-name">' + props.awayTeam + '</div>' +
-                '<div class="team-score">' + props.awayScore + '</div>' +
-            '</div>' +
-        '</div>' +
-        '<div class="match-details">' +
-            '<div class="detail-item">' +
-                '<span class="detail-label">경기장:</span>' +
-                '<span>' + props.venue + '</span>' +
-            '</div>' +
-            '<div class="detail-item">' +
-                '<span class="detail-label">참석 인원:</span>' +
-                '<span>' + props.attendance + '</span>' +
-            '</div>' +
-            (statusText !== "취소됨" && (statusText === "예정됨" || statusText === "상대미정") ? 
-                '<a class="btn" href="ApplyMatch.action?field_res_id='+id+'">참가하기</a>' : '') +
-            '<a class="btn" href="Participant.action?field_res_id='+id+'">참가인원 보기</a>'
-        '</div>';
+    // matchItem.innerHTML 내에서 조건 수정
+	matchItem.innerHTML = 
+	    '<div class="match-header">' +
+	        '<span class="match-date">' + formattedDate + '</span>' +
+	        '<span class="match-status" style="' + statusStyle + '">' + statusText + '</span>' +
+	    '</div>' +
+	    '<div class="match-teams">' +
+	        '<div class="team">' +
+	            '<div class="team-name">' + props.homeTeam + '</div>' +
+	            '<div class="team-score">' + props.homeScore + '</div>' +
+	        '</div>' +
+	        '<div class="vs">VS</div>' +
+	        '<div class="team">' +
+	            '<div class="team-name">' + props.awayTeam + '</div>' +
+	            '<div class="team-score">' + props.awayScore + '</div>' +
+	        '</div>' +
+	    '</div>' +
+	    '<div class="match-details">' +
+	        '<div class="detail-item">' +
+	            '<span class="detail-label">경기장:</span>' +
+	            '<span>' + props.venue + '</span>' +
+	        '</div>' +
+	        '<div class="detail-item">' +
+	            '<span class="detail-label">참석 인원:</span>' +
+	            '<span>' + props.attendance + '</span>' +
+	        '</div>' +
+	        '<div class="buttons-container" style="text-align: right;">' +
+	            (statusText !== "취소됨" && (statusText === "예정됨" || statusText === "상대미정") ? 
+	            '<a class="btn" style="margin-left: 5px;" href="ApplyMatch.action?field_res_id=' + id + '" ' +
+	            'onclick="return confirm(\'참여하시겠습니까?\');">참가 하기</a>' : '') +
+	            '<a class="btn" style="margin-left: 5px;" href="Participant.action?field_res_id=' + id + '">참가인원 보기</a>' +
+	            (statusText === "결제대기" && <%= team_status%> === 1 ? 
+	            '<a class="btn" style="margin-left: 5px;" href="ApproveMatch.action?field_res_id=' + id + '" ' +
+	            'onclick="return confirm(\'정말 결재 승인하시겠습니까?\');">결재 승인</a>' : '') +
+	        '</div>' +
+	    '</div>';
     
     container.appendChild(matchItem);
 }
@@ -423,7 +554,7 @@ function transformEvents(data) {
         return [];
     }
     
-    return data.map(match => {
+    return data.map(function(match) {
         // 시작 시간과 종료 시간 처리
         let startTimeStr = match.start_time;
         let endTimeStr = match.end_time;
@@ -579,47 +710,49 @@ function submitMatchForm() {
 <body>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 <c:if test="${not empty sessionScope.message}">
-	<script type="text/javascript">
-		window.addEventListener("pageshow", function(event)
+<script type="text/javascript">
+
+window.addEventListener("pageshow", function(event)
+{
+	if (!event.persisted && performance.navigation.type !== 2)
+	{
+		var message = "${fn:escapeXml(sessionScope.message)}";
+		var parts = message.split(":");
+		
+		if (parts.length > 1)
 		{
-			if (!event.persisted && performance.navigation.type !== 2)
+			var type = parts[0].trim();
+			var content = parts[1].trim();
+			
+			switch (type)
 			{
-				var message = "${fn:escapeXml(sessionScope.message)}";
-				var parts = message.split(":");
+				case "SUCCESS_INSERT":
+				case "SUCCESS_APPLY":
+					swal("성공", content, "success");
+					break;
 				
-				if (parts.length > 1)
-				{
-					var type = parts[0].trim();
-					var content = parts[1].trim();
+				case "NEED_REGISTER_STADIUM":
+					swal("주의", content, "warning");
+					break;
 					
-					switch (type)
-					{
-						case "SUCCESS_INSERT":
-						case "SUCCESS_APPLY":
-							swal("성공", content, "success");
-							break;
-						
-						case "NEED_REGISTER_STADIUM":
-							swal("주의", content, "warning");
-							break;
-							
-						case "ERROR_DUPLICATE_JOIN":
-						case "ERROR_AUTH_REQUIRED":
-						case "ERROR_DUPLICATE_REQUEST":
-							swal("에러", content, "error");
-							break;
-						
-						default:
-							swal("알림", content, "info");
-					}
-				}
+				case "ERROR_DUPLICATE_JOIN":
+				case "ERROR_AUTH_REQUIRED":
+				case "ERROR_DUPLICATE_REQUEST":
+					swal("에러", content, "error");
+					break;
 				
-				else
-					// fallback: 구분자 없는 일반 메시지
-					swal("처리 필요", message, "info");
+				default:
+					swal("알림", content, "info");
 			}
-		});
-	</script>
+		}
+		
+		else
+			// fallback: 구분자 없는 일반 메시지
+			swal("처리 필요", message, "info");
+	}
+});
+	
+</script>
 	
 	<c:remove var="message" scope="session"></c:remove>
 </c:if>
@@ -638,21 +771,32 @@ function submitMatchForm() {
                 <h1>팀 경기 일정</h1>
             </div>
             
-            <!-- 보기 전환 버튼 -->
-            <div class="view-buttons">
-                <button id="listViewBtn" class="active">목록 보기</button>
-                <button id="calendarViewBtn">캘린더 보기</button>
-            </div>
-            
-            <!-- 캘린더 보기 -->
-            <div id="calendarView" style="display: none;">
-                <div id="calendar"></div>
-            </div>
-            
-            <!-- 목록 보기 -->
-            <div id="listView" class="match-list">
-                <!-- 일정 항목들이 동적으로 추가됩니다 -->
-            </div>
+           <!-- 목록 보기 위에 필터 버튼 이동 -->
+			<div class="view-buttons">
+			    <button id="listViewBtn" class="active">목록 보기</button>
+			    <button id="calendarViewBtn">캘린더 보기</button>
+			</div>
+			
+			<!-- 필터 버튼을 여기로 이동 -->
+			<div class="status-filter-container">
+			    <button class="status-filter-btn" data-status="all">전체</button>
+			    <button class="status-filter-btn" data-status="예정됨">예정됨</button>
+			    <button class="status-filter-btn" data-status="완료됨">완료됨</button>
+			    <button class="status-filter-btn" data-status="취소됨">취소됨</button>
+			    <button class="status-filter-btn" data-status="결제대기">결제대기</button>
+			    <button class="status-filter-btn" data-status="상대미정">상대미정</button>
+			    <button class="status-filter-btn" data-status="결과입력대기">결과입력대기</button>
+			</div>
+			
+			<!-- 캘린더 보기 -->
+			<div id="calendarView" style="display: none;">
+			    <div id="calendar"></div>
+			</div>
+			
+			<!-- 목록 보기 -->
+			<div id="listView" class="match-list">
+			    <!-- 일정 항목들이 동적으로 추가됩니다 -->
+			</div>
         </div>
     </div>
 </div>

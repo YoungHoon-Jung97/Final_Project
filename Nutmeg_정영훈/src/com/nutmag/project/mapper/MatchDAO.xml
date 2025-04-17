@@ -124,4 +124,11 @@
 	VALUES (AWAYTEAM_PAY_SEQ.NEXTVAL,SYSDATE,#{pay_amount},NULL,#{away_team_id},#{field_res_id})
 	</insert>
 	
+	<!-- 어웨이 팀 매치 승인 -->
+	<update id="approveMatch">
+	UPDATE AWAYTEAM_PAY
+	SET MATCH_PAY_AT = SYSDATE
+	WHERE MATCH_PAY_ID = #{field_res_id}
+	</update>
+	
 </mapper>

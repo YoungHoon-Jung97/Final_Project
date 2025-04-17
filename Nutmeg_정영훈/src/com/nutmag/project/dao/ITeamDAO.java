@@ -85,8 +85,12 @@ public interface ITeamDAO {
 	//임시 동호회 인원 삭제
 	public int dropTempTeamMember(@PathParam("team_member_id") int team_member_id);
 	
+	
 	//정식 동호회 인원 삭제
 	public int dropTeamMember(@PathParam("team_member_id") int team_member_id);
+	
+	//정식 동호회 사용자 코드 찾기
+	public int searchTeamUeserCode(int team_member_id);
 	
 	//------------------------------------------------------------------------
 	
