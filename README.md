@@ -55,7 +55,7 @@
 
 ## ERD
 
-<img width="600" alt="sejongcountry" src="https://github.com/MoonMinHyuk1/sejongcountry/assets/102985637/5693ad98-a453-4de4-96f5-1e97984ec70b">
+![Image](https://github.com/user-attachments/assets/521b2c56-4207-4976-a84a-d19807eb2faf)
 
 
 
