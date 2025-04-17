@@ -501,6 +501,35 @@ public class UserController
 	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
 	}
 	
+	// 내 정보 수정 폼 페이지 들어가기 전 비밀번호 확인
+	@RequestMapping(value = "/CheckPassword.action", method = RequestMethod.GET)
+	public String checkPasswordForm(HttpSession session) {
+		
+		  if (session.getAttribute("user_code_id") == null) return
+		  "redirect:/Login.action";
+		 
+	    return "/user/CheckPassword";
+	}
+
+	@RequestMapping(value = "/CheckPassword.action", method = RequestMethod.POST)
+	public String checkPasswordSubmit(HttpSession session, HttpServletRequest request, Model model) {
+	    String inputPw = request.getParameter("user_pwd");
+	    System.out.println("입력된 비밀번호: " + inputPw);
+	    Object userCodeObj = session.getAttribute("user_code_id");
+
+	    String userCode = userCodeObj.toString();
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+	    String dbPw = dao.getPasswordByUserCode(userCode);
+
+	    if (dbPw != null && dbPw.equals(inputPw)) {
+	        return "redirect:/UserInfoEdit.action";
+	    } else {
+	        model.addAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
+	        return "/user/CheckPassword";
+	    }
+	}
+	
 	// 내 정보 수정 폼 페이지 요청
 	@RequestMapping(value = "/UserInfoEdit.action")
 	public String userInfoEdit(Model model, HttpServletRequest request)

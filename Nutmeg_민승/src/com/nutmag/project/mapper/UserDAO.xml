@@ -143,6 +143,14 @@
 	WHERE user_id = #{user_code_id}
 	</select>
 	
+	<!-- 비밀번호 확인 -->
+    <select id="getPasswordByUserCode" resultType="String" parameterType="String">
+        SELECT USER_PWD
+        FROM USER_INFO
+        WHERE USER_CODE_ID = #{userCode, jdbcType=VARCHAR}
+    </select>
+	
+	
 	<!-- 회원 찾기 -->
 	<select id="userUpdate" parameterType="int" resultType="com.nutmag.project.dto.UserDTO">
 	SELECT USER_NAME,USER_EMAIL,USER_PWD,USER_TEL,USER_NICK_NAME,USER_SSN1,USER_SSN2

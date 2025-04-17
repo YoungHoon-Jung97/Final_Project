@@ -189,14 +189,13 @@ String cp = request.getContextPath();
 			<div class="form__actions">
 				<button type="submit" class="btn btn--submit">수정완료</button>
 				<button type="reset" class="btn btn--reset">취소</button>
-				<button type="button" class="btn btn--back" onclick="history.back()">뒤로가기</button>
+				<button type="button" class="btn btn--back" onclick="location.href='<%=cp%>/MyInformation.action'">뒤로가기</button>
 			</div>
 
 			<!-- 모달 구조 -->
 			<div id="messageModal" class="modal">
 				<div class="modal-content">
 					<p id="modalMessageText"></p>
-					<button onclick="closeModal()">확인</button>
 				</div>
 			</div>
 
