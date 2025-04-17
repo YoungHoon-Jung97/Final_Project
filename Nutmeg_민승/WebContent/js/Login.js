@@ -225,6 +225,25 @@ $(function()
 			location.href = cleanUrl;
 		}
 	}
+	
+	$('#logEmailKo, #logPwKo, #logEmailEn, #logPwEn').on('keypress', function(e)
+	{
+		if (e.which == 13) // Enter key
+		{
+			e.preventDefault(); // 기본 폼 제출 막기
+			
+			// 현재 언어 상태 확인
+			var isKo = !$("#langToggle").is(":checked");
+			
+			// 각각의 값 가져오기
+			var email = isKo ? $("#logEmailKo").val() : $("#logEmailEn").val();
+			var pw = isKo ? $("#logPwKo").val() : $("#logPwEn").val();
+			
+			// 유효성 검사 조건 충족 시만 Submit
+			if (email.length >= 7 && pw.length >= 4)
+				Submit();
+		}
+	});
 });
 
 function validateLoginForm()

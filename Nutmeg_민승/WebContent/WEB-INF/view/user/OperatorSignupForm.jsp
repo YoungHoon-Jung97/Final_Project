@@ -63,7 +63,9 @@
 					</div>
 				</div>
 				
-				<p id="emailCheck" class="result"></p>
+				<div class="error">
+					<p id="emailCheck" class="result"></p>
+				</div>
 			</div>
 			
 			<!-- 이름 입력-->
@@ -77,7 +79,9 @@
 					</div>
 				</div>
 				
-				<p class="form__error name--error"></p>
+				<div class="error">
+					<p class="form__error name--error"></p>
+				</div>
 			</div>
 			
 			<!-- 전화번호 입력 -->
@@ -134,7 +138,9 @@
 					</div>
 				</div>
 				
-				<p id="accountNoCheck" class="result"></p>
+				<div class="error">
+					<p id="accountNoCheck" class="result"></p>
+				</div>
 			</div>
 			
 			<!-- 버튼 그룹 -->

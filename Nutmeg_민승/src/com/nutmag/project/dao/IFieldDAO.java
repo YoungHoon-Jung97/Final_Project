@@ -1,12 +1,18 @@
 package com.nutmag.project.dao;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.nutmag.project.dto.AdminFieldApprDTO;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
+import com.nutmag.project.dto.FieldResInsertDTO;
 import com.nutmag.project.dto.FieldResMainPageDTO;
+import com.nutmag.project.dto.FieldResOperatorDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
 
 public interface IFieldDAO
@@ -35,5 +41,21 @@ public interface IFieldDAO
 	// 승인된 경기장 리스트
 	public ArrayList<FieldResMainPageDTO> fieldApprOkList();
 	
+	// 경기장 예약 메인 페이지 지역 선택시 나오는 경기장 리스트
+	public ArrayList<FieldResMainPageDTO> searchFieldList(Map<String, Object> params);
+	
+	// 경기장 예약 선택시 나오는 경기장 정보 조회
+	public ArrayList<FieldResMainPageDTO> fieldApprOkSearchList(int field_code_id);
+	
+	// 경기장 예약 불가 시간 찾기
+	List<Map<String, Object>> FieldUnavailableTime(Map<String, Object> params);
+	
+	// 경기장 주인 정보 불러오기
+	FieldResOperatorDTO fieldOperatorInfo(@Param("field_code_id") int field_code_id);
+	
+	// 경기장 인원수 리스트
+	public ArrayList<FieldResMainPageDTO> inwonList();
+	
+	public int fieldResInsert(FieldResInsertDTO dto);
 	
 }

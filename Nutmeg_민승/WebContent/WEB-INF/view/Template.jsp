@@ -22,6 +22,8 @@
 							? Integer.parseInt(session.getAttribute("user_code_id").toString()) : -1;
 	Integer operator_id   = (session.getAttribute("operator_id") != null)
 							? Integer.parseInt(session.getAttribute("operator_id").toString()) : -1;
+	String user_nick_name   = (session.getAttribute("user_nick_name") != null)
+							? session.getAttribute("user_nick_name").toString() : "";
 	Integer team_id       = (session.getAttribute("team_id") != null)
 							? Integer.parseInt(session.getAttribute("team_id").toString()) : -1;
 	
@@ -30,6 +32,7 @@
 	System.out.println("DEBUG: user_email = " + user_email);
 	System.out.println("DEBUG: user_code_id = " + user_code_id);
 	System.out.println("DEBUG: operator_id = " + operator_id);
+	System.out.println("DEBUG: user_nick_name = " + user_nick_name);
 	System.out.println("DEBUG: temp_team_id = " + team_id);
 	System.out.println("=========================");
 	
@@ -66,9 +69,14 @@
 	{
 		session.removeAttribute("logoutFlag");
 %>
-	<!-- alert 대신 사용  -->
+	<!-- alert 대신 사용 -->
 	<script>
-		swal("로그아웃", "로그아웃 되었습니다.", "success");
+		window.addEventListener("pageshow", function(event)
+		{
+			if (!event.persisted && performance.navigation.type != 2)
+				// 캐시된 페이지에서 불린 게 아니라면 알림 띄우기
+				swal("로그아웃", "로그아웃 되었습니다.", "success");
+		});
 	</script>
 <%	}
 	
@@ -77,7 +85,11 @@
 		session.removeAttribute("loginFlag");
 %>
 	<script>
-		swal("로그인", user_name + "님 환영합니다!", "success");
+		window.addEventListener("pageshow", function(event)
+		{
+			if (!event.persisted && performance.navigation.type != 2)
+				swal("로그인", user_name + "님 환영합니다!", "success");
+		});
 	</script>
 <%	}
 %>
@@ -122,7 +134,13 @@
 			<div class="nav-item">
 				<span class="nav-title mercenary-offer">용병</span>
 				<div class="nav-sub mercenary-offer">용병 게시판</div>
-				<div class="nav-sub mercenary">용병 등록</div>
+				
+<%				if (user_code_id != -1)
+				{
+%>
+					<div class="nav-sub mercenary">용병 등록</div>
+<%				}
+%>
 			</div>
 			
 			<div class="nav-item">
@@ -139,6 +157,15 @@
 			<img src="images/nutmeg.png" alt="넛맥 로고">
 		</a>
 	</div>
+	
+<%	if (user_code_id != -1)
+	{
+%>
+		<div class="nav-title login-nick-name">
+			<%=user_nick_name %> 님
+		</div>
+<%	}
+%>
 	
 	<div class="right-menu">
 		<!-- 로그인 버튼 / 사람 아이콘 -->
@@ -190,7 +217,6 @@
 		</div>
 <%	}
 %>
-
 </header>
 </body>
 </html>

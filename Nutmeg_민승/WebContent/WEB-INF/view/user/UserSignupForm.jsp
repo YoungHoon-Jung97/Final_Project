@@ -55,12 +55,15 @@
 					
 					<div class="form__input--wrapper">
 						<input type="email" class="form__input" id="email" name="user_email"
-							placeholder="예: example@google.com" maxlength="100" required>
+							placeholder="예: example@google.com" maxlength="100" required autocomplete="email">
+						
 						<button type="button" class="btn btn--check" onclick="checkEmail()">중복확인</button>
 					</div>
 				</div>
 				
-				<p id="emailCheck" class="result"></p>
+				<div class="error">
+					<p id="emailCheck" class="result"></p>
+				</div>
 			</div>
 
 			<!-- 비밀번호 입력 -->
@@ -69,12 +72,14 @@
 					<label for="password" class="form__label required">비밀번호</label> 
 					
 					<div class="form__input--wrapper">
-						<input type="password" class="form__input" id="password" name="user_pwd"
-						placeholder="영문, 숫자, 특수문자 조합 8-20자" maxlength="20" minlength="8" required>
+						<input type="password" class="form__input" id="password" name="user_pwd" placeholder="영문, 숫자, 특수문자 조합 8-20자"
+						maxlength="20" minlength="8" required autocomplete="new-password">
 					</div>
 				</div>
 				
-				<p class="form__error pwd1--error"></p>
+				<div class="error">
+					<p class="form__error pwd1--error"></p>
+				</div>
 			</div>
 
 			<!-- 비밀번호 확인 입력 -->
@@ -88,7 +93,9 @@
 					</div>
 				</div>
 				
-				<p id="passwordCheck" class="result">비밀번호가 일치하지 않습니다.</p>
+				<div class="error">
+					<p id="passwordCheck" class="result" style="display: none;">비밀번호가 일치하지 않습니다.</p>
+				</div>
 			</div>
 
 			<!-- 이름 입력-->
@@ -98,11 +105,13 @@
 					
 					<div class="form__input--wrapper">
 						<input type="text" class="form__input" id="name" placeholder="이름을 입력하세요."
-						maxlength="10" name="user_name" required>
+						maxlength="10" name="user_name" required autocomplete="name">
 					</div>
 				</div>
 				
-				<p class="form__error name--error"></p>
+				<div class="error">
+					<p class="form__error name--error"></p>
+				</div>
 			</div>
 
 			<!-- 닉네임 입력 -->
@@ -113,11 +122,14 @@
 					<div class="form__input--wrapper">
 						<input type="text" class="form__input" id="nickName"
 							placeholder="닉네임을 입력하세요." maxlength="20" name="user_nick_name" required>
+						
 						<button type="button" class="btn btn--check" onclick="checkNickName()">중복확인</button>
 					</div>
 				</div>
 				
-				<p id="nickNameCheck" class="result"></p>
+				<div class="error">
+					<p id="nickNameCheck" class="result"></p>
+				</div>
 			</div>
 
 			<!-- 전화번호 입력 -->
@@ -130,6 +142,8 @@
 						name="user_tel">
 					</div>
 				</div>
+				
+				<div class="error"></div>
 			</div>
 
 			<!-- 주민번호 입력 -->
@@ -138,11 +152,13 @@
 					<label for="ssn1" class="form__label required">주민번호</label>
 					
 					<div class="form__input--wrapper jumin-section">
-						<input type="text" class="form__input ssn1-input" id="ssn1" maxlength="6"
-						minlength="6" placeholder="생년월일(6자리)" required name="user_ssn1"> 
+						<input type="number" class="form__input ssn1-input no-spinner" id="ssn1" maxlength="6"
+						placeholder="생년월일(6자리)" required name="user_ssn1"> 
+						
 						<span class="dash">-</span>
-						<input type="text" class="form__input ssn2-input" id="ssn2"
-						name="user_ssn2" maxlength="1" required>
+						
+						<input type="text" class="form__input ssn2-input no-spinner" id="ssn2"
+						name="user_ssn2" maxlength="1" inputmode="numeric" required>
 						
 						<span style="padding-left:3px; ">●</span>
 						<span style="padding-left:3px; ">●</span>
@@ -153,7 +169,9 @@
 					</div>
 				</div>
 				
-				<div class="form__error"></div>
+				<div class="error">
+					<div class="form__error"></div>
+				</div>
 			</div>
 		</div>
 		
@@ -174,7 +192,7 @@
 				</div>
 			</div>
 
-			<!-- 상세주소 -->
+			<!-- 주소 -->
 			<div class="form__group">
 				<div class="form__field">
 					<label for="address" class="form__label required">주소</label>
@@ -186,6 +204,7 @@
 				</div>
 			</div>
 			
+			<!-- 상세 주소 -->
 			<div class="form__group">
 				<div class="form__field">
 					<label for="address" class="form__label required">상세주소</label>

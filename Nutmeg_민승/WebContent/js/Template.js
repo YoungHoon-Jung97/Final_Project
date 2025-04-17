@@ -75,7 +75,7 @@ $(function()
 	// 용병 게시판
 	$(".mercenary-offer").click(function()
 	{
-		window.location.href = "MercenaryOffer.action";
+		window.location.href = "MercenaryBoard.action";
 	});
 	
 	// 용병 등록
@@ -83,6 +83,7 @@ $(function()
 	{
 		window.location.href = "MercenaryInsertForm.action";
 	});
+	
 	
 	// 매치 참가
 	$(".match").click(function()
@@ -111,7 +112,7 @@ $(function()
 	// 내 구장
 	$(".myStadium").click(function()
 	{
-		window.location.href = "";
+		window.location.href = "OperatorMainPage.action";
 	});
 	
 	// 로그아웃

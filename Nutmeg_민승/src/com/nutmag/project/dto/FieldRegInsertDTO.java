@@ -1,5 +1,7 @@
 package com.nutmag.project.dto;
 
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class FieldRegInsertDTO
@@ -8,7 +10,10 @@ public class FieldRegInsertDTO
 			  , stadium_reg_id, field_reg_price,field_reg_garo,field_reg_sero,field_type_id
 			  , field_environment_id;
 	
-	private String field_reg_name, field_reg_at, field_size_capacity, field_image;
+	private String field_reg_name, field_reg_at, field_size_capacity, field_image
+	,field_reg_notice,field_reg_facilities;
+	
+	private Map<String, Boolean> facilitiesMap;
 	
 	private MultipartFile field_reg_image;
 	
@@ -117,6 +122,30 @@ public class FieldRegInsertDTO
 	public void setField_image(String field_image)
 	{
 		this.field_image = field_image;
+	}
+	public String getField_reg_notice()
+	{
+		return field_reg_notice;
+	}
+	public void setField_reg_notice(String field_reg_notice)
+	{
+		this.field_reg_notice = field_reg_notice;
+	}
+	public String getField_reg_facilities()
+	{
+		return field_reg_facilities;
+	}
+	public void setField_reg_facilities(String field_reg_facilities)
+	{
+		this.field_reg_facilities = field_reg_facilities;
+	}
+	public Map<String, Boolean> getFacilitiesMap()
+	{
+		return facilitiesMap;
+	}
+	public void setFacilitiesMap(Map<String, Boolean> facilitiesMap)
+	{
+		this.facilitiesMap = facilitiesMap;
 	}
 
 	

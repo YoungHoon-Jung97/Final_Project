@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+.position-button
+{
+	margin-bottom: 10px;
+	font-size: 16px;
+	padding: 10px;
+	text-align: left;
+	border-radius: 5px;
+	transition: background-color 0.3s ease;
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
+	border: none;
+}
+
+.position-button:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+}
+
+.position-button.active
+{
+	background-color: #cdece2;
+	color: white;
+}

@@ -52,6 +52,12 @@
 		    <artifactId>jackson-annotations</artifactId>
 		    <version>2.15.2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
 
 		<dependency>
 		    <groupId>javax.servlet</groupId>
@@ -80,10 +86,20 @@
 		    <artifactId>javax.mail</artifactId>
 	   		<version>1.6.2</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20230227</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.14.0</version>
+		</dependency>
+		
     </dependencies>
-    
-
-    
 
     <build>
         <plugins>

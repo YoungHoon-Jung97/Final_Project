@@ -13,6 +13,8 @@
 
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<script type="text/javascript" src="<%=cp %>/js/TeamOpen.js?after"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
@@ -36,7 +38,6 @@
 	});
 
 </script>
-<script type="text/javascript" src="<%=cp %>/js/TeamOpen.js?after"></script>
 
 </head>
 <body>
@@ -54,11 +55,14 @@
 					
 					<div class="form__input--wrapper">
 						<input type="text" id="teamName" name="temp_team_name" class="form__input" placeholder="동호회 이름" required>
+						
 						<input type="hidden" id="user_code_id" name="user_code_id" value="<%=user_code_id %>">
 					</div>
 				</div>
 				
-				<p id="teamNameCheck" class="result"></p>
+				<div class="error">
+					<p id="teamNameCheck" class="result"></p>
+				</div>
 			</div>
 			
 			<!-- 동호회 인원 -->
@@ -111,7 +115,9 @@
 					
 					<div class="file-upload-wrapper">
 						<input type="file" id="image" name="temp_team_emblem" class="file-upload-input" />
+						
 						<button type="button" class="file-upload-btn" onclick="document.getElementById('image').click();">파일 선택</button>
+						
 						<span id="file-name" class="file-upload-filename">선택된 파일 없음</span>
 					</div>
 				</div>
