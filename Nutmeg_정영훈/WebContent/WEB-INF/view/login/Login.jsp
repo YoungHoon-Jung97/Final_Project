@@ -204,5 +204,7 @@
 		</div> <!-- row full-height justify-content-center end -->
 	</div> <!-- container end -->
 </div> <!-- section end -->
+
+<button id="adminBtn" onclick="location.href='AdminLogin.action'">🦄</button>
 </body>
 </html>
