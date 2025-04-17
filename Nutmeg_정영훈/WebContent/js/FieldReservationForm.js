@@ -2,6 +2,11 @@
 	FieldReservationForm.js
 */
 
+window.onload = function ()
+{
+	initialize();
+};
+
 $(function()
 {
 	var startTimeId = null;
@@ -108,6 +113,8 @@ $(function()
 		}
 		
 		resetSelection();
+		
+		$(".time-table").show();
 		
 		console.log("날짜 변경됨:", match_date);
 		console.log("Ajax 요청 주소:", baseUrl + "/GetUnavailableTimeRange.action");
@@ -250,5 +257,44 @@ function blockUnavailableTimeByStadiumTimeId()
 			if ($(this).find(".unavailable-label").length == 0)
 				$(this).append('<div class="unavailable-label">이용불가</div>');
 		}
+	});
+}
+
+// 지도 생성 함수
+function initialize()
+{
+	var container = document.getElementById("map");
+	
+	var map = new kakao.maps.Map(container,
+    {
+		// 임시 좌표 설정
+		center: new kakao.maps.LatLng(37.5665, 126.9780),
+		level: 3
+    });
+	
+	// 좌표로 변환하는 메소드
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	// 입력한 주소를 좌표로 변환하는 메소드
+	geocoder.addressSearch(fullAddress, function(result, status)
+	{
+		// 만약 불러온 좌표의 값의 length가 0 이상 이라면 (값이 불러져 왔다면)
+		if (status == kakao.maps.services.Status.OK && result.length > 0)
+		{
+			var cords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			
+			// 맵의 센터를 cords라는 좌표로 이동 시켜라
+			map.setCenter(cords);
+			
+			// 마커 생성
+			var marker = new kakao.maps.Marker(
+			{
+				map: map,
+				position: cords
+			});
+		}
+		
+		else
+			alert("❌ 주소 검색 실패. 입력한 주소: " + fullAddress);
 	});
 }

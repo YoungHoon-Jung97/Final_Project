@@ -108,6 +108,14 @@
 	<main>
 		<!-- 동호회 리스트 -->
 		<div class="container mt-4">
+			<div class="section-header text-center mt-3 mb-3">
+			    <h1 class="display-5 fw-bold text-success">⚽ 동호회 찾기</h1>
+			    
+			    <p class="text-muted mt-2">지역별 풋살 동호회를 살펴보고, 함께 뛰어볼 팀을 찾아보세요!</p>
+			    
+			    <div class="underline mt-3 mx-auto"></div>
+			</div>
+			
 			<div class="row justify-content-center">
 				<c:forEach var="team" items="${teamList}">
 					<div class="col-md-4 d-flex justify-content-center">

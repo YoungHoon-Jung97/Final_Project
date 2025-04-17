@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
@@ -124,8 +126,6 @@
 </style>
 
 <script>
-
-
 // 스크립트를 CDATA로 감싸서 EL 충돌 방지
 //<![CDATA[
 let calendar;
@@ -192,18 +192,18 @@ document.addEventListener('DOMContentLoaded', function() {
 	                    
 	                    return {
 	                        id: match.field_res_id,
-	                        title: match.home_team_name + ' vs ' + match.away_team_name,
+	                        title: match.home_team_name + (match.away_team_name ? ' vs ' + match.away_team_name : ''),
 	                        start: dateStr + "T" + startTimeStr,  // start 필드에는 시작 시간만
 	                        end: endTimeStr ? dateStr + "T" + endTimeStr : null,  // end 필드 별도 지정
 	                        extendedProps: {
 	                            homeTeam: match.home_team_name,
-	                            awayTeam: match.away_team_name,
+	                            awayTeam: match.away_team_name ? match.away_team_name : "",  // null이면 빈 문자열로 설정
 	                            homeScore: match.match_result_home_score || '-',
 	                            awayScore: match.match_result_away_score || '-',
 	                            venue: match.stadium_addr,
 	                            attendance: match.match_inwon,
 	                            status: match.match_status,
-	                            fullTime: startTimeStr + "~" + endTimeStr ||""
+	                            fullTime: startTimeStr + "~" + endTimeStr || ""
 	                        },
 	                        className: 'event-' + (match.match_status ? match.match_status.replace(/\s+/g, '-').toLowerCase() : 'default')
 	                    };
@@ -274,10 +274,22 @@ function updateListView(events) {
     });
 }
 
+//날짜 문자열을 올바르게 파싱하는 함수
+function parseMatchDate(dateStr) {
+    // "2025-04-17 00:00:00T10:00" 형식을 분리
+    const parts = dateStr.split('T');
+    const datePart = parts[0].split(' ')[0]; // "2025-04-17" 부분만 추출
+    const timePart = parts[1]; // "10:00" 부분 추출
+    
+    // ISO 형식으로 조합
+    return new Date(`${datePart}T${timePart}:00`);
+}
+
 //[3 순서] 경기 목록 아이템 생성
 function createMatchListItem(event, container) {
 const props = event.extendedProps;
 const id = event.id;
+
 
     // 날짜 추출 및 형식화
     let formattedDate = "날짜 정보 없음";
@@ -312,11 +324,27 @@ const id = event.id;
     let statusStyle = getStatusStyle(props.status);
     let statusText = getStatusText(props.status);
     
+    console.log("상태:", statusText);
+    console.log("시작 날짜:", event.start);
+    console.log("현재 날짜:", new Date());
+    console.log("조건 결과:", statusText !== "취소됨" && new Date(event.start) > new Date());
     
     
     const matchItem = document.createElement('div');
     matchItem.className = 'match-item';
     
+ // 날짜 문자열을 올바르게 파싱하는 함수
+    function parseMatchDate(dateStr) {
+        // "2025-04-17 00:00:00T10:00" 형식을 분리
+        const parts = dateStr.split('T');
+        const datePart = parts[0].split(' ')[0]; // "2025-04-17" 부분만 추출
+        const timePart = parts[1]; // "10:00" 부분 추출
+        
+        // ISO 형식으로 조합
+        return new Date(`${datePart}T${timePart}:00`);
+    }
+
+    // matchItem.innerHTML 내에서 조건 수정
     matchItem.innerHTML = 
         '<div class="match-header">' +
             '<span class="match-date">' + formattedDate + '</span>' +
@@ -342,7 +370,8 @@ const id = event.id;
                 '<span class="detail-label">참석 인원:</span>' +
                 '<span>' + props.attendance + '</span>' +
             '</div>' +
-            '<a class="btn" href="ApplyMatch.action?field_res_id='+id+'">참가하기</a>'+
+            (statusText !== "취소됨" && (statusText === "예정됨" || statusText === "상대미정") ? 
+                '<a class="btn" href="ApplyMatch.action?field_res_id='+id+'">참가하기</a>' : '') +
             '<a class="btn" href="Participant.action?field_res_id='+id+'">참가인원 보기</a>'
         '</div>';
     
@@ -411,11 +440,11 @@ function transformEvents(data) {
         
         return {
             id: match.field_res_id,
-            title: match.home_team_name + ' vs ' + match.away_team_name,
+            title: match.home_team_name + (match.away_team_name ? ' vs ' + match.away_team_name : ''),
             start: match.match_date + 'T' + startTimeStr,
             extendedProps: {
                 homeTeam: match.home_team_name,
-                awayTeam: match.away_team_name,
+                awayTeam: match.away_team_name ? match.away_team_name : "",  // null이면 빈 문자열로 설정
                 homeScore: match.match_result_home_score || '-',
                 awayScore: match.match_result_away_score || '-',
                 venue: match.stadium_addr,
@@ -549,6 +578,51 @@ function submitMatchForm() {
 </head>
 <body>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
+<c:if test="${not empty sessionScope.message}">
+	<script type="text/javascript">
+		window.addEventListener("pageshow", function(event)
+		{
+			if (!event.persisted && performance.navigation.type !== 2)
+			{
+				var message = "${fn:escapeXml(sessionScope.message)}";
+				var parts = message.split(":");
+				
+				if (parts.length > 1)
+				{
+					var type = parts[0].trim();
+					var content = parts[1].trim();
+					
+					switch (type)
+					{
+						case "SUCCESS_INSERT":
+						case "SUCCESS_APPLY":
+							swal("성공", content, "success");
+							break;
+						
+						case "NEED_REGISTER_STADIUM":
+							swal("주의", content, "warning");
+							break;
+							
+						case "ERROR_DUPLICATE_JOIN":
+						case "ERROR_AUTH_REQUIRED":
+						case "ERROR_DUPLICATE_REQUEST":
+							swal("에러", content, "error");
+							break;
+						
+						default:
+							swal("알림", content, "info");
+					}
+				}
+				
+				else
+					// fallback: 구분자 없는 일반 메시지
+					swal("처리 필요", message, "info");
+			}
+		});
+	</script>
+	
+	<c:remove var="message" scope="session"></c:remove>
+</c:if>
 
 <div class="container-fluid container1">
     <div class="main">

@@ -264,6 +264,7 @@ public class StadiumController
 	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
 	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
 		MultipartFile file = fieldDTO.getField_reg_image();
 		
 		System.out.println("=================================================================================");
@@ -339,6 +340,9 @@ public class StadiumController
 			IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
 			dao.fieldInsert(fieldDTO);
 			System.out.println("DB 저장 완료");
+			
+			String message = "SUCCESS_INSERT: 경기장 등록이 완료 되었습니다.";
+			session.setAttribute("message", message);
 		}
 		
 		catch (Exception e)
