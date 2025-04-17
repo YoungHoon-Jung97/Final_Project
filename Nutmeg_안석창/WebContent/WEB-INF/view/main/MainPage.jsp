@@ -30,7 +30,7 @@
 	<script type="text/javascript">
 		window.addEventListener("pageshow", function(event)
 		{
-			if (!event.persisted && performance.navigation.type !== 2)
+			if (!event.persisted && performance.navigation.type != 2)
 			{
 				var message = "${fn:escapeXml(sessionScope.message)}";
 				var parts = message.split(":");

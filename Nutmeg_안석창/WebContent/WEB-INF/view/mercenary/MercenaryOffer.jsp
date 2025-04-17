@@ -114,7 +114,7 @@
 	
 	<div class="mb-3">
 		<div class="search-container">
-			<label for="searchDate" class="form-label">용병 요청 날짜</label>
+			<label for="searchDate" class="form-label">날짜</label>
 			
 			<form class="search-form" id="dateSearchForm" action="mercenary.action" method="GET">
 				<div class="input-group">

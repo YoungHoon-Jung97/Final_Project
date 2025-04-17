@@ -41,7 +41,7 @@
 			<hr>
 
 			<div class="info-block1" style="margin-bottom: 25px;">
-				<h3>경기 인원 <small>(선택)</small></h3>
+				<h3>경기 인원</h3>
 				
 				<div class="match-toggle-wrapper">
 					<div class="toggle-group">

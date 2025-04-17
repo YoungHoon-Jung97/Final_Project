@@ -31,7 +31,7 @@
 <div class="main-background">
 	<main>
 		<section class="container py-5">
-			<div class="section-header text-center mt-3 mb-3">
+			<div class="section-header text-center mb-5">
 			    <h1 class="display-5 fw-bold text-success">⚽ 경기장 예약하기</h1>
 			    
 			    <p class="text-muted mt-2">원하는 풋살장을 선택하고, 빠르게 예약해보세요!</p>
