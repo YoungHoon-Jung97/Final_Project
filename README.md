@@ -41,6 +41,22 @@
 ##### 외부 API
 - 공공데이터포털
 
+## 주요 기능
+
+- 회원가입
+- 로그인 & 아이디, 비밀번호 찾기
+- 동호회 관리
+- 경기장/구장 등록
+- 용병
+- 동호회 간 매칭
+- 날씨 확인
+- 매칭 알림 기능
+- 매칭 기록 및 결과 저장 기능
+
+## ERD
+
+<img width="600" alt="sejongcountry" src="https://github.com/MoonMinHyuk1/sejongcountry/assets/102985637/5693ad98-a453-4de4-96f5-1e97984ec70b">
+
 
 
 
