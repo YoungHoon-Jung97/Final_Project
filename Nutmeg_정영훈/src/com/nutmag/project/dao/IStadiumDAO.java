@@ -45,4 +45,7 @@ public interface IStadiumDAO
 	// 구장 휴무
 	public int stadiumHolidayInsert(StadiumHolidayInsertDTO holidayDTO);
 	
+	// 구장 업데이트
+	public int stadiumUpdate(StadiumRegInsertDTO stadium);
+	
 }

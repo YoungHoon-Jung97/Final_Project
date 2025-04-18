@@ -227,27 +227,33 @@ public class MatchController {
 	@RequestMapping(value ="/MatchAwayTeamInsert.action")
 	public String matchAwayTeamInsert(MatchDTO dto,HttpServletRequest request)
 	{
-		String result = null;
 		String message = "";
 		
 		HttpSession session = request.getSession();
 		IMatchDAO matchDAO = sqlSession.getMapper(IMatchDAO.class);
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		
-		int awayTeamId = (int) session.getAttribute("team_id");
+		int temp_team_id = (int) session.getAttribute("team_id");
 		
-		TeamDTO team = teamDAO.getTeamInfo(awayTeamId);
-		System.out.println("팀 아이디 디버그 코드 : " + team.getTeam_id());
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		int team_id  =team.getTeam_id();
+		System.out.println("팀 아이디 디버그 코드 : " + team_id);
 		
-		dto.setAway_team_id(team.getTeam_id());
+		if(team_id == 0 ) {
+			
+			message =  "ERROR_DUPLICATE_JOIN: 임시 동호회임으로 매치에 참여할 수 없습니다.";
+			session.setAttribute("message", message);
+			return "redirect:MainPage.action";
+		}
+		
+		dto.setAway_team_id(team_id);
 		
 		matchDAO.matchAwayTeamInsert(dto);
 		
 		message = "SUCCESS_INSERT: 매치 신청이 완료 되었습니다.";
 		session.setAttribute("message", message);
-		result= "redirect:MainPage.action";
 		
-		return result;
+		return "redirect:MainPage.action";
 	}
 	
 }

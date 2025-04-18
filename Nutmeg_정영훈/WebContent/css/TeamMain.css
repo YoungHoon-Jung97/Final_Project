@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+.teampage-link:first-child a
+{
+	color: #faaa7a;
+	border-bottom: 1px solid #faaa7a;
+}
+
 /* 팀 정보 박스 */
 .team-info-wrap
 {

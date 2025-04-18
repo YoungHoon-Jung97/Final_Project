@@ -42,6 +42,8 @@ public interface ITeamDAO {
 	
 	//정식 동호회 정보 찾기
 	public Integer searchTempTeam(int teamId);
+	
+	
 	//----------------------------------------------------
 	
 	//임시 동호회 인원 
@@ -89,8 +91,17 @@ public interface ITeamDAO {
 	//정식 동호회 인원 삭제
 	public int dropTeamMember(@PathParam("team_member_id") int team_member_id);
 	
+	//임시 동호회 사용자 코드 찾기
+	public TeamApplyDTO searchTempTeamUeserCode(int team_member_id);
+	
 	//정식 동호회 사용자 코드 찾기
-	public int searchTeamUeserCode(int team_member_id);
+	public TeamApplyDTO searchTeamUeserCode(int team_member_id);
+	
+	//임시 동호회 신청자 코드 찾기
+	public TeamApplyDTO searchTempTeamApplyUser(int team_apply_id);
+	
+	//정식 동호회 신청자 코드 찾기
+	public TeamApplyDTO searchTeamApplyUser(int team_apply_id);
 	
 	//------------------------------------------------------------------------
 	
@@ -99,4 +110,9 @@ public interface ITeamDAO {
 	
 	//정식 동호회원 수
 	public int teamMemberCount(int team_id);
+	
+	//-------------------------------------------------------------------------------
+	
+
+	
 }

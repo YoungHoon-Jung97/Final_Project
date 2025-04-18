@@ -98,10 +98,13 @@
     )
 	</insert>
 	
+	<!-- 구장 정보 업데이트 -->
+	<update id="stadiumUpdate" parameterType="com.nutmag.project.dto.StadiumRegInsertDTO">
+		UPDATE STADIUM_REG
+		SET STADIUM_REG_NAME = #{stadium_reg_name}, STADIUM_REG_ADDR=#{stadium_reg_addr}
+			,STADIUM_REG_DETAILED_ADDR = #{stadium_reg_detailed_addr},STADIUM_REG_IMAGE=#{stadium_reg_image}
+		WHERE STADIUM_REG_ID =#{stadium_reg_id}
 	
-	<select id="">
-	
-	
-	</select>
+	</update>
 	
 </mapper>

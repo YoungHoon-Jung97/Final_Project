@@ -24,11 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutmag.project.dao.IBankDAO;
 import com.nutmag.project.dao.IMatchDAO;
+import com.nutmag.project.dao.INotificationDAO;
 import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dto.CityDTO;
 import com.nutmag.project.dto.MatchDTO;
+import com.nutmag.project.dto.NotificationDTO;
 import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
@@ -203,7 +205,7 @@ public class TeamController
 		return "redirect:/MainPage.action";
 	}
 	
-	// 동호회 가입
+	// 동호회 가입 신청
 	@RequestMapping(value="/TeamApplyInsert.action", method = RequestMethod.POST)
 	public String applyTeam(TeamApplyDTO teamApply, HttpServletRequest request,Model model)
 	{
@@ -216,18 +218,17 @@ public class TeamController
 		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
 		
 		//임시 동호회 코드(동호호 정보을 알아내기 위함)
-		String strTeam_id =(String)request.getParameter("team_id");
-		int team_id = Integer.parseInt(strTeam_id);
+		int temp_team_id =Integer.parseInt(request.getParameter("team_id"));
 		
 		//디버그 코드
 		System.out.println("==========[동호회 가입]==========");
 		System.out.println("user_code_id = " + user_code_id);
 		System.out.println("temp_team_apply_desc = " + teamApply.getTeam_apply_desc());
-		System.out.println("team_id = " + team_id);
+		System.out.println("team_id = " + temp_team_id);
 		System.out.println("position_id = " + teamApply.getPosition_id());
 		System.out.println("===============================");
 		
-		TeamDTO team = teamDAO.getTeamInfo(team_id);
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
 		teamApply.setUser_code_id(user_code_id);
 		
 		// 임시 동호회 가입
@@ -246,7 +247,8 @@ public class TeamController
 				return "redirect:MainPage.action";
 			}
 			
-			teamApply.setTeam_id(team_id);
+			
+			teamApply.setTeam_id(temp_team_id);
 			teamDAO.applyedTempTeam(teamApply);
 			
 		}
@@ -265,6 +267,7 @@ public class TeamController
 			
 			teamApply.setTeam_id(team.getTeam_id());
 			teamDAO.applyedTeam(teamApply);
+
 		}
 		
 		String message = "SUCCESS_APPLY: 동호회 신청이 완료되었습니다.";
@@ -630,15 +633,20 @@ public class TeamController
 		int team_apply_id = Integer.parseInt(strTeam_apply_id);
 		
 		// 신청자 유저 코드
-		String strUser_code_id = (String) request.getParameter("user_code_id");
-		int user_code_id = Integer.parseInt(strUser_code_id);
-		
+		int user_code_id = Integer.parseInt( request.getParameter("user_code_id"));
+
 		// 동호회 가입여부 확인
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 		
 		int TeamTeam = dao.searchTempTeamMember(user_code_id);
 		int Team = dao.searchTeamMember(user_code_id);
 		int countMember = TeamTeam + Team;
+		
+		
+		//알림 전송
+		INotificationDAO notificationDAO = sqlSession.getMapper(INotificationDAO.class);
+		NotificationDTO notification = new NotificationDTO();
+		notification.setUser_code_id(user_code_id);
 		
 		if (countMember > 0)
 		{
@@ -657,13 +665,27 @@ public class TeamController
 		TeamDTO team = dao.getTeamInfo(team_id);
 		
 		// 임시/정식 동호회 확인
-		if (team.getTeam_id() == 0)
+		if (team.getTeam_id() == 0) {
+			
 			// 임시동호회 멤버 추가
 			dao.addtempTeamMember(team_apply_id);
-		
-		else if (team.getTeam_id() != 0)
+			
+			//알림 메시지 등록
+			notification.setMessage(team.getTemp_team_name() + " 동호회 가입에 성공하셨습니다.");
+			notification.setNotification_type_id(1);
+			notificationDAO.addNotification(notification);
+		}
+		else if (team.getTeam_id() != 0) {
+			
 			// 정식동호회 멤버 추가
 			dao.addteamMember(team_apply_id);
+			
+			
+			//알림 메시지 등록
+			notification.setMessage(team.getTemp_team_name() + " 동호회 가입에 성공하셨습니다.");
+			notification.setNotification_type_id(1);
+			notificationDAO.addNotification(notification);
+		}
 		
 		return "redirect:/MemberAppr.action";
 	}
@@ -676,21 +698,47 @@ public class TeamController
 		
 		Integer team_id = (Integer)session.getAttribute("team_id");
 		
-		String strTeam_apply_id = (String) request.getParameter("team_apply_id");
-		int team_apply_id = Integer.parseInt(strTeam_apply_id);
+		int team_apply_id = Integer.parseInt(request.getParameter("team_apply_id"));
 		
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		INotificationDAO notificationDAO = sqlSession.getMapper(INotificationDAO.class);
+		
+		NotificationDTO notification = new NotificationDTO();
 		
 		TeamDTO team = teamDAO.getTeamInfo(team_id);
 		
 		// 정식/임시 동호회 확인
 		if (team.getTeam_id() == 0) {
 			
+			int user_code_id = teamDAO.searchTempTeamApplyUser(team_apply_id).getUser_code_id();
+			
+			System.out.println("==============================[확인00]==============================");
+			System.out.println("동호회 신청자 코드 = "+ user_code_id);
+			System.out.println("====================================================================");
+					
 			teamDAO.canceledApplyTempTeam(team_apply_id);
+			
+			notification.setUser_code_id(user_code_id);
+			notification.setNotification_type_id(1);
+			//알림 메시지 등록
+			notification.setMessage(team.getTemp_team_name() + " 동호회 승인이 취소되었습니다.");
+			notificationDAO.addNotification(notification);
 			
 		}else if(team.getTeam_id() != 0) {
 			
+			int user_code_id = teamDAO.searchTempTeamApplyUser(team_apply_id).getUser_code_id();
+			
+			System.out.println("==============================[확인00]==============================");
+			System.out.println("동호회 신청자 코드 = "+ user_code_id);
+			System.out.println("====================================================================");
+			
 			teamDAO.canceledApplyTeam(team_apply_id);
+			
+			notification.setUser_code_id(user_code_id);
+			notification.setNotification_type_id(1);
+			//알림 메시지 등록
+			notification.setMessage(team.getTemp_team_name() + " 동호회 승인이 취소되었습니다.");
+			notificationDAO.addNotification(notification);
 		}
 		
 		return "redirect:/MemberAppr.action";
@@ -702,25 +750,51 @@ public class TeamController
 		
 		HttpSession session = request.getSession();
 		
-		Integer team_id = (Integer)session.getAttribute("team_id");
-		
-		String strTeam_member_id = (String) request.getParameter("team_member_id");
-		int team_member_id = Integer.parseInt(strTeam_member_id);
-		
+		Integer temp_team_id = (Integer)session.getAttribute("team_id");
+		int team_member_id =  Integer.parseInt(request.getParameter("team_member_id"));
+
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		INotificationDAO notificationDAO = sqlSession.getMapper(INotificationDAO.class);
 		
-		TeamDTO team = teamDAO.getTeamInfo(team_id);
+		NotificationDTO notification = new NotificationDTO();
+		
+		//팀정보
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
 		
 		// 정식/임시 동호회 확인
 		if (team.getTeam_id() == 0) {
-			
+			//동호회 회원 사용자 코드
+			int user_code_id = teamDAO.searchTempTeamUeserCode(team_member_id).getUser_code_id();
+			System.out.println("==============================[확인00]==============================");
+			System.out.println("동호회 회원 사용자 코드 = "+ user_code_id);
+			System.out.println("====================================================================");
+
 			teamDAO.dropTempTeamMember(team_member_id);
+			
+			notification.setUser_code_id(user_code_id);
+			notification.setNotification_type_id(1);
+			//알림 메시지 등록
+			notification.setMessage(team.getTemp_team_name() + " 동호회에서 강퇴되었습니다.");
+			notificationDAO.addNotification(notification);
 			
 			
 		}else if(team.getTeam_id() != 0) {
 			
 			
+			
+			//동호회 회원 사용자 코드
+			int user_code_id = teamDAO.searchTeamUeserCode(team_member_id).getUser_code_id();
+			System.out.println("==============================[확인00]==============================");
+			System.out.println("동호회 회원 사용자 코드 = "+ user_code_id);
+			System.out.println("====================================================================");
+
 			teamDAO.dropTeamMember(team_member_id);
+			
+			notification.setUser_code_id(user_code_id);
+			notification.setNotification_type_id(1);
+			//알림 메시지 등록
+			notification.setMessage(team.getTemp_team_name() + " 동호회에서 강퇴되었습니다.");
+			notificationDAO.addNotification(notification);
 		}
 		
 		return "redirect:/MyTeam.action";

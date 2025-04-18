@@ -192,7 +192,7 @@ html, body {
         <h5 class="mb-1">${userInfo.user_name}</h5>
         <div class="text-muted mb-3">사용자</div>
         <nav>
-            <a class="nav-link active" href="#"><i class="bi bi-person-circle"></i> 마이페이지</a>
+            <a class="nav-link active" href="Mypage.action"><i class="bi bi-person-circle"></i> 마이페이지</a>
             <a class="nav-link" href="MyInformation.action"><i class="bi bi-speedometer2"></i> 내 정보</a>
             <a class="nav-link" href="#"><i class="bi bi-people"></i> 정보 관리</a>
             <a class="nav-link" href="#"><i class="bi bi-flag"></i> 경기 기록</a>
@@ -207,17 +207,39 @@ html, body {
     <div class="content-area">
         <h4>내 정보</h4>
         <div class="profile-box">
-        	<c:forEach var="notification" items="${notificationList}">
-			    <div class="info-row ">
+            <div class="info-row">
+                <strong>이름</strong>
+                <span>${userInfo.user_name}</span>
+            </div>
+            <div class="info-row">
+                <strong>이메일</strong>
+                <span>${userInfo.user_email}</span>
+            </div>
+            <div class="info-row">
+                <strong>전화번호</strong>
+                <span>${userInfo.user_tel}</span>
+            </div>
+            <div class="info-row">
+                <strong>닉네임</strong>
+                <span>${userInfo.user_nick_name}</span>
+            </div>
+            <div class="info-row">
+                <strong>주민등록번호</strong>
+                <span>${fn:substring(userInfo.user_ssn1, 0, 6)}-${fn:substring(userInfo.user_ssn2, 0, 1)}●●●●●●</span>
+            </div>
+            <div class="info-row">
+                <strong>우편번호</strong>
+                <span>${userInfo.user_postal_addr}</span>
+            </div>
+            <div class="info-row">
+                <strong>기본 주소</strong>
+                <span>${userInfo.user_addr}</span>
+            </div>
+            <div class="info-row">
+                <strong>상세 주소</strong>
+                <span>${userInfo.user_detailed_addr}</span>
+            </div>
 
-			        <strong>내용</strong>
-			        <span>
-			            <a href="IsRead.action?notification_id=${notification.notification_id}">
-			                ${notification.message}
-			            </a>
-			        </span>
-			    </div>
-			</c:forEach>
 			<a href="${pageContext.request.contextPath}/CheckPassword.action" class="btn edit-button">
 			    <i class="bi bi-pencil-square me-2"></i>내 정보 수정
 			</a>
