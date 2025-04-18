@@ -142,7 +142,7 @@
 	<!-- 정식 동호회 신청자 명단  -->
 	<select id="teamApplyList" resultType="com.nutmag.project.dto.TeamApplyDTO">
 		SELECT *
-		FROM TEAM_MEMBER_APPLY_VIEW
+		FROM TEAM_APPLY_VIEW
 		WHERE TEAM_ID=#{team_id}
 	</select>
 	
@@ -187,7 +187,12 @@
 		VALUES(TEAM_WITHDRAWAL_SEQ.nextval,SYSDATE,#{team_member_id})
     </insert>
     
-     
+    <!-- 정식 동호회 사용자 코드 찾기 -->
+    <select id="searchTeamUeserCode" resultType="int">
+	    SELECT USER_CODE_ID
+		FROM TEAM_MEMBER_VIEW
+		WHERE TEAM_MEMBER_ID =#{team_member_id}
+    </select>     
      <!--===============================================동호회 인원수 출력==================================================================  -->
      
      <select id="tempTeamMemberCount" resultType="int">

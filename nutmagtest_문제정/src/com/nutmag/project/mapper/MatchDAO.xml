@@ -24,7 +24,8 @@
   		FROM MATCH_SCHEDULE_VIEW
   		WHERE FIELD_RES_ID = #{field_res_id}
   	</select>
-     
+  	
+    <!-- =========================================동호회원 매치 참여========================================= -->
 	<!-- 홈팀 동호회 매치 참여 -->
 	<insert id="addHomeTeamMember" parameterType="com.nutmag.project.dto.MatchDTO">
   		INSERT INTO HOME_TEAM
@@ -41,6 +42,7 @@
 	  		SYSDATE
   		)
   	</insert>
+  	
   	<!-- 어웨이 동호회 매치 참여 -->
   	<insert id="addAwayTeamMember" parameterType="com.nutmag.project.dto.MatchDTO">
   		INSERT INTO AWAYTEAM_PARTICIPANT
@@ -58,7 +60,40 @@
   		)
   	</insert>
      
-     <!-- 매치 메인 페이지 리스트 -->
+	<!-- 홈팀 동호회 인원 참여 중복 검사 -->
+	<select id="searchHomeTeamMember" resultType="int">
+		SELECT COUNT(*) AS "COUNT"
+		FROM HOME_TEAM
+		WHERE FIELD_RES_ID = #{field_res_id}
+		AND 
+		TEAM_MEMBER_ID =#{team_member_id}
+	</select>
+	
+	<!-- 어웨이 동호회 인원 참여 중복 검사 -->
+	<select id="searchAwayTeamMember" resultType="int">
+		SELECT COUNT(*) AS "COUNT"
+		FROM AWAYTEAM_PARTICIPANT
+		WHERE TEAM_MEMBER_ID =#{team_member_id}
+		AND
+		 MATCH_PAY_ID=#{match_pay_id}
+	</select>
+	<!-- =========================================동호회원 매치 참여자 출력========================================= -->
+	<!-- 홈팀 매치 참여자 출력 -->
+	<select id="homeTeamPaticipantList"  resultType="com.nutmag.project.dto.MatchDTO">
+		SELECT *
+		FROM HOME_TEAM_VIEW
+		WHERE FIELD_RES_ID =#{field_res_id}
+	</select>
+	
+	<!-- 어웨이팀 매치 참여자 출력 -->
+	<select id="awayTeamPaticipantList"  resultType="com.nutmag.project.dto.MatchDTO">
+		SELECT *
+		FROM AWAY_TEAM_VIEW
+		WHERE FIELD_RES_ID =#{field_res_id}
+	</select>
+	
+	
+	 <!-- 매치 메인 페이지 리스트 -->
      <select id="matchRoomList" resultType="com.nutmag.project.dto.MatchDTO">
 		SELECT 
 		   FIELD_RES_ID,
@@ -82,11 +117,18 @@
 		WHERE MATCH_DATE > SYSDATE AND MATCH_STATUS = '상대미정'
 	</select>
 	
+	<!-- 매치방 인서트 -->
 	<insert id="matchAwayTeamInsert" parameterType="com.nutmag.project.dto.MatchDTO">
 	INSERT INTO AWAYTEAM_PAY (MATCH_PAY_ID,MATCH_JOIN_REG_AT
 								,MATCH_PAY_AMOUNT,MATCH_PAY_AT,TEAM_ID,FIELD_RES_ID)
 	VALUES (AWAYTEAM_PAY_SEQ.NEXTVAL,SYSDATE,#{pay_amount},NULL,#{away_team_id},#{field_res_id})
 	</insert>
-     
-
+	
+	<!-- 어웨이 팀 매치 승인 -->
+	<update id="approveMatch">
+	UPDATE AWAYTEAM_PAY
+	SET MATCH_PAY_AT = SYSDATE
+	WHERE MATCH_PAY_ID = #{field_res_id}
+	</update>
+	
 </mapper>

@@ -718,3 +718,11 @@ main
     margin-right: 10px;
     margin-top: 3px;
 }
+
+.section-header .underline
+{
+	width: 80px;
+	height: 4px;
+	background-color: #7dcfb6;
+	border-radius: 2px;
+}

@@ -72,7 +72,7 @@
 											class="approve-btn" style="text-decoration:none;">승인</a>
 											
 											<a href="CancelApply.action?team_apply_id=${teamApply.team_apply_id}&user_code_id=${teamApply.user_code_id}&team_id=${team.temp_team_id}"
-											class="reject-btn" style="text-decoration:none;">거절</a>
+											class="reject-btn" style="text-decoration:none;" onclick="return confirm('정말 거절하시겠습니까?');">거절</a>
 										</td>
 									</tr>
 								</c:forEach>

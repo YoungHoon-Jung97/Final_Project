@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IUserDAO">
+	
+	<!-- 유저 정보 입력 프로시저  -->
+	<insert id="userInsert" parameterType="com.nutmag.project.dto.UserDTO" statementType="CALLABLE">
+        CALL PRC_USER_INSERT(
+            #{user_name, jdbcType=VARCHAR},
+            #{user_pwd, jdbcType=VARCHAR},
+            #{user_email, jdbcType=VARCHAR},
+            #{user_ssn1, jdbcType=VARCHAR},
+            #{user_ssn2, jdbcType=VARCHAR},
+            #{user_tel, jdbcType=VARCHAR},
+            #{user_postal_addr, jdbcType=VARCHAR},
+            #{user_addr, jdbcType=VARCHAR},
+            #{user_detailed_addr, jdbcType=VARCHAR},
+            #{user_nick_name, jdbcType=VARCHAR}
+        )
+    </insert>
+	
+	<!-- 유저 아이디/비밀번호 찾기 select  -->
+	<select id="userLogin" resultType="com.nutmag.project.dto.UserDTO">
+		SELECT USER_ID,USER_NAME,USER_EMAIL,USER_CODE_ID
+		FROM USER_INFO
+		WHERE USER_EMAIL = UPPER(#{logEmailKo}) AND USER_PWD = #{logPwKo}
+	</select>
+	
+	<!-- 유저 아이디 찾기 select  -->
+	<select id="searchEmail" resultType="int">
+		SELECT COUNT(*)
+		FROM USER_INFO
+		WHERE USER_EMAIL = UPPER(#{email})
+	</select>
+
+	<select id="searchnickName" resultType="int">
+		SELECT COUNT(*)
+		FROM USER_INFO
+		WHERE USER_NICK_NAME = #{nickName}
+	</select>
+</mapper>

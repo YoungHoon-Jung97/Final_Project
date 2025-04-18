@@ -135,4 +135,49 @@
 	WHERE USER_EMAIL = #{email} 
 	</update>
 	
+	<!-- 회원 정보 가져오기 -->
+	<select id="getUser" parameterType="int" resultType="com.nutmag.project.dto.UserDTO">
+	SELECT USER_NAME,USER_EMAIL,USER_PWD,USER_TEL,USER_NICK_NAME,USER_SSN1,USER_SSN2
+		 , USER_ADDR, USER_POSTAL_ADDR, USER_DETAILED_ADDR, USER_CODE_ID
+	FROM USER_INFO
+	WHERE user_id = #{user_code_id}
+	</select>
+	
+	<!-- 비밀번호 확인 -->
+    <select id="getPasswordByUserCode" resultType="String" parameterType="String">
+        SELECT USER_PWD
+        FROM USER_INFO
+        WHERE USER_CODE_ID = #{userCode, jdbcType=VARCHAR}
+    </select>
+	
+	
+	<!-- 회원 찾기 -->
+	<select id="userUpdate" parameterType="int" resultType="com.nutmag.project.dto.UserDTO">
+	SELECT USER_NAME,USER_EMAIL,USER_PWD,USER_TEL,USER_NICK_NAME,USER_SSN1,USER_SSN2
+		 , USER_ADDR, USER_POSTAL_ADDR, USER_DETAILED_ADDR
+	FROM USER_INFO
+	WHERE user_id = #{user_code_id}
+	</select>
+	
+	<!-- 이메일로 사용자 정보 조회 -->
+	<select id="getUserByEmail" resultType="com.nutmag.project.dto.UserDTO">
+	    SELECT * FROM users WHERE user_email = #{email}
+	</select>
+	
+    
+    <!-- 회원 정보 수정 -->
+   <update id="updateUser" parameterType="com.nutmag.project.dto.UserDTO">
+       UPDATE user_info
+       <set>
+           <if test="user_pwd != null and user_pwd != ''">
+               user_pwd = #{user_pwd},
+           </if>
+           user_tel = #{user_tel},
+           user_addr = #{user_addr},
+           user_detailed_addr = #{user_detailed_addr},
+           user_postal_addr = #{user_postal_addr}
+       </set>
+       WHERE user_code_id = #{user_code_id}
+   </update>
+	
 </mapper>

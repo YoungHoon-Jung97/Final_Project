@@ -1,7 +1,9 @@
 package com.nutmag.project.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,18 +16,27 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nutmag.project.dao.IBankDAO;
+import com.nutmag.project.dao.IFieldDAO;
+import com.nutmag.project.dao.IStadiumDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
+import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.OperatorResCancelDTO;
+import com.nutmag.project.dto.StadiumRegInsertDTO;
+import com.nutmag.project.dto.StadiumTimeDTO;
 import com.nutmag.project.dto.UserDTO;
 
 import util.MailUtil;
+import util.Path;
 
 @Controller
 public class UserController
@@ -250,7 +261,202 @@ public class UserController
 			
 			return result;
 		}
-	
+		
+		// 구장 운영자 페이지 구장 리스트
+		@RequestMapping(value = "OperatorStadiumListForm.action", method = RequestMethod.GET)
+		public String OperatorStadiumListForm(Model model,HttpServletRequest request)
+		{
+			String result= null;
+			
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class); 
+			HttpSession session = request.getSession();
+			
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			
+			ArrayList<StadiumRegInsertDTO> list = dao.stadiumSearchList(user_code_id);
+			
+			/* 디버그
+			 * System.out.println("유저 코드 아이디 확인 : " + user_code_id);
+			 * System.out.println("리스트 사이즈 : " + list.size());
+			 * 
+			 * for (StadiumRegInsertDTO stadiumRegInsertDTO : list) {
+			 * System.out.println("지금 검색이 되냐 안되냐 :" +
+			 * stadiumRegInsertDTO.getStadium_reg_name()); }
+			 */
+			
+			model.addAttribute("stadiumSearchList", list);
+			model.addAttribute("stadiumCount", dao.stadiumSearchCount(user_code_id));
+			
+			
+			result = "/user/OperatorStadiumListForm";
+			return result;
+		}
+		
+		// 구장 운영자 구장 에서 경기장 클릭시 표시되는 경기장
+		@RequestMapping(value = "/OperatorFieldListForm.action",method = RequestMethod.POST)
+		public String stadiumFieldCheckForm(Model model, HttpServletRequest request, HttpServletResponse response)
+		{
+			HttpSession session = request.getSession();
+			
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+			IFieldDAO fielddao = sqlSession.getMapper(IFieldDAO.class);
+			
+			String message = "";
+			Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+			
+			int stadium_reg_id = Integer.parseInt(request.getParameter("stadium_reg_id"));
+			
+			// 구장 등록 여부
+			if (dao.stadiumSearchCount(user_code_id) == 0)
+			{
+				message = "NEED_REGISTER_STADIUM: 구장을 먼저 등록해야 합니다.";
+				session.setAttribute("message", message);
+				return "redirect:MainPage.action";
+			}
+			
+			ArrayList<StadiumRegInsertDTO> stadiumList = dao.stadiumSearchId(stadium_reg_id);
+			ArrayList<FieldRegSearchDTO> fieldList = fielddao.fieldSearchList(stadium_reg_id);
+			
+			model.addAttribute("stadiumSearchId", stadiumList);
+			model.addAttribute("fieldSearchId", fieldList);
+			
+			return "/user/OperatorFieldListForm";
+		}
+		
+		
+		// 구장 운영자 페이지 구장 리스트
+		@RequestMapping(value = "OperatorStadiumUpdateList.action", method = RequestMethod.GET)
+		public String OperatorStadiuUpdateForm(Model model,HttpServletRequest request)
+		{
+			String result= null;
+			
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class); 
+			HttpSession session = request.getSession();
+			
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			
+			ArrayList<StadiumRegInsertDTO> list = dao.stadiumSearchList(user_code_id);
+			
+			model.addAttribute("stadiumSearchList", list);
+			model.addAttribute("stadiumCount", dao.stadiumSearchCount(user_code_id));
+			
+			
+			result = "/user/OperatorStadiumUpdateList";
+			return result;
+		}
+		
+		
+		// 구장 업데이트 폼 불러오기
+		@RequestMapping(value = "/OperatorStadiumUpdateForm.action",method = {RequestMethod.GET, RequestMethod.POST})
+		public String OperatorStadiumUpdateForm(Model model, HttpServletRequest request) {
+		    HttpSession session = request.getSession();
+
+		    IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+		    
+		    
+		    String param = request.getParameter("stadium_reg_id");
+
+		    int stadium_reg_id = Integer.parseInt(param);
+		    
+		    
+		    
+		    ArrayList<StadiumRegInsertDTO> stadiumList = dao.stadiumSearchId(stadium_reg_id);
+		    ArrayList<StadiumTimeDTO> stadiumTimeList = dao.stadiumTimeList();
+		    
+		    model.addAttribute("stadiumSearchList", stadiumList);
+		    model.addAttribute("stadiumTimeList", stadiumTimeList);
+		    return "/user/OperatorStadiumUpdateForm"; 
+		}
+		
+		
+		// 파일 업로드 예외처리 방지
+		@InitBinder
+		protected void initBinder(WebDataBinder binder) {
+		    binder.setDisallowedFields("stadium_reg_image");
+		}
+
+		// 구장 수정
+		@RequestMapping(value = "/OperatorStadiumUpdate.action", method = RequestMethod.POST)
+		public String stadiumUpdate(StadiumRegInsertDTO stadiumDTO,
+		                             @RequestParam(value = "stadium_reg_image", required = false) MultipartFile uploadFile,
+		                             HttpServletRequest request,
+		                             HttpSession session) {
+		    String message = "";
+
+		    try {
+		        System.out.println("======= [DEBUG] 폼 파라미터 로그 (수정) =======");
+		        System.out.println("stadium_reg_id = " + stadiumDTO.getStadium_reg_id());
+		        System.out.println("stadium_reg_name = " + stadiumDTO.getStadium_reg_name());
+
+		        String root = request.getServletContext().getRealPath("");
+		        String uploadPath = root + Path.getUploadStadiumDir();
+		        File uploadDir = new File(uploadPath);
+
+		        if (!uploadDir.exists()) {
+		            uploadDir.mkdirs();
+		        }
+
+		        // 기존 파일 유지
+		        String currentImagePath = stadiumDTO.getStadium_reg_image(); // 기존 이미지 경로 (히든 필드나 조회값)
+
+		        if (uploadFile != null && !uploadFile.isEmpty()) {
+		            // 새 파일이 업로드되었으면 저장
+		            String originalFileName = uploadFile.getOriginalFilename();
+		            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+		            String savedFileName = stadiumDTO.getStadium_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
+		            File saveFile = new File(uploadPath, savedFileName);
+		            uploadFile.transferTo(saveFile);
+
+		            // 새 파일 경로로 세팅
+		            String fileWebPath = Path.getUploadStadiumDir() + savedFileName;
+		            stadiumDTO.setStadium_reg_image(fileWebPath);
+
+		            // (선택) 기존 파일 삭제 처리
+		            if (currentImagePath != null && !currentImagePath.isEmpty()) {
+		                File oldFile = new File(root + currentImagePath);
+		                if (oldFile.exists()) oldFile.delete();
+		            }
+		        }
+		        else {
+		            // 새 파일이 없으면 기존 이미지 경로 유지
+		            stadiumDTO.setStadium_reg_image(currentImagePath);
+		        }
+
+		        // DB 업데이트
+		        IStadiumDAO stadiumDAO = sqlSession.getMapper(IStadiumDAO.class);
+		        int row = stadiumDAO.stadiumUpdate(stadiumDTO);
+
+		        if (row > 0) {
+		            message = "SUCCESS_INSERT: 구장 수정이 완료되었습니다.";
+		            session.setAttribute("message", message);
+		            return "redirect:OperatorMainPage.action";
+		        } else {
+		            System.out.println("DB 업데이트 실패");
+		        }
+		    }
+		    catch (Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    return "redirect:/Error.action";
+		}
+
+		@RequestMapping(value = "OperatorFieldUpdateForm.action", method = RequestMethod.GET)
+		public String operatorFieldUpdateForm(Model model,HttpServletRequest request)
+		{
+			String result = null;
+			HttpSession session = request.getSession();
+			IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+			
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			
+			model.addAttribute("fieldList", dao.fieldApprOkSearchIdList(user_code_id));
+			
+			result = "/user/OperatorFieldUpdateForm";
+			return result;
+		}
+		
+		
 	//==================================================================
 	
 	// 로그인
@@ -471,9 +677,124 @@ public class UserController
 
 	
 	// 내 정보
-	@RequestMapping(value = "/MyInformation.action", method = RequestMethod.GET)
-	public String myInformation(Model model)
+	@RequestMapping("/MyInformation.action")
+	public String MyInformation(Model model, HttpServletRequest request)
 	{
-		return "MyInformation";
+	    HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
+	    UserDTO userInfo = dao.getUser(user_code_id);   // 정보 불러오기
+
+	    if (userInfo == null) {
+	        message = "회원 정보를 찾을 수 없습니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";
+	    }
+
+	    model.addAttribute("userInfo", userInfo);
+
+	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
 	}
+		
+	// 내 정보 수정 폼 페이지 들어가기 전 비밀번호 확인
+	@RequestMapping(value = "/CheckPassword.action", method = RequestMethod.GET)
+	public String checkPasswordForm(HttpSession session) {
+		
+		  if (session.getAttribute("user_code_id") == null) return
+		  "redirect:/Login.action";
+		 
+	    return "/user/CheckPassword";
+	}
+
+	@RequestMapping(value = "/CheckPassword.action", method = RequestMethod.POST)
+	public String checkPasswordSubmit(HttpSession session, HttpServletRequest request, Model model) {
+	    String inputPw = request.getParameter("user_pwd");
+	    System.out.println("입력된 비밀번호: " + inputPw);
+	    Object userCodeObj = session.getAttribute("user_code_id");
+
+	    String userCode = userCodeObj.toString();
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+	    String dbPw = dao.getPasswordByUserCode(userCode);
+
+	    if (dbPw != null && dbPw.equals(inputPw)) {
+	        return "redirect:/UserInfoEdit.action";
+	    } else {
+	        model.addAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
+	        return "/user/CheckPassword";
+	    }
+	}
+	
+	// 내 정보 수정 폼 페이지 요청
+	@RequestMapping(value = "/UserInfoEdit.action")
+	public String userInfoEdit(Model model, HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
+	    UserDTO userEdit = dao.userUpdate(user_code_id);   // 정보 불러오기
+
+	    if (userEdit == null) {
+	        message = "회원 정보를 찾을 수 없습니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";
+	    }
+
+	    model.addAttribute("userInfo", userEdit);
+
+	    return "/user/UserInfoEdit"; // 수정 폼 JSP로 이동
+	}
+	
+	//사용자 정보 업데이트
+	@RequestMapping(value = "/UserUpdate.action", method = RequestMethod.POST)
+	   public String updateUser(UserDTO userDTO, HttpServletRequest request, Model model) {
+
+	       HttpSession session = request.getSession();
+	       Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+	       userDTO.setUser_code_id(user_code_id);
+
+	       // 기존 비밀번호와 새로운 비밀번호를 비교
+	       String currentPwd = request.getParameter("current_pwd");  // hidden으로 받은 기존 비밀번호
+	       String newPwd = request.getParameter("user_pwd");         // 새 비밀번호
+	       String confirmPwd = request.getParameter("password2");    // 새 비밀번호 확인
+
+	       // 비밀번호가 다르면 수정 페이지로 돌아가기
+	       if (!newPwd.equals(confirmPwd)) {  // equals()로 비밀번호 비교
+	           return "redirect:UserInfoEdit.action";  // 수정 페이지로 돌아감
+	       }
+
+	       // 비밀번호가 일치하면 DB에 업데이트
+	       if (newPwd != null && !newPwd.trim().equals("")) {
+	           userDTO.setUser_pwd(newPwd);  // 새 비밀번호로 업데이트
+	       } else {
+	           userDTO.setUser_pwd(currentPwd); // 비밀번호 변경 없으면 기존 비밀번호 사용
+	       }
+
+	       // DB 업데이트
+	       IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+	       userDAO.updateUser(userDTO);  // 비밀번호 포함한 전체 정보 업데이트
+
+	       // 메인 페이지로 리다이렉트
+	       return "redirect:MainPage.action";
+	   }
 }
