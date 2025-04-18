@@ -16,28 +16,41 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript">
 
-	$(function()
-	{
-		// 뒤로 가기
-		$('.btn--back').on('click', function()
-		{
-			var prevPage = "<%=session.getAttribute("prevPage") %>";
-			var fallback = "<%=cp %>/MainPage.action";
+$(function() {
+	// 뒤로 가기 버튼 처리
+	$('.btn--back').on('click', function() {
+		var prevPage = "<%=session.getAttribute("prevPage") %>";
+		var fallback = "<%=cp %>/MainPage.action";
 
-			if (prevPage && prevPage !== "null")
-				window.location.href = prevPage;
-			
-			else
-		        window.location.href = fallback;
-		});
-		
-		$('#image').on('change', function()
-		{
-			var fileName = this.files.length > 0 ? this.files[0].name : '선택된 파일 없음';
-			$('#file-name').text(fileName);
-		});
+		if (prevPage && prevPage !== "null")
+			window.location.href = prevPage;
+		else
+			window.location.href = fallback;
 	});
 
+	// 파일명 표시
+	$('#image').on('change', function() {
+		var fileName = this.files.length > 0 ? this.files[0].name : '선택된 파일 없음';
+		$('#file-name').text(fileName);
+	});
+
+	// ✅ 여기 안에 넣어야 합니다!
+	$('#joinForm').on('submit', function() {
+		const facilities = {
+			"샤워실": $("#shower").is(":checked"),
+			"탈의실": $("#dressing").is(":checked"),
+			"주차장": $("#parking").is(":checked"),
+			"음료판매": $("#drink").is(":checked"),
+			"풋살화대여": $("#shoesrent").is(":checked"),
+			"조끼대여": $("#vestrent").is(":checked")
+		};
+
+		console.log("선택된 시설:", facilities); // 디버깅용
+		$("#facilitiesJson").val(JSON.stringify(facilities));
+	});
+});
+	
+	
 </script>
 
 </head>
@@ -62,7 +75,7 @@
 						placeholder="경기장이름" maxlength="20" name="field_reg_name" required>
 					</div>
 				</div>
-			</div>
+			</div>	
 			
 			<div class="form__group">
 				<div class="form__field">
@@ -96,6 +109,35 @@
 				</div>
 			</div>
 			
+			<!-- 경기장 수용 인원 -->
+			<div class="form__group">
+				<div class="form__field">
+					<label for="personCount" class="form__label required">경기장 주의사항</label>
+					
+					<div class="form__input--wrapper">
+						<!-- <input type="text" class="form__input" id="name"
+						placeholder="경기장수용인원" maxlength="20" name="personCount" required> -->
+						<textarea rows="5" cols="150" name="field_reg_notice"
+						placeholder="예 : 발을 털고 들어와주세요, 주차가 불가해요"></textarea>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 경기장 수용 인원 -->
+			<div class="form__group">
+				<div class="form__field">
+					<label for="personCount" class="form__label required">경기장 시설<small>(해당되는 사항을 선택 해주세요)</small></label>
+					<div class="form__input--wrapper">
+						<label><input type="checkbox" id="shower">샤워실</label>
+						<label><input type="checkbox" id="dressing">탈의실</label>
+						<label><input type="checkbox" id="parking">주차장</label>
+						<label><input type="checkbox" id="drink">음료판매</label>
+						<label><input type="checkbox" id="shoesrent">풋살화대여</label>
+						<label><input type="checkbox" id="vestrent">조끼대여</label>
+					</div>
+				</div>
+			</div>
+			<input type="hidden" id="facilitiesJson" name="field_reg_facilities" value="">
 			<!-- 구장 크기 선택-->
 			<div class="form__group">
 				<div class="form__field">

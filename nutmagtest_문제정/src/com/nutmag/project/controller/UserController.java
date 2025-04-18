@@ -2,6 +2,7 @@ package com.nutmag.project.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.Cookie;
@@ -17,15 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.nutmag.project.dao.IAdminDAO;
 import com.nutmag.project.dao.IBankDAO;
-import com.nutmag.project.dao.IFieldDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
-import com.nutmag.project.dto.AdminFieldCancelDTO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.OperatorResCancelDTO;
 import com.nutmag.project.dto.UserDTO;
+
+import util.MailUtil;
 
 @Controller
 public class UserController
@@ -170,86 +170,86 @@ public class UserController
 	};
 	
 	// 구장 운영자 메인 페이지
-	@RequestMapping(value = "/OperatorMainPage.action", method = RequestMethod.GET)
-	public String operatorMainPage(Model model,HttpServletRequest request)
-	{
-		String result = null;
+		@RequestMapping(value = "/OperatorMainPage.action", method = RequestMethod.GET)
+		public String operatorMainPage(Model model,HttpServletRequest request)
+		{
+			String result = null;
 
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		HttpSession session = request.getSession();
-		int user_code_id = (int) session.getAttribute("user_code_id");
-		int operator_id = (int) session.getAttribute("operator_id");
-		
-		model.addAttribute("operatorInfo", dao.operatorLoginInfo(user_code_id));
-		
-		//System.out.println(operator_id);
-		result = "/user/OperatorMainPage";
-		return result;
-	}
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			HttpSession session = request.getSession();
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			int operator_id = (int) session.getAttribute("operator_id");
+			
+			model.addAttribute("operatorInfo", dao.operatorLoginInfo(user_code_id));
+			
+			//System.out.println(operator_id);
+			result = "/user/OperatorMainPage";
+			return result;
+		}
 
-	// 경기장 승인 처리 페이지
-	@RequestMapping(value="OperatorFieldResApprForm.action", method = {RequestMethod.POST, RequestMethod.GET})
-	public String operatorFieldApprForm(Model model,HttpServletRequest request, HttpServletResponse response)
-	{
-		String result = null;
+		// 경기장 승인 처리 페이지
+		@RequestMapping(value="OperatorFieldResApprForm.action", method = {RequestMethod.POST, RequestMethod.GET})
+		public String operatorFieldApprForm(Model model,HttpServletRequest request, HttpServletResponse response)
+		{
+			String result = null;
+			
+			HttpSession session = request.getSession();
+			
+			int operator_id = (int) session.getAttribute("operator_id");
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			//System.out.println(operator_id);
+			model.addAttribute("fieldBeforeResApprList", dao.fieldBeforeResApprList(operator_id));
+			
+			result = "/user/OperatorFieldResApprForm";
+			return result;
+		}
 		
-		HttpSession session = request.getSession();
+		// 구장 운영자 경기장 예약 승인 처리
+		@RequestMapping(value = "FieldResApprInsert.action",method = RequestMethod.POST)
+		public String operatorFieldResAppr(@RequestParam("field_res_id") int field_res_id ,Model model,HttpServletRequest request)
+		{
+			String result = null;
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			//System.out.println(field_res_id);
+			dao.fieldResApprInsert(field_res_id);
+			
+			result="redirect:OperatorFieldResApprForm.action";
+			
+			return result;
+		}
 		
-		int operator_id = (int) session.getAttribute("operator_id");
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		
-		//System.out.println(operator_id);
-		model.addAttribute("fieldBeforeResApprList", dao.fieldBeforeResApprList(operator_id));
-		
-		result = "/user/OperatorFieldResApprForm";
-		return result;
-	}
-	
-	// 구장 운영자 경기장 예약 승인 처리
-	@RequestMapping(value = "FieldResApprInsert.action",method = RequestMethod.POST)
-	public String operatorFieldResAppr(@RequestParam("field_res_id") int field_res_id ,Model model,HttpServletRequest request)
-	{
-		String result = null;
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		
-		//System.out.println(field_res_id);
-		dao.fieldResApprInsert(field_res_id);
-		
-		result="redirect:OperatorFieldResApprForm.action";
-		
-		return result;
-	}
-	
-	// 경기장 예약 반려 처리 폼
-	@RequestMapping(value = "FieldResApprCancelForm.action", method = {RequestMethod.POST, RequestMethod.GET})
-	public String adminResFieldApprCancel(Model model,HttpServletRequest request,@RequestParam("field_res_id") String field_res_id)
-	{
-		String result = null;
-		
-	    model.addAttribute("field_res_id", field_res_id);
-		result = "/user/OperatorFieldResApprCancelForm";
-		
-		return result;
-	}
-		
-	// 경기장 예약 반려 처리
-	@RequestMapping(value="FieldResApprCancelInsert.action", method = {RequestMethod.POST, RequestMethod.GET})
-	public String adminFieldApprCancelInsert(Model model,OperatorResCancelDTO dto,HttpServletRequest request)
-	{
-		String result = null;
-		
-		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		
-		System.out.println("[DEBUG] 반려 요청 수신");
-		System.out.println("reason : " + request.getParameter("field_pay_cancel_reason"));
-		System.out.println("field_res_id : " + request.getParameter("field_res_id"));
-		
-		dao.fieldResApprCancelInsert(dto);
-		
-		result = "/user/OperatorFieldResApprForm";
-		
-		return result;
-	}
+		// 경기장 예약 반려 처리 폼
+		@RequestMapping(value = "FieldResApprCancelForm.action", method = {RequestMethod.POST, RequestMethod.GET})
+		public String adminResFieldApprCancel(Model model,HttpServletRequest request,@RequestParam("field_res_id") String field_res_id)
+		{
+			String result = null;
+			
+		    model.addAttribute("field_res_id", field_res_id);
+			result = "/user/OperatorFieldResApprCancelForm";
+			
+			return result;
+		}
+			
+		// 경기장 예약 반려 처리
+		@RequestMapping(value="FieldResApprCancelInsert.action", method = {RequestMethod.POST, RequestMethod.GET})
+		public String adminFieldApprCancelInsert(Model model,OperatorResCancelDTO dto,HttpServletRequest request)
+		{
+			String result = null;
+			
+			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			
+			System.out.println("[DEBUG] 반려 요청 수신");
+			System.out.println("reason : " + request.getParameter("field_pay_cancel_reason"));
+			System.out.println("field_res_id : " + request.getParameter("field_res_id"));
+			
+			dao.fieldResApprCancelInsert(dto);
+			
+			result = "/user/OperatorFieldResApprForm";
+			
+			return result;
+		}
 	
 	//==================================================================
 	
@@ -364,6 +364,7 @@ public class UserController
 		session.removeAttribute("user_email");
 		session.removeAttribute("user_code_id");
 		session.removeAttribute("operator_id");
+		session.removeAttribute("team_id");
 		
 		// 로그아웃 상태 플래그 남기기
 		session.setAttribute("logoutFlag", "1");
@@ -371,17 +372,46 @@ public class UserController
 		return "redirect:/MainPage.action";
 	}
 	
-	// 이메일 찾기
-	@RequestMapping(value = "/ForgotEmail.action", method = RequestMethod.GET)
-	public String forgotEmail(Model model)
-	{
-		return "ForgotEmail";
-	}
 	
+	// 이메일 찾기 폼 띄우기(get)
+   @RequestMapping(value="/ForgotEmail.action", method = RequestMethod.GET)
+   public String forgotEmail(Model model)
+   {
+	  model.addAttribute("searched", true);
+      return "/user/ForgotEmail";
+   }
+   
+   // 이메일 찾기 처리 (POST)
+   @RequestMapping(value = "/ForgotEmail.action", method = RequestMethod.POST)
+   public String forgotEmail(HttpServletRequest request, Model model)
+   {
+       String birth = request.getParameter("birth");
+       String tel = request.getParameter("tel");
+       System.out.println("입력값 확인 → birth: " + birth + ", tel: " + tel);
+
+       IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+       List<String> emailList = dao.findEmailsByBirthAndTel(tel, birth);
+       
+       System.out.println("조회된 이메일 수: " + emailList.size());
+
+       if (emailList == null || emailList.isEmpty()) {
+           model.addAttribute("message", "입력하신 정보와 일치하는 이메일이 없습니다.");
+           model.addAttribute("emailList", null);
+       } else {
+           model.addAttribute("emailList", emailList);
+       }  	
+	       return "/user/ForgotEmailResult";
+	   }
+
+   
+   
 	// 비밀번호 찾기 폼 띄우기 (GET)
 	@RequestMapping(value = "/ForgotPassword.action", method = RequestMethod.GET)
-	public String forgotPasswordForm() 
+	public String forgotPasswordForm(HttpServletRequest request,Model model) 
 	{
+		String user_email =(String)request.getParameter("user_email");
+		
+		model.addAttribute("user_email", user_email);
 	    return "/user/ForgotPassword";
 	}
 	
@@ -391,6 +421,7 @@ public class UserController
 
 	    String email = request.getParameter("email");
 	    String tel = request.getParameter("tel");
+	    
 
 	    System.out.println("비밀번호 찾기 요청 도착!");
 	    System.out.println("email = " + email);
@@ -409,10 +440,11 @@ public class UserController
 
 	        // 비밀번호 업데이트
 	        dao.updateTempPassword(email, tempPwd);
+	        
+	        // 이메일 전송
+	        MailUtil.sendEmail(email, tempPwd);
 
-	        // 메일 발송 (실제로 메일 로직이 있으면 여기에 작성)
-	        System.out.println("임시 비밀번호 [" + tempPwd + "]를 이메일로 보냅니다.");
-
+	        // 안내 메시지 출력
 	        model.addAttribute("message", "임시 비밀번호가 이메일로 전송되었습니다.");
 	    } else {
 	        model.addAttribute("message", "입력하신 정보와 일치하는 회원이 없습니다.");
@@ -420,7 +452,8 @@ public class UserController
 
 	    return "/user/ForgotPassword"; // 결과 출력용 JSP
 	}
-	
+
+
 	// 임시 비밀번호 생성
 	private String createTempPassword() {
 	    String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -431,6 +464,9 @@ public class UserController
 	    }
 	    return sb.toString();
 	}
+	
+
+
 	
 	// 내 정보
 	@RequestMapping(value = "/MyInformation.action", method = RequestMethod.GET)

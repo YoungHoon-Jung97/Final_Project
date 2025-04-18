@@ -71,7 +71,7 @@
 					<h4 class="section-title">신청자 설명</h4>
 					
 					<textarea id="apply-content" placeholder="자신의 정보를 입력하세요."
-					name="team_apply_desc"></textarea>
+					name="team_apply_desc" rows="5" style="width: 100%; overflow: hidden; white-space: pre-wrap; word-wrap: break-word;"></textarea>
 						
 					<input type="hidden" name="team_id" value="${team_id}">
 				</div>

@@ -118,11 +118,11 @@
 											<c:choose>
 												<c:when test="${team.status == 1 && teamMember.member_status != '회장'}">
 													<td>
-														<a href="DropMember.action?team_member_id=${teamMember.team_member_id}">강퇴</a>
+														<a href="DropMember.action?team_member_id=${teamMember.team_member_id}" class="kick-button">강퇴</a>
 													</td>
 												</c:when>
 												
-												<c:when test="${team.status == 0}">
+												<c:when test="${teamMember.member_status == '회장'}">
 													<td></td>
 												</c:when>
 											</c:choose>

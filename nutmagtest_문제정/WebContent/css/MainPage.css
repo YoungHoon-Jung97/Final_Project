@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+/* 기본 배경 */
+body
+{
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
+	margin-top: 1rem;
+}
+
+/* 카드 박스 */
+.card
+{
+	width: 300px;
+	background: rgba(255, 255, 255, 0.85);
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	text-align: center;
+	transition: transform 0.2s, box-shadow 0.3s ease-in-out;
+	margin-top: 30px;
+	backdrop-filter: blur(2px);
+	border: 1px solid #d7f0e2;
+}
+
+.card:hover
+{
+	transform: translateY(-5px);
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* 카드 이미지 영역 */
+.card-img
+{
+	background-color: #cdece2;
+	padding-top: 10px;
+	padding-bottom: 30px;
+	z-index: 1;
+}
+
+/* 이미지 원형 처리 */
+.card-img img
+{
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 50%;
+	border: 3px solid white;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* 콘텐츠 텍스트 */
+.card-content
+{
+	padding: 20px;
+}
+
+.card-content h2
+{
+	margin: 0;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #356859;
+}
+
+.card-content p
+{
+	margin: 8px 0 0;
+	font-size: 0.9em;
+	color: #607466;
+}
+
+/* 버튼 스타일 */
+.card-action
+{
+	margin-top: 16px;
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
+	color: white;
+	border: none;
+	padding: 10px 24px;
+	border-radius: 8px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+.card-action:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+}
+
+/* 새싹 아이콘 */
+.temp-icon
+{
+	margin-top: 5px;
+	margin-right: 235px;
+	height: 20px;
+}
+
+/* 텍스트 정보 스타일 */
+.modal_body p
+{
+	margin: 10px 0;
+	padding: 8px 0;
+	font-size: 15px;
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.modal_body p:last-child
+{
+	border-bottom: none;
+	margin-top: 15px;
+	padding-top: 10px;
+	font-style: italic;
+	color: #666;
+}
+
+/* 정보 라벨 스타일 */
+.modal_body p::before
+{
+	content: attr(id);
+	font-weight: bold;
+	color: #5f6368;
+	margin-right: 8px;
+	font-size: 14px;
+}
+
+#descTeamName::before
+{
+	content: "동호회명: ";
+}
+
+#descTeamReion::before
+{
+	content: "지역: ";
+}
+
+#descTeamCity::before
+{
+	content: "도시: ";
+}
+
+#descTeamMemberCount::before
+{
+	content: "회원 수: ";
+}
+
+#descTeamDesc::before
+{
+	content: "소개: ";
+	display: block;
+	margin-bottom: 5px;
+}

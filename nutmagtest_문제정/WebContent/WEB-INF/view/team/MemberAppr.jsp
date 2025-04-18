@@ -53,10 +53,10 @@
 							<thead>
 								<tr>
 									<th>닉네임</th>
+									<th>포지션</th>
 									<th>가입 이유</th>
 									<th>신청일</th>
-									<th>포지션</th>
-									<th>작업</th>
+									<th>승인 / 거절</th>
 								</tr>
 							</thead>
 							
@@ -64,9 +64,9 @@
 								<c:forEach var="teamApply" items="${teamApplyList}">
 									<tr>
 										<td>${teamApply.user_nick_name}</td>
+										<td>${teamApply.position_name}</td>
 										<td>${teamApply.team_apply_desc}</td>
 										<td>${teamApply.team_apply_at}</td>
-										<td>${teamApply.position_name}</td>
 										<td>
 											<a href="AddMember.action?team_apply_id=${teamApply.team_apply_id}&user_code_id=${teamApply.user_code_id}&team_id=${team.temp_team_id}"
 											class="approve-btn">승인</a>

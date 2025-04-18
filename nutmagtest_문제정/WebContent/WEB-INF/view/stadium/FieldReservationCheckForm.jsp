@@ -85,8 +85,6 @@
         <input type="hidden" name="stadium_time_id2" value="${end_time_id}" />
         <input type="hidden" name="field_res_pay_amount" value="${totalPrice}" />
         <input type="hidden" name="team_id" value="${team_id}" />
-        
-		
 
         <input type="hidden" name="start_time_text" value="${start_time_text}" />
         <input type="hidden" name="end_time_text" value="${end_time_text}" />

@@ -7,6 +7,7 @@ import javax.websocket.server.PathParam;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.UserDTO;
@@ -86,4 +87,8 @@ public interface ITeamDAO {
 	
 	//정식 동호회 인원 삭제
 	public int dropTeamMember(@PathParam("team_member_id") int team_member_id);
+	
+	//------------------------------------------------------------------------
+	//동호회 일정 출력
+	public ArrayList<MatchDTO> matchList(int team_id);
 }

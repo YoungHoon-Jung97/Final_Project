@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -19,9 +20,8 @@
 <meta charset="UTF-8">
 <title>축구장 상세 페이지</title>
 </head>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 
 
@@ -92,7 +92,8 @@
         let endTimeId = null;
         let selectionMode = "start";
         const baseUrl = "<%= request.getContextPath() %>";
-
+		
+        
         $(".time-container").on("click", function () {
             if ($(this).hasClass("resv-disabled")) {
                 console.log("🚫 예약 불가 시간 클릭 차단됨");
@@ -292,10 +293,17 @@
     function blockUnavailableTimeByStadiumTimeId() {
         const minTimeId = parseInt($("#timeStartLimit").val()); // 예: 2
         const maxTimeId = parseInt($("#timeEndLimit").val());   // 예: 6
-
+		
+        console.log("🔧 제한 시간 시작:", $("#timeStartLimit").val());
+        console.log("🔧 제한 시간 끝:", $("#timeEndLimit").val());
+        
+        if (isNaN(minTimeId) || isNaN(maxTimeId)) {
+            console.warn("❗ minTimeId 또는 maxTimeId가 유효하지 않습니다.");
+        }
+        
         $(".time-container").each(function () {
             const timeId = parseInt($(this).attr("data-time-id"));
-
+	
             if (timeId < minTimeId || timeId > maxTimeId) {
                 $(this).addClass("resv-disabled").css({
                     "background-color": "red",
@@ -314,6 +322,47 @@
     
 </script>
 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6474375f344948f35b988948291eb5f2&libraries=services"></script>
+<script>
+window.onload = function () {
+    initialize();
+};
+
+//지도 생성 함수
+function initialize() {
+    const fullAddress = "${field_addr}"; // ← JSP에서 넘긴 전체 주소
+    const container = document.getElementById("map");
+
+    const map = new kakao.maps.Map(container, {
+    	// 임시 좌표 설정
+        center: new kakao.maps.LatLng(37.5665, 126.9780),
+        level: 3
+    });
+	
+    // 좌표로 변환하는 메소드
+    const geocoder = new kakao.maps.services.Geocoder();
+	
+	// 입력한 주소를 좌표로 변환하는 메소드
+    geocoder.addressSearch(fullAddress, function(result, status) {
+       
+    	// 만약 불러온 좌표의 값의 lenght가 0 이상 이라면 (값이 불러져 왔다면)
+        if (status === kakao.maps.services.Status.OK && result.length > 0) {
+            const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+			
+            // 맵의 센터를 coords라는 좌표로 이동 시켜라
+            map.setCenter(coords);
+			
+            // 마커 생성
+            const marker = new kakao.maps.Marker({
+                map: map,
+                position: coords
+            });
+        } else {
+            alert("❌ 주소 검색 실패. 입력한 주소: " + fullAddress);
+        }
+    });
+}
+</script>
 
 
 
@@ -332,8 +381,8 @@
 		            <div class="right">
 		            <ul class="field-info-wrap">
 		                <li><strong>이름 : </strong> ${field.field_reg_name}</li>
-		                <li><strong>경기장 코드 : </strong> ${field.field_code_id}</li>
 		                
+		                <li><strong>경기장 코드 : </strong> ${field.field_code_id}</li>
 		                <li><strong>위치 : </strong> ${field.stadium_reg_addr}, ${field.stadium_reg_detailed_addr}</li>
 		                <li><strong>가격 : </strong> ${field.field_reg_price}원</li>
 		                <li><strong>가로 : </strong> ${field.field_reg_garo}m X 세로 : ${field.field_reg_sero}m</li>
@@ -345,7 +394,7 @@
 		        <input type="hidden" name="field_code_id" id="field_code_id" value="${field.field_code_id}" />
 		        <input type="hidden" name="field_reg_price" id="field_reg_price" value="${field.field_reg_price}" />
 		    </div>
-		</c:forEach>
+			
 			<div class="time-table-wrap">
 				<div class="container time-table">
 				
@@ -400,68 +449,76 @@
 			
 			</div>
 			
-			    <!-- 구장에 대한 간단한 설명 -->
-			    <div class="mt-4">
-			        <h5>설명</h5>
-			        <p>
-			            천연 잔디 구장, 야간 조명 시설 완비. 인조잔디 구장도 있음.
-			            샤워실, 주차장 등 부대시설 완비.
-			        </p>
-			    </div>
-			
-			    <!-- 지도 -->
+				<!-- 지도 -->
 			    <div class="mt-4">
 			        <h5>위치 지도</h5>
-			        <div class="map" id="map"></div>
+			        <div class="map" id="map" name="map" style="width:100%; height:400px;"></div>
 			    </div>
 			    <br />
 			    <div class="d-flex justify-content-end">
-			    <button type="button" onclick="mapload()" class="btn btn-secondary">
+			    <button type="button" onclick="initialize()" class="btn btn-secondary">
 			        지도 다시 되돌리기
 			    </button>
-			</div>
-			</div>
-			<br />
-			<br />
-			<br />
-			<br />
-			<!-- 이용 후기 -->
-			<div class="container">
-				<!-- 주의 사항 -->
-				<h5>주의 사항</h5>
-					<div>
-						<pre>
-- 대여 시간보다 적게 사용 하더라도 대관비는 환불되지 않습니다.
-
-- 무료 주차 가능하나, 주차 대수 제한이 있으니 미리 가능 여부를 필히 확인하시기 바랍니다.
+				</div>
+				<br>
+				<br>
+			    <!-- 구장에 대한 간단한 설명 -->
+			    
+			    <div class="container">
+				  <div class="row">
+				    <c:forEach var="entry" items="${field.facilitiesMap}" varStatus="status">
+				      <div class="col-md-4 mb-3">
+				        <div class="border rounded p-3 d-flex justify-content-between align-items-center">
+				          <div>
+				            <c:choose>
+				              <c:when test="${entry.key == '샤워실'}"><i class="bi bi-droplet me-2"></i></c:when>
+				              <c:when test="${entry.key == '탈의실'}"><i class="bi bi-person-lines-fill me-2"></i></c:when>
+				              <c:when test="${entry.key == '주차장'}"><i class="bi bi-car-front-fill me-2"></i></c:when>
+				              <c:when test="${entry.key == '음료판매'}"><i class="bi bi-cup-straw me-2"></i></c:when>
+				              <c:when test="${entry.key == '풋살화대여'}"><i class="bi bi-bag-check-fill me-2"></i></c:when>
+				              <c:when test="${entry.key == '조끼대여'}"><i class="bi bi-backpack me-2"></i></c:when>
+				              <c:otherwise><i class="bi bi-question-circle me-2"></i></c:otherwise>
+				            </c:choose>
+				            ${entry.key}
+				          </div>
+				          <div>
+				            <c:choose>
+				              <c:when test="${entry.value}">
+				                <span class="text-success">사용 가능</span>
+				              </c:when>
+				              <c:otherwise>
+				                <span class="text-danger">없음</span>
+				              </c:otherwise>
+				            </c:choose>
+				          </div>
+				        </div>
+				      </div>
+				
+				      <!-- 줄바꿈: 3개씩 한 줄로 -->
+				      <c:if test="${(status.index + 1) % 3 == 0}">
+				        </div><div class="row">
+				      </c:if>
+				    </c:forEach>
+				  </div>
+				</div>
 			
-- 시설 훼손 및 기물 파손 시 손해액을 호스트에게 배상하여야 합니다.
-  (CCTV는 방범/분실/기물파손/인원확인 등의 이유로 녹화됨)
-
-- 외부신발(특히 비, 눈 오는날) 은 밖에서 발바닥면을 닦고 입장부탁드리며, 체육관 내부에서는 꼭 실내용 신발을 착용해주세요. 
-
-- 대관하신 체육관(대체육관, 소체육관)만 사용부탁드립니다. 해당사항을 위반할 시, 추가요금이 청구됩니다.
-
-- 퇴실시, 화장실을 포함한 모든 불은 소등부탁드리며, 사용하신 냉난방기도 꼭 꺼주세요. 냉난방기를 켠상태로 퇴실하실 경우, 추가요금이 부가될 수 있으니 꼭 확인한 후 퇴실부탁드립니다.
-
-- 사용하신 물건은 제자리에 정리정돈 부탁드리며, 쓰레기는 쓰레기통에 분리하여 버려주세요.(액체류는 미끄럼방지를 위해 화장실에 내용물을 버리고 분리수거 부탁드립니다.)
-	
-- 화장실(남자, 여자)은 체육관과 같은 2층에 있습니다. 겨울철에는 화장실 창문을 꼭 닫아주세요.
-
-- 시간 초과시, 추가 요금은 현장 결제로 진행됩니다. (1시간 마다 발생)
-
-- 체육관 내 주류는 반입불가이며, 금연구역입니다. 적발시, 즉시 퇴실조치되며, 환불되지않습니다.
-
-- 냉난방기 이용시, 온도가 자동으로 설정되어있으니 꼭 전원버튼만 눌러서 사용해주세요.(온도조절 절대 금지)
-						</pre>
-					</div>
 			<br />
 			<br />
-			<br />
-			<br />
-			
-			</div>	
-			
+				<!-- 이용 후기 -->
+				<div class="mt-4">
+					<!-- 주의 사항 -->
+					<h5>주의 사항</h5>
+					
+						<p>
+							${field.field_reg_notice }	
+						</p>
+
+				</c:forEach>
+					<br />
+					<br />
+					<br />
+					<br />
+				</div>	
 			</form>
 		</div>
 	

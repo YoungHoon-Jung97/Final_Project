@@ -325,38 +325,7 @@
             font-size: 16px;
         }
         
-        /* 반응형 디자인 */
-        @media (max-width: 768px) {
-            .match-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .team-info {
-                width: 100%;
-            }
-            
-            .filter-section {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-            }
-            
-            .header-container {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            
-            .action-buttons {
-                width: 100%;
-                justify-content: flex-start;
-            }
-            
-            .calendar-day {
-                height: 80px;
-                padding: 5px;
-            }
+       
         }
     </style>
 </head>
@@ -849,7 +818,7 @@
                             statusText = '취소됨';
                             break;
                     }
-                    
+                    <%--
                     // HTML 구성
                     matchItem.innerHTML = `
                         <div class="match-header">
@@ -887,7 +856,7 @@
                                    </div>`
                             }
                         </div>
-                    `;
+                    `;--%>
                     
                     listView.appendChild(matchItem);
                 });

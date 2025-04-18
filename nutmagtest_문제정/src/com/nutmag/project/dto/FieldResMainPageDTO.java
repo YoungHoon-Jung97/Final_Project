@@ -1,5 +1,7 @@
 package com.nutmag.project.dto;
 
+import java.util.Map;
+
 public class FieldResMainPageDTO
 {
 	private int field_reg_id,stadium_reg_id,field_code_id
@@ -12,8 +14,9 @@ public class FieldResMainPageDTO
 					stadium_reg_addr,stadium_reg_detailed_addr,stadium_time_name1,stadium_time_name2,
 					match_inwon_type,operator_name,operator_account_no,operator_account_holder,
 					stadium_time_at1,stadium_time_at2,field_res_at,field_res_match_at,
-					field_res_pay_amount,field_res_pay_at,bank_name;
+					field_res_pay_amount,field_res_pay_at,bank_name,field_reg_notice,field_reg_facilities;
 	
+	private Map<String, Boolean> facilitiesMap;
 	
 	public int getField_reg_id()
 	{
@@ -287,5 +290,30 @@ public class FieldResMainPageDTO
 	{
 		this.stadium_time_id2 = stadium_time_id2;
 	}
+	public String getField_reg_notice()
+	{
+		return field_reg_notice;
+	}
+	public void setField_reg_notice(String field_reg_notice)
+	{
+		this.field_reg_notice = field_reg_notice;
+	}
+	public String getField_reg_facilities()
+	{
+		return field_reg_facilities;
+	}
+	public void setField_reg_facilities(String field_reg_facilities)
+	{
+		this.field_reg_facilities = field_reg_facilities;
+	}
+	public Map<String, Boolean> getFacilitiesMap()
+	{
+		return facilitiesMap;
+	}
+	public void setFacilitiesMap(Map<String, Boolean> facilitiesMap)
+	{
+		this.facilitiesMap = facilitiesMap;
+	}
+
 					
 }

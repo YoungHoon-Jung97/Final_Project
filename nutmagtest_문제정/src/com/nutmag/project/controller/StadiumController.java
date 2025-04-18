@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import org.apache.ibatis.session.SqlSession;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -282,6 +283,7 @@ public class StadiumController
 					System.out.println("Field_reg_garo(가로) = " + fieldDTO.getField_reg_garo());
 					System.out.println("Field_reg_sero(세로) = " + fieldDTO.getField_reg_sero());
 					System.out.println("Field_reg_at(등록일) = " + fieldDTO.getField_reg_at());
+					System.out.println("Field_reg_fac = " + fieldDTO.getField_reg_facilities());
 				}
 				
 				System.out.println("======= 파일 업로드 상태 =======");
@@ -379,11 +381,14 @@ public class StadiumController
 		
 	// 지역 선택 시 도시 목록 반환
 	@RequestMapping(value = "/GetCityListByRegionId.action", method = RequestMethod.GET)
-	public String getCityListByRegionId(@RequestParam("region_id") int regionId, Model model) 
+	@ResponseBody
+	public List<CityDTO> getCityListByRegionId(@RequestParam("region_id") int regionId)
 	{
-	    ArrayList<CityDTO> cityList = sqlSession.getMapper(IRegionDAO.class).cityList(regionId);
-	    model.addAttribute("cityList", cityList);
-	    return "/stadium/CityTabList"; // → 도시 탭 JSP 조각
+		// DAO를 통해 도시 목록 가져오기
+		List<CityDTO> cityList = sqlSession.getMapper(IRegionDAO.class).cityList(regionId);
+		
+		// 도시 목록을 반환
+		return cityList;
 	}
 
 	// 검색 조건에 따라 경기장 목록 반환
@@ -448,8 +453,38 @@ public class StadiumController
 			if (user_code_id == team.getUser_code_id()) {
 
 			IFieldDAO fieldDAO = sqlSession.getMapper(IFieldDAO.class);
+			ArrayList<FieldResMainPageDTO> fieldList = fieldDAO.fieldApprOkSearchList(field_code_id);
 			
-			model.addAttribute("fieldApprOkSearchList", fieldDAO.fieldApprOkSearchList(field_code_id));
+			String addr = null;
+			
+			// JSON → Map 변환
+			ObjectMapper mapper = new ObjectMapper();
+			for (FieldResMainPageDTO field : fieldList)
+			{
+			    try {
+			    	// JSON 형태로 받은 문자열 Map에 넣어서 형태 변환
+			    	// 이후 key value로 꺼내서 jsp에 표현 key= 샤워실 , value=true or false
+			        String json = field.getField_reg_facilities(); // JSON 문자열
+			        if (json != null && !json.isEmpty()) {
+			            Map<String, Boolean> facilitiesMap = mapper.readValue(json, Map.class);
+			            field.setFacilitiesMap(facilitiesMap);
+			        }
+			    } catch (Exception e) {
+			        e.printStackTrace(); // 에러는 로그로 출력
+			    }
+			    
+			    // 이건 줄 바꾼거 반영하는 코드
+			    // jsp가 아니라 자바에서 바로 줄 바꿔서 보냄
+			    String notice = field.getField_reg_notice();
+				if (notice != null) {
+					field.setField_reg_notice(notice.replace("\n", "<br/>"));
+				}
+				addr = field.getStadium_reg_addr();
+				
+			}
+			System.out.println("주소 확인용 : " + addr);
+			model.addAttribute("field_addr",addr);
+			model.addAttribute("fieldApprOkSearchList", fieldList);
 			model.addAttribute("field_code_id", field_code_id);
 			
 			result = "/stadium/FieldReservationForm";

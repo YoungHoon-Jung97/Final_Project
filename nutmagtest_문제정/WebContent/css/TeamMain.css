@@ -140,95 +140,28 @@
 	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
-/* 추가 스타일 */
-.teampage-link:first-child a
+.kick-button
 {
-	color: #faaa7a;
-	border-bottom: 2px solid #faaa7a;
+	display: inline-block;
+	background-color: #ffe0e0;
+	color: #d9534f;
+	padding: 6px 12px;
+	border: 1px solid #f5c6cb;
+	border-radius: 8px;
+	font-size: 0.85em;
+	font-weight: 600;
+	text-decoration: none;
+	transition: background-color 0.3s, color 0.3s;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* 플로팅 버튼 */
-.floatingButton-wrapper
+.kick-button:hover
 {
-	position: fixed;
-	bottom: 30px;
-	right: 40px;
-	z-index: 1000;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
+	background-color: #f8d7da;
+	color: #c9302c;
 }
 
-.floatingButton-wrapper:hover
+.none
 {
-	width: 120px;
-}
-
-.floatingButton
-{
-	background-color: #a8d5ba;
-	color: white;
-	border: none;
-	border-radius: 50%;
-	width: 50px;
-	height: 50px;
-	font-size: 20px;
-	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-	padding: 0;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: background-color 0.3s;
-}
-
-.floatingButton:hover
-{
-	background-color: #94c9ab;
-}
-
-.floatingButton-img
-{
-	width: 70%;
-	height: 70%;
-	object-fit: contain;
-	transition: transform 0.2s ease;
-}
-
-/* 서브 아이콘 */
-.top-icon-slide
-{
-	background-color: rgba(128, 128, 128, 0.7);
-	color: white;
-	font-size: 24px;
-	border: none;
-	border-radius: 50%;
-	width: 40px;
-	height: 40px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	opacity: 0;
-	transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.4s ease;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-	pointer-events: none;
-}
-
-.top-icon-slide
-{
-	transform: translateY(10px);
-	margin-bottom: 10px;
-	margin-right: 5px;
-}
-
-.top-icon-slide:hover
-{
-	background-color: #84b6f4;
-}
-
-.floatingButton-wrapper:hover .top-icon-slide
-{
-	opacity: 1;
-	transform: translateY(0);
-	pointer-events: auto;
+	border-bottom: 1px solid #ddd;
 }
