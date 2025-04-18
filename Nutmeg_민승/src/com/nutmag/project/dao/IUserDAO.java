@@ -60,17 +60,16 @@ public interface IUserDAO
     
     // 유저 비밀번호 업데이트
     public void updateTempPassword(@Param("email") String email, @Param("pwd") String pwd);
-	
-	// 마이페이지 내 정보 출력
-	public UserDTO getUser(int user_code_id);
-	
-	// 사용자 비밀번호 조회
-	public String getPasswordByUserCode(String userCode);
-	
-	//유저 정보 업데이트 입력
-	public UserDTO userUpdate(int user_code_id);
+    
+    // 마이페이지 내 정보 출력
+ 	public UserDTO getUser(int user_code_id);
+ 	
+ 	// 사용자 비밀번호 조회
+ 	public String getPasswordByUserCode(String userCode);
+ 	
+ 	//유저 정보 업데이트 입력
+ 	public UserDTO userUpdate(int user_code_id);
 
-	void updateUser(UserDTO userDTO);
-
-
+ 	public void updateUser(UserDTO userDTO);
+	
 }

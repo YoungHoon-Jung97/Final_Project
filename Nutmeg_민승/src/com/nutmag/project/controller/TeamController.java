@@ -435,16 +435,17 @@ public class TeamController
 	{
 		HttpSession session = request.getSession();
 		
-		Integer team_id = (Integer) session.getAttribute("team_id");
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
 		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
 		
 		// 동호회 정보 가져오기
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
-		TeamDTO team = dao.getTeamInfo(team_id);
-		
-		if (user_code_id == team.getUser_code_id())
-			team.setStatus(1);
+		TeamDTO team = dao.getTeamInfo(temp_team_id);
 			
+		//동호회 회장
+			if (user_code_id == team.getUser_code_id())
+				team.setStatus(1);
+	
 		else
 			team.setStatus(0);
 		
@@ -491,6 +492,23 @@ public class TeamController
 		HttpSession session = request.getSession();
 		
 		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
+		
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
+		//==========[동호회 회장 접속 확인]==========
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		
+		int captin_code_id = team.getUser_code_id();
+		
+		int team_status = 0;
+		
+		//동호회 회장인지를 확인하기 위한 목적
+		if (captin_code_id == user_code_id) {
+			team_status = 1;				
+		}
+		
+		//=============================================
 		
 		if (user_code_id == -1)
 		{
@@ -498,7 +516,7 @@ public class TeamController
 			session.setAttribute("message", message);
 			return "redirect:MainPage.action";
 		}
-		
+		session.setAttribute("team_status", team_status);
 		return "/team/TeamSchedule";
 	}
 	
@@ -699,7 +717,9 @@ public class TeamController
 			
 			teamDAO.dropTempTeamMember(team_member_id);
 			
+			
 		}else if(team.getTeam_id() != 0) {
+			
 			
 			teamDAO.dropTeamMember(team_member_id);
 		}
@@ -713,4 +733,7 @@ public class TeamController
 	{
 		return "/team/TeamUpdate";
 	}
+	
+
+
 }

@@ -107,14 +107,12 @@
 	
 	<div class="mb-3">
 		<form class="row g-2 align-items-center">
-			<label for="text" class="form-label">검색</label>
+			<label for="title" class="form-label">경기장 검색</label>
 			
-			<div class="col-auto">
+			<div class="input-group">
 				<input type="text" class="form-control" name="title" id="title" placeholder="검색어 입력">
-			</div>
-			
-			<div class="col-auto">
-				<button type="submit" class="btn btn-primary w-100 mt-3" id="searchBtn">검색</button>
+				
+				<button type="submit" class="btn btn-success" id="searchBtn">검색</button>
 			</div>
 		</form>
 	</div>

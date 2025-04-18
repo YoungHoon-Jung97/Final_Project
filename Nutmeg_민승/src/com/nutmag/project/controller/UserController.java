@@ -470,7 +470,6 @@ public class UserController
 
 
 	
-	
 	// 내 정보
 	@RequestMapping("/MyInformation.action")
 	public String MyInformation(Model model, HttpServletRequest request)
@@ -500,7 +499,7 @@ public class UserController
 
 	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
 	}
-	
+		
 	// 내 정보 수정 폼 페이지 들어가기 전 비밀번호 확인
 	@RequestMapping(value = "/CheckPassword.action", method = RequestMethod.GET)
 	public String checkPasswordForm(HttpSession session) {
@@ -560,17 +559,36 @@ public class UserController
 	    return "/user/UserInfoEdit"; // 수정 폼 JSP로 이동
 	}
 	
+	//사용자 정보 업데이트
 	@RequestMapping(value = "/UserUpdate.action", method = RequestMethod.POST)
-	public String updateUser(UserDTO userDTO, HttpServletRequest request) {
-		
-		HttpSession session = request.getSession();
+	   public String updateUser(UserDTO userDTO, HttpServletRequest request, Model model) {
 
-	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-	    userDTO.setUser_code_id(user_code_id);
-	    IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
-	    userDAO.updateUser(userDTO);  // 비밀번호 업데이트 수행
+	       HttpSession session = request.getSession();
+	       Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+	       userDTO.setUser_code_id(user_code_id);
 
-	    return "redirect:MainPage.action";  // 업데이트 완료 후 메인 페이지로 리다이렉트
-	}
-	
+	       // 기존 비밀번호와 새로운 비밀번호를 비교
+	       String currentPwd = request.getParameter("current_pwd");  // hidden으로 받은 기존 비밀번호
+	       String newPwd = request.getParameter("user_pwd");         // 새 비밀번호
+	       String confirmPwd = request.getParameter("password2");    // 새 비밀번호 확인
+
+	       // 비밀번호가 다르면 수정 페이지로 돌아가기
+	       if (!newPwd.equals(confirmPwd)) {  // equals()로 비밀번호 비교
+	           return "redirect:UserInfoEdit.action";  // 수정 페이지로 돌아감
+	       }
+
+	       // 비밀번호가 일치하면 DB에 업데이트
+	       if (newPwd != null && !newPwd.trim().equals("")) {
+	           userDTO.setUser_pwd(newPwd);  // 새 비밀번호로 업데이트
+	       } else {
+	           userDTO.setUser_pwd(currentPwd); // 비밀번호 변경 없으면 기존 비밀번호 사용
+	       }
+
+	       // DB 업데이트
+	       IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+	       userDAO.updateUser(userDTO);  // 비밀번호 포함한 전체 정보 업데이트
+
+	       // 메인 페이지로 리다이렉트
+	       return "redirect:MainPage.action";
+	   }
 }

@@ -77,7 +77,7 @@ $(document).ready(function () {
 
 <body>
 <div class="wrapper">
-    <div class="d-flex flex-row-reverse">
+    <div class="d-flex flex-row">
         <!-- 사이드바 -->
         <div class="sidebar">
             <!-- 관리자 로그인 정보 -->

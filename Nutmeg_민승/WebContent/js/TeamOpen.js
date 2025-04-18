@@ -75,50 +75,52 @@ $(function()
 		var fileName = this.files.length > 0 ? this.files[0].name : '선택된 파일 없음';
 		$('#file-name').text(fileName);
 	});
+	
 });
+
 
 function checkTeamName(callback)
 {
 	var teamName = $('#teamName').val();
 	
 	$.ajax(
-	{
-		url : 'CheckTeamName.action',
-		type : 'get',
-		data : { teamName : teamName },
-		dataType : 'text',
-		success : function(result)
-		{
-			if (result == "이미 사용중인 팀네임 입니다.")
 			{
-				$('#teamNameCheck').text(result);
-				$('#teamNameCheck').css(
+				url : 'CheckTeamName.action',
+				type : 'get',
+				data : { teamName : teamName },
+				dataType : 'text',
+				success : function(result)
 				{
-					'display' : 'inline',
-					'color' : 'red'
-				})
-				callback(false);
-			}
-			
-			else if (result == "사용 가능한 팀네임 입니다.")
-			{
-				$('#teamNameCheck').text(result);
-				$('#teamNameCheck').css(
+					if (result == "이미 사용중인 팀네임 입니다.")
+					{
+						$('#teamNameCheck').text(result);
+						$('#teamNameCheck').css(
+								{
+									'display' : 'inline',
+									'color' : 'red'
+								})
+								callback(false);
+					}
+					
+					else if (result == "사용 가능한 팀네임 입니다.")
+					{
+						$('#teamNameCheck').text(result);
+						$('#teamNameCheck').css(
+								{
+									'display' : 'inline',
+									'color' : 'green'
+								})
+								callback(true);
+					}
+				},
+				error : function()
 				{
-					'display' : 'inline',
-					'color' : 'green'
-				})
-				callback(true);
-			}
-		},
-		error : function()
-		{
-			$('#teamNameCheck').text("팀네임을 입력하세요").css(
-			{
-				'display' : 'inline',
-				'color' : 'red'
+					$('#teamNameCheck').text("팀네임을 입력하세요").css(
+							{
+								'display' : 'inline',
+								'color' : 'red'
+							});
+					callback(false);
+				}
 			});
-			callback(false);
-		}
-	});
 }

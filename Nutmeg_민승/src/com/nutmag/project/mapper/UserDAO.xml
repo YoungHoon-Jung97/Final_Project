@@ -164,13 +164,20 @@
 	    SELECT * FROM users WHERE user_email = #{email}
 	</select>
 	
-	<!-- 회원 정보 수정 -->
-	<update id="updateUser" parameterType="com.nutmag.project.dto.UserDTO">
-        UPDATE user_info
-        SET user_pwd = #{user_pwd}, user_tel = #{user_tel}
-          , user_addr = #{user_addr}, user_detailed_addr = #{user_detailed_addr}
-          , user_postal_addr = #{user_postal_addr} 
-        WHERE user_code_id = #{user_code_id}
-    </update>
+    
+    <!-- 회원 정보 수정 -->
+   <update id="updateUser" parameterType="com.nutmag.project.dto.UserDTO">
+       UPDATE user_info
+       <set>
+           <if test="user_pwd != null and user_pwd != ''">
+               user_pwd = #{user_pwd},
+           </if>
+           user_tel = #{user_tel},
+           user_addr = #{user_addr},
+           user_detailed_addr = #{user_detailed_addr},
+           user_postal_addr = #{user_postal_addr}
+       </set>
+       WHERE user_code_id = #{user_code_id}
+   </update>
 	
 </mapper>

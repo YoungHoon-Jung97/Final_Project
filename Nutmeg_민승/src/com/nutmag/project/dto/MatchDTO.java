@@ -2,11 +2,52 @@ package com.nutmag.project.dto;
 
 public class MatchDTO {
 
-	private int field_res_id,pay_amount,home_team_id,away_team_id,match_result_home_score,
-	match_result_away_score,match_pay_id,team_member_id;
-	private String match_date,start_time,end_time,field_name,stadium_name,
-	stadium_addr,stadium_detailed_addr,match_inwon,home_team_name,away_team_name,match_status;
+	private int field_res_id,pay_amount,home_team_id,away_team_id,match_result_home_score,field_code_id,
+	match_result_away_score,match_pay_id,team_member_id,age,awayteam_pay_amount;
+	private String match_date,start_time,end_time,field_name,stadium_name,user_nick_name,
+	stadium_addr,stadium_detailed_addr,match_inwon,home_team_name,away_team_name,match_status
+	,position_name,gender;
 	
+
+	public int getAge()
+	{
+		return age;
+	}
+
+	public void setAge(int age)
+	{
+		this.age = age;
+	}
+
+	public String getUser_nick_name()
+	{
+		return user_nick_name;
+	}
+
+	public void setUser_nick_name(String user_nick_name)
+	{
+		this.user_nick_name = user_nick_name;
+	}
+
+	public String getPosition_name()
+	{
+		return position_name;
+	}
+
+	public void setPosition_name(String position_name)
+	{
+		this.position_name = position_name;
+	}
+
+	public String getGender()
+	{
+		return gender;
+	}
+
+	public void setGender(String gender)
+	{
+		this.gender = gender;
+	}
 
 	public int getTeam_member_id() {
 		return team_member_id;
@@ -158,6 +199,26 @@ public class MatchDTO {
 
 	public void setMatch_status(String match_status) {
 		this.match_status = match_status;
+	}
+
+	public int getField_code_id()
+	{
+		return field_code_id;
+	}
+
+	public void setField_code_id(int field_code_id)
+	{
+		this.field_code_id = field_code_id;
+	}
+
+	public int getAwayteam_pay_amount()
+	{
+		return awayteam_pay_amount;
+	}
+
+	public void setAwayteam_pay_amount(int awayteam_pay_amount)
+	{
+		this.awayteam_pay_amount = awayteam_pay_amount;
 	}
 	
 	

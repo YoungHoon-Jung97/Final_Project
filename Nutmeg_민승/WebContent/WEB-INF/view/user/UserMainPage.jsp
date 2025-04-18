@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
 %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -135,12 +135,12 @@ html, body {
 .profile-box .info-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* 좌측 정렬 */
+    justify-content: flex-start; 
     padding: 12px 0;
     border-bottom: 1px solid #efefef;
     font-size: 15px;
     color: #333;
-    gap: 40px; /* ✅ 항목 간 여백 */
+    gap: 40px;
 }
 
 /* 마지막 줄엔 밑줄 없음 */
@@ -152,7 +152,7 @@ html, body {
 .profile-box .info-row strong {
     color: #2e7d32;
     font-weight: 600;
-    min-width: 140px; /* ✅ 라벨 고정 폭 */
+    min-width: 140px; 
     text-align: left;
 }
 
@@ -161,7 +161,7 @@ html, body {
     flex: 1;
     color: #555;
     word-break: break-word;
-    text-align: left; /* ✅ 오른쪽 몰림 방지 */
+    text-align: left; 
 }
 
 /* 수정 버튼 */
@@ -193,13 +193,13 @@ html, body {
         <div class="text-muted mb-3">사용자</div>
         <nav>
             <a class="nav-link active" href="#"><i class="bi bi-person-circle"></i> 마이페이지</a>
-            <a class="nav-link" href="#"><i class="bi bi-speedometer2"></i> 내 정보</a>
+            <a class="nav-link" href="MyInformation.action"><i class="bi bi-speedometer2"></i> 내 정보</a>
             <a class="nav-link" href="#"><i class="bi bi-people"></i> 정보 관리</a>
             <a class="nav-link" href="#"><i class="bi bi-flag"></i> 경기 기록</a>
             <a class="nav-link" href="#"><i class="bi bi-cash"></i> 결제 내역</a>
-            <a class="nav-link" href="#"><i class="bi bi-chat"></i> 나의 동호회</a>
+            <a class="nav-link" href="MyTeam.action"><i class="bi bi-chat"></i> 나의 동호회</a>
             <a class="nav-link" href="#"><i class="bi bi-journal-text"></i> 신청 내역</a>
-            <a class="nav-link" href="#"><i class="bi bi-box-arrow-right"></i> 로그아웃</a>
+            <a class="nav-link" href="Logout.action"><i class="bi bi-box-arrow-right"></i> 로그아웃</a>
         </nav>
     </div>
 

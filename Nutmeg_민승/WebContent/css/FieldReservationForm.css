@@ -54,8 +54,8 @@
 .card h5
 {
 	font-size: 18px;
-	font-weight: bold;
 	color: #333;
+	margin-bottom: 10px;
 }
 
 /* 예약 날짜 입력 필드 */

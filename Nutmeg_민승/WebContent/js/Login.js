@@ -244,6 +244,42 @@ $(function()
 				Submit();
 		}
 	});
+	
+	var keySequence = [ "ArrowUp", "ArrowUp",
+						"ArrowDown", "ArrowDown",
+						"ArrowLeft", "ArrowRight",
+						"ArrowLeft", "ArrowRight",
+						"b", "a" ];
+	
+	var inputBuffer = [];
+	
+	var passwordInput = $('#langToggle').is(':checked') ? document.getElementById("logPwEn") : document.getElementById("logPwKo");
+	var adminBtn = document.getElementById("adminBtn");
+	
+	passwordInput.addEventListener("keydown", function(e)
+	{
+		inputBuffer.push(e.key);
+		
+		if (inputBuffer.length > keySequence.length)
+			inputBuffer.shift();
+		
+		var matched = true;
+		
+		for (var i = 0; i < keySequence.length; i++)
+		{
+			if (inputBuffer[i] !== keySequence[i])
+			{
+				matched = false;
+				break;
+			}
+		}
+		
+		if (matched)
+		{
+			adminBtn.style.display = "block";
+			inputBuffer = [];
+		}
+	});
 });
 
 function validateLoginForm()
