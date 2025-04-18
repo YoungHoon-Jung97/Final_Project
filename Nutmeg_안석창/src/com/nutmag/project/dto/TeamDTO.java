@@ -6,7 +6,7 @@ public class TeamDTO {
 	private int temp_team_id,user_code_id,bank_id,region_id,city_id,temp_team_person_count,team_id,member_count,
 	status;
 	private String temp_team_name,temp_team_desc,emblem,temp_team_apply_at,
-	temp_team_account,temp_team_account_holder,region_name,city_name;
+	temp_team_account,temp_team_account_holder,region_name,city_name,bank_name;
 	
 	
 	public int getMember_count() {
@@ -128,5 +128,13 @@ public class TeamDTO {
 	}
 	public void setTemp_team_account_holder(String temp_team_account_holder) {
 		this.temp_team_account_holder = temp_team_account_holder;
+	}
+	public String getBank_name()
+	{
+		return bank_name;
+	}
+	public void setBank_name(String bank_name)
+	{
+		this.bank_name = bank_name;
 	}
 }

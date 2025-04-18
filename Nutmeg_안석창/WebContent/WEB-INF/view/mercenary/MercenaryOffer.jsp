@@ -17,6 +17,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
+
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
+
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/MercenaryOffer.css?after">
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -29,8 +32,6 @@
 </script>
 <script type="text/javascript" src="<%=cp %>/js/MercenaryOffer.js?after"></script>
 
-<c:import url="/WEB-INF/view/Template.jsp"></c:import>
-
 </head>
 <body>
 <div class="main-background">
@@ -38,7 +39,7 @@
 		<div class="board-container">
 			<div class="header-container">
 				<div class="section-header text-center mt-3 mb-3">
-					<h1 class="display-5 fw-bold text-success">⚽ 용병 게시판</h1>
+					<h1 class="display-5 fw-bold text-success">🏃‍♂️ 용병 게시판</h1>
 					
 					<p class="text-muted mt-2">원하는 용병을 찾아 고용해보세요!</p>
 					

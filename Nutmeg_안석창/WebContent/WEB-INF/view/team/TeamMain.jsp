@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>TeamMain.jsp</title>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamMain.css?after">
@@ -33,7 +34,7 @@
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamSchedule.action">동호회 매치</a>
+							<a href="MyTeamSchedule.action">동호회 매치 일정</a>
 						</li>
 						
 						<li class="teampage-link">
@@ -44,6 +45,14 @@
 							<a href="MyTeamBoard.action">동호회 게시판</a>
 						</li>
 					</ul>
+					
+					<div class="section-header text-center mt-5 mb-5">
+						<h1 class="display-5 fw-bold text-success">ℹ️ 동호회 정보</h1>
+						
+						<p class="text-muted mt-2">동호회 정보부터 회원 현황까지, 한 페이지에서 확인해보세요!</p>
+						
+						<div class="underline mt-3 mx-auto"></div>
+					</div>
 					
 					<div class="team-info-wrap">
 						<div class="left">
@@ -118,7 +127,8 @@
 											<c:choose>
 												<c:when test="${team.status == 1 && teamMember.member_status != '회장'}">
 													<td>
-														<a href="DropMember.action?team_member_id=${teamMember.team_member_id}" class="kick-button">강퇴</a>
+														<a href="DropMember.action?team_member_id=${teamMember.team_member_id}" class="kick-button"
+														onclick="return confirm('정말 강퇴하시겠습니까?');">강퇴</a>
 													</td>
 												</c:when>
 												

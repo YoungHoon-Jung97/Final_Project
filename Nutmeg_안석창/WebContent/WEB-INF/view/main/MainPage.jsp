@@ -63,7 +63,6 @@
 				}
 				
 				else
-					// fallback: 구분자 없는 일반 메시지
 					swal("처리 필요", message, "info");
 			}
 		});
@@ -109,7 +108,7 @@
 		<!-- 동호회 리스트 -->
 		<div class="container mt-4">
 			<div class="section-header text-center mt-3 mb-3">
-			    <h1 class="display-5 fw-bold text-success">⚽ 동호회 찾기</h1>
+			    <h1 class="display-5 fw-bold text-success">🥅 동호회 찾기</h1>
 			    
 			    <p class="text-muted mt-2">지역별 풋살 동호회를 살펴보고, 함께 뛰어볼 팀을 찾아보세요!</p>
 			    

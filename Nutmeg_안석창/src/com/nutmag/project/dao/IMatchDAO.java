@@ -37,4 +37,14 @@ public interface IMatchDAO {
 	
 	//어웨이팀 매치 참여자 출력
 	public ArrayList<MatchDTO> awayTeamPaticipantList(int field_res_id);
+	
+	
+	//열려있는 매치방 리스트
+	public ArrayList<MatchDTO> matchRoomList();
+	
+	//매치방 인서트
+	public int matchAwayTeamInsert(MatchDTO dto);
+	
+	//어웨이 팀 매치 승인
+	public int approveMatch(int field_res_id);
 }

@@ -95,7 +95,7 @@
 %>
 <div class="background-banner"></div>
 
-<header class="menu-bar">
+<header class="menu-bar" id="menu-bar">
 	<div class="left-menu">
 		<!-- 햄버거 메뉴 -->
 		<div class="menu-icon">
@@ -107,8 +107,8 @@
 		<!-- 네비게이션 메뉴 -->
 		<nav class="nav-menu">
 			<div class="nav-item">
-				<span class="nav-title team">동호회</span>
-				<div class="nav-sub team">동호회 모집</div>
+				<span class="nav-title teamRecruit">동호회</span>
+				<div class="nav-sub teamRecruit">동호회 모집</div>
 				
 <%				if (team_id == 0)
 				{

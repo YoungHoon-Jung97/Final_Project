@@ -1,6 +1,9 @@
 @charset "UTF-8";
 
-@charset "UTF-8";
+.background-banner
+{
+	height: 279px;
+}
 
 /*게시판 테이블 스타일 */
 .board-container
@@ -11,7 +14,6 @@
 	padding: 20px;
 	background-color: #fff;
 	border-radius: 10px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .header-container
@@ -48,6 +50,7 @@ h1
 {
 	width: 100%;
 	border-collapse: collapse;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .table-row

@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+.background-banner
+{
+	height: 279px;
+}
+
 .section-header
 {
 	position: relative;
