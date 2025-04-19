@@ -28,12 +28,14 @@ import com.nutmag.project.dao.INotificationDAO;
 import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
+import com.nutmag.project.dao.ITeamFeeDAO;
 import com.nutmag.project.dto.CityDTO;
 import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.NotificationDTO;
 import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
+import com.nutmag.project.dto.TeamFeeDTO;
 
 import util.Path;
 
@@ -551,9 +553,34 @@ public class TeamController
 	
 	// 가게부 호출
 	@RequestMapping(value = "/MyTeamFee.action", method = RequestMethod.GET)
-	public String teamFee()
+	public String teamFee(HttpServletRequest request,Model model)
 	{
-		return "/team/TeamFee";
+		 HttpSession session = request.getSession();
+		 Integer temp_team_id = (Integer) session.getAttribute("team_id");
+		 
+		 
+		 // 동호회 정보 가져오기
+		 ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		 ITeamFeeDAO teamFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
+		 
+		 TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		 int team_id = team.getTeam_id();
+		 
+		 int income =  teamFeeDAO.getTeamIncome(team_id);
+		 int expense = teamFeeDAO.getTeamexpense(team_id);
+		 int tot = income - expense;
+		 
+		 List<TeamFeeDTO> teamFeeList=  teamFeeDAO.getTeamFeeList(team_id);
+		 List<TeamFeeDTO> teamMonthFeeList=  teamFeeDAO.getTeamMonthFeeList(team_id);
+		
+		 session.setAttribute("userNickName", team.getUser_nick_name());
+		 session.setAttribute("teamFeeList", teamFeeList);
+		 session.setAttribute("teamMonthFeeList", teamMonthFeeList);
+		 session.setAttribute("expense", expense);
+		 session.setAttribute("income", income);
+		 session.setAttribute("tot", tot);
+		 
+		 return "/team/TeamFee";
 	}
 	
 	// 팀 게시판 호출

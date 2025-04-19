@@ -26,8 +26,8 @@
 							? session.getAttribute("user_nick_name").toString() : "";
 	Integer team_id       = (session.getAttribute("team_id") != null)
 							? Integer.parseInt(session.getAttribute("team_id").toString()) : -1;
-	String notification_count     = (session.getAttribute("notification_count") != null)
-			? (session.getAttribute("notification_count").toString()) : "";
+	Integer notification_count     = (session.getAttribute("notification_count") != null)
+			? Integer.parseInt(session.getAttribute("notification_count").toString()) : -1;
 							
 			
 	
@@ -169,7 +169,19 @@
 	{
 %>
 		<div class="nav-title login-nick-name">
-			<i class="bi bi-bell"><%=notification_count %></i>   <!-- 빈 종 -->
+			<div class="position-relative d-inline-block">
+			  <button class="btn btn-light position-relative">
+			    <% if (notification_count > 0) { %>
+					<i class="bi bi-bell-fill"></i>   <!-- 채워진 종 -->
+			     	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+			        	<%= notification_count %>
+			        	<span class="visually-hidden">unread messages</span>
+			      	</span>
+			    <% } else{%>
+			    	<i class="bi bi-bell"></i>
+			    <%} %>
+			  </button>
+			</div>
 			<%=user_nick_name %> 님
 		</div>
 <%	}

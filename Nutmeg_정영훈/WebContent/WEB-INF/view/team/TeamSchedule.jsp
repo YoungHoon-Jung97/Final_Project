@@ -35,13 +35,18 @@
 </script>
 <script type="text/javascript" src="<%=cp %>/js/Modal.js?after"></script>
 <script type="text/javascript" src="<%=cp %>/js/TeamSchedule.js?after"></script>
+<script type="text/javascript">
+    const teamStatus = <%=team_status %>;
+</script>
+
+<script src="/js/TeamSchedule.js"></script>
 
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
-
 </head>
 <body>
 <c:if test="${not empty sessionScope.message}">
 	<script type="text/javascript">
+	
 		window.addEventListener("pageshow", function(event)
 		{
 			if (!event.persisted && performance.navigation.type != 2)
@@ -161,13 +166,13 @@
 		<label class="form-label">상태</label>
 		
 		<div class="status-filter-container">
-			<button class="status-filter-btn" data-status="all">전체</button>
 			<button class="status-filter-btn" data-status="예정됨">예정됨</button>
 			<button class="status-filter-btn" data-status="완료됨">완료됨</button>
 			<button class="status-filter-btn" data-status="취소됨">취소됨</button>
 			<button class="status-filter-btn" data-status="결제대기">결제대기</button>
 			<button class="status-filter-btn" data-status="상대미정">상대미정</button>
 			<button class="status-filter-btn" data-status="결과입력대기">결과입력대기</button>
+			<button class="status-filter-btn" data-status="all">전체</button>
 		</div>
 	</div>
 </div>
