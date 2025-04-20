@@ -39,24 +39,25 @@
 	
 	<!-- 동호회 가계부 정보 가져오기 -->
 	<select id="getTeamFeeList" resultType="com.nutmag.project.dto.TeamFeeDTO">
-		SELECT 
-			TEAM_ID,
-		    TRANSACTION_TYPE,
-		    TO_CHAR(TRANSACTION_DATE, 'YYYY-MM-DD') AS TRANSACTION_DATE,
-		    DESCRIPTION,
-		    FIELD_NAME,
-		    STADIUM_NAME,
-		    MATCH_DATE,
-		    START_TIME,
-		    END_TIME,
-		    MATCH_INWON,
-		    INCOME_AMOUNT,
-		    EXPENSE_AMOUNT,
-		    NET_AMOUNT,
-		    MATCH_STATUS,
-		    TEAM_FEE_ID
-		FROM TEAM_FINANCIAL_LEDGER_VIEW
-		WHERE TEAM_ID =#{team_id}
+		SELECT RNUM, TEAM_ID, TRANSACTION_TYPE, TRANSACTION_DATE, DESCRIPTION,
+		       FIELD_NAME, STADIUM_NAME, MATCH_DATE, START_TIME, END_TIME,
+		       MATCH_INWON, INCOME_AMOUNT, EXPENSE_AMOUNT, NET_AMOUNT,
+		       MATCH_STATUS, TEAM_FEE_ID
+		FROM (
+		    SELECT ROWNUM AS RNUM, DATA.*
+		    FROM (
+		        SELECT TEAM_ID, TRANSACTION_TYPE,
+		               TO_CHAR(TRANSACTION_DATE, 'YYYY-MM-DD') AS TRANSACTION_DATE,
+		               DESCRIPTION, FIELD_NAME, STADIUM_NAME, MATCH_DATE,
+		               START_TIME, END_TIME, MATCH_INWON, INCOME_AMOUNT,
+		               EXPENSE_AMOUNT, NET_AMOUNT, MATCH_STATUS, TEAM_FEE_ID
+		        FROM TEAM_FINANCIAL_LEDGER_VIEW
+		        WHERE TEAM_ID = #{team_id}
+		        ORDER BY TRANSACTION_DATE DESC
+		    ) DATA
+		    WHERE ROWNUM &lt;=#{end}
+		)
+		WHERE RNUM &gt;= #{start}
 	</select>
 	
 	<!-- 동호회 회비 리스트  -->
@@ -70,6 +71,14 @@
 	        TEAM_FEE_DESC
     	FROM TEAM_FEE
     	WHERE TEAM_ID = #{team_id}
+	</select>
+	
+	<!-- 가계부 자료수 -->
+	<select id="countTeamFee" resultType="int">
+		SELECT 
+            COUNT(*) AS COUNT
+		FROM TEAM_FINANCIAL_LEDGER_VIEW
+		WHERE TEAM_ID =#{team_id}
 	</select>
 	
 	<!-- 팀 총 수입 -->
@@ -86,5 +95,18 @@
 		WHERE TEAM_ID = #{team_id}
 	</select>
 		
+	<!-- 회비 납부자 명단 -->
+	<select id="getMemberFeeList" resultType="com.nutmag.project.dto.TeamMemberFeeDTO">
+		SELECT 
+			TEAM_MEMBER_FEE_PAY_ID 
+			,TEAM_MEMBER_FEE_PAY_PRICE 
+			,TO_CHAR(TEAM_MEMBER_FEE_PAY_AT, 'YYYY-MM-DD') AS "TEAM_MEMBER_FEE_PAY_AT"
+			,TEAM_FEE_ID 
+			,TEAM_MEMBER_ID
+			,USER_NICK_NAME 
+			,TEAM_ID
+		FROM TEAM_MEMBER_FEE_PAY_VIEW
+		WHERE TEAM_FEE_ID =#{team_fee_id}
+	</select>
 
 </mapper>

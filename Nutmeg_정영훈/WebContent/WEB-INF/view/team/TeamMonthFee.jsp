@@ -252,35 +252,21 @@
                                     <th>종류</th>
                                     <th>내용</th>
                                     <th>금액</th>
-                                    <th>작성자</th>
-                                    <th>관리</th>
+                                    <th>납부자</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            	<c:forEach var="teamFee" items="${teamFeeList}">
+                            	<c:forEach var="teamMemberFee" items="${teamMemberFeeList}">
 	                                <tr>
-	                                    <td class="fee-date">${teamFee.transaction_date}</td>
-	                                    <td>${teamFee.transaction_type }</td>
-	                                    <td>${teamFee.description}</td>
-	                                    <td><fmt:formatNumber value="${teamFee.net_amount}" type="number" pattern="#,###" />원</td>
-	                                    <td>${userNickName}</td>
-	                                    <td class="fee-actions">
-	                                        <a href="#" class="edit-btn">수정</a>
-	                                        <a href="#" class="delete-btn">삭제</a>
-	                                    </td>
+	                                    <td class="fee-date">${teamMemberFee.team_member_fee_pay_at}</td>
+	                                    <td>회비</td>
+	                                    <td>납부</td>
+	                                    <td><fmt:formatNumber value="${teamMemberFee.team_member_fee_pay_price}" type="number" pattern="#,###" />원</td>
+	                                    <td>${teamMemberFee.user_nick_name}</td>
 	                                </tr>
 	                               </c:forEach>
                             </tbody>
                         </table>
-                        
-                        <div class="fee-paging">
-                            <a href="#" class="active">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <a href="#">5</a>
-                            <a href="#">&gt;</a>
-                        </div>
                     </div>
             	</div>
             </div>

@@ -297,6 +297,36 @@
     height: 300px;
     margin-bottom: 30px;
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: #333;
+    padding: 8px 12px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+}
+
+.pagination a.active {
+    background-color: #a8d5ba;
+    color: white;
+    border: 1px solid #a8d5ba;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #f5f5f5;
+}
+
+.page-info {
+    text-align: right;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
+}
 
 @media (max-width: 768px) {
     .fee-summary {
@@ -370,39 +400,34 @@
                         <table class="fee-table">
                             <thead>
                                 <tr>
+                                    <th>번호</th>
                                     <th>날짜</th>
                                     <th>종류</th>
                                     <th>내용</th>
                                     <th>금액</th>
                                     <th>작성자</th>
-                                    <th>관리</th>
                                 </tr>
                             </thead>
                             <tbody>
                             	<c:forEach var="teamFee" items="${teamFeeList}">
 	                                <tr>
+	                                    <td>
+	                                        ${teamFee.rnum }
+	                                    </td>
 	                                    <td class="fee-date">${teamFee.transaction_date}</td>
 	                                    <td>${teamFee.transaction_type }</td>
 	                                    <td>${teamFee.description}</td>
 	                                    <td><fmt:formatNumber value="${teamFee.net_amount}" type="number" pattern="#,###" />원</td>
-	                                    <td>${userNickName}</td>
-	                                    <td class="fee-actions">
-	                                        <a href="#" class="edit-btn">수정</a>
-	                                        <a href="#" class="delete-btn">삭제</a>
-	                                    </td>
+	                                    <td>${team.user_nick_name}</td>
 	                                </tr>
 	                               </c:forEach>
                             </tbody>
                         </table>
                         
-                        <div class="fee-paging">
-                            <a href="#" class="active">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <a href="#">5</a>
-                            <a href="#">&gt;</a>
-                        </div>
+                        <!-- 페이징 -->
+	                    <div class="pagination">
+	                        ${pageHtml}
+	                    </div>
                     </div>
                     <!-- 수입 출력 -->
 					<div id="incomeTab" class="tab-content" style="display:none;">
@@ -425,7 +450,7 @@
 					                        <td class="fee-type-income">${teamFee.transaction_type}</td>
 					                        <td>${teamFee.description}</td>
 					                        <td><fmt:formatNumber value="${teamFee.net_amount}" type="number" pattern="#,###" />원</td>
-					                        <td>${userNickName}</td>
+					                        <td>${team.user_nick_name}</td>
 					                        <td class="fee-actions">
 					                            <a href="#" class="edit-btn">수정</a>
 					                            <a href="#" class="delete-btn">삭제</a>
@@ -466,7 +491,7 @@
 					                        <td class="fee-type-expense">${teamFee.transaction_type}</td>
 					                        <td>${teamFee.description}</td>
 					                        <td><fmt:formatNumber value="${teamFee.net_amount}" type="number" pattern="#,###" />원</td>
-					                        <td>${userNickName}</td>
+					                        <td>${team.user_nick_name}</td>
 					                        <td class="fee-actions">
 					                            <a href="#" class="edit-btn">수정</a>
 					                            <a href="#" class="delete-btn">삭제</a>
@@ -501,17 +526,35 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="teamMonthFee" items="${teamMonthFeeList}">
-					                    <tr>
-					                        <td class="fee-date">${teamMonthFee.team_fee_pay_start_at}</td>
-					                        <td class="fee-date">${teamMonthFee.team_fee_pay_end_at}</td>
-					                        <td><fmt:formatNumber value="${teamMonthFee.team_fee_price}" type="number" pattern="#,###" />원</td>
-					                        <td>${userNickName}</td>
-					                        <td>${teamMonthFee.team_fee_desc}</td>
-					                        <td class="fee-actions">
-					                            <a href="TeamMonthFee.action?team_fee_id=${teamMonthFee.team_fee_id}&team_fee_price=${teamMonthFee.team_fee_price}" class="edit-btn">회비 납부</a>
-					                            <a href="TeamMonthFeeMember.action?team_fee_id=${teamMonthFee.team_fee_id}" class="edit-btn">회비 납부자 목록</a>
-					                        </td>
-					                    </tr>
+				                    <tr>
+				                        <td class="fee-date">${teamMonthFee.team_fee_pay_start_at}</td>
+				                        <td class="fee-date">${teamMonthFee.team_fee_pay_end_at}</td>
+				                        <td><fmt:formatNumber value="${teamMonthFee.team_fee_price}" type="number" pattern="#,###" />원</td>
+				                        <td>${team.user_nick_name}</td>
+				                        <td>${teamMonthFee.team_fee_desc}</td>
+				                        <td class="fee-actions">
+				                            <button id="monthFeeBtn" class="btn btn-primary" >회비 납부</button>
+				                            <a href="TeamMonthFeeMember.action?team_fee_id=${teamMonthFee.team_fee_id}" class="btn btn-primary">회비 납부자 목록</a>
+				                        </td>
+				                    </tr>
+				                     <div id="monthFeeModal" class="modal">
+					                    <div class="modal-content">
+					                        <div class="modal-header">
+					                            <h3 class="modal-title">회비 납부</h3>
+					                            <span class="close">&times;</span>
+					                        </div>
+					                        <div class="modal_body">
+					                        	<div><span>예금주 : </span><span>${team.temp_team_account_holder}</span></div>
+					                        	<div><span>은행 : </span><span>${team.bank_name}</span></div>
+					                        	<div><span>계좌번호 : </span><span>${team.temp_team_account}</span></div>
+					                        </div>
+				                            <div class="form-actions">
+				                                <a href="TeamMonthFee.action?team_fee_id=${teamMonthFee.team_fee_id}&team_fee_price=${teamMonthFee.team_fee_price}" 
+				                            	class="btn btn-primary" onclick="return confirm('회비를 납부하시겠습니까?');">회비 납부</a>
+				                                <button type="button" class="btn btn-secondary modal-close">취소</button>
+				                            </div>
+					                    </div>
+					                </div>
 					            </c:forEach>
                             </tbody>
                         </table>
@@ -590,6 +633,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // 회비 모으기 버튼
     document.getElementById('collectFeeBtn').addEventListener('click', function() {
         openModal('feeCollectionModal');
+    });
+    
+    document.getElementById('monthFeeBtn').addEventListener('click', function() {
+        openModal('monthFeeModal');
     });
     
     // 모달 닫기 버튼

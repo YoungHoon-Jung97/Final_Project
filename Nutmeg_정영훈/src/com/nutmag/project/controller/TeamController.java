@@ -37,6 +37,7 @@ import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.TeamFeeDTO;
 
+import util.PageUtil;
 import util.Path;
 
 @Controller
@@ -549,46 +550,7 @@ public class TeamController
 	    
 	    return matchList; // Spring이 자동으로 JSON으로 변환
 	}
-	
-	
-	// 가게부 호출
-	@RequestMapping(value = "/MyTeamFee.action", method = RequestMethod.GET)
-	public String teamFee(HttpServletRequest request,Model model)
-	{
-		 HttpSession session = request.getSession();
-		 Integer temp_team_id = (Integer) session.getAttribute("team_id");
-		 
-		 
-		 // 동호회 정보 가져오기
-		 ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
-		 ITeamFeeDAO teamFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
-		 
-		 TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
-		 int team_id = team.getTeam_id();
-		 
-		 int income =  teamFeeDAO.getTeamIncome(team_id);
-		 int expense = teamFeeDAO.getTeamexpense(team_id);
-		 int tot = income - expense;
-		 
-		 List<TeamFeeDTO> teamFeeList=  teamFeeDAO.getTeamFeeList(team_id);
-		 List<TeamFeeDTO> teamMonthFeeList=  teamFeeDAO.getTeamMonthFeeList(team_id);
-		
-		 session.setAttribute("userNickName", team.getUser_nick_name());
-		 session.setAttribute("teamFeeList", teamFeeList);
-		 session.setAttribute("teamMonthFeeList", teamMonthFeeList);
-		 session.setAttribute("expense", expense);
-		 session.setAttribute("income", income);
-		 session.setAttribute("tot", tot);
-		 
-		 return "/team/TeamFee";
-	}
-	
-	// 팀 게시판 호출
-	@RequestMapping(value = "/MyTeamBoard.action", method = RequestMethod.GET)
-	public String teamBoard()
-	{
-		return "/team/TeamBoard";
-	}
+
 	
 	// 팀원 승인 호출
 	@RequestMapping(value = "/MemberAppr.action", method = RequestMethod.GET)

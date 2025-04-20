@@ -10,7 +10,8 @@ public class TeamFeeDTO {
 	,income_amount		//수입액
 	,expense_amount    //지출액 
 	,team_member_fee_pay_price
-	,team_member_id;
+	,team_member_id
+	,rnum;
 	
 	private String  team_fee_desc
 	,transaction_type 	// 수입/지출
@@ -20,6 +21,14 @@ public class TeamFeeDTO {
 	,team_fee_pay_end_at
 	,team_member_fee_pay_at;
 	
+	
+	
+	public int getRnum() {
+		return rnum;
+	}
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
 	public int getTeam_member_fee_pay_price() {
 		return team_member_fee_pay_price;
 	}

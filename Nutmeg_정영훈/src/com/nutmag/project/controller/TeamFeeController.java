@@ -1,11 +1,14 @@
 package com.nutmag.project.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,6 +18,9 @@ import com.nutmag.project.dao.ITeamFeeDAO;
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.TeamFeeDTO;
+import com.nutmag.project.dto.TeamMemberFeeDTO;
+
+import util.PageUtil;
 
 
 @Controller
@@ -23,6 +29,68 @@ public class TeamFeeController
 	
 	@Autowired
 	private SqlSession sqlSession;
+	
+	// 가게부 호출
+	@RequestMapping(value = "/MyTeamFee.action", method = RequestMethod.GET)
+	public String teamFee(HttpServletRequest request,Model model)
+	{
+		 HttpSession session = request.getSession();
+		 Integer temp_team_id = (Integer) session.getAttribute("team_id");
+		 
+		 // 현재 페이지 파라미터 처리 (기본값: 1)
+	     String pageParam = request.getParameter("page");
+	     int currentPage = 1;
+	     
+	     if (pageParam != null && !pageParam.isEmpty()) 
+	    {
+	        try 
+	        {
+	            currentPage = Integer.parseInt(pageParam);
+	        } 
+	        catch (NumberFormatException e) 
+	        {
+	            // 숫자 형식이 아닌 경우 기본값 사용
+	        }
+	    }
+		 
+		 // 동호회 정보 가져오기
+		 ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		 ITeamFeeDAO teamFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
+		 
+		 TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		 int team_id = team.getTeam_id();
+		 
+		 // 전체 게시글 수 조회
+		 int totalCount = teamFeeDAO.countTeamFee(team_id);
+		 
+		// 페이징 유틸 생성 (한 페이지에 10개씩, 5개 페이지 번호)
+	    PageUtil pageUtil = new PageUtil(currentPage, totalCount, 10, 5);
+	    int start =pageUtil.getStart();
+        int end = pageUtil.getEnd();
+	        
+		 
+		 
+		 int income =  teamFeeDAO.getTeamIncome(team_id);
+		 int expense = teamFeeDAO.getTeamexpense(team_id);
+		 int tot = income - expense;
+		 
+		 List<TeamFeeDTO> teamFeeList=  teamFeeDAO.getTeamFeeList(start,end,team_id);
+		 List<TeamFeeDTO> teamMonthFeeList=  teamFeeDAO.getTeamMonthFeeList(team_id);
+		
+		 // 페이징 HTML 생성
+		 String pageHtml = pageUtil.getPageHtml("MyTeamFee.action?page=%d");
+		 session.setAttribute("team", team);
+		 session.setAttribute("teamFeeList", teamFeeList);
+		 session.setAttribute("teamMonthFeeList", teamMonthFeeList);
+		 session.setAttribute("expense", expense);
+		 session.setAttribute("income", income);
+		 session.setAttribute("tot", tot);
+		 model.addAttribute("pageHtml", pageHtml);
+	     model.addAttribute("totalCount", totalCount);
+	     model.addAttribute("currentPage", currentPage);
+		 
+		 return "/team/TeamFee";
+	}
 	
 	//동호회 회비 정보 등록
 	@RequestMapping(value = "/AddFeeInfo.action",method=RequestMethod.GET)
@@ -86,6 +154,28 @@ public class TeamFeeController
 		teaFeeDAO.addMonthFee(teamFee);
 		
 		return "redirect:/MyTeamFee.action";
+	};
+	
+	
+	//동호회 회비 납부자 명단
+	@RequestMapping(value = "/TeamMonthFeeMember.action",method=RequestMethod.GET)
+	public String getMemberFeeList(HttpServletRequest request, Model model)
+	{
+		HttpSession session = request.getSession();
+		int team_fee_id = Integer.parseInt(request.getParameter("team_fee_id"));
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
+	
+		ITeamFeeDAO teaFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		
+		List<TeamMemberFeeDTO> teamMemberFeeList =  teaFeeDAO.getMemberFeeList(team_fee_id);
+		
+		model.addAttribute("teamMemberFeeList", teamMemberFeeList);
+		model.addAttribute("team", team);
+		
+		return "/team/TeamMonthFee";
 	};
 
 }
