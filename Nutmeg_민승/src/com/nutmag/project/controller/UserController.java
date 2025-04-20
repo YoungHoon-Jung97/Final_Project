@@ -282,6 +282,14 @@ public class UserController
 		
 		if (dto != null && dto.getUser_id() > 0)
 		{
+		//=========================민승=================================
+			if ("Y".equals(dto.getIs_banned())) {
+	            // 차단된 계정이면 로그인 화면으로 돌려보내기
+	            session.setAttribute("lang", lang);
+	            return "redirect:/Login.action?msg=banned";
+	        }
+		//==============================================================
+			
 			// 로그인 성공
 			session.setAttribute("user_name", dto.getUser_name());
 			session.setAttribute("user_email", dto.getUser_email());

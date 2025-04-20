@@ -2,6 +2,10 @@ package com.nutmag.project.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +16,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nutmag.project.dao.IAdminDAO;
 import com.nutmag.project.dao.IFieldDAO;
@@ -22,6 +28,7 @@ import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.AdminDTO;
 import com.nutmag.project.dto.AdminFieldApprDTO;
 import com.nutmag.project.dto.AdminFieldCancelDTO;
+import com.nutmag.project.dto.UserBanDTO;
 import com.nutmag.project.dto.UserDTO;
 
 
@@ -332,17 +339,74 @@ public class AdminController
 	
 	
 	
-	
-	// 유저 관리 페이지
-	@RequestMapping(value="UserManage.action", method=RequestMethod.GET)
-	public String userManagePage()
-	{
-		String result = null;
-		
-		result = "/admin/UserManagePage";
-		
-		return result;
+//================================================민승========================================	
+	// 사용자 관리 페이지
+	 @RequestMapping(value="/UserManage.action", method=RequestMethod.GET)
+	  public String userManageView(Model model) {
+		    List<UserDTO> users = sqlSession
+		      .getMapper(IAdminDAO.class)
+		      .selectUserList();     
+		    model.addAttribute("userList", users);
+		    return "/admin/UserManage";      
+		   
 	}
+	
+	// 사용자 차단 처리 
+    @RequestMapping(value="UserBanInsert.action", method=RequestMethod.POST )
+    @ResponseBody
+    public String userBanInsert(UserBanDTO dto, HttpSession session) {
+    	  
+        Integer adminId = (Integer) session.getAttribute("user_code_id");
+        dto.setUserCodeId2(adminId);
+
+        IAdminDAO dao = sqlSession.getMapper(IAdminDAO.class);
+        dao.insertUserBan(dto);
+
+        return "redirect:UserManage.action";
+    }
+
+    // 사용자 차단 해제
+	@RequestMapping(value="UserUnban.action", method=RequestMethod.POST)
+	@ResponseBody
+	public void unbanUser(@RequestParam("user_id") int userId)
+	{
+	    sqlSession.getMapper(IAdminDAO.class).unbanUser(userId);
+	}
+
+	// 사용자 삭제
+	@RequestMapping(value="UserDelete.action", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteUser(@RequestParam("user_id") int userId)
+	{
+	    sqlSession.getMapper(IAdminDAO.class).deleteUser(userId);
+	}
+
+	
+	// 관리자 컨텐츠
+	@RequestMapping(value = "/AdminDashboard.action", method = RequestMethod.GET)
+	public String adminDashboardContent(Model model)
+	{
+	    IAdminDAO adminDao = sqlSession.getMapper(IAdminDAO.class);
+	    IFieldDAO fieldDao = sqlSession.getMapper(IFieldDAO.class);
+	    IUserDAO userDao = sqlSession.getMapper(IUserDAO.class);
+	    
+
+
+	    // 통계용 데이터 전달
+	    model.addAttribute("totalUserCount", adminDao.getTotalUserCount());
+	    model.addAttribute("totalFieldCount", adminDao.getTotalFieldCount());
+	    model.addAttribute("pendingFieldCount", adminDao.getPendingFieldCount());
+
+	    // 최근 데이터
+	    model.addAttribute("recentFieldRegList", adminDao.getRecentFieldRegList());
+	    model.addAttribute("recentUserList", adminDao.getRecentUserList());
+	
+
+	    return "/admin/AdminDashboardContent";
+	}
+
+
+//============================================================================================
 	
 }
 

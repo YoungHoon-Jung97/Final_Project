@@ -454,7 +454,7 @@ public class TeamController
 		if (team.getTeam_id() == 0)
 		{
 			// 임시동호회 인원 찾기
-			List<TeamApplyDTO> teamMemberList = dao.tempTeamMemberList(team_id);
+			List<TeamApplyDTO> teamMemberList = dao.tempTeamMemberList(temp_team_id);
 			// 동호회장 찾기
 			for (TeamApplyDTO member : teamMemberList)
 			{
