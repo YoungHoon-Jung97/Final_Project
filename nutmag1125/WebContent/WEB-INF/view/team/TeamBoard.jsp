@@ -9,12 +9,14 @@
 <head>
 <meta charset="UTF-8">
 <title>팀 정보</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/Team.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/TeamMain.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
+
 <style type="text/css">
 /*팀 메뉴 넘어갔을 때 표시*/
 .teampage-link:nth-child(4) a {
-    color: #ff4500;
-    border-bottom: 2px solid #ff4500;
+    color: #a8d5ba;
+    border-bottom: 2px solid #a8d5ba;
 }
 </style>
 </head>
@@ -24,7 +26,7 @@
 	<section>
 		<div class="main">
 			<div class="main-content">
-				<ul class="tean-menu">
+				<ul class="team-menu">
 					<li class="teampage-link"><a href="MyTeam.action">팀 정보</a></li>
 					<li class="teampage-link"><a href="MyTeamSchedule.action">팀 매치</a></li>
 					<li class="teampage-link"><a href="MyTeamFee.action">팀 가계부</a></li>

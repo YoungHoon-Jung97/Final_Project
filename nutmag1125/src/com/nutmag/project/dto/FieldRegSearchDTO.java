@@ -6,8 +6,9 @@ public class FieldRegSearchDTO
 			  , stadium_reg_id, field_reg_price,field_reg_garo,field_reg_sero
 			  , field_environment_id;
 	
-	private String field_reg_name, field_reg_at, stadium_reg_name,field_type, field_environment_type;
-
+	private String field_reg_name, field_reg_at, stadium_reg_name,field_type, field_environment_type
+				,field_reg_image,field_image,field_reg_notice,field_reg_facilities;
+	
 	public int getField_reg_id()
 	{
 		return field_reg_id;
@@ -128,10 +129,46 @@ public class FieldRegSearchDTO
 		this.field_environment_type = field_environment_type;
 	}
 
-	
+	public String getField_reg_image()
+	{
+		return field_reg_image;
+	}
 
-	
-	
+	public void setField_reg_image(String field_reg_image)
+	{
+		this.field_reg_image = field_reg_image;
+	}
+
+	public String getField_image()
+	{
+		return field_image;
+	}
+
+	public void setField_image(String field_image)
+	{
+		this.field_image = field_image;
+	}
+
+	public String getField_reg_notice()
+	{
+		return field_reg_notice;
+	}
+
+	public void setField_reg_notice(String field_reg_notice)
+	{
+		this.field_reg_notice = field_reg_notice;
+	}
+
+	public String getField_reg_facilities()
+	{
+		return field_reg_facilities;
+	}
+
+	public void setField_reg_facilities(String field_reg_facilities)
+	{
+		this.field_reg_facilities = field_reg_facilities;
+	}
+
 	
 	
 }

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IMatchDAO">
+
+	<!-- 동호회원 찾기  -->
+	<select id="searchTeamMember" resultType="com.nutmag.project.dto.TeamApplyDTO">
+	SELECT *
+	FROM TEAM_MEMBER_VIEW
+	WHERE USER_CODE_ID =#{user_code_id}
+	</select>
+    
+	<!-- 동호회 일정 출력 -->
+  	<select id="matchList" resultType="com.nutmag.project.dto.MatchDTO">
+  		SELECT *
+		FROM MATCH_SCHEDULE_VIEW
+		WHERE HOME_TEAM_ID =#{team_id} OR AWAY_TEAM_ID =#{team_id}
+  	</select>
+  
+  	<!-- 매치 정보 출력 -->
+  	<select id="getMatch" resultType="com.nutmag.project.dto.MatchDTO">
+  		SELECT *
+  		FROM MATCH_SCHEDULE_VIEW
+  		WHERE FIELD_RES_ID = #{field_res_id}
+  	</select>
+  	
+    <!-- =========================================동호회원 매치 참여========================================= -->
+	<!-- 홈팀 동호회 매치 참여 -->
+	<insert id="addHomeTeamMember" parameterType="com.nutmag.project.dto.MatchDTO">
+  		INSERT INTO HOME_TEAM
+  		(
+	   		HOME_TEAM_ID,
+			FIELD_RES_ID,
+			TEAM_MEMBER_ID,
+			HOME_TEAM_APPLY_AT
+  		)
+  		VALUES(
+	  		HOME_TEAM_SEQ.NEXTVAL,
+	  		#{field_res_id},
+	  		#{team_member_id},
+	  		SYSDATE
+  		)
+  	</insert>
+  	
+  	<!-- 어웨이 동호회 매치 참여 -->
+  	<insert id="addAwayTeamMember" parameterType="com.nutmag.project.dto.MatchDTO">
+  		INSERT INTO AWAYTEAM_PARTICIPANT
+  		(
+  			AWAYTEAM_PARTICIPANT_ID,
+			AWAYTEAM_PARTICIPANT_AT,
+			TEAM_MEMBER_ID,
+			MATCH_PAY_ID
+  		)
+  		VALUES(
+  			AWAYTEAM_PARTICIPANT_SEQ.NEXTVAL,
+  			SYSDATE,
+	  		#{team_member_id},
+  			#{match_pay_id}
+  		)
+  	</insert>
+     
+	<!-- 홈팀 동호회 인원 참여 중복 검사 -->
+	<select id="searchHomeTeamMember" resultType="int">
+		SELECT COUNT(*) AS "COUNT"
+		FROM HOME_TEAM
+		WHERE FIELD_RES_ID = #{field_res_id}
+		AND 
+		TEAM_MEMBER_ID =#{team_member_id}
+	</select>
+	
+	<!-- 어웨이 동호회 인원 참여 중복 검사 -->
+	<select id="searchAwayTeamMember" resultType="int">
+		SELECT COUNT(*) AS "COUNT"
+		FROM AWAYTEAM_PARTICIPANT
+		WHERE TEAM_MEMBER_ID =#{team_member_id}
+		AND
+		 MATCH_PAY_ID=#{match_pay_id}
+	</select>
+	<!-- =========================================동호회원 매치 참여자 출력========================================= -->
+	<!-- 홈팀 매치 참여자 출력 -->
+	<select id="homeTeamPaticipantList"  resultType="com.nutmag.project.dto.MatchDTO">
+		SELECT *
+		FROM HOME_TEAM_VIEW
+		WHERE FIELD_RES_ID =#{field_res_id}
+	</select>
+	
+	<!-- 어웨이팀 매치 참여자 출력 -->
+	<select id="awayTeamPaticipantList"  resultType="com.nutmag.project.dto.MatchDTO">
+		SELECT *
+		FROM AWAY_TEAM_VIEW
+		WHERE FIELD_RES_ID =#{field_res_id}
+	</select>
+	
+	
+	 <!-- 매치 메인 페이지 리스트 -->
+     <select id="matchRoomList" resultType="com.nutmag.project.dto.MatchDTO">
+		SELECT 
+		   FIELD_RES_ID,
+		   TO_CHAR(MATCH_DATE, 'YYYY-MM-DD') AS MATCH_DATE,
+		   PAY_AMOUNT,
+		   SUBSTR(START_TIME,1,5) AS START_TIME,
+		   SUBSTR(END_TIME, INSTR(END_TIME, '~') + 1, 5) AS END_TIME,
+		   FIELD_NAME,
+		   STADIUM_NAME,
+		   STADIUM_ADDR,
+		   STADIUM_DETAILED_ADDR,
+		   MATCH_INWON,
+		   HOME_TEAM_ID,
+		   HOME_TEAM_NAME,
+		   AWAY_TEAM_ID,
+		   AWAY_TEAM_NAME,
+		   FIELD_REG_ID,
+		   FIELD_CODE_ID,
+		   MATCH_STATUS
+		FROM MATCH_SCHEDULE_VIEW
+		WHERE MATCH_DATE > SYSDATE AND MATCH_STATUS = '상대미정'
+	</select>
+	
+	<!-- 매치방 인서트 -->
+	<insert id="matchAwayTeamInsert" parameterType="com.nutmag.project.dto.MatchDTO">
+	INSERT INTO AWAYTEAM_PAY (MATCH_PAY_ID,MATCH_JOIN_REG_AT
+								,MATCH_PAY_AMOUNT,MATCH_PAY_AT,TEAM_ID,FIELD_RES_ID)
+	VALUES (AWAYTEAM_PAY_SEQ.NEXTVAL,SYSDATE,#{pay_amount},NULL,#{away_team_id},#{field_res_id})
+	</insert>
+	
+	<!-- 어웨이 팀 매치 승인 -->
+	<update id="approveMatch">
+	UPDATE AWAYTEAM_PAY
+	SET MATCH_PAY_AT = SYSDATE
+	WHERE MATCH_PAY_ID = #{field_res_id}
+	</update>
+	
+</mapper>

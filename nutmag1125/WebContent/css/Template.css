@@ -145,7 +145,13 @@ body
 /* 오른쪽 메뉴 (로그인 or 사람 아이콘) */
 .right-menu
 {
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	z-index: 50;
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 }
 
@@ -166,7 +172,12 @@ main
 	display: flex;
 	justify-content: center;
 	min-height: 100vh;
-	margin-top: -50px;
+}
+
+.main-background
+{
+	background-color: white;
+	width: 100%;
 }
 
 /* 컨텐츠 박스 */
@@ -206,18 +217,6 @@ main
 .menu-icon .line-2
 {
 	margin: 5px 0;
-}
-
-.right-menu
-{
-	width: 30px;
-	height: auto;
-	cursor: pointer;
-	z-index: 50;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 }
 
 /* Hover 효과 */
@@ -560,13 +559,237 @@ main
 	width: 150px;
 }
 
-.myInformation, .myTeam, .logout
+.myInformation, .myTeam, .operatorSignUp, .myStadium, .logout
 {
 	cursor: pointer;
 	color: #494949;
 }
 
-.myInformation:hover, .myTeam:hover, .logout:hover
+.myInformation:hover, .myTeam:hover, .operatorSignUp:hover, .myStadium:hover, .logout:hover
 {
 	color: black;
+}
+
+/* 플로팅 버튼 */
+.floatingButton-wrapper
+{
+	position: fixed;
+	bottom: 30px;
+	right: 40px;
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.floatingButton-wrapper:hover
+{
+	width: 120px;
+}
+
+.floatingButton
+{
+	background-color: #a8d5ba;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	font-size: 20px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+	padding: 0;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background-color 0.3s;
+}
+
+.floatingButton:hover
+{
+	background-color: #94c9ab;
+}
+
+.floatingButton-img
+{
+	width: 70%;
+	height: 70%;
+	object-fit: contain;
+	transition: transform 0.2s ease;
+}
+
+/* 서브 아이콘들 */
+.top-icon-slide, .left-icon-slide
+{
+	background-color: rgba(128, 128, 128, 0.7);
+	color: white;
+	font-size: 24px;
+	border: none;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.4s ease;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	pointer-events: none;
+}
+
+.top-icon-slide
+{
+	transform: translateY(10px);
+	margin-bottom: 10px;
+	margin-right: 5px;
+}
+
+.top-icon-slide:hover
+{
+	background-color: #84b6f4;
+}
+
+.left-icon-slide
+{
+	position: absolute;
+	transform: translateX(10px);
+	right: 60px;
+	bottom: 5px;
+}
+
+.left-icon-slide:hover
+{
+	background-color: #f48989;
+}
+
+.floatingButton-wrapper:hover .top-icon-slide
+{
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+}
+
+.floatingButton-wrapper:hover .left-icon-slide
+{
+	opacity: 1;
+	transform: translateX(0);
+	pointer-events: auto;
+}
+
+.bi-funnel-fill
+{
+	margin-top: 5px;
+}
+
+/* 필터 패널 */
+.filter-panel
+{
+	position: fixed;
+	top: 0;
+	left: -300px;
+	width: 260px;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+	box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+	padding: 20px;
+	z-index: 1100;
+	transition: left 0.3s ease;
+	overflow-y: auto;
+	backdrop-filter: blur(4px);
+}
+
+/* 활성화 시 왼쪽으로 슬라이드 인 */
+.filter-panel.active
+{
+	left: 0;
+}
+
+/* 필터 안에 있는 텍스트 기본 스타일 보정 */
+.filter-panel label, .filter-panel input, .filter-panel select
+{
+	color: #355e3b;
+	font-weight: 500;
+	font-size: 0.95em;
+}
+
+.login-nick-name
+{
+	margin-left: auto;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+/* 회사 소개 스타일 */
+.section-header .underline
+{
+	width: 80px;
+	height: 4px;
+	background-color: #7dcfb6;
+	border-radius: 2px;
+}
+.about-section {
+	padding: 80px 20px;
+	background-color: #f8f9fa;
+}
+.about-title {
+	font-size: 2.2rem;
+	font-weight: bold;
+	color: #198754;
+}
+.highlight {
+	color: #0d6efd;
+	font-weight: bold;
+}
+.intro-text p {
+	font-size: 1.05rem;
+	color: #333;
+	line-height: 1.7;
+}
+
+/* 밑에 사이트 소개 푸터 디자인 */
+.footer {
+	background-color: #343a40;
+	color: white;
+	padding: 30px 0;
+	margin-top: 80px;
+	font-size: 0.9rem;
+}
+.footer a {
+	color: #ddd;
+	text-decoration: none;
+}
+.footer a:hover {
+	color: #fff;
+}
+.floatingButton-wrapper {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 999;
+}
+.floatingButton-img {
+	width: 60px;
+	cursor: pointer;
+}
+.top-icon-slide {
+	background-color: #198754;
+	border: none;
+	color: white;
+	font-size: 1.2rem;
+	margin-bottom: 10px;
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
+}
+.img-float-right {
+	margin-left: 120px;
+	max-width: 100%;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+	.img-float-right {
+		margin-left: 0;
+		margin-top: 20px;
+	}
 }

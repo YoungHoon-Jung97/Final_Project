@@ -25,6 +25,9 @@
 	        FIELD_REG_AT,
 	        FIELD_REG_GARO,
 	        FIELD_REG_SERO,
+	        FIELD_REG_IMAGE,
+	        FIELD_REG_NOTICE,
+	        FIELD_REG_FACILITIES,
 	        FIELD_TYPE_ID,
 	        FIELD_ENVIRONMENT_ID,
 	        FIELD_REG_PRICE,
@@ -36,6 +39,9 @@
 	        SYSDATE,
 	        #{field_reg_garo},
 	        #{field_reg_sero},
+	        #{field_image},
+	        #{field_reg_notice},
+	        #{field_reg_facilities},
 	        #{field_type_id},
 	        #{field_environment_id},
 	        #{field_reg_price},
@@ -45,6 +51,29 @@
 	
 	<!-- 경기장 등록시 보유한 경기장 목록 보여주기 -->
 	<select id="fieldSearchList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+		SELECT *
+		FROM FIELD_REG_VIEW
+		WHERE STADIUM_REG_ID=#{stadium_reg_id}
+	</select>
+	
+	<!-- <select id="fieldSearchList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+	SELECT FIELD_REG_ID,
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE,
+	        FIELD_ENVIRONMENT_TYPE,
+	        FIELD_REG_PRICE,
+	        STADIUM_REG_NAME,
+	        STADIUM_REG_ID,
+	        FIELD_REG_IMAGE
+	FROM FIELD_REG_VIEW
+	WHERE STADIUM_REG_ID=#{stadium_reg_id}
+	</select> -->
+	
+	<!-- 경기장 전체 리스트 -->
+	<select id="fieldAllList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
 	SELECT FIELD_REG_ID,
 	        FIELD_REG_NAME,
 	        FIELD_REG_AT,
@@ -56,7 +85,139 @@
 	        STADIUM_REG_NAME,
 	        STADIUM_REG_ID
 	FROM FIELD_REG_VIEW
-	WHERE STADIUM_REG_ID=#{stadium_reg_id}
 	</select>
 	
+	
+	<!-- 경기장 미승인 리스트 -->
+	<select id="fieldBeforeApprList" resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+	SELECT FIELD_REG_ID,
+	        FIELD_REG_NAME,
+	        FIELD_REG_AT,
+	        FIELD_REG_GARO,
+	        FIELD_REG_SERO,
+	        FIELD_TYPE,
+	        FIELD_ENVIRONMENT_TYPE,
+	        FIELD_REG_PRICE,
+	        STADIUM_REG_NAME,
+	        STADIUM_REG_ID,
+	        USER_CODE_ID
+	FROM FIELD_APPR_VALID_VIEW
+	</select>
+	
+	
+	<!-- 경기장 메인페이지 승인 완료 된 경기장 리스트 -->
+	<select id="fieldApprOkList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
+		SELECT
+		    FIELD_REG_ID,
+		    FIELD_REG_NAME,
+		    FIELD_REG_AT,
+		    FIELD_REG_PRICE,
+		    FIELD_REG_GARO,
+		    FIELD_REG_SERO,
+		    FIELD_TYPE,
+		    FIELD_REG_IMAGE,
+		    FIELD_ENVIRONMENT_TYPE,
+		    STADIUM_REG_NAME,
+		    STADIUM_REG_ID,
+		    STADIUM_REG_ADDR,
+		    STADIUM_REG_DETAILED_ADDR,
+		    FIELD_REG_NOTICE,
+		    FIELD_REG_FACILITIES,
+		    SUBSTR(STADIUM_TIME_NAME1, 1, 2) AS STADIUM_TIME_NAME1,
+		    TO_NUMBER(SUBSTR(STADIUM_TIME_NAME2, INSTR(STADIUM_TIME_NAME2, '~') + 1, 2)) + 1 AS STADIUM_TIME_NAME2,
+			FIELD_CODE_ID
+		FROM FIELD_APPR_OK_VIEW
+	</select>
+	
+	<!-- 경기장 예약 메인 페이지 검색 기능 -->
+	<select id="searchFieldList" resultType="com.nutmag.project.dto.FieldResMainPageDTO" parameterType="map">
+	      SELECT
+		    FIELD_REG_ID,
+		    FIELD_REG_NAME,
+		    FIELD_REG_AT,
+		    FIELD_REG_PRICE,
+		    FIELD_REG_GARO,
+		    FIELD_REG_SERO,
+		    FIELD_TYPE,
+		    FIELD_REG_IMAGE,
+		    FIELD_ENVIRONMENT_TYPE,
+		    STADIUM_REG_NAME,
+		    STADIUM_REG_ID,
+		    STADIUM_REG_ADDR,
+		    STADIUM_REG_DETAILED_ADDR,
+		    SUBSTR(STADIUM_TIME_NAME1, 1, 2) AS STADIUM_TIME_NAME1,
+		    TO_NUMBER(SUBSTR(STADIUM_TIME_NAME2, INSTR(STADIUM_TIME_NAME2, '~') + 1, 2)) + 1 AS STADIUM_TIME_NAME2,
+			FIELD_CODE_ID
+		FROM FIELD_APPR_OK_VIEW
+	    WHERE 1=1
+	    <if test="region_name != null and region_name != ''">
+	        AND stadium_reg_addr LIKE #{region_name} || '%'
+	    </if>
+	    <if test="city_name != null and city_name != ''">
+	        AND stadium_reg_addr LIKE '%' || #{city_name} || '%'
+	    </if>
+	    <if test="keyword != null and keyword != ''">
+	        AND (field_reg_name LIKE #{keyword} OR stadium_reg_name LIKE #{keyword})
+	    </if>
+	</select>
+	
+	<!-- 승인된 경기장 필드 코드로 찾기 -->
+	<select id="fieldApprOkSearchList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
+		SELECT
+		    FIELD_REG_ID,
+		    FIELD_REG_NAME,
+		    FIELD_REG_AT,
+		    FIELD_REG_PRICE,
+		    FIELD_REG_GARO,
+		    FIELD_REG_SERO,
+		    FIELD_TYPE,
+		    FIELD_REG_IMAGE,
+		    FIELD_ENVIRONMENT_TYPE,
+		    STADIUM_REG_NAME,
+		    STADIUM_REG_ID,
+		    STADIUM_REG_ADDR,
+		    STADIUM_REG_DETAILED_ADDR,
+		    STADIUM_TIME_ID1,
+		    STADIUM_TIME_ID2,
+		    FIELD_REG_NOTICE,
+		    FIELD_REG_FACILITIES,
+		    SUBSTR(STADIUM_TIME_NAME1, 1, 2) AS STADIUM_TIME_NAME1,
+		    TO_NUMBER(SUBSTR(STADIUM_TIME_NAME2, INSTR(STADIUM_TIME_NAME2, '~') + 1, 2)) + 1 AS STADIUM_TIME_NAME2,
+			FIELD_CODE_ID
+		FROM FIELD_APPR_OK_VIEW
+		WHERE FIELD_CODE_ID = #{field_code_id}
+	</select>
+	
+	<!-- 예약 불가능한 시간 찾기 -->
+	<select id="FieldUnavailableTime" resultType="map" parameterType="map">
+	    SELECT STADIUM_TIME_ID1,STADIUM_TIME_ID2
+	    FROM UNAVAILABLE_STADIUM_TIME_VIEW
+	    WHERE FIELD_CODE_ID = #{field_code_id}
+	      AND MATCH_DATE = #{match_date}
+	</select>
+	
+	
+	<!-- 필드 코드로 구장 운영자 정보 찾기 -->
+	<select id="fieldOperatorInfo" parameterType="int" resultType="com.nutmag.project.dto.FieldResOperatorDTO">
+	  SELECT * 
+	  FROM FIELD_OPERATOR_VIEW
+	  WHERE FIELD_CODE_ID = #{field_code_id}
+	</select>
+	
+	<!-- 인원수 리스트 -->
+	<select id="inwonList" resultType="com.nutmag.project.dto.FieldResMainPageDTO">
+		SELECT *
+		FROM MATCH_INWON
+	</select>
+	
+	<insert id="fieldResInsert" parameterType="com.nutmag.project.dto.FieldResInsertDTO">
+		INSERT INTO FIELD_RES (FIELD_RES_ID,FIELD_RES_AT,FIELD_RES_MATCH_AT
+		,STADIUM_TIME_ID1,STADIUM_TIME_ID2,TEAM_ID,
+		FIELD_CODE_ID,MATCH_INWON_ID
+		,FIELD_RES_PAY_AMOUNT,FIELD_RES_PAY_AT)
+		
+		VALUES (FIELD_RES_SEQ.NEXTVAL,SYSDATE,#{field_res_match_at},#{stadium_time_id1}
+		,#{stadium_time_id2},#{team_id},#{field_code_id},#{match_inwon_id},#{field_res_pay_amount},NULL)
+	</insert>
+		
 </mapper>
