@@ -54,6 +54,7 @@
 						case "ERROR_DUPLICATE_JOIN":
 						case "ERROR_AUTH_REQUIRED":
 						case "ERROR_DUPLICATE_REQUEST":
+						case "ERROR":
 							swal("에러", content, "error");
 							break;
 						
@@ -63,7 +64,6 @@
 				}
 				
 				else
-					// fallback: 구분자 없는 일반 메시지
 					swal("처리 필요", message, "info");
 			}
 		});

@@ -325,7 +325,12 @@ public class TeamController
 	@RequestMapping(value = "/TeamInsert.action", method = RequestMethod.POST)
 	public String insertTeam(TeamDTO team, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
 		MultipartFile file = team.getTemp_team_emblem();
+		
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
+		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
 		
 		System.out.println("/n===================================================================================================");
 		
@@ -412,6 +417,9 @@ public class TeamController
 			{
 				System.out.println("파일 저장 중 오류 발생:");
 				e.printStackTrace();
+				
+				String message = "ERROR: 동호회 설명이 너무 깁니다.";
+				session.setAttribute("message", message);
 			}
 		}
 		
@@ -423,11 +431,20 @@ public class TeamController
 			ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 			dao.teamInsert(team);
 			System.out.println("DB 저장 완료");
+			
+			String message = "SUCCESS_INSERT: 동호회 개설이 완료되었습니다.";
+			session.setAttribute("message", message);
+			
+			if (teamDAO.searchMyTempTeam(user_code_id) != null)
+				session.setAttribute("team_id", teamDAO.searchMyTempTeam(user_code_id));
 		}
 		catch (Exception e)
 		{
 			System.out.println("DB 저장 중 오류 발생:");
 			e.printStackTrace();
+			
+			String message = "ERROR: 동호회 설명이 너무 깁니다.";
+			session.setAttribute("message", message);
 		}
 		
 		System.out.println("\n===================================================================================================");

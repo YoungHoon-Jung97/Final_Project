@@ -912,6 +912,12 @@ public class UserController
 		return "redirect:/MainPage.action";
 	}
 	
+	// 에러 페이지
+	@RequestMapping(value="/Error.action", method = RequestMethod.GET)
+	public String error(Model model)
+	{
+		return "Error";
+	}
 	
 	// 이메일 찾기 폼 띄우기(get)
    @RequestMapping(value="/ForgotEmail.action", method = RequestMethod.GET)

@@ -135,11 +135,11 @@
 			<!-- 전화번호 입력 -->
 			<div class="form__group">
 				<div class="form__field">
-					<label for="tel" class="form__label">전화번호</label> 
+					<label for="tel" class="form__label required">전화번호</label> 
 					
 					<div class="form__input--wrapper">
 						<input type="tel" class="form__input" id="tel" placeholder="전화번호를 입력하세요."
-						name="user_tel">
+						name="user_tel" pattern="^\d{3}-\d{3,4}-\d{4}$" required>
 					</div>
 				</div>
 				

@@ -84,3 +84,18 @@ h1
 	font-weight: 600;
 	color: #333;
 }
+
+.nav-menu, .login-nick-name
+{
+	margin-top: 0 !important;
+}
+
+.login-nick-name
+{
+	margin-top: 0 !important;
+}
+
+.position-relative
+{
+	margin-top: 3px;
+}
