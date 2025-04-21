@@ -164,6 +164,8 @@
 		</a>
 	</div>
 	
+	
+	
 <%	if (user_code_id != -1)
 	{
 %>
@@ -223,6 +225,7 @@
 		</div>
 <%	}
 %>
+
 </header>
 </body>
 </html>
