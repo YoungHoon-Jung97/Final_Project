@@ -521,7 +521,8 @@
                                     <th>남부 금액</th>
                                     <th>관리자</th>
                                     <th>납부 설명</th>
-                                    <th>관리</th>
+                     				<th>납부</th>
+                                    <th>납무자 명단</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -533,7 +534,18 @@
 				                        <td>${team.user_nick_name}</td>
 				                        <td>${teamMonthFee.team_fee_desc}</td>
 				                        <td class="fee-actions">
-				                            <button id="monthFeeBtn" class="btn btn-primary" >회비 납부</button>
+				                        	<fmt:parseDate value="${teamMonthFee.team_fee_pay_end_at}" pattern="yyyy-MM-dd" var="endDate" />
+
+											<c:choose>
+											    <c:when test="${endDate > today}">
+											        <button id="monthFeeBtn" class="btn btn-primary">회비 납부</button>
+											    </c:when>
+											    <c:otherwise>
+											        <button id="monthFeeEnd" class="btn btn-secondary" disabled>납부 마감</button>
+											    </c:otherwise>
+											</c:choose>
+				                        </td>
+				                        <td class="fee-actions">
 				                            <a href="TeamMonthFeeMember.action?team_fee_id=${teamMonthFee.team_fee_id}" class="btn btn-primary">회비 납부자 목록</a>
 				                        </td>
 				                    </tr>

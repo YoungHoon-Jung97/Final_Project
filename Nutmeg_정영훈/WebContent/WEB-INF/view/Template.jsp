@@ -155,6 +155,12 @@
 				<div class="nav-sub match">매치 참가</div>
 				<div class="nav-sub field">매치 생성</div>
 			</div>
+			
+			<!-- 회사소개 항목 추가 -->
+			<div class="nav-item">
+				<span class="nav-title company">회사소개</span>
+				<div class="nav-sub company">회사 개요</div>
+			</div>
 		</nav>
 	</div>
 	

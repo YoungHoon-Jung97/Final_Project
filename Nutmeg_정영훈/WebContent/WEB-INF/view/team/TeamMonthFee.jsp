@@ -221,34 +221,15 @@
                 
                 <div class="fee-container">
                     <div class="fee-header">
-                        <h2 class="fee-title">팀 회비 납부</h2>
+                        <h2 class="fee-title">${teamFee.team_fee_pay_start_at}일 팀 회비 납부자 명단</h2>
                     </div>
-                    
-                    <div class="fee-summary">
-                        <div class="summary-item">
-                            <div class="summary-label">총 수입</div>
-                            <div class="summary-value income"><fmt:formatNumber value="${income}" type="number" pattern="#,###" />원</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">총 지출</div>
-                            <div class="summary-value expense"><fmt:formatNumber value="${expense}" type="number" pattern="#,###" />원</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">잔액</div>
-                            <div class="summary-value balance"><fmt:formatNumber value="${tot}" type="number" pattern="#,###" />원</div>
-                        </div>
-                    </div>
-                                        
-                    <div class="btn-group">
-                        <button id="collectFeeBtn" class="btn">회비 모으기</button>
-                    </div>
-                    
+           
                     <!-- 전체 내용 추가  -->
                     <div id="allTab" class="tab-content active">
                         <table class="fee-table">
                             <thead>
                                 <tr>
-                                    <th>날짜</th>
+                                    <th>납부 날짜</th>
                                     <th>종류</th>
                                     <th>내용</th>
                                     <th>금액</th>

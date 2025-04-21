@@ -50,7 +50,7 @@ body
 /* 메뉴바 스타일 */
 .menu-bar
 {
-	background: linear-gradient(45deg, #3ea152, #7dd47b);
+	background-color: #3ea152;
 	padding: 15px 15px;
 	position: fixed;
 	top: 0;
@@ -719,10 +719,77 @@ main
     margin-top: 3px;
 }
 
+/* 회사 소개 스타일 */
 .section-header .underline
 {
 	width: 80px;
 	height: 4px;
 	background-color: #7dcfb6;
 	border-radius: 2px;
+}
+.about-section {
+	padding: 80px 20px;
+	background-color: #f8f9fa;
+}
+.about-title {
+	font-size: 2.2rem;
+	font-weight: bold;
+	color: #198754;
+}
+.highlight {
+	color: #0d6efd;
+	font-weight: bold;
+}
+.intro-text p {
+	font-size: 1.05rem;
+	color: #333;
+	line-height: 1.7;
+}
+
+/* 밑에 사이트 소개 푸터 디자인 */
+.footer {
+	background-color: #343a40;
+	color: white;
+	padding: 30px 0;
+	margin-top: 80px;
+	font-size: 0.9rem;
+}
+.footer a {
+	color: #ddd;
+	text-decoration: none;
+}
+.footer a:hover {
+	color: #fff;
+}
+.floatingButton-wrapper {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 999;
+}
+.floatingButton-img {
+	width: 60px;
+	cursor: pointer;
+}
+.top-icon-slide {
+	background-color: #198754;
+	border: none;
+	color: white;
+	font-size: 1.2rem;
+	margin-bottom: 10px;
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
+}
+.img-float-right {
+	margin-left: 120px;
+	max-width: 100%;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+	.img-float-right {
+		margin-left: 0;
+		margin-top: 20px;
+	}
 }

@@ -382,6 +382,16 @@ public class AdminController
 	    return "/admin/AdminDashboardContent";
 	}
 
+	// 회사 소개 페이지
+	@RequestMapping(value = "CompanyIntro.action", method=RequestMethod.GET)
+	public String companyIntro()
+	{
+		String result = null;
+		
+		result = "/admin/Aboutme";
+		
+	    return result;
+	}
 	
 }
 

@@ -15,6 +15,7 @@ import com.nutmag.project.dto.FieldResInsertDTO;
 import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.FieldResOperatorDTO;
 import com.nutmag.project.dto.FieldTypeDTO;
+import com.nutmag.project.dto.MatchDTO;
 
 public interface IFieldDAO
 {
@@ -71,5 +72,32 @@ public interface IFieldDAO
 	
 	// 경기장 취소 리스트 (구장 운영자 유저 코드로 검색)
 	public ArrayList<FieldApprListDTO> operatorFieldApprCancelSearchList(int user_code_id);
+	
+	// 경기장 예약 내역
+	public ArrayList<MatchDTO> operatorFieldResHistory(int user_code_id);
+	
+	// 페이징 처리
+	ArrayList<MatchDTO> operatorFieldResHistoryPaged(@Param("user_code_id") int user_code_id,@Param("offset") int offset,
+		    @Param("pageSize") int pageSize);
+	// 전체 카운트
+	int fieldResHistoryCount(@Param("user_code_id") int user_code_id);
+	
+	
+	// 운영자 소유 구장 수
+	public int getMyStadiumCount(int user_code_id);
+
+	// 오늘 예약 수
+	public int getTodayReservationCount(int user_code_id);
+
+	// 이번달 총 매출
+	public int getMonthlyRevenue(int user_code_id);
+
+	// 예약 승인 대기 건수
+	public int getPendingApprovalCount(int user_code_id);
+
+	// 최근 예약 5건
+	public ArrayList<MatchDTO> getRecentReservationList(int user_code_id);
+	
+	
 	
 }
