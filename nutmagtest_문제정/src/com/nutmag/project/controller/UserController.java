@@ -33,6 +33,7 @@ import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldResMainPageDTO;
+import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.NotificationDTO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.OperatorResCancelDTO;
@@ -192,12 +193,22 @@ public class UserController
 		{
 			String result = null;
 
-			IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+			IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
 			HttpSession session = request.getSession();
 			int user_code_id = (int) session.getAttribute("user_code_id");
 			int operator_id = (int) session.getAttribute("operator_id");
 			
-			model.addAttribute("operatorInfo", dao.operatorLoginInfo(user_code_id));
+		    IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+
+		    model.addAttribute("totalStadiumCount", dao.getMyStadiumCount(user_code_id));
+		    model.addAttribute("todayReservationCount", dao.getTodayReservationCount(user_code_id));
+		    model.addAttribute("monthlyRevenue", dao.getMonthlyRevenue(user_code_id));
+		    model.addAttribute("pendingApprovals", dao.getPendingApprovalCount(user_code_id));
+		    model.addAttribute("recentReservations", dao.getRecentReservationList(user_code_id));
+
+			
+			
+			model.addAttribute("operatorInfo", userDAO.operatorLoginInfo(user_code_id));
 			
 			//System.out.println(operator_id);
 			result = "/user/OperatorMainPage";
@@ -686,6 +697,77 @@ public class UserController
 			return result;
 		}
 		
+		/*
+		@RequestMapping(value = "/OperatorFieldResHistory.action")
+		public String operatorFieldResHistory(Model model,HttpServletRequest request)
+		{
+			String result = null;
+			HttpSession session = request.getSession();
+			IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+			
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			
+			ArrayList<MatchDTO> list = dao.operatorFieldResHistory(user_code_id);
+			
+			int total = 0;
+			for (MatchDTO matchDTO : list)
+			{
+				total += matchDTO.getPay_amount();
+				//System.out.println("매치 상태 : "+ matchDTO.getMatch_status());
+				
+			}
+			
+			model.addAttribute("fieldResHistoryList", list);
+			model.addAttribute("total", total);
+			
+			result = "/user/OperatorFieldResHistory";
+			return result;
+		}
+		*/
+		
+		@RequestMapping(value = "/OperatorFieldResHistory.action",method = RequestMethod.GET)
+		public String operatorFieldResHistory(Model model, HttpServletRequest request)
+		{
+		    HttpSession session = request.getSession();
+		    IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+
+		    int user_code_id = (int) session.getAttribute("user_code_id");
+
+		    // 페이징 파라미터 처리
+		    int page = 1;
+		    int pageSize = 5;
+		    if (request.getParameter("page") != null)
+		        page = Integer.parseInt(request.getParameter("page"));
+
+		    int offset = (page - 1) * pageSize;
+
+		    // 전체 건수 (결제 건 수)
+		    int totalCount = dao.fieldResHistoryCount(user_code_id);
+		    int totalPage = (int) Math.ceil((double) totalCount / pageSize);
+		    
+		    //System.out.println("총 갯수 확인 : "+ totalCount);
+		    // 현재 페이지에 해당하는 데이터 조회
+		    
+		    ArrayList<MatchDTO> list = dao.operatorFieldResHistoryPaged(user_code_id, offset, pageSize);
+		    
+		    ArrayList<MatchDTO> list2 = dao.operatorFieldResHistory(user_code_id);
+		    // 총 금액 계산
+		    int total = 0;
+			for (MatchDTO matchDTO : list2)
+			{
+				total += matchDTO.getPay_amount();
+			}
+
+		    // 데이터 전달
+		    model.addAttribute("fieldResHistoryList", list);
+		    model.addAttribute("total", total);
+		    model.addAttribute("currentPage", page);
+		    model.addAttribute("totalPage", totalPage);
+		    model.addAttribute("totalCount", totalCount);
+
+		    return "/user/OperatorFieldResHistory";
+		}	
+	
 	//==================================================================
 	
 	// 로그인

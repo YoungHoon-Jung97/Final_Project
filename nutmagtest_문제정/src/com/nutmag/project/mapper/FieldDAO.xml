@@ -280,4 +280,126 @@
 	</select>
 	
 	
+	<select id="operatorFieldResHistory" resultType="com.nutmag.project.dto.MatchDTO">
+		SELECT
+		FIELD_RES_ID,
+	    TO_CHAR(MATCH_DATE,'YYYY-MM-DD') AS MATCH_DATE,
+	    PAY_AMOUNT,
+	    SUBSTR(START_TIME, 1, 5) AS START_TIME,
+		SUBSTR(END_TIME, INSTR(END_TIME, '~') + 1,5) AS END_TIME,
+	    FIELD_NAME,
+	    STADIUM_NAME,
+	    STADIUM_ADDR,
+	    STADIUM_DETAILED_ADDR,
+	    MATCH_INWON,
+	    HOME_TEAM_ID,
+	    HOME_TEAM_NAME,
+	    AWAY_TEAM_ID,
+	    AWAY_TEAM_NAME,
+	    MATCH_RESULT_HOME_SCORE,
+	    MATCH_RESULT_AWAY_SCORE,
+	    FIELD_REG_ID,
+	    FIELD_CODE_ID,
+	    MATCH_PAY_ID,
+	    USER_CODE_ID,
+	    FIELD_RES_PAY_AT,
+	    MATCH_STATUS
+		FROM MATCH_SCHEDULE_VIEW
+		WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	<select id="fieldResHistoryCount" resultType="int">
+    SELECT COUNT(*) FROM MATCH_SCHEDULE_VIEW WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	<!-- 페이징 처리 -->
+	<select id="operatorFieldResHistoryPaged" resultType="com.nutmag.project.dto.MatchDTO">
+	SELECT * FROM (
+	    SELECT A.*, ROWNUM RN
+	    FROM (
+	        SELECT
+	            FIELD_RES_ID,
+	            TO_CHAR(MATCH_DATE, 'YYYY-MM-DD') AS MATCH_DATE,
+	            PAY_AMOUNT,
+	            SUBSTR(START_TIME, 1, 5) AS START_TIME,
+	            SUBSTR(END_TIME, INSTR(END_TIME, '~') + 1, 5) AS END_TIME,
+	            FIELD_NAME,
+	            STADIUM_NAME,
+	            STADIUM_ADDR,
+	            STADIUM_DETAILED_ADDR,
+	            MATCH_INWON,
+	            HOME_TEAM_ID,
+	            HOME_TEAM_NAME,
+	            AWAY_TEAM_ID,
+	            AWAY_TEAM_NAME,
+	            MATCH_RESULT_HOME_SCORE,
+	            MATCH_RESULT_AWAY_SCORE,
+	            FIELD_REG_ID,
+	            FIELD_CODE_ID,
+	            MATCH_PAY_ID,
+	            USER_CODE_ID,
+	            FIELD_RES_PAY_AT,
+	            MATCH_STATUS
+	        FROM MATCH_SCHEDULE_VIEW
+	        WHERE USER_CODE_ID = #{user_code_id}
+	        ORDER BY MATCH_DATE DESC
+	    ) A
+	    WHERE ROWNUM &lt;= #{offset} + #{pageSize}
+	)
+	WHERE RN > #{offset}
+	</select>
+		
+	<!-- 총 구장 수 -->
+	<select id="getMyStadiumCount" parameterType="int" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM STADIUM_REG 
+	    WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	<!-- 오늘 예약 수 -->
+	<select id="getTodayReservationCount" parameterType="int" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM FIELD_RES_VIEW
+	    WHERE USER_CODE_ID = #{user_code_id}
+	      AND TO_CHAR(FIELD_RES_MATCH_AT, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<!-- 이번 달 매출 -->
+	<select id="getMonthlyRevenue" parameterType="int" resultType="int">
+	    SELECT NVL(SUM(FIELD_RES_PAY_AMOUNT), 0)
+	    FROM FIELD_RES_VIEW
+	    WHERE USER_CODE_ID = #{user_code_id}
+	      AND TO_CHAR(FIELD_RES_PAY_AT, 'YYYYMM') = TO_CHAR(SYSDATE, 'YYYYMM')
+	</select>
+	
+	<!-- 예약 승인 대기 건 -->
+	<select id="getPendingApprovalCount" parameterType="int" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM FIELD_RES_VIEW
+	    WHERE USER_CODE_ID = #{user_code_id}
+	      AND FIELD_RES_PAY_AT IS NULL
+	</select>
+	
+	<!-- 최근 예약 내역 (5건) -->
+	<select id="getRecentReservationList" parameterType="int" resultType="com.nutmag.project.dto.MatchDTO">
+	    SELECT *
+	    FROM (
+	        SELECT 
+	            FIELD_RES_ID,
+	            TO_CHAR(MATCH_DATE, 'YYYY-MM-DD') AS MATCH_DATE,
+	            START_TIME,
+	            END_TIME,
+	            FIELD_NAME,
+	            PAY_AMOUNT,
+	            (CASE 
+	                WHEN MATCH_DATE IS NOT NULL THEN '결제완료'
+	                ELSE '승인대기'
+	             END) AS MATCH_STATUS
+	        FROM MATCH_SCHEDULE_VIEW
+	        WHERE USER_CODE_ID = #{user_code_id}
+	        ORDER BY MATCH_DATE DESC
+	    )
+	    WHERE ROWNUM &lt;= 5
+	</select>	
+		
 </mapper>
