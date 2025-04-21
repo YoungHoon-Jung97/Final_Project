@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.IRegionDAO">
+	
+	<select id="regionList" resultType="com.nutmag.project.dto.RegionDTO">
+		SELECT REGION_ID,REGION_NAME,REGION_NAME_ENG
+		FROM REGION
+	</select>
+	
+	<select id="cityList" resultType="com.nutmag.project.dto.CityDTO">
+	    SELECT CITY_ID, CITY_NAME, REGION_ID
+	    FROM CITY
+	    WHERE REGION_ID = #{region}
+	</select>
+
+    
+    
+
+</mapper>

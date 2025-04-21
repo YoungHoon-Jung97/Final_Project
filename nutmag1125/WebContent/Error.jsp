@@ -15,7 +15,7 @@
 </head>
 <body>
 	<!-- 귀여운 에러 아이콘 이미지 -->
-	<img src="<%=cp%>/images/sad-glasses.png" alt="404" style="width: 120px;">
+	<img src="<%=cp%>/images/nutmeg.png" alt="404" style="width: 120px;">
 	
 	<div class="error-title">404</div>
 	<div class="error-subtitle">SORRY, PAGE NOT FOUND T T</div>
@@ -23,6 +23,6 @@
 		찾으시는 페이지가 이동되었거나 삭제되었거나,<br> 존재하지 않는 페이지입니다.
 	</div>
 	
-	<a href="<%=cp%>/" class="go-home-btn">메인으로 이동</a>
+	<a href="<%=cp%>/MainPage.action"  class="go-home-btn">메인으로 이동</a>
 </body>
 </html>
