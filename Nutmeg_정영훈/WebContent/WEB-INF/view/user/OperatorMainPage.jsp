@@ -230,14 +230,14 @@ $(document).ready(function () {
 				<a class="nav-link menu-link" data-url="OperatorStadiumUpdateList.action">
 				    <i class="bi bi-pencil-square me-2"></i> 구장 정보 수정
 				</a>
-				<a class="nav-link menu-link" data-url="OperatorFieldUpdateForm.action">
+				<a class="nav-link menu-link" data-url="OperatorFieldUpdateListForm.action">
 				    <i class="bi bi-gear me-2"></i> 경기장 정보 수정
 				</a>
-				<a class="nav-link menu-link" data-url="OperatorStadiumHolidayInsertForm.action">
+				<a class="nav-link menu-link" data-url="OperatorStadiumHolidayInsertListForm.action">
 				    <i class="bi bi-calendar-plus me-2"></i> 경기장 휴무일 입력
 				</a>
-				<a class="nav-link menu-link" data-url="OperatorStadiumHolidayUpdateForm.action">
-				    <i class="bi bi-calendar-check me-2"></i> 경기장 휴무일 수정
+				<a class="nav-link menu-link" data-url="OperatorStadiumHolidayDeleteForm.action">
+				    <i class="bi bi-calendar-check me-2"></i> 경기장 휴무일 삭제
 				</a>
 				<a class="nav-link menu-link" data-url="OperatorFieldResApprForm.action">
 				    <i class="bi bi-check-circle me-2"></i> 경기장 승인관리
@@ -245,8 +245,8 @@ $(document).ready(function () {
 				<a class="nav-link menu-link" data-url="OperatorStadiumHolidayUpdateForm.action">
 				    <i class="bi bi-credit-card me-2"></i> 결제 내역
 				</a>
-				<a class="nav-link menu-link" href="#">
-				    <i class="bi bi-list-check me-2"></i> 구장 승인,취소 내역
+				<a class="nav-link menu-link" data-url="OperatorFieldApprList.action">
+				    <i class="bi bi-list-check me-2"></i> 경기장 승인,취소 내역
 				</a>
 				<a class="nav-link menu-active" href="Logout.action">
 				    <i class="bi bi-box-arrow-right me-2"></i> 로그아웃

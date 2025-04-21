@@ -79,12 +79,12 @@ public class TeamFeeController
 		
 		 // 페이징 HTML 생성
 		 String pageHtml = pageUtil.getPageHtml("MyTeamFee.action?page=%d");
-		 session.setAttribute("team", team);
-		 session.setAttribute("teamFeeList", teamFeeList);
-		 session.setAttribute("teamMonthFeeList", teamMonthFeeList);
-		 session.setAttribute("expense", expense);
-		 session.setAttribute("income", income);
-		 session.setAttribute("tot", tot);
+		 model.addAttribute("team", team);
+		 model.addAttribute("teamFeeList", teamFeeList);
+		 model.addAttribute("teamMonthFeeList", teamMonthFeeList);
+		 model.addAttribute("expense", expense);
+		 model.addAttribute("income", income);
+		 model.addAttribute("tot", tot);
 		 model.addAttribute("pageHtml", pageHtml);
 	     model.addAttribute("totalCount", totalCount);
 	     model.addAttribute("currentPage", currentPage);

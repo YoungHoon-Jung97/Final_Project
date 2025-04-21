@@ -127,7 +127,7 @@
                     
                     <div class="board-buttons">
                         <a href="MyTeamBoard.action" class="btn btn-list">목록</a>
-                        <c:if test="${sessionScope.team_member_id == teamBoard.team_member_id}">
+                        <c:if test="${teamBoard.team_member_id == team_member_id}">
                             <a href="MyTeamBoardUpdate.action?id=${teamBoard.team_board_id}" class="btn">수정</a>
                             <a href="javascript:void(0);" onclick="confirmDelete(${teamBoard.team_board_id})" class="btn" style="background-color: #dc3545;">삭제</a>
                         </c:if>

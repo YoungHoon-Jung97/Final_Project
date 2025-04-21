@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nutmag.project.dao.IBankDAO;
@@ -29,10 +30,13 @@ import com.nutmag.project.dao.INotificationDAO;
 import com.nutmag.project.dao.IStadiumDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
+import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
+import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.NotificationDTO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.OperatorResCancelDTO;
+import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 import com.nutmag.project.dto.StadiumTimeDTO;
 import com.nutmag.project.dto.UserDTO;
@@ -443,9 +447,9 @@ public class UserController
 		    return "redirect:/Error.action";
 		}
 		
-		// 구장 업데이트 폼 불러오기
-		@RequestMapping(value = "OperatorFieldUpdateForm.action", method = RequestMethod.GET)
-		public String operatorFieldUpdateForm(Model model,HttpServletRequest request)
+		// 경기장 업데이트 리스트
+		@RequestMapping(value = "OperatorFieldUpdateListForm.action", method = RequestMethod.GET)
+		public String operatorFieldUpdateListForm(Model model,HttpServletRequest request)
 		{
 			String result = null;
 			HttpSession session = request.getSession();
@@ -455,7 +459,231 @@ public class UserController
 			
 			model.addAttribute("fieldList", dao.fieldApprOkSearchIdList(user_code_id));
 			
-			result = "/user/OperatorFieldUpdateForm";
+			result = "/user/OperatorFieldUpdateListForm";
+			return result;
+		}
+		
+
+		// 경기장 업데이트 폼 불러오기
+		@RequestMapping(value = "/OperatorFieldUpdateForm.action",method = {RequestMethod.GET, RequestMethod.POST})
+		public String OperatorFieldUpdateForm(Model model, HttpServletRequest request) {
+
+		    IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+		    
+		    String param = request.getParameter("field_code_id");
+
+		    int field_code_id = Integer.parseInt(param);
+		    
+		    System.out.println("필드 코드 아이디 : "+field_code_id);
+		    
+		    ArrayList<FieldResMainPageDTO> fieldList = dao.fieldApprOkSearchList(field_code_id);
+		    
+		    
+		    
+		    model.addAttribute("fieldList", fieldList);
+		    model.addAttribute("fieldTypeList", dao.fieldTypeList());
+			model.addAttribute("fieldEnviromentList", dao.fieldEnviromentList());
+		    
+		    return "/user/OperatorFieldUpdateForm"; 
+		}
+		
+				
+	
+		// 경기장 등록
+		@RequestMapping(value = "/OperatorFieldUpate.action", method = RequestMethod.POST)
+		public String operatorFieldUpdate(FieldRegInsertDTO fieldDTO, HttpServletRequest request)
+		{
+			HttpSession session = request.getSession();
+			MultipartFile file = fieldDTO.getField_reg_image();
+			
+			String oldImagePath = request.getParameter("oldFieldImage"); // 기존 이미지 경로
+			
+			System.out.println("파일 업로드 시작: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
+			
+			if (file != null && !file.isEmpty())
+			{
+				try
+				{
+					// 파일 저장 로직 동일
+					String root = request.getServletContext().getRealPath("");
+					String uploadDir = Path.getUploadFieldDir();
+					String uploadPath = root + (uploadDir.endsWith(File.separator) ? uploadDir : uploadDir + File.separator);
+					
+					File uploadDirFile = new File(uploadPath);
+					if (!uploadDirFile.exists()) uploadDirFile.mkdirs();
+					
+					String originalFileName = file.getOriginalFilename();
+					String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+					String savedFileName = fieldDTO.getField_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
+					String saveFullPath = uploadPath + savedFileName;
+					
+					file.transferTo(new File(saveFullPath));
+					
+					String dbWebPath = (uploadDir + savedFileName).replace("\\", "/");
+					fieldDTO.setField_image(dbWebPath); // 새 이미지로 갱신
+				}
+				catch (Exception e)
+				{
+					System.out.println("파일 저장 중 오류 발생:");
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				// 새 이미지 없으면 기존 이미지 유지
+				fieldDTO.setField_image(oldImagePath);
+			}
+			
+			try
+			{
+				IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+				dao.fieldUpdate(fieldDTO);  // UPDATE 쿼리 수행
+				session.setAttribute("message", "SUCCESS_INSERT: 경기장 정보가 수정되었습니다.");
+			}
+			catch (Exception e)
+			{
+				System.out.println("DB 업데이트 중 오류:");
+				e.printStackTrace();
+			}
+			
+			return "redirect:MainPage.action";
+		}
+		
+		
+		// 구장 휴무일 인서트용 리스트
+		@RequestMapping(value = "OperatorStadiumHolidayInsertListForm.action", method = RequestMethod.GET)
+		public String OperatorStadiumHolidayInsertForm(Model model,HttpServletRequest request)
+		{
+			String result= null;
+			
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class); 
+			HttpSession session = request.getSession();
+			
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			
+			ArrayList<StadiumRegInsertDTO> list = dao.stadiumSearchList(user_code_id);
+			
+			model.addAttribute("stadiumSearchList", list);
+			model.addAttribute("stadiumCount", dao.stadiumSearchCount(user_code_id));
+			
+			
+			result = "/user/OperatorStadiumHolidayInsertListForm";
+			return result;
+		}
+		
+		// 구장 휴무일 인서트 폼
+		@RequestMapping(value = "/OperatorStadiumHolidayInsertForm.action", method = {RequestMethod.GET, RequestMethod.POST} )
+		public String operatorStadiumHolidayInsertForm(Model model,HttpServletRequest request)
+		{
+			String result = null;
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);		
+			
+			String param = request.getParameter("stadium_reg_id");
+	
+		    int stadium_reg_id = Integer.parseInt(param);
+			
+	
+		    model.addAttribute("stadium_reg_id", stadium_reg_id);
+			model.addAttribute("HolidayTypeList", dao.stadiumHolidayTypeList());
+			
+			result = "/user/OperatorStadiumHolidayInsertForm";
+			return result;
+		}
+		
+		// 구장 휴무일 인서트
+		@RequestMapping(value = "/OperatorStadiumHolidayInsert.action", method = RequestMethod.POST)
+		public String operatorStadiumHolidayInsert(StadiumHolidayInsertDTO dto)
+		{
+			String result = null;
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);
+			
+			dao.stadiumHolidayInsert(dto);
+			
+			result = "redirect:OperatorMainPage.action";
+			return result;
+		}
+		
+		
+		// 구장 휴무일 딜리트용 리스트
+		@RequestMapping(value = "OperatorStadiumHolidayDeleteListForm.action", method = RequestMethod.GET)
+		public String OperatorStadiumHolidayDeleteListForm(Model model,HttpServletRequest request)
+		{
+			String result= null;
+			
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class); 
+			HttpSession session = request.getSession();
+			
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			
+			ArrayList<StadiumRegInsertDTO> list = dao.stadiumSearchList(user_code_id);
+			
+			model.addAttribute("stadiumSearchList", list);
+			model.addAttribute("stadiumCount", dao.stadiumSearchCount(user_code_id));
+			
+			
+			result = "/user/OperatorStadiumHolidayDeleteListForm";
+			return result;
+		}
+		
+		
+		// 구장 휴무일 딜리트 폼
+		@RequestMapping(value = "/OperatorStadiumHolidayDeleteForm.action", method = {RequestMethod.GET, RequestMethod.POST} )
+		public String operatorStadiumHolidayDeleteForm(Model model,HttpServletRequest request)
+		{
+			String result = null;
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);		
+			
+			HttpSession session = request.getSession();
+			
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			
+			//System.out.println("유저코드 아이디" + user_code_id);
+			ArrayList<StadiumHolidayInsertDTO> holidayList = dao.stadiumHolidaySearchList(user_code_id);
+	
+			// 디버깅 출력
+			System.out.println("=== [DEBUG] 휴무 리스트 ===");
+			for (StadiumHolidayInsertDTO dto : holidayList)
+			{
+			    System.out.println("ID: " + dto.getStadium_holiday_id()
+			        + ", 시작일: " + dto.getStadium_holiday_start_at()
+			        + ", 종료일: " + dto.getStadium_holiday_end_at()
+			        + ", 설명: " + dto.getStadium_holiday_desc());
+			}
+	
+			model.addAttribute("HolidayList", holidayList);
+			
+			result = "/user/OperatorStadiumHolidayDeleteForm";
+			return result;
+		}
+		
+		// 구장 휴무일 삭제 
+		@RequestMapping(value = "/OperatorStadiumHolidayDelete.action", method = {RequestMethod.GET, RequestMethod.POST} )
+		@ResponseBody
+		public String operatorStadiumHolidayDelete(Model model,HttpServletRequest request)
+		{
+			IStadiumDAO dao = sqlSession.getMapper(IStadiumDAO.class);		
+			String param = request.getParameter("stadium_holiday_id");
+		    int stadium_holiday_id = Integer.parseInt(param);
+			
+		    dao.stadiumHolidayDelete(stadium_holiday_id);
+		    
+			return "success";
+		}
+		
+		// 구장 승인,반려 히스토리 출력
+		@RequestMapping(value = "/OperatorFieldApprList.action")
+		public String operatorFieldApprList(Model model,HttpServletRequest request)
+		{
+			String result = null;
+			HttpSession session = request.getSession();
+			IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+			
+			int user_code_id = (int) session.getAttribute("user_code_id");
+			
+			model.addAttribute("fieldApprOkList", dao.operatorFieldApprOkSearchList(user_code_id));
+			model.addAttribute("fieldApprCancelList", dao.operatorFieldApprCancelSearchList(user_code_id));
+			
+			result = "/user/OperatorFieldApprList";
 			return result;
 		}
 	

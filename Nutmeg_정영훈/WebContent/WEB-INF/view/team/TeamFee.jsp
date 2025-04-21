@@ -628,16 +628,22 @@ function switchTab(tabId) {
     document.querySelector(`.tab-item[data-tab="${tabId}"]`).classList.add('active');
 }
 
-//이벤트 리스너 등록
-document.addEventListener('DOMContentLoaded', function() {
+//이벤트 리스너 등록 함수
+function initializeEventListeners() {
     // 회비 모으기 버튼
-    document.getElementById('collectFeeBtn').addEventListener('click', function() {
-        openModal('feeCollectionModal');
-    });
+    const collectFeeBtn = document.getElementById('collectFeeBtn');
+    if (collectFeeBtn) {
+        collectFeeBtn.addEventListener('click', function() {
+            openModal('feeCollectionModal');
+        });
+    }
     
-    document.getElementById('monthFeeBtn').addEventListener('click', function() {
-        openModal('monthFeeModal');
-    });
+    const monthFeeBtn = document.getElementById('monthFeeBtn');
+    if (monthFeeBtn) {
+        monthFeeBtn.addEventListener('click', function() {
+            openModal('monthFeeModal');
+        });
+    }
     
     // 모달 닫기 버튼
     document.querySelectorAll('.close, .modal-close').forEach(button => {
@@ -656,18 +662,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 탭 전환
-    document.querySelectorAll('.tab-item').forEach(tab => {
-        tab.addEventListener('click', function() {
-            const tabId = this.getAttribute('data-tab');
-            switchTab(tabId);
+    // 탭 전환 - 이벤트 위임 방식으로 변경
+    const tabMenu = document.querySelector('.tab-menu');
+    if (tabMenu) {
+        tabMenu.addEventListener('click', function(event) {
+            const tabItem = event.target.closest('.tab-item');
+            if (tabItem) {
+                const tabId = tabItem.getAttribute('data-tab');
+                switchTab(tabId);
+            }
         });
-    });
+    }
     
-    // 처음 로드 시 전체 탭 활성화 (이미 기본값으로 설정되어 있지만 명시적으로 추가)
+    // 처음 로드 시 전체 탭 활성화
     switchTab('all');
-});
-    
+}
+
+// DOM이 완전히 로드된 후 초기화 함수 호출
+document.addEventListener('DOMContentLoaded', initializeEventListeners);
+
+// 모달이 닫힐 때마다 이벤트 리스너 재초기화
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+    // 모달이 닫힌 후 이벤트 리스너 재초기화
+    initializeEventListeners();
+}
 
 
 </script>
