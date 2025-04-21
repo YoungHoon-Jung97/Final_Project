@@ -1,0 +1,270 @@
+@charset "UTF-8";
+
+.teampage-link:nth-child(2) a
+{
+	color: #faaa7a;
+	border-bottom: 1px solid #faaa7a;
+}
+
+.view-buttons
+{
+	display: flex;
+	gap: 10px;
+	margin-bottom: 15px;
+	justify-content: center;
+}
+
+.view-buttons button, .status-filter-btn, .match-details a
+{
+	padding: 6px 14px;
+	border: none;
+	border-radius: 20px;
+	background-color: #f8f9fa;
+	color: #333;
+	font-size: 14px;
+	transition: all 0.3s;
+	white-space: nowrap;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.buttons-container {
+   	display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: flex-end;
+    flex-direction: row;
+    margin-left: auto;
+}
+
+.match-btn {
+  width: auto;
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  color: #333;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: right;
+}
+
+/*
+.match-details a
+{
+	float: right;
+	margin-top: -50px;
+}
+*/
+.apply
+{
+	margin-right: 130px;
+}
+
+.view-buttons button:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+}
+
+.view-buttons button.active
+{
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
+	color: white;
+}
+
+.match-details a:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+}
+
+.status-filter-container
+{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+}
+
+.status-filter-btn:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+}
+
+.status-filter-btn.active
+{
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
+	color: white;
+	border-color: #007bff;
+	font-weight: bold;
+}
+
+.match-item
+{
+	background-color: white;
+	border-radius: 20px;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	margin-bottom: 25px;
+	transition: transform 0.2s ease;
+}
+
+.match-item:hover {
+	transform: translateY(-4px);
+}
+
+.match-header
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
+	font-size: 16px;
+	font-weight: 500;
+	color: #666;
+}
+
+.match-teams
+{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.team
+{
+	text-align: center;
+	width: 40%;
+}
+
+.team-name
+{
+	font-weight: bold;
+	margin-bottom: 5px;
+	font-size: 16px;
+	color: #333;
+}
+
+.team-score
+{
+	font-size: 28px;
+	font-weight: bold;
+	color: #444;
+}
+
+.vs
+{
+	font-size: 18px;
+	color: #999;
+	font-weight: 600;
+}
+
+.match-details
+{
+	display :flex;
+	border-top: 1px solid #eee;
+	padding-top: 12px;
+}
+
+.detail-item
+{
+	margin-bottom: 6px;
+	color: #555;
+}
+
+.detail-label
+{
+	font-weight: bold;
+	display: inline-block;
+	width: 90px;
+	color: #333;
+}
+
+/* 상단 툴바 타이틀 */
+.fc-toolbar-title
+{
+	color: #198754;
+	font-weight: bold;
+}
+
+/* 이전/다음 버튼 등 */
+.fc-button
+{
+	background: linear-gradient(to right, #7dcfb6, #6ab797);
+	border: none !important;
+	border-radius: 10px !important;
+	padding: 5px 10px !important;
+	font-size: 15px !important;
+	margin-right: 5px !important;
+}
+
+.fc-button:hover
+{
+	background: linear-gradient(to right, #65bda2, #5cae92);
+}
+
+/* 비활성 버튼 */
+.fc-button:disabled
+{
+	background-color: #ccc;
+	cursor: not-allowed !important;
+}
+
+/* 요일 헤더 */
+.fc-col-header-cell
+{
+	background-color: #e8eaeb;
+	color: #333;
+	font-weight: bold;
+	text-align: center !important;
+	padding: 5px 0 !important;
+}
+
+/* 일정 아이템 */
+.fc-event
+{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
+	border: none;
+	border-radius: 5px;
+	font-size: 13px;
+	padding: 5px 5px;
+	color: white;
+	white-space: normal;
+	gap: 2px;
+	margin: 5px 0;
+}
+
+.fc-event:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+}
+
+.fc-daygrid-event-dot, .fc-list-event-graphic
+{
+	display: none;
+}
+
+.fc-event-time
+{
+	font-weight: bold;
+}
+
+.fc-event-title
+{
+	white-space: normal;
+	font-weight: normal !important;
+}
+
+.fc-col-header-cell-cushion, .fc-daygrid-day-number, .fc-list-day-text, .fc-list-day-side-text
+{
+	text-decoration-line: none;
+	color: black;
+}
+
+.fc-list-event-time, .fc-list-event-title
+{
+	border: 0 !important;
+	background-color: transparent !important;
+}

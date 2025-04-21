@@ -38,7 +38,7 @@
 		<div class="board-container">
 			<div class="header-container">
 				<div class="section-header text-center mt-3 mb-3">
-					<h1 class="display-5 fw-bold text-success">⚽ 용병 게시판</h1>
+					<h1 class="display-5 fw-bold text-success">🏃‍♂️ 용병 게시판</h1>
 					
 					<p class="text-muted mt-2">원하는 용병을 찾아 고용해보세요!</p>
 					

@@ -94,7 +94,7 @@ $(function()
 	// 내 정보
 	$(".myInformation").click(function()
 	{
-		window.location.href = "MyInformation.action";
+		window.location.href = "Mypage.action";
 	});
 	
 	// 내 동호회

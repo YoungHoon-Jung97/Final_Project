@@ -170,10 +170,11 @@
 										</div>
 									</div>
 									
+									
 									<c:if test="${(status.index + 1) % 3 == 0}">
-										<div class="row">
-										
 										</div>
+										
+										<div class="row">
 									</c:if>
 								</c:forEach>
 							</div>
@@ -184,6 +185,7 @@
 							
 							<p>${field.field_reg_notice}</p>
 						</div>
+						
 					</c:forEach>
 				</div>
 			</form>

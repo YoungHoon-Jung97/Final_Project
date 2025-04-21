@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.nutmag.project.dto.AdminFieldApprDTO;
+import com.nutmag.project.dto.FieldApprListDTO;
 import com.nutmag.project.dto.FieldEnvironmentDTO;
 import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
@@ -59,6 +60,16 @@ public interface IFieldDAO
 	// 경기장 인원수 리스트
 	public ArrayList<FieldResMainPageDTO> inwonList();
 	
+	// 예약 인서트
 	public int fieldResInsert(FieldResInsertDTO dto);
+	
+	// 경기장 수정
+	public int fieldUpdate(FieldRegInsertDTO dto);
+	
+	// 경기장 승인 리스트 (구장 운영자 유저 코드로 검색)
+	public ArrayList<FieldApprListDTO> operatorFieldApprOkSearchList(int user_code_id);
+	
+	// 경기장 취소 리스트 (구장 운영자 유저 코드로 검색)
+	public ArrayList<FieldApprListDTO> operatorFieldApprCancelSearchList(int user_code_id);
 	
 }

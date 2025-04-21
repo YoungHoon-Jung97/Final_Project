@@ -19,6 +19,7 @@
             #{user_nick_name,		jdbcType=VARCHAR}
         )
     </insert>
+    
 	
 	<!-- 로그인 -->
 	<select id="userLoginKo" resultType="com.nutmag.project.dto.UserDTO">

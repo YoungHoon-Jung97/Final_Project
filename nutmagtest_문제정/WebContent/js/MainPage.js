@@ -45,19 +45,17 @@ $(function()
 		
 		// 모달 열기
 		$('#descModal').css('display', 'flex');
-    	$("#descModal").show();
-    	$("body").css("overflow", "hidden");
-    	$(".floatingButton-wrapper").addClass("blur-background");
-    	$("header").addClass("blur-background");
-    });
-	
+		$("#descModal").show();
+		$("body").css("overflow", "hidden");
+		$("header, .floatingButton-wrapper, .filter-panel").addClass("blur-background");
+	});
+		
 	// 모달 닫기 버튼
 	$("#cancel-desc").on("click", function()
 	{
 		$('#descModal').css('display', 'none');
 		$("#descModal").hide(); // 모달 숨기기
 		$("body").css("overflow", "auto"); // 페이지 스크롤 복원
-		$(".floatingButton-wrapper").removeClass("blur-background");
-		$("header, .navbar").removeClass("blur-background");
+		$("header, .floatingButton-wrapper, .filter-panel").removeClass("blur-background");
 	});
 });

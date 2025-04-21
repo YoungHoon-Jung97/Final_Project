@@ -12,7 +12,6 @@ $(function()
 	var startTimeId = null;
 	var endTimeId = null;
 	var selectionMode = "start";
-	var baseUrl = "<%=request.getContextPath()%>";
 	
 	$(".time-container").on("click", function()
 	{
@@ -117,13 +116,13 @@ $(function()
 		$(".time-table").show();
 		
 		console.log("날짜 변경됨:", match_date);
-		console.log("Ajax 요청 주소:", "/GetUnavailableTimeRange.action");
+		console.log("Ajax 요청 주소:","/GetUnavailableTimeRange.action");
 		
 		if (match_date && field_code_id)
 		{
 			$.ajax(
 			{
-				url : "GetUnavailableTimeRange.action",
+				url :"GetUnavailableTimeRange.action",
 				type : "GET",
 				data :
 				{

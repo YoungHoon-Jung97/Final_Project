@@ -39,7 +39,7 @@ body
 	font-weight: bold;
 }
 
-.teampage-link a:hover, .teampage-link:first-child a
+.teampage-link a:hover
 {
 	color: #faaa7a;
 	border-bottom: 1px solid #faaa7a;
