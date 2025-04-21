@@ -37,28 +37,37 @@ public class TeamFeeController
 		 HttpSession session = request.getSession();
 		 Integer temp_team_id = (Integer) session.getAttribute("team_id");
 		 
-		 // 현재 페이지 파라미터 처리 (기본값: 1)
-	     String pageParam = request.getParameter("page");
-	     int currentPage = 1;
-	     
-	     if (pageParam != null && !pageParam.isEmpty()) 
-	    {
-	        try 
-	        {
-	            currentPage = Integer.parseInt(pageParam);
-	        } 
-	        catch (NumberFormatException e) 
-	        {
-	            // 숫자 형식이 아닌 경우 기본값 사용
-	        }
-	    }
-		 
 		 // 동호회 정보 가져오기
 		 ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		 ITeamFeeDAO teamFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
 		 
 		 TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
 		 int team_id = team.getTeam_id();
+		 
+		 if (team_id == 0) {
+			 
+			String message = "ERROR_DUPLICATE_JOIN: 임시동호회 임으로 이용리 불가능합니다.";
+			session.setAttribute("message", message);
+			return "redirect:MainPage.action";
+			
+		 }
+		 
+		 // 현재 페이지 파라미터 처리 (기본값: 1)
+		 String pageParam = request.getParameter("page");
+		 int currentPage = 1;
+		 
+		 if (pageParam != null && !pageParam.isEmpty()) 
+		{
+		    try 
+		    {
+		        currentPage = Integer.parseInt(pageParam);
+		    } 
+		    catch (NumberFormatException e) 
+		    {
+		        // 숫자 형식이 아닌 경우 기본값 사용
+		    }
+		}
+		 
 		 
 		 // 전체 게시글 수 조회
 		 int totalCount = teamFeeDAO.countTeamFee(team_id);
