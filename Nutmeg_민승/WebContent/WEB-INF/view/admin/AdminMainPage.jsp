@@ -166,7 +166,7 @@
                     $('#content-area').html(result);
                 },
                 error: function () {
-                    alert("콘텐츠를 불러오는 데 실패했습니다.");
+                    /* alert("콘텐츠를 불러오는 데 실패했습니다."); */
                 }
             });
         });

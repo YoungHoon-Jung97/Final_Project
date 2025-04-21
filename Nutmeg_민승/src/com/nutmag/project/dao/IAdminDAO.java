@@ -61,7 +61,8 @@ public interface IAdminDAO
     public int unbanUser(int user_id);
     public int deleteUser(int user_id);
 
-
+    //정지된 사용자 찾기
+    public UserDTO searchBannedUser(@Param("user_code_id") int user_code_id);
     
 
 //==============================================================================

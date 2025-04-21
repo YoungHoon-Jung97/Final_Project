@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.nutmag.project.dao.IAdminDAO;
 import com.nutmag.project.dao.IBankDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
@@ -271,6 +272,7 @@ public class UserController
 	{
 		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		IAdminDAO adminDAO = sqlSession.getMapper(IAdminDAO.class);
 		
 		UserDTO dto = null;
 		
@@ -280,13 +282,17 @@ public class UserController
 		else
 			dto = userDAO.userLoginEn(logEmailEn, logPwEn);
 		
+		int user_code_id = dto.getUser_code_id();
+		
+		
 		if (dto != null && dto.getUser_id() > 0)
 		{
 		//=========================민승=================================
-			if ("Y".equals(dto.getIs_banned())) {
+			if (adminDAO.searchBannedUser(user_code_id) !=null) {
 	            // 차단된 계정이면 로그인 화면으로 돌려보내기
-	            session.setAttribute("lang", lang);
-	            return "redirect:/Login.action?msg=banned";
+				String message = "ERROR_DUPLICATE_JOIN: 정지된 회원입니다.";
+				session.setAttribute("message", message);
+				return "redirect:/MainPage.action";
 	        }
 		//==============================================================
 			

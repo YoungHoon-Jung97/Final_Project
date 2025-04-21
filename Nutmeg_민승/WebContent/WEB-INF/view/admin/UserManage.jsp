@@ -62,7 +62,7 @@ String cp = request.getContextPath();
     font-size: 0.85rem;
     border-radius: 4px;
   }
-  /* …기존 버튼 스타일 유지… */
+
 </style>
 
 <div class="user-table">
@@ -146,13 +146,13 @@ String cp = request.getContextPath();
 <script>
 $(function(){
 
-  // 차단 버튼 클릭 → 모달 표시
+  // 차단 버튼 클릭 
   $('.ban-btn').on('click', function(){
     $('#banUserId').val($(this).data('user-id'));
     new bootstrap.Modal($('#banModal')).show();
   });
 
-  // 차단 폼 submit → AJAX
+  // 차단 폼 
   $('#banForm').on('submit', function(e){
     e.preventDefault();
     $.post(
@@ -188,8 +188,8 @@ $(function(){
     if (!confirm("정말 사용자를 삭제하시겠습니까?")) return;
     var uid = $(this).data('user-id');
     $.post(
-      '<%=cp%>/UserDelete.action',     // ← 여긴 한 줄!!!
-      { user_id: uid },                // 컨트롤러가 받는 파라미터 이름(user_id)으로 맞춤
+      '<%=cp%>/UserDelete.action',     
+      { user_id: uid },                
       function(){
         alert("사용자가 삭제되었습니다.");
         location.reload();

@@ -442,9 +442,11 @@ public class TeamController
 		ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 		TeamDTO team = dao.getTeamInfo(temp_team_id);
 			
+
+		
 		//동호회 회장
-			if (user_code_id == team.getUser_code_id())
-				team.setStatus(1);
+		if (user_code_id == team.getUser_code_id())
+			team.setStatus(1);
 	
 		else
 			team.setStatus(0);
