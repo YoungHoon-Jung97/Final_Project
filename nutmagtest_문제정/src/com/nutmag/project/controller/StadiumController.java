@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.nutmag.project.dao.IFieldDAO;
 import com.nutmag.project.dao.IPositionDAO;
@@ -59,6 +64,18 @@ public class StadiumController
 		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
 		
 		return "/stadium/StadiumRegInsertForm";
+	}
+	
+	@Configuration
+	@EnableWebMvc
+	public class WebConfig implements WebMvcConfigurer
+	{
+	    @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry)
+	    {
+	        registry.addResourceHandler("/resources/**")
+	                .addResourceLocations("/resources/");
+	    }
 	}
 	
 	// 이미지 바인딩 예외 처리
@@ -107,10 +124,9 @@ public class StadiumController
 			else
 				System.out.println("uploadFile is null");
 			
-			String root = request.getServletContext().getRealPath("");
 			
 			// 1. 업로드 경로 설정
-			String uploadPath = root + Path.getUploadStadiumDir();
+			String uploadPath = Path.getUploadStadiumDir();
 			File uploadDir = new File(uploadPath);
 			
 			// 파일 경로 없을 시 폴더 생성
@@ -120,20 +136,33 @@ public class StadiumController
 			// 2. 파일 저장
 			if (uploadFile != null && !uploadFile.isEmpty())
 			{
-				String originalFileName = uploadFile.getOriginalFilename();
-				String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-				String savedFileName = stadiumDTO.getStadium_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
-				File saveFile = new File(uploadPath, savedFileName);
-				uploadFile.transferTo(saveFile);
-				
-				String fileWebPath = Path.getUploadStadiumDir() + savedFileName;
-				stadiumDTO.setStadium_reg_image(fileWebPath);
-				
-				// 디버그
-				System.out.println("/n=====[파일 경로]=====");
-				System.out.println("파일 저장 경로 (uploadPath) : " + uploadPath);
-				System.out.println("파일 이름 (savedFileName) : " + savedFileName);
-				System.out.println("데이터 베이스에 저장된 경로(fileWebPath) : " + fileWebPath);
+				 String originalFileName = uploadFile.getOriginalFilename();
+				    String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+				    String savedFileName = stadiumDTO.getStadium_reg_name().replaceAll("[^a-zA-Z0-9가-힣_\\-]", "_")
+				                             + "_" + System.currentTimeMillis() + fileExtension;
+
+				    // 공유폴더 저장
+				    File saveFile = new File(uploadPath, savedFileName);
+				    uploadFile.transferTo(saveFile);
+
+				    // 정적 리소스 경로 복사
+				    String staticPath = request.getServletContext().getRealPath("/resources/uploads/stadiums/");
+				    File staticFile = new File(staticPath, savedFileName);
+
+				    if (!staticFile.getParentFile().exists())
+				        staticFile.getParentFile().mkdirs();
+
+				    FileUtils.copyFile(saveFile, staticFile); // org.apache.commons.io.FileUtils 필요
+
+				    // DB에는 웹 접근 가능한 경로 저장
+				    String fileWebPath = "resources/uploads/stadiums/" + savedFileName;
+				    stadiumDTO.setStadium_reg_image(fileWebPath);
+
+				    // 디버그
+				    System.out.println("\n=====[파일 경로]=====");
+				    System.out.println("공유폴더 저장경로 : " + saveFile.getAbsolutePath());
+				    System.out.println("정적리소스 복사경로 : " + staticFile.getAbsolutePath());
+				    System.out.println("DB 저장 웹경로 : " + fileWebPath);
 			}
 			
 			// 3. DB 저장
