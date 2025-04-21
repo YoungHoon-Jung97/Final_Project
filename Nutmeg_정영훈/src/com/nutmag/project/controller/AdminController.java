@@ -108,7 +108,7 @@ public class AdminController
 		
 		dao.adminInsert(adminDTO);
 		
-		result = "redirect:AdminInsertForm.action";
+		result = "redirect:/AdminLogin.action";
 		
 		return result;
 	};
@@ -330,6 +330,13 @@ public class AdminController
         dto.setUserCodeId2(adminId);
 
         IAdminDAO dao = sqlSession.getMapper(IAdminDAO.class);
+        
+        System.out.println("==============================확인==============================");
+        System.out.println("BanDeadlineId()"+dto.getBanDeadlineId());
+        System.out.println("UserBanReason()"+dto.getUserBanReason());
+        System.out.println("UserCodeId1()"+dto.getUserCodeId1());
+        System.out.println("UserCodeId2()"+dto.getUserCodeId2());
+        System.out.println("================================================================");
         dao.insertUserBan(dto);
 
         return "redirect:UserManage.action";
