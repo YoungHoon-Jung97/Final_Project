@@ -508,6 +508,7 @@ public class UserController
 			else
 				session.setAttribute("team_id", 0);
 			
+			
 			// 로그인 상태 플래그 남기기
 			session.setAttribute("loginFlag", "1");
 			

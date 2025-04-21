@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function()
 	});
 	
 	// '전체' 필터 버튼 초기 활성화
-	document.querySelector('.status-filter-btn[data-status="all"]').classList.add('active');
+	document.querySelector('.status-filter-btn[data-status="예정됨"]').classList.add('active');
 	
 	// 초기 데이터 로드
 	fetchEvents();
@@ -357,18 +357,25 @@ function createMatchListItem(event, container)
 		'</div>' +
 		'<div class="match-details">' +
 			'<div class="detail-item">' +
-				'<span class="detail-label">경기장:</span>' +
-				'<span>' + props.venue + '</span>' +
+				'<div>'+
+					'<span class="detail-label">경기장:</span>' +
+					'<span>' + props.venue + '</span>' +
+				'</div>'+
+				'<div>'+
+					'<span class="detail-label">참석 인원:</span>' +
+					'<span>' + props.attendance + '</span>' +
+				'</div>'+
 			'</div>' +
-			'<div class="detail-item">' +
-				'<span class="detail-label">참석 인원:</span>' +
-				'<span>' + props.attendance + '</span>' +
-			'</div>' +
-			'<div class="btns">' +
-				(statusText != "취소됨" && (statusText == "예정됨" || statusText == "상대미정") ? 
-				'<a class="btn apply" href="ApplyMatch.action?field_res_id='+id+'">참가하기</a>' : '') +
-				'<a class="btn" href="Participant.action?field_res_id='+id+'">참가인원 보기</a>'
-			'</div>' +
+			'<div class="buttons-container">' +
+			  (statusText !== "취소됨" && (statusText === "예정됨" || statusText === "상대미정" || statusText === "결제대기") ? 
+			    '<a class="match-btn btn btn-outline-primary" href="ApplyMatch.action?field_res_id=' + id + '" ' +
+			    'onclick="return confirm(\'참여하시겠습니까?\');">참가 하기</a>' : '') +
+			  '<a class="match-btn btn btn-outline-secondary" href="Participant.action?field_res_id=' + id + '">참가인원 보기</a>' +
+			  (statusText === "결제대기" && teamStatus === 1 ? 
+			    '<a class="match-btn btn btn-outline-success" href="ApproveMatch.action?field_res_id=' + id + '" ' +
+			    'onclick="return confirm(\'정말 결재 승인하시겠습니까?\');">결재 승인</a>' : '') +
+			'</div>'
+
 		'</div>';
 	
 	container.appendChild(matchItem);

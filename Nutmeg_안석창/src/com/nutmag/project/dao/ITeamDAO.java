@@ -61,6 +61,8 @@ public interface ITeamDAO {
 	// 임시 동호회 중복 신청 검사
     int checkedTempTeamApply(@Param("user_code_id") int user_code_id,
                              @Param("team_id") int team_id);
+    
+    TeamApplyDTO searchTeamMemberCode(@Param("team_id") int team_id, @Param("user_code_id") int user_code_id);
 
     // 정식 동호회 중복 신청 검사
     int checkedTeamApply(@Param("user_code_id") int user_code_id,

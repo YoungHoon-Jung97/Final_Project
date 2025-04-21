@@ -152,3 +152,9 @@ body
 	display: block;
 	margin-bottom: 5px;
 }
+
+#descTeamDesc
+{
+	white-space: pre-wrap;
+	word-break: break-word;
+}

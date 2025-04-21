@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.ITeamFeeDAO">
+
+	<!-- 메시지 등록 -->
+	<insert id="addTeamFeeInfo" parameterType="com.nutmag.project.dto.TeamFeeDTO">
+		INSERT INTO TEAM_FEE(
+		    TEAM_FEE_ID,
+		    TEAM_FEE_PRICE,
+		    TEAM_FEE_PAY_START_AT,
+		    TEAM_FEE_PAY_END_AT,
+		    TEAM_ID,
+		    TEAM_FEE_DESC
+		)VALUES
+		(   TEAM_FEE_SEQ.NEXTVAL,
+			#{team_fee_price},
+			TO_DATE(#{team_fee_pay_start_at}, 'YYYY-MM'),
+    		TO_DATE(#{team_fee_pay_end_at}, 'YYYY-MM-DD'),
+			#{team_id},#{team_fee_desc}
+		)
+	</insert>
+	
+	<!-- 메시지 등록 -->
+	<insert id="addMonthFee" parameterType="com.nutmag.project.dto.TeamFeeDTO">
+		INSERT INTO TEAM_MEMBER_FEE_PAY(
+			TEAM_MEMBER_FEE_PAY_ID,
+		    TEAM_MEMBER_FEE_PAY_PRICE,
+		    TEAM_MEMBER_FEE_PAY_AT,
+		    TEAM_FEE_ID,
+		    TEAM_MEMBER_ID
+		    )
+		    VALUES(
+		    TEAM_MEMBER_FEE_PAY_SEQ.NEXTVAL,
+		    #{team_fee_price},sysdate,#{team_fee_id},#{team_member_id}
+    	)
+	</insert>
+	
+	<!-- 동호회 가계부 정보 가져오기 -->
+	<select id="getTeamFeeList" resultType="com.nutmag.project.dto.TeamFeeDTO">
+		SELECT RNUM, TEAM_ID, TRANSACTION_TYPE, TRANSACTION_DATE, DESCRIPTION,
+		       FIELD_NAME, STADIUM_NAME, MATCH_DATE, START_TIME, END_TIME,
+		       MATCH_INWON, INCOME_AMOUNT, EXPENSE_AMOUNT, NET_AMOUNT,
+		       MATCH_STATUS, TEAM_FEE_ID
+		FROM (
+		    SELECT ROWNUM AS RNUM, DATA.*
+		    FROM (
+		        SELECT TEAM_ID, TRANSACTION_TYPE,
+		               TO_CHAR(TRANSACTION_DATE, 'YYYY-MM-DD') AS TRANSACTION_DATE,
+		               DESCRIPTION, FIELD_NAME, STADIUM_NAME, MATCH_DATE,
+		               START_TIME, END_TIME, MATCH_INWON, INCOME_AMOUNT,
+		               EXPENSE_AMOUNT, NET_AMOUNT, MATCH_STATUS, TEAM_FEE_ID
+		        FROM TEAM_FINANCIAL_LEDGER_VIEW
+		        WHERE TEAM_ID = #{team_id}
+		        ORDER BY TRANSACTION_DATE DESC
+		    ) DATA
+		    WHERE ROWNUM &lt;=#{end}
+		)
+		WHERE RNUM &gt;= #{start}
+	</select>
+	
+	<!-- 동호회 회비 리스트  -->
+	<select id="getTeamMonthFeeList" resultType="com.nutmag.project.dto.TeamFeeDTO">
+		SELECT 
+	        TEAM_FEE_ID,
+	        TEAM_FEE_PRICE,
+	        TO_CHAR(TEAM_FEE_PAY_START_AT,'YYYY-MM-DD') AS "TEAM_FEE_PAY_START_AT",
+	        TO_CHAR(TEAM_FEE_PAY_END_AT,'YYYY-MM-DD') AS "TEAM_FEE_PAY_END_AT",
+	        TEAM_ID,
+	        TEAM_FEE_DESC
+    	FROM TEAM_FEE
+    	WHERE TEAM_ID = #{team_id}
+	</select>
+	
+	<!-- 가계부 자료수 -->
+	<select id="countTeamFee" resultType="int">
+		SELECT 
+            COUNT(*) AS COUNT
+		FROM TEAM_FINANCIAL_LEDGER_VIEW
+		WHERE TEAM_ID =#{team_id}
+	</select>
+	
+	<!-- 팀 총 수입 -->
+	<select id="getTeamIncome" resultType="int">
+		SELECT NVL(SUM(INCOME_AMOUNT), 0) AS INCOME
+		FROM TEAM_FINANCIAL_LEDGER_VIEW
+		WHERE TEAM_ID = #{team_id}
+	</select>
+	
+	<!-- 팀 총 지출 -->
+	<select id="getTeamexpense" resultType="int">
+		SELECT NVL(SUM(EXPENSE_AMOUNT), 0) AS EXPENSE
+		FROM TEAM_FINANCIAL_LEDGER_VIEW
+		WHERE TEAM_ID = #{team_id}
+	</select>
+		
+	<!-- 회비 납부자 명단 -->
+	<select id="getMemberFeeList" resultType="com.nutmag.project.dto.TeamMemberFeeDTO">
+		SELECT 
+			TEAM_MEMBER_FEE_PAY_ID 
+			,TEAM_MEMBER_FEE_PAY_PRICE 
+			,TO_CHAR(TEAM_MEMBER_FEE_PAY_AT, 'YYYY-MM-DD') AS "TEAM_MEMBER_FEE_PAY_AT"
+			,TEAM_FEE_ID 
+			,TEAM_MEMBER_ID
+			,USER_NICK_NAME 
+			,TEAM_ID
+		FROM TEAM_MEMBER_FEE_PAY_VIEW
+		WHERE TEAM_FEE_ID =#{team_fee_id}
+	</select>
+
+</mapper>

@@ -27,12 +27,33 @@
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
+.buttons-container {
+   	display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: flex-end;
+    flex-direction: row;
+    margin-left: auto;
+}
+
+.match-btn {
+  width: auto;
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  color: #333;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: right;
+}
+
+/*
 .match-details a
 {
 	float: right;
 	margin-top: -50px;
 }
-
+*/
 .apply
 {
 	margin-right: 130px;
@@ -138,6 +159,7 @@
 
 .match-details
 {
+	display :flex;
 	border-top: 1px solid #eee;
 	padding-top: 12px;
 }

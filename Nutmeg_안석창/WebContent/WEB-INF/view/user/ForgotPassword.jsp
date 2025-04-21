@@ -128,7 +128,7 @@ keyframes fadeIn
 					
 					<div class="form__input-wrapper">
 						<input type="tel" class="form__input" id="tel" name="tel"
-						placeholder="010-0000-0000" pattern="^$|^\d{3}-\d{3,4}-\d{4}$" required>
+						placeholder="010-0000-0000" pattern="^\d{3}-\d{3,4}-\d{4}$" required>
 					</div>
 				</div>
 			</div>

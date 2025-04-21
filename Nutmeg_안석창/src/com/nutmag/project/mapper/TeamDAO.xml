@@ -138,6 +138,13 @@
     	FROM TEAM_APPLY_VIEW
     	WHERE TEAM_ID=#{team_id} AND USER_CODE_ID=#{user_code_id}
     </select>
+    
+    <!-- 정식 동호회 회원 멤버 코드 찾기  -->
+    <select id="searchTeamMemberCode" resultType="com.nutmag.project.dto.TeamApplyDTO">
+    	SELECT TEAM_MEMBER_ID
+    	FROM TEAM_MEMBER_VIEW
+    	WHERE TEAM_ID=#{team_id} AND USER_CODE_ID=#{user_code_id}
+    </select>
    
 	<!-- 정식 동호회 신청자 명단  -->
 	<select id="teamApplyList" resultType="com.nutmag.project.dto.TeamApplyDTO">

@@ -171,3 +171,9 @@
 {
 	border-bottom: 1px solid #ddd;
 }
+
+.comment
+{
+	white-space: pre-wrap;
+	word-break: break-word;
+}

@@ -42,28 +42,12 @@
 	var msg = "<%= msg %>";
 	var lang = "<%= lang %>";
 	
-	$(function()
-	{
-		// 뒤로 가기
-		$('#backButton').on('click', function()
-		{
-			var prevPage = "<%= session.getAttribute("prevPage") %>";
-			var fallback = "<%= cp %>/MainPage.action";
-
-			if (prevPage && prevPage !== "null")
-				window.location.href = prevPage;
-			
-			else
-		        window.location.href = fallback;
-		});
-	});
-	
 </script>
 <script type="text/javascript" src="<%=cp %>/js/Login.js?after"></script>
 
 </head>
 <body>
-<button id="backButton" class="back-btn uil uil-arrow-left"></button>
+<button id="backButton" class="back-btn uil uil-arrow-left" onclick="location.href='<%=cp %>/MainPage.action'"></button>
 
 <div class="section">
 	<div class="container">

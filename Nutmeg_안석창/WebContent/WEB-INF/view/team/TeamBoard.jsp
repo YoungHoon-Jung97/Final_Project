@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -8,93 +9,99 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>팀 정보</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/TeamMain.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
+<title>TeamBoard.jsp</title>
 
-<style type="text/css">
-/*팀 메뉴 넘어갔을 때 표시*/
-.teampage-link:nth-child(4) a {
-    color: #a8d5ba;
-    border-bottom: 2px solid #a8d5ba;
-}
-</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamBoard.css?after">
+
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
+
 </head>
 <body>
-<c:import url="/WEB-INF/view/Template.jsp"></c:import>
-<div class="container">
-	<section>
-		<div class="main">
-			<div class="main-content">
-				<ul class="team-menu">
-					<li class="teampage-link"><a href="MyTeam.action">팀 정보</a></li>
-					<li class="teampage-link"><a href="MyTeamSchedule.action">팀 매치</a></li>
-					<li class="teampage-link"><a href="MyTeamFee.action">팀 가계부</a></li>
-					<li class="teampage-link"><a href="MyTeamBoard.action">팀 게시판</a></li>
-				</ul>
-				<!-- .tean-menu -->
-
-				<div class="team-info-wrap">
-
-					<div class="left">
-						<div class="team_box">
-							<div class="team01">
-								<p class="img">
-									<img src="" alt="" />
-								</p>
-								<dt>팀 이름</dt>
-								<dd>경기 판수</dd>
-							</div>
-							<div class="team02">
-								<ul>
-									<li></li>
-								</ul>
-								<p class="comment">설명없음</p>
-							</div>
+<div class="main-background">
+	<main>
+		<div class="container-fluid container">
+			<div class="main">
+				<div class="main-content">
+					<ul class="team-menu">
+						<li class="teampage-link">
+							<a href="MyTeam.action">동호회 정보</a>
+						</li>
+						
+						<li class="teampage-link">
+							<a href="MyTeamSchedule.action">동호회 매치 일정</a>
+						</li>
+						
+						<li class="teampage-link">
+							<a href="MyTeamFee.action">동호회 가계부</a>
+						</li>
+						
+						<li class="teampage-link">
+							<a href="MyTeamBoard.action">동호회 게시판</a>
+						</li>
+					</ul>
+					
+					<div class="board-container">
+						<div class="section-header text-center mt-5">
+							<h1 class="display-5 fw-bold text-success">📄 동호회 게시판</h1>
+							
+							<p class="text-muted mt-2">우리 팀의 소식을 한눈에 확인해보세요!</p>
+							
+							<div class="underline mt-3 mx-auto"></div>
 						</div>
-					</div>
-
-					<div class="right">
-						<table class="team-table">
-							<caption>팀원정보</caption>
-							<colgroup>
-								<col style="width: 45%" />
-								<col style="width: 10%" />
-								<col style="width: 15%" />
-								<col style="width: 30%" />
-							</colgroup>
+						
+						<button class="write-btn" onclick="location.href='TeamBoardWrite.action'">글쓰기</button>
+						
+						<!-- 페이징 정보 -->
+						<c:if test="${not empty totalCount and totalCount > 0}">
+							<div class="page-info">
+								전체 ${totalCount}개 글, Page ${currentPage} / ${totalPage}
+							</div>
+						</c:if>
+						
+						<table class="board-table">
 							<thead>
-								<tr class="center">
-									<th>이름</th>
-									<th>포지션</th>
-									<th>역할</th>
-									<th>관리</th>
+								<tr>
+									<th width="10%">번호</th>
+									<th width="60%">제목</th>
+									<th width="15%">작성자</th>
+									<th width="15%">작성일</th>
 								</tr>
 							</thead>
-							<tbody class="center">
-								<tr>
-									<td>정영훈</td>
-									<td></td>
-									<td>팀 개설자</td>
-									<td></td>
-								</tr>
+							
+							<tbody>
+								<c:if test="${empty teamBoardList}">
+									<tr>
+										<td colspan="4" style="text-align: center;">등록된 게시글이 없습니다.</td>
+									</tr>
+								</c:if>
+								
+								<c:forEach var="teamBoard" items="${teamBoardList}" varStatus="status">
+									<tr>
+										<td>${teamBoard.rnum}</td>
+										<td class="title-cell">
+											<a href="SearchTeamBoard.action?id=${teamBoard.team_board_id}">
+												${teamBoard.team_board_title}
+											</a>
+										</td>
+										<td>${teamBoard.user_nick_name}</td>
+										<td>
+											<fmt:formatDate value="${teamBoard.team_board_create_at}" pattern="yyyy-MM-dd" />
+										</td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
+						
+						<!-- 페이징 -->
+						<div class="pagination">${pageHtml}</div>
 					</div>
 				</div>
-				<!-- .team-info-wrap -->
-				<div class="team-modify">
-					<a href=""> 
-						<span>팀 정보 수정</span>
-					</a>
-				</div>
 			</div>
-			<!-- .main-content  -->
 		</div>
-		<!-- .main  -->
-	</section>
+	</main>
 </div>
-
-
 </body>
 </html>

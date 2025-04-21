@@ -54,6 +54,7 @@
 						case "ERROR_DUPLICATE_JOIN":
 						case "ERROR_AUTH_REQUIRED":
 						case "ERROR_DUPLICATE_REQUEST":
+						case "ERROR":
 							swal("에러", content, "error");
 							break;
 						

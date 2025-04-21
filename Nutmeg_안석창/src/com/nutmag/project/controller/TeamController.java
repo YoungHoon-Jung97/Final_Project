@@ -28,13 +28,18 @@ import com.nutmag.project.dao.INotificationDAO;
 import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
+import com.nutmag.project.dao.ITeamFeeDAO;
+import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.CityDTO;
 import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.NotificationDTO;
 import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
+import com.nutmag.project.dto.TeamFeeDTO;
+import com.nutmag.project.dto.UserDTO;
 
+import util.PageUtil;
 import util.Path;
 
 @Controller
@@ -322,7 +327,12 @@ public class TeamController
 	@RequestMapping(value = "/TeamInsert.action", method = RequestMethod.POST)
 	public String insertTeam(TeamDTO team, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
 		MultipartFile file = team.getTemp_team_emblem();
+		
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
+		Integer user_code_id = (Integer)session.getAttribute("user_code_id");
 		
 		System.out.println("/n===================================================================================================");
 		
@@ -409,6 +419,9 @@ public class TeamController
 			{
 				System.out.println("파일 저장 중 오류 발생:");
 				e.printStackTrace();
+				
+				String message = "ERROR: 동호회 설명이 너무 깁니다.";
+				session.setAttribute("message", message);
 			}
 		}
 		
@@ -420,11 +433,20 @@ public class TeamController
 			ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
 			dao.teamInsert(team);
 			System.out.println("DB 저장 완료");
+			
+			String message = "SUCCESS_INSERT: 동호회 개설이 완료되었습니다.";
+			session.setAttribute("message", message);
+			
+			if (teamDAO.searchMyTempTeam(user_code_id) != null)
+				session.setAttribute("team_id", teamDAO.searchMyTempTeam(user_code_id));
 		}
 		catch (Exception e)
 		{
 			System.out.println("DB 저장 중 오류 발생:");
 			e.printStackTrace();
+			
+			String message = "ERROR: 동호회 설명이 너무 깁니다.";
+			session.setAttribute("message", message);
 		}
 		
 		System.out.println("\n===================================================================================================");
@@ -547,21 +569,7 @@ public class TeamController
 	    
 	    return matchList; // Spring이 자동으로 JSON으로 변환
 	}
-	
-	
-	// 가게부 호출
-	@RequestMapping(value = "/MyTeamFee.action", method = RequestMethod.GET)
-	public String teamFee()
-	{
-		return "/team/TeamFee";
-	}
-	
-	// 팀 게시판 호출
-	@RequestMapping(value = "/MyTeamBoard.action", method = RequestMethod.GET)
-	public String teamBoard()
-	{
-		return "/team/TeamBoard";
-	}
+
 	
 	// 팀원 승인 호출
 	@RequestMapping(value = "/MemberAppr.action", method = RequestMethod.GET)
