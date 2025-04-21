@@ -2,7 +2,8 @@
 
 .background-banner
 {
-	height: 279px;
+	height: 266px !important;
+	background-position: center 54.56% !important;
 }
 
 /*게시판 테이블 스타일 */

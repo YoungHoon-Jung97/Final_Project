@@ -41,6 +41,9 @@ public interface IFieldDAO
 	// 승인된 경기장 리스트
 	public ArrayList<FieldResMainPageDTO> fieldApprOkList();
 	
+	// 승인된 경기장 리스트 유저 코드로 검색
+	public ArrayList<FieldResMainPageDTO> fieldApprOkSearchIdList(int user_code_id);
+	
 	// 경기장 예약 메인 페이지 지역 선택시 나오는 경기장 리스트
 	public ArrayList<FieldResMainPageDTO> searchFieldList(Map<String, Object> params);
 	
@@ -56,6 +59,7 @@ public interface IFieldDAO
 	// 경기장 인원수 리스트
 	public ArrayList<FieldResMainPageDTO> inwonList();
 	
+	// 예약 인서트
 	public int fieldResInsert(FieldResInsertDTO dto);
 	
 }

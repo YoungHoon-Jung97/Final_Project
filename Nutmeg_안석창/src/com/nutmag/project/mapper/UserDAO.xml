@@ -118,7 +118,7 @@
 	    SELECT USER_EMAIL
 	    FROM USER_INFO
 	    WHERE USER_TEL = #{tel}
-	      AND USER_SSN1 = #{birth}
+		  AND USER_SSN1 = #{birth}
 	</select>
 
 	<!--  이메일, 비밀번호 확인  -->
