@@ -16,6 +16,8 @@
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamBoard.css?after">
 
+<script type="text/javascript" src="<%=cp %>/js/TeamBoard.js?after"></script>
+
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 
 </head>
@@ -79,7 +81,7 @@
 								</c:if>
 								
 								<c:forEach var="teamBoard" items="${teamBoardList}" varStatus="status">
-									<tr  class="clickable-row" data-href="SearchTeamBoard.action?id=${teamBoard.team_board_id}">
+									<tr class="clickable-row" data-href="SearchTeamBoard.action?id=${teamBoard.team_board_id}">
 										<td>${teamBoard.rnum}</td>
 										<td class="title-cell">
 												${teamBoard.team_board_title}

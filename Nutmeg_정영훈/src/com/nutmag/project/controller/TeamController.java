@@ -812,4 +812,66 @@ public class TeamController
 	{
 		return "/team/TeamUpdate";
 	}
+	
+	// 동호회 해체
+	@RequestMapping(value = "/DisbandTeam.action", method = RequestMethod.POST)
+	public String disbandTeam(HttpSession session, Model model) {
+	    Integer temp_team_id = (Integer) session.getAttribute("team_id");
+	    System.out.println("[DEBUG] disbandTeam 호출됨. session.team_id = " + temp_team_id);
+	    
+		// 동호회 정보 가져오기
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		
+		INotificationDAO notificationDAO = sqlSession.getMapper(INotificationDAO.class);
+		NotificationDTO notification = new NotificationDTO();
+		
+		int team_id = team.getTeam_id();
+		
+		// 동호회원 가져오기
+		if (team_id == 0)
+		{
+			// 임시동호회 인원 찾기
+			teamDAO.tempTempDrop(temp_team_id);
+			String message = "SUCCESS_APPLY: 해체가 성공적으로 완료되었습니다.";
+			session.setAttribute("message", message);
+			
+			team_id =temp_team_id;
+			ArrayList<TeamApplyDTO> teamMemberList =  teamDAO.tempTeamMemberList(team_id);
+			
+			for (TeamApplyDTO teamMember : teamMemberList)
+			{
+				int user_code_id = teamMember.getUser_code_id();
+				notification.setUser_code_id(user_code_id);
+				notification.setNotification_type_id(1);
+				//알림 메시지 등록
+				notification.setMessage(team.getTemp_team_name() + " 동호회에서 강퇴되었습니다.");
+				notificationDAO.addNotification(notification);
+			}
+			
+			
+		}
+		else if (team_id != 0)
+		{
+			// 임시동호회 인원 찾기
+			teamDAO.teamDrop(team_id);
+			String message = "SUCCESS_APPLY: 해체가 성공적으로 완료되었습니다.";
+			session.setAttribute("message", message);
+			
+			ArrayList<TeamApplyDTO> teamMemberList =  teamDAO.teamMemberList(team_id);
+			
+			for (TeamApplyDTO teamMember : teamMemberList)
+			{
+				int user_code_id = teamMember.getUser_code_id();
+				notification.setUser_code_id(user_code_id);
+				notification.setNotification_type_id(1);
+				//알림 메시지 등록
+				notification.setMessage(team.getTemp_team_name() + " 동호회에서 강퇴되었습니다.");
+				notificationDAO.addNotification(notification);
+			}
+			
+		}
+		
+	    return "redirect:/MainPage.action";
+	}
 }

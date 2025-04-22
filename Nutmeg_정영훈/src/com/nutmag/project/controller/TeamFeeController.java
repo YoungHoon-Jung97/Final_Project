@@ -52,7 +52,7 @@ public class TeamFeeController
 			 
 			String message = "ERROR_DUPLICATE_JOIN: 임시동호회 임으로 이용리 불가능합니다.";
 			session.setAttribute("message", message);
-			return "redirect:MyTeam.action";
+			return "redirect:TeamMain.action";
 			
 		 }
 		 

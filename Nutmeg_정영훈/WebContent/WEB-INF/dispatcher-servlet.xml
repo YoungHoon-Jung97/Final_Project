@@ -18,7 +18,8 @@
     <!-- 데이터 소스 설정 -->
     <bean id="localDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="oracle.jdbc.driver.OracleDriver"></property>
-        <property name="url" value="jdbc:oracle:thin:@211.238.142.164:1521:xe"></property>
+        <property name="url" value="jdbc:oracle:thin:@192.168.10.244:1521:xe"></property>
+        <!-- <property name="url" value="jdbc:oracle:thin:@211.238.142.164:1521:xe"></property> -->
         <property name="username" value="scott"></property>
         <property name="password" value="tiger"></property>
     </bean>
