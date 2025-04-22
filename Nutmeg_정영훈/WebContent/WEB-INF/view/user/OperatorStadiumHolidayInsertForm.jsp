@@ -13,8 +13,8 @@
 	
 %>
 
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript">

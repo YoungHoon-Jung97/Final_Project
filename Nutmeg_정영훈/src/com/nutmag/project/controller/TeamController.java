@@ -453,7 +453,7 @@ public class TeamController
 	}
 
 	// 내 동호회 메인 페이지 호출
-	@RequestMapping(value = "/MyTeam.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamMain.action", method = RequestMethod.GET)
 	public String teamMain(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
@@ -508,7 +508,7 @@ public class TeamController
 	}
 	
 	// 동호회 일정 페이지
-	@RequestMapping(value = "/MyTeamSchedule.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamSchedule.action", method = RequestMethod.GET)
 	public String teamSchedule(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
@@ -803,7 +803,7 @@ public class TeamController
 			notificationDAO.addNotification(notification);
 		}
 		
-		return "redirect:/MyTeam.action";
+		return "redirect:/TeamMain.action";
 	}
 	
 	// 동호회 정보 수정

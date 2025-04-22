@@ -10,8 +10,8 @@
 <meta charset="UTF-8">
 <title>UserSignupForm.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

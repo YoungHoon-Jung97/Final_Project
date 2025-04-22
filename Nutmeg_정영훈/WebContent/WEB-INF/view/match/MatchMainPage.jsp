@@ -12,7 +12,7 @@
 <title>Insert title here</title>
 <!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/Team.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/team/Team.css">
 </head>
 <style type="text/css">
 /*팀 메뉴 넘어갔을 때 표시*/

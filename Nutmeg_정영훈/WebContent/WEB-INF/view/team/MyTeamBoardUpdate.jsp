@@ -8,10 +8,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>MyTeamBoardWrite.jsp</title>
+<title>MyTeamBoardUpdate.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/MyTeamBoardWrite.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/MyTeamBoardWrite.css?after">
 
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 
@@ -43,7 +43,7 @@
 					<!-- 게시글 작성 폼 시작 -->
 					<div class="write-form-container">
 						<div class="board-header">
-							<div class="board-title">게시물 작성</div>
+							<div class="board-title">게시물 수정</div>
 						</div>
 						
 						<form action="TeamBoardInsert.action" method="post">
@@ -63,7 +63,7 @@
 							
 							<div class="form-buttons">
 								<button type="button" class="btn btn-cancel" onclick="location.href='MyTeamBoard.action'">취소</button>
-								<button type="submit" class="btn">등록</button>
+								<button type="submit" class="btn">수정</button>
 							</div>
 						</form>
 					</div>

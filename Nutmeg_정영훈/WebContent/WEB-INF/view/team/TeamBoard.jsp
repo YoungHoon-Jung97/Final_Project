@@ -13,8 +13,8 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamBoard.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamBoard.css?after">
 
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 
@@ -27,19 +27,19 @@
 				<div class="main-content">
 					<ul class="team-menu">
 						<li class="teampage-link">
-							<a href="MyTeam.action">동호회 정보</a>
+							<a href="TeamMain.action">동호회 정보</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamSchedule.action">동호회 매치 일정</a>
+							<a href="TeamSchedule.action">동호회 매치 일정</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamFee.action">동호회 가계부</a>
+							<a href="TeamFee.action">동호회 가계부</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamBoard.action">동호회 게시판</a>
+							<a href="TeamBoard.action">동호회 게시판</a>
 						</li>
 					</ul>
 					
@@ -52,12 +52,12 @@
 							<div class="underline mt-3 mx-auto"></div>
 						</div>
 						
-						<button class="write-btn" onclick="location.href='TeamBoardWrite.action'">글쓰기</button>
+						<button class="write-btn" onclick="location.href='MyTeamBoardWrite.action'">글쓰기</button>
 						
 						<!-- 페이징 정보 -->
 						<c:if test="${not empty totalCount and totalCount > 0}">
 							<div class="page-info">
-								전체 ${totalCount}개 글, Page ${currentPage} / ${totalPage}
+								전체 ${totalCount}개 글
 							</div>
 						</c:if>
 						
@@ -79,16 +79,14 @@
 								</c:if>
 								
 								<c:forEach var="teamBoard" items="${teamBoardList}" varStatus="status">
-									<tr>
+									<tr  class="clickable-row" data-href="SearchTeamBoard.action?id=${teamBoard.team_board_id}">
 										<td>${teamBoard.rnum}</td>
 										<td class="title-cell">
-											<a href="SearchTeamBoard.action?id=${teamBoard.team_board_id}">
 												${teamBoard.team_board_title}
-											</a>
 										</td>
 										<td>${teamBoard.user_nick_name}</td>
 										<td>
-											<fmt:formatDate value="${teamBoard.team_board_create_at}" pattern="yyyy-MM-dd" />
+											<fmt:formatDate value="${teamBoard.team_board_create_at}" pattern="yyyy-MM-dd"></fmt:formatDate>
 										</td>
 									</tr>
 								</c:forEach>

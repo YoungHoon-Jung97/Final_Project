@@ -35,7 +35,7 @@ public class TeamFeeController
 	private SqlSession sqlSession;
 	
 	// 가게부 호출
-	@RequestMapping(value = "/MyTeamFee.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamFee.action", method = RequestMethod.GET)
 	public String teamFee(HttpServletRequest request,Model model)
 	{
 		 HttpSession session = request.getSession();
@@ -91,7 +91,7 @@ public class TeamFeeController
 		 List<TeamFeeDTO> teamMonthFeeList=  teamFeeDAO.getTeamMonthFeeList(team_id);
 		
 		 // 페이징 HTML 생성
-		 String pageHtml = pageUtil.getPageHtml("MyTeamFee.action?page=%d");
+		 String pageHtml = pageUtil.getPageHtml("TeamFee.action?page=%d");
 		 
 		 LocalDate localDate = LocalDate.now();
 		 
@@ -140,7 +140,7 @@ public class TeamFeeController
 		
 		teaFeeDAO.addTeamFeeInfo(teamFee);
 		
-		return "redirect:/MyTeamFee.action";
+		return "redirect:/TeamFee.action";
 	};
 	
 	//동호회 회비 정보 등록
@@ -177,7 +177,7 @@ public class TeamFeeController
 		
 		teamFeeDAO.addMonthFee(teamFee);
 		
-		return "redirect:/MyTeamFee.action";
+		return "redirect:/TeamFee.action";
 	};
 	
 	

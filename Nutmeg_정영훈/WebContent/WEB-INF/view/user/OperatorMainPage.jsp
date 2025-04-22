@@ -14,10 +14,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/StadiumListForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stadium/StadiumListForm.css?after">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 <script type="text/javascript" src="<%=cp %>/js/OperatorStadiumUpdateForm.js?after"></script>
 <style>
 /* 기본 HTML 및 바디 설정 */

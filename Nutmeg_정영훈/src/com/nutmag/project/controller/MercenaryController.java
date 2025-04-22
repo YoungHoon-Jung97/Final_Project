@@ -100,7 +100,7 @@ public class MercenaryController
     
 
     //용병 게시판 호출
-    @RequestMapping("/MercenaryBoard.action")
+    @RequestMapping("/MercenaryOffer.action")
     public String mercenaryList(Model model, HttpServletRequest request, 
                                @RequestParam(required = false) String searchDate)
     {

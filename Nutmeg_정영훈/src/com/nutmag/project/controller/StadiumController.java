@@ -396,7 +396,7 @@ public class StadiumController
 	}
 
 	// 검색 조건에 따라 경기장 목록 반환
-	@RequestMapping(value = "/SearchStadiumList.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/FieldCardList.action", method = RequestMethod.GET)
 	public String searchStadiumList(Model model,
 	    @RequestParam(value = "region_name", required = false) String regionName,
 	    @RequestParam(value = "city_name", required = false) String cityName,

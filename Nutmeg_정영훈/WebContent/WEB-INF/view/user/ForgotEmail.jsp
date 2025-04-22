@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>ForgotEmail.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/insertForm.css?after">
 
 </head>
 <body>

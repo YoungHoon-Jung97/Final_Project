@@ -11,7 +11,7 @@
 <head>
 <title>FieldReservationCheckForm.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/FieldReservationCheckForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stsdium/FieldReservationCheckForm.css?after">
 
 <script type="text/javascript" src="<%=cp %>/js/FieldReservationCheckForm.js?after"></script>
 

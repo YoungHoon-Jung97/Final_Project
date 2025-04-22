@@ -13,9 +13,9 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamFee.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/modal.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamFee.css?after">
 
 <script type="text/javascript" src="<%=cp %>/js/TeamFee.js?after"></script>
 
@@ -100,6 +100,15 @@
 						<!-- 전체 내용 추가  -->
 						<div id="allTab" class="tab-content active">
 							<table class="fee-table">
+								<colgroup>
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+								</colgroup>
+								
 								<thead>
 									<tr>
 										<th>번호</th>
@@ -132,6 +141,15 @@
 						<!-- 수입 출력 -->
 						<div id="incomeTab" class="tab-content" style="display: none;">
 							<table class="fee-table">
+								<colgroup>
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+								</colgroup>
+								
 								<thead>
 									<tr>
 										<th>종류</th>
@@ -162,19 +180,21 @@
 								</tbody>
 							</table>
 							
-							<div class="fee-paging">
-								<a href="#" class="active">1</a>
-								<a href="#">2</a>
-								<a href="#">3</a>
-								<a href="#">4</a>
-								<a href="#">5</a>
-								<a href="#">&gt;</a>
-							</div>
+							<div class="pagination">${pageHtml}</div>
 						</div>
 						
 						<!-- 지출 출력 -->
 						<div id="expenseTab" class="tab-content" style="display: none;">
 							<table class="fee-table">
+								<colgroup>
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+								</colgroup>
+								
 								<thead>
 									<tr>
 										<th>종류</th>
@@ -205,18 +225,21 @@
 								</tbody>
 							</table>
 							
-							<div class="fee-paging">
-								<a href="#" class="active">1</a>
-								<a href="#">2</a>
-								<a href="#">3</a>
-								<a href="#">4</a>
-								<a href="#">5</a>
-								<a href="#">&gt;</a>
-							</div>
+							<div class="pagination">${pageHtml}</div>
 						</div>
 						
 						<div id="membersTab" class="tab-content" style="display: none;">
 							<table class="fee-table">
+								<colgroup>
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+								</colgroup>
+								
 								<thead>
 									<tr>
 										<th>회비 날짜</th>
@@ -290,6 +313,8 @@
 									</c:forEach>
 								</tbody>
 							</table>
+							
+							<div class="pagination">${pageHtml}</div>
 						</div>
 					</div>
 					

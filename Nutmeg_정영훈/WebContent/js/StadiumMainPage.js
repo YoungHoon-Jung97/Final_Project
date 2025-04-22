@@ -20,7 +20,7 @@ $(function()
 		
 		$.ajax(
 		{
-			url: contextPath + "/SearchStadiumList.action",
+			url: contextPath + "/FieldCardList.action",
 			type: "GET",
 			data:
 			{

@@ -6,6 +6,7 @@
 function openModal(modalId)
 {
 	document.getElementById(modalId).style.display = 'block';
+	$("header, .floatingButton-wrapper, .filter-panel").addClass("blur-background");
 }
 
 // 탭 전환
@@ -56,7 +57,7 @@ function initializeEventListeners()
 	}
 	
 	// 모달 닫기 버튼
-	document.querySelectorAll('.close, .modal-close').forEach(button =>
+	document.querySelectorAll('.modal-close').forEach(button =>
 	{
 		button.addEventListener('click', function()
 		{
@@ -105,6 +106,7 @@ document.addEventListener('DOMContentLoaded', initializeEventListeners);
 function closeModal(modalId)
 {
 	document.getElementById(modalId).style.display = 'none';
+	$("header, .floatingButton-wrapper, .filter-panel").removeClass("blur-background");
 	
 	// 모달이 닫힌 후 이벤트 리스너 재초기화
 	initializeEventListeners();

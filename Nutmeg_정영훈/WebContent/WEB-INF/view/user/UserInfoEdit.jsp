@@ -11,8 +11,8 @@ String cp = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <title>회원 정보 수정</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/modal.css"></link>
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/insertForm.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/modal.css"></link>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">

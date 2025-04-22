@@ -16,8 +16,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/MercenaryOffer.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/modal.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/mercenary/MercenaryOffer.css?after">
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

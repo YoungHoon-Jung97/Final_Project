@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>fieldInsertForm.jsp</title>
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/insertForm.css">
 </head>
 <body>
 

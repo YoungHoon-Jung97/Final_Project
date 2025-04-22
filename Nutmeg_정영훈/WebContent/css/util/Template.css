@@ -27,7 +27,7 @@ body
 
 .background-banner
 {
-	background-image: url('../images/background.png');
+	background-image: url('/Nutmeg/images/background.png');
 	background-size: cover;
 	background-position: center 55%;
 	background-repeat: no-repeat;
