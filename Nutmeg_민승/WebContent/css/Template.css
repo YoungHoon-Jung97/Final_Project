@@ -50,7 +50,7 @@ body
 /* 메뉴바 스타일 */
 .menu-bar
 {
-	background-color: #3ea152;
+	background: linear-gradient(45deg, #3ea152, #7dd47b);
 	padding: 15px 15px;
 	position: fixed;
 	top: 0;

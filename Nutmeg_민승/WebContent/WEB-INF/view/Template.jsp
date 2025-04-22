@@ -26,6 +26,10 @@
 							? session.getAttribute("user_nick_name").toString() : "";
 	Integer team_id       = (session.getAttribute("team_id") != null)
 							? Integer.parseInt(session.getAttribute("team_id").toString()) : -1;
+	Integer notification_count     = (session.getAttribute("notification_count") != null)
+			? Integer.parseInt(session.getAttribute("notification_count").toString()) : -1;
+							
+			
 	
 	System.out.println("==========DEBUG==========");
 	System.out.println("DEBUG: user_name = " + user_name);
@@ -47,6 +51,9 @@
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- alert 대신 사용 -->
@@ -95,7 +102,7 @@
 %>
 <div class="background-banner"></div>
 
-<header class="menu-bar">
+<header class="menu-bar" id="menu-bar">
 	<div class="left-menu">
 		<!-- 햄버거 메뉴 -->
 		<div class="menu-icon">
@@ -162,6 +169,19 @@
 	{
 %>
 		<div class="nav-title login-nick-name">
+			<div class="position-relative d-inline-block">
+			  <button class="btn btn-light position-relative">
+			    <% if (notification_count > 0) { %>
+					<i class="bi bi-bell-fill"></i>   <!-- 채워진 종 -->
+			     	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+			        	<%= notification_count %>
+			        	<span class="visually-hidden">unread messages</span>
+			      	</span>
+			    <% } else{%>
+			    	<i class="bi bi-bell"></i>
+			    <%} %>
+			  </button>
+			</div>
 			<%=user_nick_name %> 님
 		</div>
 <%	}

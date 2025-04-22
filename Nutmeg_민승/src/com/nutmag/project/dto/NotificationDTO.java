@@ -6,6 +6,8 @@ public class NotificationDTO
 	char is_read;
 	
 	String message, created_at,notification_type;
+	
+	
 	public int getNotification_type_id()
 	{
 		return notification_type_id;

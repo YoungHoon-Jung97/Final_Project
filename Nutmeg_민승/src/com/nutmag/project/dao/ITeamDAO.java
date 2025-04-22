@@ -42,6 +42,8 @@ public interface ITeamDAO {
 	
 	//정식 동호회 정보 찾기
 	public Integer searchTempTeam(int teamId);
+	
+	
 	//----------------------------------------------------
 	
 	//임시 동호회 인원 
@@ -59,6 +61,8 @@ public interface ITeamDAO {
 	// 임시 동호회 중복 신청 검사
     int checkedTempTeamApply(@Param("user_code_id") int user_code_id,
                              @Param("team_id") int team_id);
+    
+    TeamApplyDTO searchTeamMemberCode(@Param("team_id") int team_id, @Param("user_code_id") int user_code_id);
 
     // 정식 동호회 중복 신청 검사
     int checkedTeamApply(@Param("user_code_id") int user_code_id,
@@ -89,8 +93,17 @@ public interface ITeamDAO {
 	//정식 동호회 인원 삭제
 	public int dropTeamMember(@PathParam("team_member_id") int team_member_id);
 	
+	//임시 동호회 사용자 코드 찾기
+	public TeamApplyDTO searchTempTeamUeserCode(int team_member_id);
+	
 	//정식 동호회 사용자 코드 찾기
-	public int searchTeamUeserCode(int team_member_id);
+	public TeamApplyDTO searchTeamUeserCode(int team_member_id);
+	
+	//임시 동호회 신청자 코드 찾기
+	public TeamApplyDTO searchTempTeamApplyUser(int team_apply_id);
+	
+	//정식 동호회 신청자 코드 찾기
+	public TeamApplyDTO searchTeamApplyUser(int team_apply_id);
 	
 	//------------------------------------------------------------------------
 	
@@ -100,6 +113,16 @@ public interface ITeamDAO {
 	//정식 동호회원 수
 	public int teamMemberCount(int team_id);
 	
+	//-------------------------------------------------------------------------------
+	
+	// 임시동호회 해체
+	public void tempTempDrop(@Param("temp_team_id")int temp_team_id);
+	
+	// 정식동호회 해체
+	public void teamDrop(@Param("team_id")int team_id);
+	
 	
 
+	
+	
 }

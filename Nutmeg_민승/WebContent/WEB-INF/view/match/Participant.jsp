@@ -8,117 +8,41 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Participant.jsp</title>
-
-
-<c:import url="/WEB-INF/view/Template.jsp"></c:import>
-
-<style>
-<style>
-/* 전체 main 영역 */
-main {
-	width: 100%;
-	padding: 40px 0;
-	display: flex;
-	justify-content: center;
-}
-
-/* 컨테이너: 흰색 박스 */
-.member-container {
-	width: 95vw; /* 화면 기준 너비로 */
-	max-width: 1280px;
-	background-color: #ffffff;
-	border-radius: 16px;
-	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-	overflow: hidden;
-	padding: 30px 40px;
-	box-sizing: border-box;
-}
-
-/* 상단 타이틀 */
-.member-title {
-	text-align: center;
-	font-size: 28px;
-	font-weight: bold;
-	color: #2e7d32;
-	margin-bottom: 30px;
-}
-
-/* 헤더 */
-.member-header {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	background-color: #7dcfb6;
-	color: #fff;
-	font-weight: 600;
-	text-align: center;
-	padding: 14px 0;
-	font-size: 15px;
-	border-radius: 12px;
-	margin-bottom: 10px;
-}
-
-/* 각 참가자 행 */
-.member-row {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	text-align: center;
-	padding: 14px 0;
-	border-bottom: 1px solid #eee;
-	transition: background-color 0.2s ease;
-}
-
-.member-row:hover {
-	background-color: #f9f9f9;
-}
-
-.member-row .col {
-	font-size: 15px;
-	color: #333;
-	word-break: keep-all;
-}
-
-/* 비어있는 경우 메시지 */
-.empty-row {
-	text-align: center;
-	padding: 50px 0;
-	color: #999;
-	font-size: 16px;
-}
-</style>
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/MemberListScore.css">
 
 </head>
 <body>
-
-<main style="padding-top: 30px;">
-<div class="member-container">
-	<div class="member-title">매치 참가 인원</div>
-
-	<div class="member-header">
-		<div class="col">이름</div>
-		<div class="col">포지션</div>
-		<div class="col">나이</div>
-		<div class="col">성별</div>
-	</div>
-
-	<c:choose>
-		<c:when test="${not empty paticipantList}">
-			<c:forEach var="paticipant" items="${paticipantList}">
-				<div class="member-row">
-					<div class="col">${paticipant.user_nick_name}</div>
-					<div class="col">${paticipant.position_name}</div>
-					<div class="col">${paticipant.age}</div>
-					<div class="col">${paticipant.gender}</div>
-				</div>
-			</c:forEach>
-		</c:when>
-		<c:otherwise>
-			<div class="empty-row">참가한 인원이 없습니다.</div>
-		</c:otherwise>
-	</c:choose>
-</div>
-</main>
-
+<table class="team-table">
+	<caption>동호회 회원 정보</caption>
+	
+	<colgroup>
+		<col style="width: 25%">
+		<col style="width: 25%">
+		<col style="width: 25%">
+		<col style="width: 25%">
+	</colgroup>
+	
+	<thead>
+		<tr class="center">
+			<th>이름</th>
+			<th>포지션</th>
+			<th>나이</th>
+			<th>성별</th>
+		</tr>
+	</thead>
+	
+	<tbody class="center">
+		<c:forEach var="paticipant" items="${paticipantList}">
+			<tr>
+				<td>${paticipant.user_nick_name}</td>
+				<td>${paticipant.position_name}</td>
+				<td>${paticipant.age}</td>
+				<td>${paticipant.gender}</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
 
 </body>
 </html>

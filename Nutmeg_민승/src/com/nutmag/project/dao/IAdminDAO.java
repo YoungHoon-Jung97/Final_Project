@@ -37,9 +37,8 @@ public interface IAdminDAO
 	public int fieldApprInsert(AdminFieldApprDTO dto);
 	public int fieldApprCancelInsert(AdminFieldCancelDTO dto);
 	
-//====================================민승======================================	
 	// 사용자 전체 조회
-	List<UserDTO> selectUserList();
+	public List<UserDTO> selectUserList();
 	
 	// 관리자 대시보드
     public int getTotalUserCount();
@@ -63,7 +62,6 @@ public interface IAdminDAO
 
     //정지된 사용자 찾기
     public UserDTO searchBannedUser(@Param("user_code_id") int user_code_id);
-    
 
-//==============================================================================
+
 }

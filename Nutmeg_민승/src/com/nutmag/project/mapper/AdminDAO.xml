@@ -3,9 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutmag.project.dao.IAdminDAO">
-	<insert id="adminInsert"
-		parameterType="com.nutmag.project.dto.AdminDTO"
-		statementType="CALLABLE">
+	<insert id="adminInsert" parameterType="com.nutmag.project.dto.AdminDTO" statementType="CALLABLE">
 		CALL PRC_ADMIN_INSERT(
 		#{admin_email, jdbcType=VARCHAR},
 		#{admin_tel, jdbcType=VARCHAR},
@@ -13,79 +11,65 @@
 		#{admin_pwd, jdbcType=VARCHAR}
 		)
 	</insert>
-
-	<!-- 관리자 아이디 찾기 select -->
+	
+	<!-- 관리자 아이디 찾기 select  -->
 	<select id="searchEmail" resultType="int">
 		SELECT COUNT(*)
-		FROM
-		ADMIN_INFO
+		FROM ADMIN_INFO
 		WHERE ADMIN_EMAIL = #{email}
 	</select>
 
-	<!-- 관리자 닉네임 찾기 select -->
+	<!-- 관리자 닉네임 찾기 select  -->
 	<select id="searchnickName" resultType="int">
 		SELECT COUNT(*)
-		FROM
-		ADMIN_INFO
+		FROM ADMIN_INFO
 		WHERE ADMIN_NICKNAME = #{nickName}
 	</select>
-
+	
 	<!-- 운영자 한글 로그인 -->
-	<select id="adminLoginKo"
-		resultType="com.nutmag.project.dto.AdminDTO">
+	<select id="adminLoginKo" resultType="com.nutmag.project.dto.AdminDTO">
 		SELECT ADMIN_ID,ADMIN_EMAIL,ADMIN_NICKNAME,USER_CODE_ID
 		FROM ADMIN_INFO
-		WHERE ADMIN_EMAIL = #{logEmailKo} AND ADMIN_PWD =
-		#{logPwKo}
+		WHERE ADMIN_EMAIL = #{logEmailKo} AND ADMIN_PWD = #{logPwKo}
 	</select>
-
+	
 	<!-- 운영자 영어 로그인 -->
-	<select id="adminLoginEn"
-		resultType="com.nutmag.project.dto.AdminDTO">
+	<select id="adminLoginEn" resultType="com.nutmag.project.dto.AdminDTO">
 		SELECT ADMIN_ID,ADMIN_EMAIL,ADMIN_NICKNAME,USER_CODE_ID
 		FROM ADMIN_INFO
-		WHERE ADMIN_EMAIL = #{logEmailEn} AND ADMIN_PWD =
-		#{logPwEn}
+		WHERE ADMIN_EMAIL = #{logEmailEn} AND ADMIN_PWD = #{logPwEn}
 	</select>
-
+	
 	<!-- 운영자 로그인 정보 검색 -->
-	<select id="adminLoginInfo"
-		resultType="com.nutmag.project.dto.AdminDTO">
+	<select id="adminLoginInfo" resultType="com.nutmag.project.dto.AdminDTO">
 		SELECT ADMIN_ID,ADMIN_EMAIL,ADMIN_NICKNAME,USER_CODE_ID
 		FROM ADMIN_INFO
 		WHERE ADMIN_ID = #{admin_id}
 	</select>
-
+	
 	<!-- 경기장 반려 타입 리스트 -->
-	<select id="fieldApprCancelTypeList"
-		resultType="com.nutmag.project.dto.AdminFieldApprCancelTypeDTO">
+	<select id="fieldApprCancelTypeList" resultType="com.nutmag.project.dto.AdminFieldApprCancelTypeDTO">
 		SELECT FIELD_APPR_CANCEL_TYPE_ID,FIELD_APPR_CANCEL_TYPE
 		FROM FIELD_APPR_CANCEL_TYPE
 	</select>
-
+	
 	<!-- 경기장 승인 인서트 -->
-	<insert id="fieldApprInsert"
-		parameterType="com.nutmag.project.dto.AdminFieldApprDTO"
-		statementType="CALLABLE">
+	<insert id="fieldApprInsert" parameterType="com.nutmag.project.dto.AdminFieldApprDTO" statementType="CALLABLE">
 		CALL PRC_FIELD_APPR_INSERT(
-		#{field_reg_id,
-		jdbcType=VARCHAR},
+		#{field_reg_id, jdbcType=VARCHAR},
 		#{user_code_id, jdbcType=VARCHAR}
 		)
 	</insert>
-
+	
 	<!-- 경기장 반려 인서트 -->
-	<insert id="fieldApprCancelInsert"
-		parameterType="com.nutmag.project.dto.AdminFieldCancelDTO">
-		INSERT INTO FIELD_APPR_CANCEL (FIELD_APPR_CANCEL_ID,
-		FIELD_APPR_CANCEL_AT, FIELD_APPR_CANCEL_REASON
-		,FIELD_APPR_CANCEL_TYPE_ID,FIELD_REG_ID,USER_CODE_ID)
-		VALUES
-		(FIELD_APPR_CANCEL_SEQ.NEXTVAL,SYSDATE,#{field_appr_cancel_reason},#{field_appr_cancel_type_id}
-		,#{field_reg_id},#{user_code_id})
-
+	<insert id="fieldApprCancelInsert" parameterType="com.nutmag.project.dto.AdminFieldCancelDTO">
+		INSERT INTO FIELD_APPR_CANCEL (FIELD_APPR_CANCEL_ID, FIELD_APPR_CANCEL_AT, FIELD_APPR_CANCEL_REASON
+					,FIELD_APPR_CANCEL_TYPE_ID,FIELD_REG_ID,USER_CODE_ID)
+		VALUES (FIELD_APPR_CANCEL_SEQ.NEXTVAL,SYSDATE,#{field_appr_cancel_reason},#{field_appr_cancel_type_id}
+				,#{field_reg_id},#{user_code_id})
+	
 	</insert>
-
+	
 	<!-- ================================================ 민승 ================================================ -->
 	<!-- 사용자 조회 -->
 	<select id="selectUserList"
@@ -93,6 +77,7 @@
 		SELECT
 		ui.user_code_id AS user_code_id,
 		ui.user_id AS
+		
 		user_id,
 		NULL AS user_code_reg_at,
 		ui.user_email AS user_email,
@@ -264,9 +249,6 @@
 		ui.user_pwd = #{logPwKo}
 	</select>
 
-	<delete id="deleteUser">
-		DELETE FROM USER_INFO WHERE USER_ID = #{user_id}
-	</delete>
 
 	<delete id="unbanUser">
 		DELETE FROM USER_BAN WHERE USER_CODE_ID1 = #{user_id}
@@ -274,5 +256,6 @@
 
 
 	<!-- ====================================================================================================== -->
-
+	
+	
 </mapper>

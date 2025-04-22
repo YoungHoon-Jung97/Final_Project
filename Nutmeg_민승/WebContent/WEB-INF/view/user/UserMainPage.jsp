@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -135,12 +135,12 @@ html, body {
 .profile-box .info-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start; 
+    justify-content: flex-start; /* 좌측 정렬 */
     padding: 12px 0;
     border-bottom: 1px solid #efefef;
     font-size: 15px;
     color: #333;
-    gap: 40px;
+    gap: 40px; /* ✅ 항목 간 여백 */
 }
 
 /* 마지막 줄엔 밑줄 없음 */
@@ -152,7 +152,7 @@ html, body {
 .profile-box .info-row strong {
     color: #2e7d32;
     font-weight: 600;
-    min-width: 140px; 
+    min-width: 140px; /* ✅ 라벨 고정 폭 */
     text-align: left;
 }
 
@@ -161,7 +161,7 @@ html, body {
     flex: 1;
     color: #555;
     word-break: break-word;
-    text-align: left; 
+    text-align: left; /* ✅ 오른쪽 몰림 방지 */
 }
 
 /* 수정 버튼 */
@@ -197,9 +197,9 @@ html, body {
             <a class="nav-link" href="#"><i class="bi bi-people"></i> 정보 관리</a>
             <a class="nav-link" href="#"><i class="bi bi-flag"></i> 경기 기록</a>
             <a class="nav-link" href="#"><i class="bi bi-cash"></i> 결제 내역</a>
-            <a class="nav-link" href="MyTeam.action"><i class="bi bi-chat"></i> 나의 동호회</a>
+            <a class="nav-link" href="#"><i class="bi bi-chat"></i> 나의 동호회</a>
             <a class="nav-link" href="#"><i class="bi bi-journal-text"></i> 신청 내역</a>
-            <a class="nav-link" href="Logout.action"><i class="bi bi-box-arrow-right"></i> 로그아웃</a>
+            <a class="nav-link" href="#"><i class="bi bi-box-arrow-right"></i> 로그아웃</a>
         </nav>
     </div>
 
@@ -207,39 +207,17 @@ html, body {
     <div class="content-area">
         <h4>내 정보</h4>
         <div class="profile-box">
-            <div class="info-row">
-                <strong>이름</strong>
-                <span>${userInfo.user_name}</span>
-            </div>
-            <div class="info-row">
-                <strong>이메일</strong>
-                <span>${userInfo.user_email}</span>
-            </div>
-            <div class="info-row">
-                <strong>전화번호</strong>
-                <span>${userInfo.user_tel}</span>
-            </div>
-            <div class="info-row">
-                <strong>닉네임</strong>
-                <span>${userInfo.user_nick_name}</span>
-            </div>
-            <div class="info-row">
-                <strong>주민등록번호</strong>
-                <span>${fn:substring(userInfo.user_ssn1, 0, 6)}-${fn:substring(userInfo.user_ssn2, 0, 1)}●●●●●●</span>
-            </div>
-            <div class="info-row">
-                <strong>우편번호</strong>
-                <span>${userInfo.user_postal_addr}</span>
-            </div>
-            <div class="info-row">
-                <strong>기본 주소</strong>
-                <span>${userInfo.user_addr}</span>
-            </div>
-            <div class="info-row">
-                <strong>상세 주소</strong>
-                <span>${userInfo.user_detailed_addr}</span>
-            </div>
+        	<c:forEach var="notification" items="${notificationList}">
+			    <div class="info-row ">
 
+			        <strong>내용</strong>
+			        <span>
+			            <a href="IsRead.action?notification_id=${notification.notification_id}">
+			                ${notification.message}
+			            </a>
+			        </span>
+			    </div>
+			</c:forEach>
 			<a href="${pageContext.request.contextPath}/CheckPassword.action" class="btn edit-button">
 			    <i class="bi bi-pencil-square me-2"></i>내 정보 수정
 			</a>

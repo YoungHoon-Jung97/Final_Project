@@ -24,30 +24,30 @@ $(function()
 		{
 			var ssn1 = this.value;
 			var ssn2 = $('#ssn2').val();
-
+			
 			// ssn2가 아직 비어있으면 포커스만 이동
 			if (!ssn2)
 			{
 				$('#ssn2').focus();
 				return;
-			}
-
+	        }
+			
 			if (!isValidSsnDateWithCentury(ssn1, ssn2))
 			{
 				swal("유효하지 않은 생년월일", "정확한 주민등록번호를 입력해주세요.", "error");
 				$(this).val('').focus();
-			}
-
+	        }
+			
 			else
 				$('#ssn2').focus();
 		}
 	});
-
-	$('#ssn2').on('input', function()
+	
+	$('#ssn2').on('input', function ()
 	{
 		var ssn1 = $('#ssn1').val();
 		var ssn2 = $(this).val();
-
+		
 		if (ssn1.length == 6 && ssn2.length == 1)
 		{
 			if (!isValidSsnDateWithCentury(ssn1, ssn2))
@@ -95,10 +95,7 @@ function checkEmail()
 	{
 		url : 'CheckEmail.action',
 		type : 'get',
-		data :
-		{
-			email : email
-		},
+		data : { email : email },
 		dataType : 'text',
 		success : function(result)
 		{
@@ -145,10 +142,7 @@ function checkNickName()
 	{
 		url : 'CheckNickName.action',
 		type : 'get',
-		data :
-		{
-			nickName : nickName
-		},
+		data : { nickName : nickName },
 		dataType : 'text',
 		success : function(result)
 		{
@@ -192,7 +186,7 @@ function checkPassword()
 {
 	var password1 = $('#password').val();
 	var password2 = $('#passwordConfirm').val();
-
+	
 	$("#passwordConfirm").on("change keyup", function()
 	{
 		if (password1 == password2 && password1.length >= 8)
@@ -204,7 +198,7 @@ function checkPassword()
 			});
 			isPasswordValid = true;
 		}
-
+		
 		else
 		{
 			$('#passwordCheck').text("비밀번호가 일치하지 않습니다.").css(
@@ -254,26 +248,28 @@ function execPostCode()
 
 function isValidSsnDateWithCentury(ssn1, ssn2)
 {
-	if (!/^\d{6}$/.test(ssn1) || !/^\d$/.test(ssn2))
-		return false;
-
+	if (!/^\d{6}$/.test(ssn1) || !/^\d$/.test(ssn2)) return false;
+	
 	var year = parseInt(ssn1.substring(0, 2), 10);
 	var month = parseInt(ssn1.substring(2, 4), 10);
 	var day = parseInt(ssn1.substring(4, 6), 10);
 	var centuryPrefix;
-
-	if ([ '1', '2', '5', '6' ].includes(ssn2))
+	
+	if (['1', '2', '5', '6'].includes(ssn2))
 		centuryPrefix = 1900;
-
-	else if ([ '3', '4', '7', '8' ].includes(ssn2))
+	
+	else if (['3', '4', '7', '8'].includes(ssn2))
 		centuryPrefix = 2000;
-
+	
 	else
-		return false; // 유효하지 않은 성별코드
-
+		return false;  // 유효하지 않은 성별코드
+	
 	var fullYear = centuryPrefix + year;
 	var date = new Date(fullYear, month - 1, day);
-
-	return (date.getFullYear() == fullYear && date.getMonth() == month - 1 && date
-			.getDate() == day);
+	
+	return (
+		date.getFullYear() == fullYear &&
+		date.getMonth() == month - 1 &&
+		date.getDate() == day
+	);
 }

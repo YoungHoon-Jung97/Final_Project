@@ -99,8 +99,6 @@ String cp = request.getContextPath();
                     data-user-id="${user.user_code_id}">차단</button>
           </c:otherwise>
         </c:choose>
-        <button class="btn btn-outline-dark btn-sm delete-btn"
-                data-user-id="${user.user_id}">삭제</button>
       </div>
     </div>
   </c:forEach>
@@ -183,22 +181,6 @@ $(function(){
     });
   });
 
-  // 삭제 버튼
-  $('.delete-btn').on('click', function(){
-    if (!confirm("정말 사용자를 삭제하시겠습니까?")) return;
-    var uid = $(this).data('user-id');
-    $.post(
-      '<%=cp%>/UserDelete.action',     
-      { user_id: uid },                
-      function(){
-        alert("사용자가 삭제되었습니다.");
-        location.reload();
-      }
-    ).fail(function(xhr){
-      alert("삭제 중 오류 발생: " + xhr.status);
-    });
-  });
 
 });
 </script>
-

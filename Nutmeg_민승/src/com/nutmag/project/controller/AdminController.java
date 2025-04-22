@@ -2,9 +2,6 @@ package com.nutmag.project.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -16,7 +13,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -112,7 +108,7 @@ public class AdminController
 		
 		dao.adminInsert(adminDTO);
 		
-		result = "redirect:AdminInsertForm.action";
+		result = "redirect:/AdminLogin.action";
 		
 		return result;
 	};
@@ -175,31 +171,8 @@ public class AdminController
 				}
 			}
 			
-			
-			//String previousPage = (String) session.getAttribute("previousPage");
-			
-			//if (previousPage != null)
-			//{
-			//	session.removeAttribute("previousPage"); // 이전 페이지 정보 삭제
-				
-			// 만약 잘못된 JSP 경로가 저장된 경우 .action 경로로 변경
-			//	if (previousPage.contains("/WEB-INF/view"))
-			//		previousPage = previousPage.replaceAll(".*/", "/Nutmeg/").replace(".jsp", ".action");
-				
-				// 응답이 이미 커밋된 경우를 체크
-		   //     if (!response.isCommitted())
-		   //     {
-		   //         response.sendRedirect(previousPage); // 이전 페이지로 이동
-		   //         return null; // 이후 코드 실행 방지
-		   //     }
-		        
-		   //     else
-		   //          return "redirect:" + previousPage;
-			//}
-			
-			// else
-				result = "redirect:AdminMainPage.action";
-				return result;
+			result = "redirect:AdminMainPage.action";
+			return result;
 		}
 		
 		else
@@ -338,16 +311,13 @@ public class AdminController
 	}
 	
 	
-	
-//================================================민승========================================	
 	// 사용자 관리 페이지
 	 @RequestMapping(value="/UserManage.action", method=RequestMethod.GET)
-	  public String userManageView(Model model) {
-		    List<UserDTO> users = sqlSession
-		      .getMapper(IAdminDAO.class)
-		      .selectUserList();     
-		    model.addAttribute("userList", users);
-		    return "/admin/UserManage";      
+	  public String userManageView(HttpServletRequest request,Model model) {
+		  
+	    List<UserDTO> users = sqlSession.getMapper(IAdminDAO.class).selectUserList();     
+	    model.addAttribute("userList", users);
+	    return "/admin/UserManagePage";      
 		   
 	}
 	
@@ -360,6 +330,13 @@ public class AdminController
         dto.setUserCodeId2(adminId);
 
         IAdminDAO dao = sqlSession.getMapper(IAdminDAO.class);
+        
+        System.out.println("==============================확인==============================");
+        System.out.println("BanDeadlineId()"+dto.getBanDeadlineId());
+        System.out.println("UserBanReason()"+dto.getUserBanReason());
+        System.out.println("UserCodeId1()"+dto.getUserCodeId1());
+        System.out.println("UserCodeId2()"+dto.getUserCodeId2());
+        System.out.println("================================================================");
         dao.insertUserBan(dto);
 
         return "redirect:UserManage.action";
@@ -373,13 +350,6 @@ public class AdminController
 	    sqlSession.getMapper(IAdminDAO.class).unbanUser(userId);
 	}
 
-	// 사용자 삭제
-	@RequestMapping(value="UserDelete.action", method=RequestMethod.POST)
-	@ResponseBody
-	public void deleteUser(@RequestParam("user_id") int userId)
-	{
-	    sqlSession.getMapper(IAdminDAO.class).deleteUser(userId);
-	}
 
 	
 	// 관리자 컨텐츠
@@ -405,8 +375,6 @@ public class AdminController
 	    return "/admin/AdminDashboardContent";
 	}
 
-
-//============================================================================================
 	
 }
 

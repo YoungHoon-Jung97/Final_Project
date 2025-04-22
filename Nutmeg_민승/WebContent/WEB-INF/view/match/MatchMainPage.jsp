@@ -133,7 +133,6 @@
 
 <body>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
-<main>
 <div class="container">
 	<c:forEach var="match" items="${matchRoomList}">
 	<form action="MatchEnterCheckForm.action" method="post">
@@ -201,7 +200,6 @@
 		</div><!-- match-item -->
 	</form>
 	</c:forEach>
-	</main>
 </div><!-- container -->
 </body>
 </html>

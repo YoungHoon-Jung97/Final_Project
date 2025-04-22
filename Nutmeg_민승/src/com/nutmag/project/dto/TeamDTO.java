@@ -6,9 +6,16 @@ public class TeamDTO {
 	private int temp_team_id,user_code_id,bank_id,region_id,city_id,temp_team_person_count,team_id,member_count,
 	status;
 	private String temp_team_name,temp_team_desc,emblem,temp_team_apply_at,
-	temp_team_account,temp_team_account_holder,region_name,city_name,bank_name;
+	temp_team_account,temp_team_account_holder,region_name,city_name,bank_name,
+	user_nick_name;
 	
 	
+	public String getUser_nick_name() {
+		return user_nick_name;
+	}
+	public void setUser_nick_name(String user_nick_name) {
+		this.user_nick_name = user_nick_name;
+	}
 	public int getMember_count() {
 		return member_count;
 	}
