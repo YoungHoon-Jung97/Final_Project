@@ -10,8 +10,8 @@
 <meta charset="UTF-8">
 <title>MyTeamBoardUpdate.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/MyTeamBoardWrite.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/MyTeamBoardWrite.css?after">
 
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 

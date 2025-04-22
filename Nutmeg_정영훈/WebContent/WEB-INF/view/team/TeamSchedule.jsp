@@ -166,13 +166,13 @@
 		<label class="form-label">상태</label>
 		
 		<div class="status-filter-container">
+			<button class="status-filter-btn" data-status="전체">전체</button>
 			<button class="status-filter-btn" data-status="예정됨">예정됨</button>
 			<button class="status-filter-btn" data-status="완료됨">완료됨</button>
 			<button class="status-filter-btn" data-status="취소됨">취소됨</button>
 			<button class="status-filter-btn" data-status="결제대기">결제대기</button>
 			<button class="status-filter-btn" data-status="상대미정">상대미정</button>
 			<button class="status-filter-btn" data-status="결과입력대기">결과입력대기</button>
-			<button class="status-filter-btn" data-status="all">전체</button>
 		</div>
 	</div>
 </div>

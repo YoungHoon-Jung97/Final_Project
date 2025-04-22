@@ -218,9 +218,6 @@ html, body {
 			        </span>
 			    </div>
 			</c:forEach>
-			<a href="${pageContext.request.contextPath}/CheckPassword.action" class="btn edit-button">
-			    <i class="bi bi-pencil-square me-2"></i>내 정보 수정
-			</a>
         </div>
     </div>
 </div>

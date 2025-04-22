@@ -12,7 +12,7 @@
 <title>MemberAppr.jsp</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/MemberAppr.css?after">
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

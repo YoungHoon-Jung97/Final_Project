@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function()
 	});
 	
 	// '전체' 필터 버튼 초기 활성화
-	document.querySelector('.status-filter-btn[data-status="예정됨"]').classList.add('active');
+	document.querySelector('.status-filter-btn[data-status="전체"]').classList.add('active');
 	
 	// 초기 데이터 로드
 	fetchEvents();
@@ -202,8 +202,8 @@ function filterMatchesByStatus(status)
 	// 필터링된 이벤트
 	var filteredEvents;
 	
-	if (status == 'all')
-		filteredEvents = currentEvents; // 전체 보기
+	if (status == 'all' || status == '전체')
+	    filteredEvents = currentEvents; // 전체 보기
 	
 	else
 	{

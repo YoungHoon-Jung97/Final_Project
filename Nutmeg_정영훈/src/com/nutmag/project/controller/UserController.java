@@ -1046,7 +1046,7 @@ public class UserController
 	
 
 	// 내 정보
-	@RequestMapping("/MyInformation.action")
+	@RequestMapping("/UserMyinfo.action")
 	public String MyInformation(Model model, HttpServletRequest request)
 	{
 	    HttpSession session = request.getSession();
