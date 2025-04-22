@@ -30,7 +30,7 @@ public class TeamBoardController {
 	private SqlSession sqlSession;
     
 	// 팀 게시판 호출
-	@RequestMapping(value = "/MyTeamBoard.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamBoard.action", method = RequestMethod.GET)
 	public String teamBoard(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
@@ -107,9 +107,9 @@ public class TeamBoardController {
 		
 		// 게시글 상세 조회
         TeamBoardDTO teamBoard = teamBoardDAO.getTeamBoard(team_board_id);
-        if (teamBoard == null)
+        if (teamBoard == null) 
         {
-        	return "redirect:/MyTeamBoard.action";
+        	return "redirect:/TeamBoard.action";
         }
         
         
@@ -129,7 +129,7 @@ public class TeamBoardController {
 	}
 	
 	// 게시글 작성 페이지
-	@RequestMapping(value = "/TeamBoardWrite.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/MyTeamBoardWrite.action", method = RequestMethod.GET)
 	public String teamBoardWriteForm()
 	{	
 		return "team/MyTeamBoardWrite";
@@ -167,7 +167,7 @@ public class TeamBoardController {
 		
 		teamBoardDAO.insertTeamBoard(teamBoard);
 		
-		return "redirect:/MyTeamBoard.action";
+		return "redirect:/TeamBoard.action";
 	}
     
 

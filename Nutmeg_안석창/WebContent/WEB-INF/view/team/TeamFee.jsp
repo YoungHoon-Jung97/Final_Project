@@ -13,9 +13,9 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamFee.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/modal.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamFee.css?after">
 
 <script type="text/javascript" src="<%=cp %>/js/TeamFee.js?after"></script>
 
@@ -365,6 +365,8 @@
 			</div>
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 </body>
 </html>

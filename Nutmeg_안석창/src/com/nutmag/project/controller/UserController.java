@@ -1012,7 +1012,7 @@ public class UserController
 	}
 	
 	//마이페이지
-	@RequestMapping(value = "/Mypage.action" , method = RequestMethod.GET)
+	@RequestMapping(value = "/UserMainPage.action" , method = RequestMethod.GET)
 	public String Mypage(Model model, HttpServletRequest request)
 	{
 	    HttpSession session = request.getSession();

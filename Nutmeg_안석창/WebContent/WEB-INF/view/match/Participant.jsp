@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="css/MemberListScore.css">
+<link rel="stylesheet" type="text/css" href="css/team/MemberListScore.css">
 
 </head>
 <body>

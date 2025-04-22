@@ -21,9 +21,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamSchedule.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/modal.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamSchedule.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
@@ -31,15 +31,11 @@
 <script type="text/javascript">
 
 	var contextPath = "${pageContext.request.contextPath}";
+	var teamStatus = <%=team_status %>;
 
 </script>
 <script type="text/javascript" src="<%=cp %>/js/Modal.js?after"></script>
 <script type="text/javascript" src="<%=cp %>/js/TeamSchedule.js?after"></script>
-<script type="text/javascript">
-    const teamStatus = <%=team_status %>;
-</script>
-
-<script src="/js/TeamSchedule.js"></script>
 
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 </head>
@@ -114,19 +110,19 @@
 				<div class="main-content">
 					<ul class="team-menu">
 						<li class="teampage-link">
-							<a href="MyTeam.action">동호회 정보</a>
+							<a href="TeamMain.action">동호회 정보</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamSchedule.action">동호회 매치 일정</a>
+							<a href="TeamSchedule.action">동호회 매치 일정</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamFee.action">동호회 가계부</a>
+							<a href="TeamFee.action">동호회 가계부</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamBoard.action">동호회 게시판</a>
+							<a href="TeamBoard.action">동호회 게시판</a>
 						</li>
 					</ul>
 					
@@ -151,6 +147,8 @@
 			</div>
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 
 <div id="filterPanel" class="filter-panel">

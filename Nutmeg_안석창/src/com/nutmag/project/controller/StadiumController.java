@@ -396,7 +396,7 @@ public class StadiumController
 	}
 
 	// 검색 조건에 따라 경기장 목록 반환
-	@RequestMapping(value = "/SearchStadiumList.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/FieldCardList.action", method = RequestMethod.GET)
 	public String searchStadiumList(Model model,
 	    @RequestParam(value = "region_name", required = false) String regionName,
 	    @RequestParam(value = "city_name", required = false) String cityName,
@@ -416,7 +416,7 @@ public class StadiumController
 		
 		
 	// 클릭한 경기장 예약 페이지로 이동
-	@RequestMapping(value = "/FieldReservationForm.action", method = RequestMethod.POST)
+	@RequestMapping(value = "/FieldReservationForm.action", method = RequestMethod.GET)
 	public String fieldReservation(@RequestParam("field_code_id") int field_code_id, Model model
 			, HttpServletRequest request) 
 	{

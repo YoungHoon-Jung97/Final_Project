@@ -11,8 +11,8 @@
 <meta charset="UTF-8">
 <title>MyTeamBoardView.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/MyTeamBoardView.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/MyTeamBoardView.css?after">
 
 <script type="text/javascript">
 
@@ -85,6 +85,8 @@ function confirmDelete(id)
 			</div>
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 </body>
 </html>

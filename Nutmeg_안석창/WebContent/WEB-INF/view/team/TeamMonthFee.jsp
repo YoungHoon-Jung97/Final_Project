@@ -10,9 +10,9 @@
 <head>
 <meta charset="UTF-8">
 <title>팀 가계부</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/TeamMain.css">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/modal.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/team/TeamMain.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/modal.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
 <style type="text/css">
 /*팀 메뉴 넘어갔을 때 표시*/
 .teampage-link:nth-child(3) a {
@@ -212,10 +212,21 @@
         <div class="main">
             <div class="main-content">
                 <ul class="team-menu">
-                    <li class="teampage-link"><a href="MyTeam.action">팀 정보</a></li>
-                    <li class="teampage-link"><a href="MyTeamSchedule.action">팀 매치</a></li>
-                    <li class="teampage-link"><a href="MyTeamFee.action">팀 가계부</a></li>
-                    <li class="teampage-link"><a href="MyTeamBoard.action">팀 게시판</a></li>
+                    <li class="teampage-link">
+						<a href="TeamMain.action">동호회 정보</a>
+					</li>
+					
+					<li class="teampage-link">
+						<a href="TeamSchedule.action">동호회 매치 일정</a>
+					</li>
+					
+					<li class="teampage-link">
+						<a href="TeamFee.action">동호회 가계부</a>
+					</li>
+					
+					<li class="teampage-link">
+						<a href="TeamBoard.action">동호회 게시판</a>
+					</li>
                 </ul>
                 <!-- .tean-menu -->
                 

@@ -9,7 +9,7 @@
 	padding: 0;
 	box-sizing: border-box;
 	white-space: nowrap;
-	cursor: url('../images/soccerballcursor.png') 2 2, auto !important;
+	cursor: url('/Nutmeg/images/soccerballcursor.png') 2 2, auto !important;
 }
 
 body
@@ -27,7 +27,7 @@ body
 
 .background-banner
 {
-	background-image: url('../images/background.png');
+	background-image: url('/Nutmeg/images/background.png');
 	background-size: cover;
 	background-position: center 55%;
 	background-repeat: no-repeat;

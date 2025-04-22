@@ -386,12 +386,12 @@ function getStatusStyle(status)
 {
 	switch(status)
 	{
-		case '예정됨': return 'background-color: #e3f2fd; color: #1976d2; border-radius: 10px; padding: 5px 10px 5px 10px;';
-		case '완료됨': return 'background-color: #e8f5e9; color: #388e3c; border-radius: 10px; padding: 5px 10px 5px 10px;';
-		case '취소됨': return 'background-color: #ffebee; color: #c62828; border-radius: 10px; padding: 5px 10px 5px 10px;';
-		case '결제대기': return 'background-color: #fff3e0; color: #e65100; border-radius: 10px; padding: 5px 10px 5px 10px;';
-		case '결과입력대기': return 'background-color: #f3e5f5; color: #7b1fa2; border-radius: 10px; padding: 5px 10px 5px 10px;';
-		default: return 'background-color: #e0e0e0; color: #616161; border-radius: 10px; padding: 5px 10px 5px 10px;';
+		case '예정됨': return 'background-color: #e3f2fd; color: #1976d2; border-radius: 10px; padding: 5px 10px;';
+		case '완료됨': return 'background-color: #e8f5e9; color: #388e3c; border-radius: 10px; padding: 5px 10px;';
+		case '취소됨': return 'background-color: #ffebee; color: #c62828; border-radius: 10px; padding: 5px 10px;';
+		case '결제대기': return 'background-color: #fff3e0; color: #e65100; border-radius: 10px; padding: 5px 10px;';
+		case '결과입력대기': return 'background-color: #f3e5f5; color: #7b1fa2; border-radius: 10px; padding: 5px 10px;';
+		default: return 'background-color: #e0e0e0; color: #616161; border-radius: 10px; padding: 5px 10px;';
 	}
 }
 

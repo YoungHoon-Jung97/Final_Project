@@ -12,8 +12,8 @@
 <title>TeamOpen.jsp</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 <script type="text/javascript" src="<%=cp %>/js/TeamOpen.js?after"></script>
 
 

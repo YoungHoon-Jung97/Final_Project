@@ -32,7 +32,7 @@
 <title>Login</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Login.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/Login.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="<%=cp %>/js/util.js"></script>

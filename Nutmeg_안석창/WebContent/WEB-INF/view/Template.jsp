@@ -49,8 +49,8 @@
 <title>Template.jsp</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/Template.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 
 <!-- Bootstrap Icons CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
