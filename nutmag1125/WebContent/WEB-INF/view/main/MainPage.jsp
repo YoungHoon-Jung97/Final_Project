@@ -88,6 +88,20 @@
         display: none;
     }
 }
+#mainCarousel {
+    width: 80%;
+    margin: 30px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: #00000040;
+}
+#mainCarousel img {
+    height: auto;
+    max-height: 350px;
+    width: 100%;
+    object-fit: contain;
+    background-color: #E2E2E2; /* 혹시 이미지가 작을 경우 배경 */
+}
 </style>
 </head>
 <body>
@@ -157,6 +171,32 @@
 				<button type="button" id="cancel-desc" class="btn modal-cancel cancel-btn">취소</button>
 			</div>
 		</div>
+	</div>
+	
+	<!-- 슬라이드 이미지 배너 -->
+	<div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+	  <div class="carousel-inner">
+	    <div class="carousel-item active">
+	      <img src="<%=cp%>/images/pic1.jpg" class="d-block w-100" alt="축구 이미지 1">
+	    </div>
+	    <div class="carousel-item">
+	      <img src="<%=cp%>/images/pic4.jpg" class="d-block w-100" alt="축구 이미지 2">
+	    </div>
+	    <div class="carousel-item">
+	      <img src="<%=cp%>/images/pic2.jpg" class="d-block w-100" alt="축구 이미지3">
+	    </div>
+	    <div class="carousel-item">
+	      <img src="<%=cp%>/images/pic5.jpg" class="d-block w-100" alt="축구 이미지4">
+	    </div>
+	  </div>
+	  <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">이전</span>
+	  </button>
+	  <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">다음</span>
+	  </button>
 	</div>
 
 	<div class="main-background">
@@ -238,7 +278,7 @@
 		</div>
 	</div>
 
-	<!-- 왼쪽 광고 배너 -->
+	<%-- <!-- 왼쪽 광고 배너 -->
 	<div class="side-banner left-banner">
 	    <img src="<%=cp%>/images/messi1.jpg" alt="왼쪽 배너" />
 	</div>
@@ -246,7 +286,7 @@
 	<!-- 오른쪽 광고 배너 -->
 	<div class="side-banner right-banner">
 	    <img src="<%=cp%>/images/ronaldo.jpg" alt="오른쪽 배너" />
-	</div>
+	</div> --%>
 	
 	<!-- 음악 배너 -->
 	<div class="music-banner">
