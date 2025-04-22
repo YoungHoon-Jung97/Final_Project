@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+.background-banner
+{
+	height: 266px !important;
+	background-position: center 54.56% !important;
+}
+
+.section-header
+{
+	position: relative;
+}
+
+.section-header h1
+{
+	letter-spacing: 1px;
+}
+
+.section-header p
+{
+	font-size: 1rem;
+}
+
+/* 카드 디자인 개선 */
+.card
+{
+	width: 100%;
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 12px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 카드 이미지 */
+.field-img
+{
+	position: relative;
+	overflow: hidden;
+	height: 250px;
+}
+
+/* 카드 텍스트 */
+.card-body
+{
+	padding: 20px;
+	color: #4d4d4d;
+}
+
+.card-title
+{
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: #356859;
+	margin-bottom: 10px;
+}
+
+.card-text
+{
+	font-size: 0.9rem;
+	margin-bottom: 8px;
+	color: #607466;
+}
+
+/* 버튼 스타일 */
+.btn-outline-primary
+{
+	background: linear-gradient(to right, #7dcfb6, #80cfa9);
+	border-color: #7dcfb6;
+	color: white;
+	font-weight: bold;
+	border-radius: 8px;
+	transition: background-color 0.3s ease;
+}
+
+.btn-outline-primary:hover
+{
+	background: linear-gradient(to right, #65bda2, #6ab797);
+	border-color: #65bda2;
+}

@@ -41,7 +41,9 @@ import com.nutmag.project.dto.OperatorResCancelDTO;
 import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 import com.nutmag.project.dto.StadiumTimeDTO;
+import com.nutmag.project.dto.TeamMemberFeeDTO;
 import com.nutmag.project.dto.UserDTO;
+import com.nutmag.project.dto.UserMatchDTO;
 
 import util.MailUtil;
 import util.Path;
@@ -1015,6 +1017,36 @@ public class UserController
 	@RequestMapping(value = "/UserMainPage.action" , method = RequestMethod.GET)
 	public String Mypage(Model model, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
+	    UserDTO userInfo = dao.getUser(user_code_id);   // 정보 불러오기
+
+	    if (userInfo == null) {
+	        message = "회원 정보를 찾을 수 없습니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";
+	    }
+
+	    model.addAttribute("userInfo", userInfo);
+
+	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
+	}
+	
+	//사용자 알림
+	@RequestMapping(value = "/UserNotification.action" , method = RequestMethod.GET)
+	public String userNotification(Model model, HttpServletRequest request)
+	{
 	    HttpSession session = request.getSession();
 	    String message = "";
 
@@ -1041,38 +1073,36 @@ public class UserController
 	    System.out.println("=============================================================");
 	    model.addAttribute("notificationList", notificationList);
 
-	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
+	    return "/user/UserNotification"; // 유저 정보 보여줄 페이지
 	}
 	
-
-	// 내 정보
-	@RequestMapping("/UserMyinfo.action")
-	public String MyInformation(Model model, HttpServletRequest request)
-	{
-	    HttpSession session = request.getSession();
-	    String message = "";
-
-	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-
-	    // 로그인 체크
-	    if (user_code_id == null) {
-	        message = "로그인을 해야 합니다.";
-	        model.addAttribute("message", message);
-	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
-	    }
-
-	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
-	    UserDTO userInfo = dao.getUser(user_code_id);   // 정보 불러오기
-
-	    if (userInfo == null) {
-	        message = "회원 정보를 찾을 수 없습니다.";
-	        model.addAttribute("message", message);
-	        return "redirect:MainPage.action";
-	    }
-
-	    model.addAttribute("userInfo", userInfo);
-
-	    return "/user/UserMyinfo"; // 유저 정보 보여줄 페이지
+	//내 결제 내역
+	@RequestMapping(value = "/UserFee.action", method = RequestMethod.GET)
+	public String userFeeList(HttpSession session,Model model) {
+		
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		
+		List<TeamMemberFeeDTO> feeList =  userDAO.feeList(user_code_id); 
+		
+		model.addAttribute("feeList", feeList);
+	    return "/user/UserFee";
+	}
+	
+	
+	//내 경기 참여 내역
+	@RequestMapping(value = "/UserMatch.action", method = RequestMethod.GET)
+	public String userMatchList(HttpSession session,Model model) {
+		
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		
+		List<UserMatchDTO> matchList =  userDAO.matchList(user_code_id); 
+		
+		model.addAttribute("matchList", matchList);
+	    return "/user/UserMatch";
 	}
 		
 	// 내 정보 수정 폼 페이지 들어가기 전 비밀번호 확인
