@@ -102,6 +102,8 @@
 			</div>
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 </body>
 </html>

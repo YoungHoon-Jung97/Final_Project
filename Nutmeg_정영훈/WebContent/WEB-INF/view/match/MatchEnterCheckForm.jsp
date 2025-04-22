@@ -9,9 +9,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>FieldReservationCheckForm.jsp</title>
+<title>MatchEnterCheckForm.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stsdium/FieldReservationCheckForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stadium/FieldReservationCheckForm.css?after">
 
 <script type="text/javascript" src="<%=cp %>/js/FieldReservationCheckForm.js?after"></script>
 
@@ -24,35 +24,61 @@
 		<form action="MatchAwayTeamInsert.action" method="post">
 			<h2>예약 내용 확인</h2>
 			
-			<div class="info-block"><strong>예약 날짜:</strong> ${match_date}</div>
-			<div class="info-block"><strong>예약 시간:</strong> ${start_time} ~ ${end_time}</div>
+			<div class="info-block">
+				<strong>예약 날짜:</strong> ${match_date}
+			</div>
+			
+			<div class="info-block">
+				<strong>예약 시간:</strong> ${start_time} ~ ${end_time}
+			</div>
 			
 			<hr>
 			
-			<div class="info-block"><strong>홈팀 이름:</strong> ${team.temp_team_name}</div>
-			<div class="info-block"><strong>은행명:</strong> ${team.bank_name}</div>
-			<div class="info-block"><strong>계좌번호:</strong> ${team.temp_team_account}</div>
-			<div class="info-block"><strong>예금주:</strong> ${team.temp_team_account_holder}</div>
+			<div class="info-block">
+				<strong>어웨이팀 이름:</strong> ${team.temp_team_name}
+			</div>
+			
+			<div class="info-block">
+				<strong>은행명:</strong> ${team.bank_name}
+			</div>
+			
+			<div class="info-block">
+				<strong>계좌번호:</strong> ${team.temp_team_account}
+			</div>
+			
+			<div class="info-block">
+				<strong>예금주:</strong> ${team.temp_team_account_holder}
+			</div>
 			
 			<hr>
-			<div class="info-block"><strong>요금(2시간당):</strong> <fmt:formatNumber value="${hour_amount}" pattern="#,###" />원</div>
-			<div class="info-block"><strong>총 금액:</strong> <fmt:formatNumber value="${pay_amount}" pattern="#,###" />원</div>
+			
+			<div class="info-block">
+				<strong>요금(2시간당):</strong>
+				
+				<fmt:formatNumber value="${hour_amount}" pattern="#,###"></fmt:formatNumber>
+				원
+			</div>
+			
+			<div class="info-block">
+				<strong>총 금액:</strong>
+				
+				<fmt:formatNumber value="${pay_amount}" pattern="#,###"></fmt:formatNumber>
+				원
+			</div>
 			
 			<hr>
-
+			
 			<div class="info-block1" style="margin-bottom: 25px;">
 				<h3>경기 인원</h3>
 				
 				<div class="match-toggle-wrapper">
 					<div class="toggle-group">
+						<input type="radio" name="match_inwon_id" id="vs${status.index}"
+						value="${inwon.match_inwon_id}" checked>
 						
-							<input type="radio" name="match_inwon_id" id="vs${status.index}"
-							value="${inwon.match_inwon_id}" <c:if test="${status.index == 0}">checked</c:if>>
+						<label for="vs${status.index}">${match_inwon}</label>
 						
-							<label for="vs${status.index}">${ match_inwon}</label>
-	
-					
-						<!-- <span class="underline"></span> -->
+						<span class="underline"></span>
 					</div>
 				</div>
 			</div>
@@ -75,6 +101,8 @@
 			</div>
 		</form>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 </body>
 </html>

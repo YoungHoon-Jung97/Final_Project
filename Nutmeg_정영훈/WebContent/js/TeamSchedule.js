@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function()
 	});
 	
 	// '전체' 필터 버튼 초기 활성화
-	document.querySelector('.status-filter-btn[data-status="전체"]').classList.add('active');
+	document.querySelector('.status-filter-btn[data-status="all"]').classList.add('active');
 	
 	// 초기 데이터 로드
 	fetchEvents();

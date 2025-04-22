@@ -31,15 +31,11 @@
 <script type="text/javascript">
 
 	var contextPath = "${pageContext.request.contextPath}";
+	var teamStatus = <%=team_status %>;
 
 </script>
 <script type="text/javascript" src="<%=cp %>/js/Modal.js?after"></script>
 <script type="text/javascript" src="<%=cp %>/js/TeamSchedule.js?after"></script>
-<script type="text/javascript">
-    const teamStatus = <%=team_status %>;
-</script>
-
-<script src="/js/TeamSchedule.js"></script>
 
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 </head>
@@ -151,6 +147,8 @@
 			</div>
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 
 <div id="filterPanel" class="filter-panel">
@@ -166,7 +164,7 @@
 		<label class="form-label">상태</label>
 		
 		<div class="status-filter-container">
-			<button class="status-filter-btn" data-status="전체">전체</button>
+			<button class="status-filter-btn" data-status="all">전체</button>
 			<button class="status-filter-btn" data-status="예정됨">예정됨</button>
 			<button class="status-filter-btn" data-status="완료됨">완료됨</button>
 			<button class="status-filter-btn" data-status="취소됨">취소됨</button>

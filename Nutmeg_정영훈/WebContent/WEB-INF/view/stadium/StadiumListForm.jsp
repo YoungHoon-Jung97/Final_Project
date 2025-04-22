@@ -57,6 +57,8 @@
 			</c:forEach>
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 
 <div id="filterPanel" class="filter-panel">

@@ -149,6 +149,8 @@
 			</div> <!-- .main  -->
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 
 <!-- 플로팅 버튼 (Top) -->
