@@ -83,7 +83,6 @@ public class TeamBoardController {
         model.addAttribute("teamBoardList", teamBoardList);
         model.addAttribute("pageHtml", pageHtml);
         model.addAttribute("totalCount", totalCount);
-        model.addAttribute("currentPage", currentPage);
 		
 		return "/team/TeamBoard";
 	}
@@ -92,6 +91,10 @@ public class TeamBoardController {
 	@RequestMapping(value = "/SearchTeamBoard.action", method = RequestMethod.GET)
 	public String teamBoardView(HttpServletRequest request, Model model)
 	{
+		HttpSession session = request.getSession();
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
+		
 		// 게시글 ID 파라미터 처리
 		String idParam = request.getParameter("id");
 		if (idParam == null || idParam.isEmpty()) 
@@ -104,21 +107,39 @@ public class TeamBoardController {
 		
 		// 게시글 상세 조회
         TeamBoardDTO teamBoard = teamBoardDAO.getTeamBoard(team_board_id);
-        if (teamBoard == null) 
+        if (teamBoard == null)
         {
         	return "redirect:/MyTeamBoard.action";
         }
+        
+        
+        //동호회 멤버 코드 추출
+        ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		int team_id = team.getTeam_id();
+		
+		TeamApplyDTO teamApply= teamDAO.searchTeamMemberCode(team_id, user_code_id);
+	
+		int team_member_id =teamApply.getTeam_member_id();
 		
         model.addAttribute("teamBoard", teamBoard);
+        model.addAttribute("team_member_id", team_member_id);
         
         return "team/MyTeamBoardView";
 	}
 	
-	// 게시글 작성
+	// 게시글 작성 페이지
 	@RequestMapping(value = "/TeamBoardWrite.action", method = RequestMethod.GET)
 	public String teamBoardWriteForm()
 	{	
 		return "team/MyTeamBoardWrite";
+	}
+	
+	// 게시글 수정 페이지
+	@RequestMapping(value = "/MyTeamBoardUpdate.action", method = RequestMethod.GET)
+	public String teamBoardUpdateForm()
+	{	
+		return "team/MyTeamBoardUpdate";
 	}
    
 	// 게시글 등록

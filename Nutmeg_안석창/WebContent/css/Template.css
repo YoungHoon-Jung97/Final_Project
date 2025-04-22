@@ -721,10 +721,10 @@ main
 
 .notification-nick-name
 {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 	margin-left: auto;
-    margin-right: 5px;
+	margin-right: 5px;
 }
 
 .login-nick-name
@@ -742,8 +742,8 @@ main
 
 .position-relative
 {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 	height: 35px;
 	margin-right: 5px;
 }

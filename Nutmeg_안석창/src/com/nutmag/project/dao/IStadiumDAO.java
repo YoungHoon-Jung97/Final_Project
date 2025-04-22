@@ -42,10 +42,19 @@ public interface IStadiumDAO
 	// 구장 검색 (유저 아이디로)
 	public ArrayList<StadiumRegInsertDTO> stadiumSearchId(int stadium_reg_id);
 	
-	// 구장 휴무
-	public int stadiumHolidayInsert(StadiumHolidayInsertDTO holidayDTO);
-	
 	// 구장 업데이트
 	public int stadiumUpdate(StadiumRegInsertDTO stadium);
+	
+	// 구장 휴무 인서트
+	public int stadiumHolidayInsert(StadiumHolidayInsertDTO holidayDTO);
+	
+	// 구장 휴무 타입 리스트
+	public ArrayList<StadiumHolidayInsertDTO> stadiumHolidayTypeList();
+	
+	// 구장 휴무 리스트 (유저 코드로 찾기)
+	public ArrayList<StadiumHolidayInsertDTO> stadiumHolidaySearchList(int user_code_id);
+	
+	// 구장 휴무일 삭제
+	public int stadiumHolidayDelete(int stadium_holiday_id);
 	
 }

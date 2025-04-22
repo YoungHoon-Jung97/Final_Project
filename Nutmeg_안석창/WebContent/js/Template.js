@@ -91,6 +91,13 @@ $(function()
 		window.location.href = "MatchMainPage.action";
 	});
 	
+	// 회사소개
+	$(".company").click(function()
+	{
+		window.location.href = "CompanyIntro.action";
+		
+	});
+	
 	// 내 정보
 	$(".myInformation").click(function()
 	{

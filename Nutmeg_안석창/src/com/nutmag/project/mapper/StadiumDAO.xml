@@ -107,4 +107,42 @@
 	
 	</update>
 	
+	<!-- 구장 휴무일 인서트 -->
+	<insert id="stadiumHolidayInsert" parameterType="com.nutmag.project.dto.StadiumHolidayInsertDTO">
+		INSERT INTO STADIUM_HOLIDAY (STADIUM_HOLIDAY_ID,STADIUM_HOLIDAY_START_AT,STADIUM_HOLIDAY_END_AT
+		,STADIUM_HOLIDAY_DESC,STADIUM_HOLIDAY_TYPE_ID,STADIUM_REG_ID)
+		
+		VALUES (STADIUM_HOLIDAY_SEQ.NEXTVAL,#{stadium_holiday_start_at},#{stadium_holiday_end_at}
+		,#{stadium_holiday_desc},#{stadium_holiday_type_id},#{stadium_reg_id})
+	
+	</insert>
+	
+	<!-- 구장 휴무 타입 리스트 -->
+	<select id="stadiumHolidayTypeList" resultType="com.nutmag.project.dto.StadiumHolidayInsertDTO">
+		SELECT *
+		FROM STADIUM_HOLIDAY_TYPE
+	</select>
+	
+	<!-- 구장 휴무 리스트 -->
+	<select id="stadiumHolidaySearchList" resultType="com.nutmag.project.dto.StadiumHolidayInsertDTO">
+		SELECT 
+			STADIUM_HOLIDAY_ID,
+			TO_CHAR(STADIUM_HOLIDAY_START_AT,'YYYY-MM-DD') AS STADIUM_HOLIDAY_START_AT,
+			TO_CHAR(STADIUM_HOLIDAY_END_AT,'YYYY-MM-DD') AS STADIUM_HOLIDAY_END_AT,
+			STADIUM_HOLIDAY_DESC,
+			STADIUM_REG_ID,
+			STADIUM_HOLIDAY_TYPE,
+			STADIUM_REG_NAME,
+			USER_CODE_ID
+		FROM STADIUM_HOLIDAY_VIEW
+		WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	<!-- 구장 휴무일 삭제 -->
+	<delete id="stadiumHolidayDelete">
+		DELETE
+		FROM STADIUM_HOLIDAY
+		WHERE STADIUM_HOLIDAY_ID = #{stadium_holiday_id}
+	</delete>
+	
 </mapper>

@@ -16,6 +16,8 @@
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamBoard.css?after">
 
+<script type="text/javascript" src="<%=cp %>/js/TeamBoard.js?after"></script>
+
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 
 </head>
@@ -57,7 +59,7 @@
 						<!-- 페이징 정보 -->
 						<c:if test="${not empty totalCount and totalCount > 0}">
 							<div class="page-info">
-								전체 ${totalCount}개 글, Page ${currentPage} / ${totalPage}
+								전체 ${totalCount}개 글
 							</div>
 						</c:if>
 						
@@ -79,12 +81,10 @@
 								</c:if>
 								
 								<c:forEach var="teamBoard" items="${teamBoardList}" varStatus="status">
-									<tr>
+									<tr class="clickable-row" data-href="SearchTeamBoard.action?id=${teamBoard.team_board_id}">
 										<td>${teamBoard.rnum}</td>
 										<td class="title-cell">
-											<a href="SearchTeamBoard.action?id=${teamBoard.team_board_id}">
 												${teamBoard.team_board_title}
-											</a>
 										</td>
 										<td>${teamBoard.user_nick_name}</td>
 										<td>

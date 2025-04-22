@@ -29,7 +29,6 @@ import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.ITeamFeeDAO;
-import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.CityDTO;
 import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.NotificationDTO;
@@ -37,7 +36,6 @@ import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.TeamApplyDTO;
 import com.nutmag.project.dto.TeamDTO;
 import com.nutmag.project.dto.TeamFeeDTO;
-import com.nutmag.project.dto.UserDTO;
 
 import util.PageUtil;
 import util.Path;

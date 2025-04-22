@@ -33,4 +33,8 @@ public interface ITeamFeeDAO {
 	
 	//가계부 자료수
 	public int countTeamFee(int team_id);
+	
+	//해당 동호회 회비 정보 가져오기
+	public TeamFeeDTO getTeamMonthFee(@Param("team_fee_id") int team_fee_id );
+	
 }

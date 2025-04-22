@@ -2,9 +2,9 @@ package com.nutmag.project.dto;
 
 public class StadiumHolidayInsertDTO
 {
-	private int stadium_holiday_id,stadium_holiday_type_id,stadium_reg_id;
+	private int stadium_holiday_id,stadium_holiday_type_id,stadium_reg_id,user_code_id;
 	private String stadium_holiday_start_at, stadium_holiday_end_at
-	,stadium_holiday_desc,stadium_holiday_type;
+	,stadium_holiday_desc,stadium_holiday_type,stadium_reg_name;
 	
 	
 	public int getStadium_holiday_id()
@@ -62,6 +62,22 @@ public class StadiumHolidayInsertDTO
 	public void setStadium_holiday_type(String stadium_holiday_type)
 	{
 		this.stadium_holiday_type = stadium_holiday_type;
+	}
+	public String getStadium_reg_name()
+	{
+		return stadium_reg_name;
+	}
+	public void setStadium_reg_name(String stadium_reg_name)
+	{
+		this.stadium_reg_name = stadium_reg_name;
+	}
+	public int getUser_code_id()
+	{
+		return user_code_id;
+	}
+	public void setUser_code_id(int user_code_id)
+	{
+		this.user_code_id = user_code_id;
 	}
 	
 	

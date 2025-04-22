@@ -70,5 +70,195 @@
 	
 	</insert>
 	
+	<!-- ================================================ 민승 ================================================ -->
+	<!-- 사용자 조회 -->
+	<select id="selectUserList"
+		resultType="com.nutmag.project.dto.UserDTO">
+		SELECT
+		ui.user_code_id AS user_code_id,
+		ui.user_id AS
+		
+		user_id,
+		NULL AS user_code_reg_at,
+		ui.user_email AS user_email,
+		ui.user_pwd AS user_pwd,
+		ui.user_name AS user_name,
+		ui.user_ssn1 AS
+		user_ssn1,
+		ui.user_ssn2 AS user_ssn2,
+		ui.user_tel AS user_tel,
+		ui.user_postal_addr AS user_postal_addr,
+		ui.user_addr AS user_addr,
+		ui.user_detailed_addr AS user_detailed_addr,
+		ui.user_nick_name AS
+		user_nick_name,
+		CASE
+		WHEN EXISTS (
+		SELECT 1
+		FROM USER_BAN b
+		WHERE
+		b.USER_CODE_ID1 = ui.user_code_id
+
+		AND (b.USER_BAN_STARTDATE +
+		b.BAN_DEADLINE_ID) >= TRUNC(SYSDATE)
+		) THEN 'Y'
+		ELSE 'N'
+		END AS is_banned
+		FROM USER_INFO ui
+		ORDER BY ui.user_name
+	</select>
+
+	<select id="searchBannedUser"
+		resultType="com.nutmag.project.dto.UserDTO">
+		SELECT *
+		FROM (
+		SELECT
+		ui.user_code_id,
+		ui.user_id,
+		NULL AS user_code_reg_at,
+		ui.user_email,
+		ui.user_pwd,
+		ui.user_name,
+		ui.user_ssn1,
+		ui.user_ssn2,
+		ui.user_tel,
+		ui.user_postal_addr,
+		ui.user_addr,
+		ui.user_detailed_addr,
+		ui.user_nick_name,
+		CASE
+		WHEN EXISTS (
+		SELECT 1
+		FROM USER_BAN b
+		WHERE b.USER_CODE_ID1 = ui.user_code_id
+		AND b.USER_BAN_STARTDATE + b.BAN_DEADLINE_ID >= TRUNC(SYSDATE)
+		) THEN 'Y'
+		ELSE 'N'
+		END AS is_banned
+		FROM USER_INFO ui
+		) t
+		WHERE t.user_code_id = #{user_code_id}
+		AND t.is_banned = 'Y'
+		ORDER BY t.user_name
+
+	</select>
+
+	<!-- 총 사용자 수 -->
+	<select id="getTotalUserCount" resultType="int">
+		SELECT COUNT(*) FROM
+		USER_INFO
+	</select>
+
+	<!-- 총 경기장 수 -->
+	<select id="getTotalFieldCount" resultType="int">
+		SELECT COUNT(*) FROM
+		FIELD_REG
+	</select>
+
+	<!-- 미승인 경기장 -->
+	<select id="getPendingFieldCount" resultType="int">
+		SELECT COUNT(*)
+		FROM FIELD_REG
+		WHERE FIELD_REG_ID NOT IN (
+		SELECT FIELD_REG_ID FROM
+		FIELD_APPR
+		UNION
+		SELECT FIELD_REG_ID FROM FIELD_APPR_CANCEL
+		)
+	</select>
+
+	<!-- 최근 경기장 등록 -->
+	<select id="getRecentFieldRegList"
+		resultType="com.nutmag.project.dto.FieldRegSearchDTO">
+		SELECT *
+		FROM (
+		SELECT FIELD_REG_NAME, FIELD_REG_AT,
+		FIELD_REG_PRICE
+		FROM FIELD_REG
+		ORDER BY FIELD_REG_AT DESC
+		)
+		WHERE ROWNUM
+		&lt;= 5
+	</select>
+
+	<!-- 최근 가입한 사용자 -->
+	<select id="getRecentUserList"
+		resultType="com.nutmag.project.dto.UserDTO">
+		SELECT *
+		FROM (
+		SELECT USER_ID, USER_NAME, USER_EMAIL,
+		USER_TEL, USER_NICK_NAME
+		FROM USER_INFO
+		ORDER BY USER_ID DESC
+		)
+		WHERE
+		ROWNUM &lt;= 5
+	</select>
+
+	<!-- 사용자 정지 -->
+	<insert id="insertUserBan"
+		parameterType="com.nutmag.project.dto.UserBanDTO">
+		INSERT INTO USER_BAN (
+		USER_BAN_ID,
+		USER_BAN_STARTDATE,
+		USER_BAN_REASON,
+		BAN_DEADLINE_ID,
+		USER_CODE_ID1,
+		USER_CODE_ID2
+		) VALUES (
+		USER_BAN_SEQ.NEXTVAL,
+		SYSDATE,
+		#{userBanReason},
+		#{banDeadlineId},
+		#{userCodeId1},
+		#{userCodeId2}
+		)
+	</insert>
+
+	<select id="userLoginKo" parameterType="map"
+		resultType="com.nutmag.project.dto.UserDTO">
+		SELECT
+		ui.user_id,
+		ui.user_code_id,
+		ui.user_name,
+		ui.user_email,
+		ui.user_pwd,
+		ui.user_tel,
+		ui.user_nick_name,
+		CASE
+		WHEN
+		EXISTS (
+		SELECT 1
+		FROM USER_BAN b
+		JOIN BAN_DEADLINE d
+		ON d.BAN_DEADLINE_ID
+		= b.BAN_DEADLINE_ID
+		WHERE b.USER_CODE_ID1 = ui.user_code_id
+		AND (
+		d.BAN_DEADLINE_TERM IS NULL
+		OR b.USER_BAN_STARTDATE +
+		d.BAN_DEADLINE_TERM >= TRUNC(SYSDATE)
+		)
+		) THEN 'Y'
+		ELSE 'N'
+		END AS
+		is_banned
+		FROM USER_INFO ui
+		WHERE ui.user_email = #{logEmailKo}
+		AND
+		ui.user_pwd = #{logPwKo}
+	</select>
+
+	<delete id="deleteUser">
+		DELETE FROM USER_INFO WHERE USER_ID = #{user_id}
+	</delete>
+
+	<delete id="unbanUser">
+		DELETE FROM USER_BAN WHERE USER_CODE_ID1 = #{user_id}
+	</delete>
+
+
+	<!-- ====================================================================================================== -->
+	
 	
 </mapper>

@@ -64,7 +64,6 @@
 				}
 				
 				else
-					// fallback: 구분자 없는 일반 메시지
 					swal("처리 필요", message, "info");
 			}
 		});

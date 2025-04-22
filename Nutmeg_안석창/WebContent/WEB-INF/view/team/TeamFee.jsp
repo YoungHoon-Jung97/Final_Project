@@ -100,6 +100,15 @@
 						<!-- 전체 내용 추가  -->
 						<div id="allTab" class="tab-content active">
 							<table class="fee-table">
+								<colgroup>
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+								</colgroup>
+								
 								<thead>
 									<tr>
 										<th>번호</th>
@@ -114,7 +123,7 @@
 								<tbody>
 									<c:forEach var="teamFee" items="${teamFeeList}">
 										<tr>
-											<td>${teamFee.rnum }</td>
+											<td>${teamFee.rnum}</td>
 											<td>${teamFee.transaction_type}</td>
 											<td class="fee-date">${teamFee.transaction_date}</td>
 											<td>${teamFee.description}</td>
@@ -132,6 +141,15 @@
 						<!-- 수입 출력 -->
 						<div id="incomeTab" class="tab-content" style="display: none;">
 							<table class="fee-table">
+								<colgroup>
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+								</colgroup>
+								
 								<thead>
 									<tr>
 										<th>종류</th>
@@ -162,19 +180,21 @@
 								</tbody>
 							</table>
 							
-							<div class="fee-paging">
-								<a href="#" class="active">1</a>
-								<a href="#">2</a>
-								<a href="#">3</a>
-								<a href="#">4</a>
-								<a href="#">5</a>
-								<a href="#">&gt;</a>
-							</div>
+							<div class="pagination">${pageHtml}</div>
 						</div>
 						
 						<!-- 지출 출력 -->
 						<div id="expenseTab" class="tab-content" style="display: none;">
 							<table class="fee-table">
+								<colgroup>
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+									<col style="width: 16.6%">
+								</colgroup>
+								
 								<thead>
 									<tr>
 										<th>종류</th>
@@ -195,26 +215,31 @@
 												<td>${teamFee.description}</td>
 												<td><fmt:formatNumber value="${teamFee.net_amount}" type="number" pattern="#,###"></fmt:formatNumber>원</td>
 												<td>${team.user_nick_name}</td>
-												<td class="fee-actions"><a href="#" class="edit-btn">수정</a>
-													<a href="#" class="delete-btn">삭제</a></td>
+												<td class="fee-actions">
+													<a href="#" class="edit-btn">수정</a>
+													<a href="#" class="delete-btn">삭제</a>
+												</td>
 											</tr>
 										</c:if>
 									</c:forEach>
 								</tbody>
 							</table>
 							
-							<div class="fee-paging">
-								<a href="#" class="active">1</a>
-								<a href="#">2</a>
-								<a href="#">3</a>
-								<a href="#">4</a>
-								<a href="#">5</a>
-								<a href="#">&gt;</a>
-							</div>
+							<div class="pagination">${pageHtml}</div>
 						</div>
 						
 						<div id="membersTab" class="tab-content" style="display: none;">
 							<table class="fee-table">
+								<colgroup>
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+									<col style="width: 14.2%">
+								</colgroup>
+								
 								<thead>
 									<tr>
 										<th>회비 날짜</th>
@@ -222,7 +247,8 @@
 										<th>납부 설명</th>
 										<th>납부 금액</th>
 										<th>관리자</th>
-										<th>관리</th>
+										<th>납부</th>
+										<th>납부자 명단</th>
 									</tr>
 								</thead>
 								
@@ -235,8 +261,19 @@
 											<td><fmt:formatNumber value="${teamMonthFee.team_fee_price}" type="number" pattern="#,###"></fmt:formatNumber>원</td>
 											<td>${team.user_nick_name}</td>
 											<td class="fee-actions">
-												<button id="monthFeeBtn" class="btn btn-primary">회비 납부</button>
+												<fmt:parseDate value="${teamMonthFee.team_fee_pay_end_at}" pattern="yyyy-MM-dd" var="endDate"></fmt:parseDate>
 												
+												<c:choose>
+													<c:when test="${endDate > today}">
+														<button id="monthFeeBtn" class="btn btn-primary">회비 납부</button>
+													</c:when>
+													
+													<c:otherwise>
+														<button id="monthFeeEnd" class="btn btn-secondary" disabled>납부 마감</button>
+													</c:otherwise>
+												</c:choose>
+											</td>
+											<td class="fee-actions">
 												<a href="TeamMonthFeeMember.action?team_fee_id=${teamMonthFee.team_fee_id}"
 												class="btn btn-primary">회비 납부자 목록</a>
 											</td>
@@ -250,15 +287,18 @@
 												
 												<div class="modal_body">
 													<div>
-														<span>예금주 : </span><span>${team.temp_team_account_holder}</span>
+														<span>예금주 : </span>
+														<span>${team.temp_team_account_holder}</span>
 													</div>
 													
 													<div>
-														<span>은행 : </span><span>${team.bank_name}</span>
+														<span>은행 : </span>
+														<span>${team.bank_name}</span>
 													</div>
 													
 													<div>
-														<span>계좌번호 : </span><span>${team.temp_team_account}</span>
+														<span>계좌번호 : </span>
+														<span>${team.temp_team_account}</span>
 													</div>
 												</div>
 												
@@ -273,6 +313,8 @@
 									</c:forEach>
 								</tbody>
 							</table>
+							
+							<div class="pagination">${pageHtml}</div>
 						</div>
 					</div>
 					
