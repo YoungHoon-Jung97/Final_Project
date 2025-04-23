@@ -13,7 +13,7 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/StadiumListForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stadium/StadiumListForm.css?after">
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -57,6 +57,8 @@
 			</c:forEach>
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 
 <div id="filterPanel" class="filter-panel">

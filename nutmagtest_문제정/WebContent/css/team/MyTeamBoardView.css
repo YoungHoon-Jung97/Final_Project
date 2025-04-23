@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+.teampage-link:nth-child(4) a
+{
+	color: #faaa7a;
+	border-bottom: 1px solid #faaa7a;
+}
+
+/* 게시글 상세 보기 스타일 */
+.board-view-container
+{
+	width: 100%;
+	margin: 20px 0;
+}
+
+.board-header
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.board-title
+{
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.btn
+{
+	background-color: #a8d5ba;
+	color: white;
+	border: none;
+	padding: 8px 15px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-weight: bold;
+	margin-left: 10px;
+	text-decoration: none;
+}
+
+.btn:hover
+{
+	background-color: #8bc5a1;
+}
+
+.btn-list
+{
+	background-color: #6c757d;
+}
+
+.btn-list:hover
+{
+	background-color: #5a6268;
+}
+
+.board-info
+{
+	background-color: #f8f8f8;
+	padding: 15px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.board-info-item
+{
+	display: inline-block;
+	margin-right: 20px;
+	color: #666;
+}
+
+.board-content
+{
+	min-height: 300px;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	line-height: 1.6;
+}
+
+.board-buttons
+{
+	text-align: right;
+	margin-top: 20px;
+}
+
+.nav-menu, .login-nick-name
+{
+	margin-top: 0 !important;
+}
+
+.login-nick-name
+{
+	margin-top: 0 !important;
+}
+
+.position-relative
+{
+	margin-top: 3px;
+}

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutmag.project.dao.IBankDAO;
@@ -322,6 +326,19 @@ public class TeamController
 			response.getWriter().write("이미 사용중인 팀네임 입니다.");
 	}
 	
+	
+	@Configuration
+	@EnableWebMvc
+	public class WebConfig implements WebMvcConfigurer
+	{
+	    @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry)
+	    {
+	        registry.addResourceHandler("/resources/**")
+	                .addResourceLocations("/resources/");
+	    }
+	}
+	
 	// 동호회 등록(파일 등록)
 	@RequestMapping(value = "/TeamInsert.action", method = RequestMethod.POST)
 	public String insertTeam(TeamDTO team, HttpServletRequest request)
@@ -405,7 +422,7 @@ public class TeamController
 	}
 
 	// 내 동호회 메인 페이지 호출
-	@RequestMapping(value = "/MyTeam.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamMain.action", method = RequestMethod.GET)
 	public String teamMain(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
@@ -460,7 +477,7 @@ public class TeamController
 	}
 	
 	// 동호회 일정 페이지
-	@RequestMapping(value = "/MyTeamSchedule.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamSchedule.action", method = RequestMethod.GET)
 	public String teamSchedule(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
@@ -755,7 +772,7 @@ public class TeamController
 			notificationDAO.addNotification(notification);
 		}
 		
-		return "redirect:/MyTeam.action";
+		return "redirect:/TeamMain.action";
 	}
 	
 	// 동호회 정보 수정
@@ -763,5 +780,67 @@ public class TeamController
 	public String teamUpdate()
 	{
 		return "/team/TeamUpdate";
+	}
+	
+	// 동호회 해체
+	@RequestMapping(value = "/DisbandTeam.action", method = RequestMethod.POST)
+	public String disbandTeam(HttpSession session, Model model) {
+	    Integer temp_team_id = (Integer) session.getAttribute("team_id");
+	    System.out.println("[DEBUG] disbandTeam 호출됨. session.team_id = " + temp_team_id);
+	    
+		// 동호회 정보 가져오기
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		
+		INotificationDAO notificationDAO = sqlSession.getMapper(INotificationDAO.class);
+		NotificationDTO notification = new NotificationDTO();
+		
+		int team_id = team.getTeam_id();
+		
+		// 동호회원 가져오기
+		if (team_id == 0)
+		{
+			// 임시동호회 인원 찾기
+			teamDAO.tempTempDrop(temp_team_id);
+			String message = "SUCCESS_APPLY: 해체가 성공적으로 완료되었습니다.";
+			session.setAttribute("message", message);
+			
+			team_id =temp_team_id;
+			ArrayList<TeamApplyDTO> teamMemberList =  teamDAO.tempTeamMemberList(team_id);
+			
+			for (TeamApplyDTO teamMember : teamMemberList)
+			{
+				int user_code_id = teamMember.getUser_code_id();
+				notification.setUser_code_id(user_code_id);
+				notification.setNotification_type_id(1);
+				//알림 메시지 등록
+				notification.setMessage(team.getTemp_team_name() + " 동호회에서 강퇴되었습니다.");
+				notificationDAO.addNotification(notification);
+			}
+			
+			
+		}
+		else if (team_id != 0)
+		{
+			// 임시동호회 인원 찾기
+			teamDAO.teamDrop(team_id);
+			String message = "SUCCESS_APPLY: 해체가 성공적으로 완료되었습니다.";
+			session.setAttribute("message", message);
+			
+			ArrayList<TeamApplyDTO> teamMemberList =  teamDAO.teamMemberList(team_id);
+			
+			for (TeamApplyDTO teamMember : teamMemberList)
+			{
+				int user_code_id = teamMember.getUser_code_id();
+				notification.setUser_code_id(user_code_id);
+				notification.setNotification_type_id(1);
+				//알림 메시지 등록
+				notification.setMessage(team.getTemp_team_name() + " 동호회에서 강퇴되었습니다.");
+				notificationDAO.addNotification(notification);
+			}
+			
+		}
+		
+	    return "redirect:/MainPage.action";
 	}
 }

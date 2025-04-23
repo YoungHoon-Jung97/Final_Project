@@ -15,8 +15,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/modal.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/MainPage.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/modal.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/MainPage.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -54,6 +54,7 @@
 						case "ERROR_DUPLICATE_JOIN":
 						case "ERROR_AUTH_REQUIRED":
 						case "ERROR_DUPLICATE_REQUEST":
+						case "ERROR":
 							swal("에러", content, "error");
 							break;
 						
@@ -63,7 +64,6 @@
 				}
 				
 				else
-					// fallback: 구분자 없는 일반 메시지
 					swal("처리 필요", message, "info");
 			}
 		});
@@ -109,7 +109,7 @@
 		<!-- 동호회 리스트 -->
 		<div class="container mt-4">
 			<div class="section-header text-center mt-3 mb-3">
-			    <h1 class="display-5 fw-bold text-success">🥅 동호회 찾기</h1>
+			    <h1 class="display-5 fw-bold text-success">🥅 동호회 모집</h1>
 			    
 			    <p class="text-muted mt-2">지역별 풋살 동호회를 살펴보고, 함께 뛰어볼 팀을 찾아보세요!</p>
 			    
@@ -160,6 +160,8 @@
 			</div>
 		</div>
 	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
 
 <div id="filterPanel" class="filter-panel">

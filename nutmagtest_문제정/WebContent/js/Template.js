@@ -75,7 +75,7 @@ $(function()
 	// 용병 게시판
 	$(".mercenary-offer").click(function()
 	{
-		window.location.href = "MercenaryBoard.action";
+		window.location.href = "MercenaryOffer.action";
 	});
 	
 	// 용병 등록
@@ -91,16 +91,23 @@ $(function()
 		window.location.href = "MatchMainPage.action";
 	});
 	
+	// 회사소개
+	$(".company").click(function()
+	{
+		window.location.href = "Aboutme.action";
+		
+	});
+	
 	// 내 정보
 	$(".myInformation").click(function()
 	{
-		window.location.href = "Mypage.action";
+		window.location.href = "UserMainPage.action";
 	});
 	
 	// 내 동호회
 	$(".myTeam").click(function()
 	{
-		window.location.href = "MyTeam.action";
+		window.location.href = "TeamMain.action";
 	});
 	
 	// 구장운영자 가입

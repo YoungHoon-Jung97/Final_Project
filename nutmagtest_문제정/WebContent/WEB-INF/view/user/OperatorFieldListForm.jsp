@@ -10,10 +10,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="css/main.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/StadiumFieldCheckForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stadium/StadiumFieldCheckForm.css?after">
 </head>
 <body>
-
+	
 	<div class="match-card1">
 		<strong>구장에 소속된 경기장을 확인 해주세요</strong>
 	</div>

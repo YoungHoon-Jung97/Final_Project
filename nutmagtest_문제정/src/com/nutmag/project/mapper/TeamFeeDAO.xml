@@ -52,12 +52,12 @@
 		               START_TIME, END_TIME, MATCH_INWON, INCOME_AMOUNT,
 		               EXPENSE_AMOUNT, NET_AMOUNT, MATCH_STATUS, TEAM_FEE_ID
 		        FROM TEAM_FINANCIAL_LEDGER_VIEW
-		        WHERE TEAM_ID = #{team_id}
 		        ORDER BY TRANSACTION_DATE DESC
 		    ) DATA
 		    WHERE ROWNUM &lt;=#{end}
 		)
-		WHERE RNUM &gt;= #{start}
+		WHERE RNUM &gt;= #{start} AND
+       	TEAM_ID = #{team_id}
 	</select>
 	
 	<!-- 동호회 회비 리스트  -->
@@ -73,6 +73,19 @@
     	WHERE TEAM_ID = #{team_id}
 	</select>
 	
+	<!-- 해당 동호회 회비 정보 가져오기  -->
+	<select id="getTeamMonthFee" resultType="com.nutmag.project.dto.TeamFeeDTO">
+		SELECT 
+	        TEAM_FEE_ID,
+	        TEAM_FEE_PRICE,
+	        TO_CHAR(TEAM_FEE_PAY_START_AT,'YYYY-MM-DD') AS "TEAM_FEE_PAY_START_AT",
+	        TO_CHAR(TEAM_FEE_PAY_END_AT,'YYYY-MM-DD') AS "TEAM_FEE_PAY_END_AT",
+	        TEAM_ID,
+	        TEAM_FEE_DESC
+    	FROM TEAM_FEE
+    	WHERE TEAM_FEE_ID = #{team_fee_id}
+	</select>
+	
 	<!-- 가계부 자료수 -->
 	<select id="countTeamFee" resultType="int">
 		SELECT 
@@ -83,14 +96,14 @@
 	
 	<!-- 팀 총 수입 -->
 	<select id="getTeamIncome" resultType="int">
-		SELECT SUM(INCOME_AMOUNT) AS INCOME
+		SELECT NVL(SUM(INCOME_AMOUNT), 0) AS INCOME
 		FROM TEAM_FINANCIAL_LEDGER_VIEW
 		WHERE TEAM_ID = #{team_id}
 	</select>
 	
 	<!-- 팀 총 지출 -->
 	<select id="getTeamexpense" resultType="int">
-		SELECT SUM(EXPENSE_AMOUNT) AS EXPENSE
+		SELECT NVL(SUM(EXPENSE_AMOUNT), 0) AS EXPENSE
 		FROM TEAM_FINANCIAL_LEDGER_VIEW
 		WHERE TEAM_ID = #{team_id}
 	</select>

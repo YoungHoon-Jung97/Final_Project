@@ -37,7 +37,9 @@ $(document).on('click', '.show-fields-btn', function () {
 </script>
 
 
-<h4 class="mb-4">구장 휴무일 입력</h4>
+<div class="section-title">
+  <i class="bi bi-calendar-plus me-2"></i> 경기장 휴무일 입력
+</div>
 
 <c:forEach var="stadium" items="${stadiumSearchList}">
     <div class="match-card">

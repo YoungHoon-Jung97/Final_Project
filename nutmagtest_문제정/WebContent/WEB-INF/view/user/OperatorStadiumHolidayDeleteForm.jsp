@@ -13,8 +13,8 @@
 	
 %>
 
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript">
@@ -72,6 +72,10 @@ $(document).on('click', '.delete-btn', function () {
 
 </head>
 <body>
+<div class="section-title">
+  <i class="bi bi-calendar-check me-2"></i> 경기장 휴무일 삭제
+</div>
+
 <div class="content">
 	<c:forEach var="holiday" items="${HolidayList}">
 	    <div class="match-card holiday-card">

@@ -9,7 +9,7 @@
 	padding: 0;
 	box-sizing: border-box;
 	font-family: 'Poppins', sans-serif;
-	cursor: url('../images/soccerballcursor.png') 2 2, auto !important;
+	cursor: url('/Nutmeg/images/soccerballcursor.png') 2 2, auto !important;
 }
 
 body
@@ -22,7 +22,7 @@ body
 	padding: 1rem;
 	color: #1e293b;
 	line-height: 1.5;
-	background-image: url("../images/background.png");
+	background-image: url('/Nutmeg/images/background.png');
 	background-size: cover;
 	background-position: center center;
 	background-attachment: fixed;

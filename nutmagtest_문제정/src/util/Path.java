@@ -1,9 +1,9 @@
 package util;
 
 public class Path {
-	private static final String UPLOAD_EMBLEM_DIR = "\\\\SIST01\\emblems\\";
-	private static final String UPLOAD_STADIUM_DIR ="\\\\SIST01\\stadiums\\";
-	private static final String UPLOAD_FIELD_DIR ="\\\\SIST01\\fields\\";
+	private static final String UPLOAD_EMBLEM_DIR = "resources/uploads/emblems/";
+	private static final String UPLOAD_STADIUM_DIR ="resources/uploads/stadiums/";
+	private static final String UPLOAD_FIELD_DIR ="resources/uploads/fields/";
 
 	public static String getUploadStadiumDir()
 	{

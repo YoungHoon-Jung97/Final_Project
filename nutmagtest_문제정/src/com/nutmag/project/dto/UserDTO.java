@@ -6,9 +6,17 @@ public class UserDTO
 	private String user_code_reg_at,user_email,user_pwd
 	,user_name,user_ssn1,user_ssn2,user_tel
 	,user_postal_addr,user_addr,user_detailed_addr
-	,user_nick_name;
+	,user_nick_name,is_banned;
 	
 	
+	public String getIs_banned()
+	{
+		return is_banned;
+	}
+	public void setIs_banned(String is_banned)
+	{
+		this.is_banned = is_banned;
+	}
 	public int getUser_code_id()
 	{
 		return user_code_id;

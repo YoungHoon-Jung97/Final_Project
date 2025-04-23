@@ -1,5 +1,9 @@
 package com.nutmag.project.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,27 +35,11 @@ public class TeamFeeController
 	private SqlSession sqlSession;
 	
 	// 가게부 호출
-	@RequestMapping(value = "/MyTeamFee.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamFee.action", method = RequestMethod.GET)
 	public String teamFee(HttpServletRequest request,Model model)
 	{
 		 HttpSession session = request.getSession();
 		 Integer temp_team_id = (Integer) session.getAttribute("team_id");
-		 
-		 // 현재 페이지 파라미터 처리 (기본값: 1)
-	     String pageParam = request.getParameter("page");
-	     int currentPage = 1;
-	     
-	     if (pageParam != null && !pageParam.isEmpty()) 
-	    {
-	        try 
-	        {
-	            currentPage = Integer.parseInt(pageParam);
-	        } 
-	        catch (NumberFormatException e) 
-	        {
-	            // 숫자 형식이 아닌 경우 기본값 사용
-	        }
-	    }
 		 
 		 // 동호회 정보 가져오기
 		 ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
@@ -59,6 +47,31 @@ public class TeamFeeController
 		 
 		 TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
 		 int team_id = team.getTeam_id();
+		 
+		 if (team_id == 0) {
+			 
+			String message = "ERROR_DUPLICATE_JOIN: 임시동호회 임으로 이용이 불가능합니다.";
+			session.setAttribute("message", message);
+			return "redirect:TeamMain.action";
+			
+		 }
+		 
+		 // 현재 페이지 파라미터 처리 (기본값: 1)
+		 String pageParam = request.getParameter("page");
+		 int currentPage = 1;
+		 
+		 if (pageParam != null && !pageParam.isEmpty()) 
+		{
+		    try 
+		    {
+		        currentPage = Integer.parseInt(pageParam);
+		    } 
+		    catch (NumberFormatException e) 
+		    {
+		        // 숫자 형식이 아닌 경우 기본값 사용
+		    }
+		}
+		 
 		 
 		 // 전체 게시글 수 조회
 		 int totalCount = teamFeeDAO.countTeamFee(team_id);
@@ -78,13 +91,24 @@ public class TeamFeeController
 		 List<TeamFeeDTO> teamMonthFeeList=  teamFeeDAO.getTeamMonthFeeList(team_id);
 		
 		 // 페이징 HTML 생성
-		 String pageHtml = pageUtil.getPageHtml("MyTeamFee.action?page=%d");
-		 session.setAttribute("team", team);
-		 session.setAttribute("teamFeeList", teamFeeList);
-		 session.setAttribute("teamMonthFeeList", teamMonthFeeList);
-		 session.setAttribute("expense", expense);
-		 session.setAttribute("income", income);
-		 session.setAttribute("tot", tot);
+		 String pageHtml = pageUtil.getPageHtml("TeamFee.action?page=%d");
+		 
+		 LocalDate localDate = LocalDate.now();
+		 
+		 Calendar cal = Calendar.getInstance();
+		 cal.set(Calendar.HOUR_OF_DAY, 0);
+		 cal.set(Calendar.MINUTE, 0);
+		 cal.set(Calendar.SECOND, 0);
+		 cal.set(Calendar.MILLISECOND, 0);
+		 Date today = cal.getTime();
+
+		 request.setAttribute("today", today);
+		 model.addAttribute("team", team);
+		 model.addAttribute("teamFeeList", teamFeeList);
+		 model.addAttribute("teamMonthFeeList", teamMonthFeeList);
+		 model.addAttribute("expense", expense);
+		 model.addAttribute("income", income);
+		 model.addAttribute("tot", tot);
 		 model.addAttribute("pageHtml", pageHtml);
 	     model.addAttribute("totalCount", totalCount);
 	     model.addAttribute("currentPage", currentPage);
@@ -116,7 +140,7 @@ public class TeamFeeController
 		
 		teaFeeDAO.addTeamFeeInfo(teamFee);
 		
-		return "redirect:/MyTeamFee.action";
+		return "redirect:/TeamFee.action";
 	};
 	
 	//동호회 회비 정보 등록
@@ -130,7 +154,7 @@ public class TeamFeeController
 		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
 		
 		
-		ITeamFeeDAO teaFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
+		ITeamFeeDAO teamFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		
 		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
@@ -151,9 +175,9 @@ public class TeamFeeController
 		teamFee.setTeam_fee_id(team_fee_id);
 		teamFee.setTeam_fee_price(team_fee_price);
 		
-		teaFeeDAO.addMonthFee(teamFee);
+		teamFeeDAO.addMonthFee(teamFee);
 		
-		return "redirect:/MyTeamFee.action";
+		return "redirect:/TeamFee.action";
 	};
 	
 	
@@ -165,15 +189,18 @@ public class TeamFeeController
 		int team_fee_id = Integer.parseInt(request.getParameter("team_fee_id"));
 		Integer temp_team_id = (Integer) session.getAttribute("team_id");
 	
-		ITeamFeeDAO teaFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
+		ITeamFeeDAO teamFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
+		TeamFeeDTO teamFee =  teamFeeDAO.getTeamMonthFee(team_fee_id);
 		
 		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
 		
-		List<TeamMemberFeeDTO> teamMemberFeeList =  teaFeeDAO.getMemberFeeList(team_fee_id);
-		
+		List<TeamMemberFeeDTO> teamMemberFeeList =  teamFeeDAO.getMemberFeeList(team_fee_id);
+
 		model.addAttribute("teamMemberFeeList", teamMemberFeeList);
 		model.addAttribute("team", team);
+		model.addAttribute("teamFee", teamFee);
 		
 		return "/team/TeamMonthFee";
 	};

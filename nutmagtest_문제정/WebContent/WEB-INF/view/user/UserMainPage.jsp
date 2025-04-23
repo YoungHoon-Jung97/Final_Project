@@ -193,7 +193,7 @@ html, body {
         <div class="text-muted mb-3">사용자</div>
         <nav>
             <a class="nav-link active" href="#"><i class="bi bi-person-circle"></i> 마이페이지</a>
-            <a class="nav-link" href="MyInformation.action"><i class="bi bi-speedometer2"></i> 내 정보</a>
+            <a class="nav-link" href="UserMyinfo.action"><i class="bi bi-speedometer2"></i> 내 정보</a>
             <a class="nav-link" href="#"><i class="bi bi-people"></i> 정보 관리</a>
             <a class="nav-link" href="#"><i class="bi bi-flag"></i> 경기 기록</a>
             <a class="nav-link" href="#"><i class="bi bi-cash"></i> 결제 내역</a>
@@ -218,9 +218,6 @@ html, body {
 			        </span>
 			    </div>
 			</c:forEach>
-			<a href="${pageContext.request.contextPath}/CheckPassword.action" class="btn edit-button">
-			    <i class="bi bi-pencil-square me-2"></i>내 정보 수정
-			</a>
         </div>
     </div>
 </div>

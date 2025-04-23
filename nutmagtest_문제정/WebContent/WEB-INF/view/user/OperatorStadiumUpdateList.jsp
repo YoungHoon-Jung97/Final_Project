@@ -37,7 +37,9 @@ $(document).on('click', '.show-fields-btn', function () {
 });
 </script>
 
-<h4 class="mb-4">구장 정보 수정하기</h4>
+<div class="section-title">
+  <i class="bi bi-pencil-square me-2"></i> 구장 정보 수정
+</div>
 
 <div class="match-card2">보유한 구장 전체 갯수 : ${stadiumCount} 개 </div>
 

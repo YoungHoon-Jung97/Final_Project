@@ -71,7 +71,10 @@ $(document).on("click", "#rejectModal .btn-danger", function () {
 </script>
 
 
-<h4 class="mb-4">경기장 승인 요청</h4>
+<div class="section-title">
+  <i class="bi bi-check-circle me-2"></i>
+  경기장 승인 요청
+</div>
 
 <c:forEach var="field" items="${fieldBeforeResApprList}">
     <div class="match-card border rounded p-3 mb-3">

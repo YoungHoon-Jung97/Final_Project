@@ -238,5 +238,16 @@
     
     <!--===============================================동호회 정보 출력==================================================================  -->
    
-    
+    <!--===============================================동호회 해체==================================================================  -->
+	<delete id="tempTempDrop"  statementType="CALLABLE">
+		CALL DISBAND_TEMP_TEAM(
+		#{temp_team_id}
+		)
+	</delete>
+	
+	<delete id="teamDrop"  statementType="CALLABLE">
+		CALL PRC_TEAM_WITHDRAWAL_AND_DROP(
+		#{team_id}
+		)
+	</delete>
 </mapper>

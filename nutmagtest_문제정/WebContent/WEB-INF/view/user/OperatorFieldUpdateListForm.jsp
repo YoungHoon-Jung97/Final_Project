@@ -38,9 +38,11 @@ $(document).on('click', '.show-fields-btn', function () {
 </script> -->
 
 <link rel="stylesheet" type="text/css" href="css/main.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/StadiumFieldCheckForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stadium/StadiumFieldCheckForm.css?after">
 	
-	<h4 class="mb-4">경기장 정보 수정하기</h4>
+	<div class="section-title">
+	  <i class="bi bi-gear me-2"></i> 경기장 정보 수정
+	</div>
 	<c:forEach var="field" items="${fieldList}">
 	<form action="OperatorFieldUpdateForm.action" method="post">
 		<div class="match-card">
