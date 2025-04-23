@@ -1226,8 +1226,8 @@ public class UserController
 	    UserDTO userEdit = dao.userUpdate(user_code_id);   // 정보 불러오기
 
 	    if (userEdit == null) {
-	        message = "회원 정보를 찾을 수 없습니다.";
-	        model.addAttribute("message", message);
+	    	message = "ERROR: 회원 정보를 찾을 수 없습니다.";
+	        session.setAttribute("message", message);
 	        return "redirect:MainPage.action";
 	    }
 
@@ -1236,36 +1236,44 @@ public class UserController
 	    return "/user/UserInfoEdit"; // 수정 폼 JSP로 이동
 	}
 	
-	//사용자 정보 업데이트
+	// 사용자 정보 업데이트
 	@RequestMapping(value = "/UserUpdate.action", method = RequestMethod.POST)
-	   public String updateUser(UserDTO userDTO, HttpServletRequest request, Model model) {
-
-	       HttpSession session = request.getSession();
-	       Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-	       userDTO.setUser_code_id(user_code_id);
-
-	       // 기존 비밀번호와 새로운 비밀번호를 비교
-	       String currentPwd = request.getParameter("current_pwd");  // hidden으로 받은 기존 비밀번호
-	       String newPwd = request.getParameter("user_pwd");         // 새 비밀번호
-	       String confirmPwd = request.getParameter("password2");    // 새 비밀번호 확인
-
-	       // 비밀번호가 다르면 수정 페이지로 돌아가기
-	       if (!newPwd.equals(confirmPwd)) {  // equals()로 비밀번호 비교
-	           return "redirect:UserInfoEdit.action";  // 수정 페이지로 돌아감
-	       }
-
-	       // 비밀번호가 일치하면 DB에 업데이트
-	       if (newPwd != null && !newPwd.trim().equals("")) {
-	           userDTO.setUser_pwd(newPwd);  // 새 비밀번호로 업데이트
-	       } else {
-	           userDTO.setUser_pwd(currentPwd); // 비밀번호 변경 없으면 기존 비밀번호 사용
-	       }
-
-	       // DB 업데이트
-	       IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
-	       userDAO.updateUser(userDTO);  // 비밀번호 포함한 전체 정보 업데이트
-
-	       // 메인 페이지로 리다이렉트
-	       return "redirect:MainPage.action";
-	   }
+	public String updateUser(UserDTO userDTO, HttpServletRequest request, Model model)
+	{
+		HttpSession session = request.getSession();
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		userDTO.setUser_code_id(user_code_id);
+		
+		// 기존 비밀번호와 새로운 비밀번호를 비교
+		String currentPwd = request.getParameter("current_pwd");  // hidden으로 받은 기존 비밀번호
+		String newPwd = request.getParameter("user_pwd");         // 새 비밀번호
+		String confirmPwd = request.getParameter("password2");    // 새 비밀번호 확인
+		
+		System.out.println("currentPwd: " + currentPwd);
+		System.out.println("newPwd: " + newPwd);
+		System.out.println("confirmPwd: " + confirmPwd);
+		
+		if (newPwd == null || newPwd.isEmpty())
+			userDTO.setUser_pwd(currentPwd);
+		
+		else
+		{
+			if (newPwd.equals(confirmPwd))
+				userDTO.setUser_pwd(newPwd);
+			
+			else
+			{
+				String message = "WARNING: 새 비밀번호가 다릅니다.";
+		        session.setAttribute("message", message);
+				return "redirect:UserInfoEdit.action";
+			}
+		}
+		
+		// DB 업데이트
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		userDAO.updateUser(userDTO);  // 비밀번호 포함한 전체 정보 업데이트
+		
+		// 메인 페이지로 리다이렉트
+		return "redirect:UserMainPage.action";
+	}
 }

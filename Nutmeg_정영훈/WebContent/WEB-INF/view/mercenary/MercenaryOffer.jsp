@@ -22,6 +22,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="<%=cp %>/js/Time.js?after"></script>
+<script type="text/javascript" src="<%=cp %>/js/Modal.js?after"></script>
 <script type="text/javascript">
 
 	var contextPath = "${pageContext.request.contextPath}";
@@ -33,6 +34,51 @@
 
 </head>
 <body>
+<c:if test="${not empty sessionScope.message}">
+	<script type="text/javascript">
+		window.addEventListener("pageshow", function(event)
+		{
+			if (!event.persisted && performance.navigation.type != 2)
+			{
+				var message = "${fn:escapeXml(sessionScope.message)}";
+				var parts = message.split(":");
+				
+				if (parts.length > 1)
+				{
+					var type = parts[0].trim();
+					var content = parts[1].trim();
+					
+					switch (type)
+					{
+						case "SUCCESS_INSERT":
+						case "SUCCESS_APPLY":
+							swal("성공", content, "success");
+							break;
+						
+						case "NEED_REGISTER_STADIUM":
+							swal("주의", content, "warning");
+							break;
+							
+						case "ERROR_DUPLICATE_JOIN":
+						case "ERROR_AUTH_REQUIRED":
+						case "ERROR_DUPLICATE_REQUEST":
+						case "ERROR":
+							swal("에러", content, "error");
+							break;
+						
+						default:
+							swal("알림", content, "info");
+					}
+				}
+				
+				else
+					swal("처리 필요", message, "info");
+			}
+		});
+	</script>
+	
+	<c:remove var="message" scope="session"></c:remove>
+</c:if>
 <div class="main-background">
 	<main>
 		<div class="board-container">
@@ -66,11 +112,42 @@
 									<div class="table-cell">${mercenary.region_name}</div>
 									<div class="table-cell">${mercenary.city_name}</div>
 									<div class="table-cell">
-										<form action="hireMercenary.action" method="POST">
-											<input type="hidden" name="mercenary_id" value="${mercenary.mercenary_id}">
-											
-											<button type="submit" class="btn-hire">고용</button>
-										</form>
+										<button type="button" class="btn-hire open-modal">고용</button>
+										<!--  용병 모달 -->
+										<div class="modal" style="background-color: rgba(0, 0, 0, 0.1);">
+											<div class="modal-content">
+												<form action="SendMercenary.action">
+													<span class="close-modal">&times;</span>
+													<div class="modal-header">
+												   		<h2 class="modal-title">팀 매치 선택</h2>
+												  	</div>
+												  	<div class="modal-body">
+												    	<div class="form__field">
+												      		<label class="form__label required">경기 선택</label>
+												      		<div class="form__input--wrapper">
+												      			<input type="hidden" name="mercenary_id" value="${mercenary.mercenary_id}">
+												        		<select class="form__input">
+													      			<c:choose>
+													      				<c:when test="${empty teamMatchList}">
+													      					<option value="0">없음</option>
+													      				</c:when>
+													      				<c:otherwise>
+														          			<c:forEach var="teamMatch" items="${teamMatchList}">
+														            			<option value="${teamMatch.field_res_id}">시간 : ${teamMatch.match_date}/ 장소 : ${teamMatch.stadium_addr}</option>
+														          			</c:forEach>
+														          		</c:otherwise>
+													      			</c:choose>
+												        		</select>
+												      		</div>
+												    	</div>
+												  	</div>
+													<div class="modal-footer">
+														<button type="button" class="modal-button modal-cancel">취소</button>
+												    	<button type="submit" class="modal-button modal-submit" id="confirmHire">확인</button>
+													</div>
+												</form>
+											</div>
+										</div>
 									</div>
 								</div>
 							</c:forEach>
@@ -142,6 +219,7 @@
 		<img src="images/soccerball.png" alt="floating" class="floatingButton-img">
 	</div>
 </div>
+
 
 <script type="text/javascript">
 

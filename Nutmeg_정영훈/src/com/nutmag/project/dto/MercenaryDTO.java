@@ -2,10 +2,26 @@ package com.nutmag.project.dto;
 
 public class MercenaryDTO
 {
-	private int mercenary_id,region_id,user_code_id,position_id,city_id;
+	private int mercenary_id,region_id,user_code_id,position_id,city_id,field_res_id,team_id;
 	private String mercenary_reg_at,position_name,city_name,region_name,user_name,user_nick_name,
 	mercenary_time_start_at,mercenary_time_end_at, time;
 	
+	public int getTeam_id()
+	{
+		return team_id;
+	}
+	public void setTeam_id(int team_id)
+	{
+		this.team_id = team_id;
+	}
+	public int getField_res_id()
+	{
+		return field_res_id;
+	}
+	public void setField_res_id(int field_res_id)
+	{
+		this.field_res_id = field_res_id;
+	}
 	public String getTime() {
 		return time;
 	}

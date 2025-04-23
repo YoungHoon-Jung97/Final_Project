@@ -52,12 +52,13 @@
 		               START_TIME, END_TIME, MATCH_INWON, INCOME_AMOUNT,
 		               EXPENSE_AMOUNT, NET_AMOUNT, MATCH_STATUS, TEAM_FEE_ID
 		        FROM TEAM_FINANCIAL_LEDGER_VIEW
+		        WHERE TEAM_ID =#{team_id}
 		        ORDER BY TRANSACTION_DATE DESC
 		    ) DATA
 		    WHERE ROWNUM &lt;=#{end}
 		)
-		WHERE RNUM &gt;= #{start} AND
-       	TEAM_ID = #{team_id}
+		WHERE RNUM &gt;= #{start}
+       	
 	</select>
 	
 	<!-- 동호회 회비 리스트  -->

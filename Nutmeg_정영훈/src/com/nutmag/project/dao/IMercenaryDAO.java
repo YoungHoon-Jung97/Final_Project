@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.nutmag.project.dto.FieldResMainPageDTO;
+import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.MercenaryDTO;
 
 public interface IMercenaryDAO
@@ -26,6 +27,12 @@ public interface IMercenaryDAO
 	
 	//용병 지역 검색
 	public ArrayList<MercenaryDTO> searchMercenary(Map<String, Object> params);
+	
+	//용병 고용
+	public void sendMercenary(MercenaryDTO mercenary);
+	
+	//팀참여 매치
+	public ArrayList<MatchDTO> searchTeamMatch(@Param("team_id")int team_id);
 	
 
 }

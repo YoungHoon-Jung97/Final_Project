@@ -84,7 +84,6 @@ $(function()
 		window.location.href = "MercenaryInsertForm.action";
 	});
 	
-	
 	// 매치 참가
 	$(".match").click(function()
 	{
@@ -95,7 +94,12 @@ $(function()
 	$(".company").click(function()
 	{
 		window.location.href = "Aboutme.action";
-		
+	});
+	
+	// 알림
+	$(".bi-bell-fill, .bi-bell").click(function()
+	{
+		window.location.href = "UserNotification.action";
 	});
 	
 	// 내 정보

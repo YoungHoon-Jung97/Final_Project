@@ -37,7 +37,6 @@ $(document).on('click', '.show-fields-btn', function () {
 });
 </script> -->
 
-<link rel="stylesheet" type="text/css" href="css/main.css">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/stadium/StadiumFieldCheckForm.css?after">
 	
 	<div class="section-title">

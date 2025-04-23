@@ -23,10 +23,13 @@ import com.nutmag.project.dao.IFieldDAO;
 import com.nutmag.project.dao.IMercenaryDAO;
 import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
+import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dto.FieldResMainPageDTO;
+import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.MercenaryDTO;
 import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.RegionDTO;
+import com.nutmag.project.dto.TeamDTO;
 
 @Controller
 public class MercenaryController
@@ -107,6 +110,7 @@ public class MercenaryController
         HttpSession session = request.getSession();      
        
         Integer user_code_id = (Integer)session.getAttribute("user_code_id");
+        Integer temp_team_id = (Integer)session.getAttribute("team_id");
         
         // 로그인 여부
 		if (user_code_id == -1)
@@ -117,7 +121,14 @@ public class MercenaryController
 		}
 		
 		IMercenaryDAO mercenaryDAO = sqlSession.getMapper(IMercenaryDAO.class);
-        
+		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
+		TeamDTO team =teamDAO.getTeamInfo(temp_team_id);
+		int team_id = team.getTeam_id();
+		
+		
+		ArrayList<MatchDTO> teamMatchList =mercenaryDAO.searchTeamMatch(team_id);
+		
         // 날짜 처리
         String time;
         if (searchDate != null && !searchDate.isEmpty()) {
@@ -136,6 +147,7 @@ public class MercenaryController
         IPositionDAO positionDAO = sqlSession.getMapper(IPositionDAO.class);        
         IRegionDAO regionDAO = sqlSession.getMapper(IRegionDAO.class);
         
+        model.addAttribute("teamMatchList", teamMatchList);
         model.addAttribute("regionList", regionDAO.regionList());
         model.addAttribute("positionList", positionDAO.positionList());
         model.addAttribute("mercenaryList", mercenaryList);
@@ -196,6 +208,32 @@ public class MercenaryController
        
         return mercenaryList;
     }
+    
+    
+    //용병 고용 메시지
+    @RequestMapping(value ="/SendMercenary.action", method = RequestMethod.GET,
+	produces = "application/json")
+	public String sendMercenary(MercenaryDTO mercenary,HttpServletRequest request){
+	  
+    	HttpSession session = request.getSession();
+    	String message ="";
+    	Integer temp_team_id = (Integer)session.getAttribute("team_id");
+    	
+    	ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+    	IMercenaryDAO mercenaryDAO = sqlSession.getMapper(IMercenaryDAO.class);
+    	
+		TeamDTO team =teamDAO.getTeamInfo(temp_team_id);
+		int team_id = team.getTeam_id();
+		
+		mercenary.setTeam_id(team_id);
+    	
+		message = "SUCCESS_INSERT: 용병 신청이 완료되었습니다.";
+		session.setAttribute("message", message);
+		return "redirect:MercenaryOffer.action";
+	 
+	}
+	
+    
     
 
 }

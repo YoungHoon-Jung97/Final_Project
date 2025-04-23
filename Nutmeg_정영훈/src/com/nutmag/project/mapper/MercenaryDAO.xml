@@ -58,5 +58,31 @@
 	    </if>
 	</select>
 	
-	
+	<!-- 동호회 일정 출력 -->
+  	<select id="searchTeamMatch" resultType="com.nutmag.project.dto.MatchDTO">
+  		SELECT *
+		FROM MATCH_SCHEDULE_VIEW
+		WHERE (HOME_TEAM_ID =#{team_id} OR AWAY_TEAM_ID =#{team_id}) AND
+        MATCH_STATUS = '예정됨'
+  	</select>
+  	
+  	<!-- 용병 고용 메시지-->
+  	<insert id="sendMercenary" parameterType="com.nutmag.project.dto.MercenaryDTO" >
+		INSERT INTO MERCENARY_OFFER(
+		MERCENARY_OFFER_ID,
+		MERCENARY_OFFER_AT,
+		FIELD_RES_ID,
+		MERCENARY_ID,
+		TEAM_ID
+		)
+		VALUES
+		(
+		MERCENARY_OFFER.SEQ.NEXTVAL,
+		sysdate,
+		#{field_res_id},
+		#{mercenary_id},
+		#{team_id}
+		)
+  	</insert>
+
 </mapper>
