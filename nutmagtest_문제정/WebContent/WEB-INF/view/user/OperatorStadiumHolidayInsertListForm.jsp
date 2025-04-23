@@ -9,18 +9,16 @@
 $(document).on('click', '.show-fields-btn', function () {
     const $btn = $(this);
     const stadiumId = $btn.data('stadium-id');
-    const $targetDiv = $('#stadium-list-' + stadiumId);
+    const $targetDiv = $('#stadium-holiday-list-' + stadiumId);  // 수정된 ID
 
-    // 이미 열려 있으면 -> 닫기
     if ($targetDiv.is(':visible') && $targetDiv.children().length > 0) {
         $targetDiv.slideUp(200, function () {
-            $targetDiv.empty(); // 내용도 비움
+            $targetDiv.empty();
+            $btn.text('구장의 휴무일 설정');  // ← 텍스트 되돌리기
         });
-        $btn.text('구장의 휴무일 설정');
         return;
     }
 
-    // 아직 안 열렸으면 -> Ajax로 불러오기
     $.ajax({
         url: 'OperatorStadiumHolidayInsertForm.action',
         method: 'POST',
@@ -60,6 +58,6 @@ $(document).on('click', '.show-fields-btn', function () {
         </div>
 
         <!-- 여기에 경기장 리스트 삽입될 영역 -->
-        <div class="stadium-list mt-3" id="stadium-list-${stadium.stadium_reg_id}"></div>
+        <div class="stadium-holiday-list mt-3" id="stadium-holiday-list-${stadium.stadium_reg_id}"></div>
     </div>
 </c:forEach>

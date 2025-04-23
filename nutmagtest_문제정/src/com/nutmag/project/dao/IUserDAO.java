@@ -8,7 +8,9 @@ import org.apache.ibatis.annotations.Param;
 import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.OperatorResCancelDTO;
+import com.nutmag.project.dto.TeamMemberFeeDTO;
 import com.nutmag.project.dto.UserDTO;
+import com.nutmag.project.dto.UserMatchDTO;
 
 
 public interface IUserDAO
@@ -71,5 +73,19 @@ public interface IUserDAO
  	public UserDTO userUpdate(int user_code_id);
 
  	public void updateUser(UserDTO userDTO);
+ 	
+ 	//--------------------------------------------------------------------------------------
+ 	
+ 	//내 결재 내역
+ 	public ArrayList<TeamMemberFeeDTO> feeList(@Param("start")int start,@Param("end") int end ,@Param("user_code_id") int user_code_id);
+ 	
+ 	//내 참여 기록
+ 	public ArrayList<UserMatchDTO> matchList(@Param("start")int start,@Param("end") int end ,@Param("user_code_id")int user_code_id);
+ 	
+ 	//내 결재 내역 수
+ 	public int feeListCount(@Param("user_code_id") int user_code_id);
+ 	
+ 	//내 참여 기록 수
+ 	public int matchListCount(@Param("user_code_id")int user_code_id);
 	
 }

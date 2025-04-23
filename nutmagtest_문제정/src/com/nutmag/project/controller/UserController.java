@@ -41,9 +41,12 @@ import com.nutmag.project.dto.OperatorResCancelDTO;
 import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 import com.nutmag.project.dto.StadiumTimeDTO;
+import com.nutmag.project.dto.TeamMemberFeeDTO;
 import com.nutmag.project.dto.UserDTO;
+import com.nutmag.project.dto.UserMatchDTO;
 
 import util.MailUtil;
+import util.PageUtil;
 import util.Path;
 
 @Controller
@@ -1015,6 +1018,36 @@ public class UserController
 	@RequestMapping(value = "/UserMainPage.action" , method = RequestMethod.GET)
 	public String Mypage(Model model, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
+	    UserDTO userInfo = dao.getUser(user_code_id);   // 정보 불러오기
+
+	    if (userInfo == null) {
+	        message = "회원 정보를 찾을 수 없습니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";
+	    }
+
+	    model.addAttribute("userInfo", userInfo);
+
+	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
+	}
+	
+	//사용자 알림
+	@RequestMapping(value = "/UserNotification.action" , method = RequestMethod.GET)
+	public String userNotification(Model model, HttpServletRequest request)
+	{
 	    HttpSession session = request.getSession();
 	    String message = "";
 
@@ -1041,38 +1074,107 @@ public class UserController
 	    System.out.println("=============================================================");
 	    model.addAttribute("notificationList", notificationList);
 
-	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
+	    return "/user/UserNotification"; // 유저 정보 보여줄 페이지
 	}
 	
-
-	// 내 정보
-	@RequestMapping("/UserMyinfo.action")
-	public String MyInformation(Model model, HttpServletRequest request)
-	{
-	    HttpSession session = request.getSession();
-	    String message = "";
-
-	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-
-	    // 로그인 체크
-	    if (user_code_id == null) {
-	        message = "로그인을 해야 합니다.";
-	        model.addAttribute("message", message);
-	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
-	    }
-
-	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
-	    UserDTO userInfo = dao.getUser(user_code_id);   // 정보 불러오기
-
-	    if (userInfo == null) {
-	        message = "회원 정보를 찾을 수 없습니다.";
-	        model.addAttribute("message", message);
-	        return "redirect:MainPage.action";
-	    }
-
-	    model.addAttribute("userInfo", userInfo);
-
-	    return "/user/UserMyinfo"; // 유저 정보 보여줄 페이지
+	//내 결제 내역
+	@RequestMapping(value = "/UserFee.action", method = RequestMethod.GET)
+	public String userFeeList(HttpServletRequest request,Model model) {
+		
+		HttpSession session = request.getSession();
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		
+		// 현재 페이지 파라미터 처리 (기본값: 1)
+        String pageParam = request.getParameter("page");
+        int currentPage = 1;
+        
+        if (pageParam != null && !pageParam.isEmpty()) 
+        {
+            try 
+            {
+                currentPage = Integer.parseInt(pageParam);
+            } 
+            catch (NumberFormatException e) 
+            {
+                // 숫자 형식이 아닌 경우 기본값 사용
+            }
+        }
+        
+        // 전체 게시글 수 조회
+        int totalCount = userDAO.feeListCount(user_code_id);	
+        
+        // 페이징 유틸 생성 (한 페이지에 10개씩, 5개 페이지 번호)
+        PageUtil pageUtil = new PageUtil(currentPage, totalCount, 10, 5);
+        
+        int start =pageUtil.getStart();
+        int end = pageUtil.getEnd();
+		
+		List<TeamMemberFeeDTO> feeList =  userDAO.feeList(start,end,user_code_id); 
+		
+		System.out.println("=======================확인=======================");
+		for (TeamMemberFeeDTO teamMemberFeeDTO : feeList)
+		{
+			System.out.println("team_member_fee_pay_price = " + teamMemberFeeDTO.getTeam_member_fee_pay_price());
+		}
+		System.out.println("==================================================");
+		
+		// 페이징 HTML 생성
+        String pageHtml = pageUtil.getPageHtml("UserFee.action?page=%d");
+        
+        // 요청 속성에 데이터 설정
+        model.addAttribute("pageHtml", pageHtml);
+        model.addAttribute("totalCount", totalCount);
+		model.addAttribute("feeList", feeList);
+	    return "/user/UserFee";
+	}
+	
+	
+	//내 경기 참여 내역
+	@RequestMapping(value = "/UserMatch.action", method = RequestMethod.GET)
+	public String userMatchList(HttpServletRequest request,Model model) {
+		
+		HttpSession session = request.getSession();
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		
+		// 현재 페이지 파라미터 처리 (기본값: 1)
+        String pageParam = request.getParameter("page");
+        int currentPage = 1;
+        
+        if (pageParam != null && !pageParam.isEmpty()) 
+        {
+            try 
+            {
+                currentPage = Integer.parseInt(pageParam);
+            } 
+            catch (NumberFormatException e) 
+            {
+                // 숫자 형식이 아닌 경우 기본값 사용
+            }
+        }
+        
+        // 전체 게시글 수 조회
+        int totalCount = userDAO.matchListCount(user_code_id);
+        
+        // 페이징 유틸 생성 (한 페이지에 10개씩, 5개 페이지 번호)
+        PageUtil pageUtil = new PageUtil(currentPage, totalCount, 10, 5);
+        
+        int start =pageUtil.getStart();
+        int end = pageUtil.getEnd();
+		
+		List<UserMatchDTO> matchList =  userDAO.matchList(start,end,user_code_id); 
+		
+		// 페이징 HTML 생성
+        String pageHtml = pageUtil.getPageHtml("UserMatch.action?page=%d");
+        
+        // 요청 속성에 데이터 설정
+        model.addAttribute("pageHtml", pageHtml);
+        model.addAttribute("totalCount", totalCount);
+		model.addAttribute("matchList", matchList);
+	    return "/user/UserMatch";
 	}
 		
 	// 내 정보 수정 폼 페이지 들어가기 전 비밀번호 확인

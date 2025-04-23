@@ -287,10 +287,10 @@ $(document).on('click', '.menu-link', function (e) {
 				    <i class="bi bi-gear me-2"></i> 경기장 정보 수정
 				</a>
 				<a class="nav-link menu-link" data-url="OperatorStadiumHolidayInsertListForm.action">
-				    <i class="bi bi-calendar-plus me-2"></i> 경기장 휴무일 입력
+				    <i class="bi bi-calendar-plus me-2"></i> 구장 휴무일 입력
 				</a>
 				<a class="nav-link menu-link" data-url="OperatorStadiumHolidayDeleteForm.action">
-				    <i class="bi bi-calendar-check me-2"></i> 경기장 휴무일 삭제
+				    <i class="bi bi-calendar-check me-2"></i> 구장 휴무일 삭제
 				</a>
 				<a class="nav-link menu-link" data-url="OperatorFieldResApprForm.action">
 				    <i class="bi bi-check-circle me-2"></i> 경기장 승인관리

@@ -23,6 +23,89 @@
 <script type="text/javascript" src="<%=cp %>/js/MainPage.js?after"></script>
 
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
+<style>
+/* 이미지 배너 공통 스타일 */
+body{
+	background-color: white;
+}
+.side-banner {
+    position: fixed;
+    bottom: 200px;
+    width: 150px;
+    z-index: 999;
+}
+
+/* 왼쪽 배너 위치 */
+.left-banner {
+    left: 50px;
+}
+
+/* 오른쪽 배너 위치 */
+.right-banner {
+    right: 150px;
+}
+
+/* 이미지 스타일 */
+.side-banner img {
+    width: 180%;
+    height: 150%;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.music-banner {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.music-banner button {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.music-banner img {
+    width: 30px;
+    height: 30px;
+}
+
+/* 모바일에서는 배너 숨김 */
+@media screen and (max-width: 992px) {
+    .side-banner {
+        display: none;
+    }
+    .music-banner {
+        display: none;
+    }
+    .weather-widget {
+        display: none;
+    }
+}
+#mainCarousel {
+    width: 80%;
+    margin: 30px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: #00000040;
+
+}
+#mainCarousel img {
+    height: auto;
+    max-height: 350px;
+    width: 100%;
+    object-fit: contain;
+    background-color: #E2E2E2; /* 혹시 이미지가 작을 경우 배경 */
+}
+</style>
 
 </head>
 <body>
@@ -103,6 +186,33 @@
 		</div>
 	</div>
 </div>
+
+<!-- 슬라이드 이미지 배너 -->
+<div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+	<div class="carousel-inner">
+		<div class="carousel-item active">
+			<img src="<%=cp%>/images/pic1.jpg" class="d-block w-100" alt="축구 이미지 1">
+		</div>
+		<div class="carousel-item">
+  			<img src="<%=cp%>/images/pic4.jpg" class="d-block w-100" alt="축구 이미지 2">
+		</div>
+		<div class="carousel-item">
+  			<img src="<%=cp%>/images/pic2.jpg" class="d-block w-100" alt="축구 이미지3">
+		</div>
+		<div class="carousel-item">
+  			<img src="<%=cp%>/images/pic5.jpg" class="d-block w-100" alt="축구 이미지4">
+    	</div>
+  	</div>
+  	<button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+    	<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    	<span class="visually-hidden">이전</span>
+  	</button>
+  	<button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+    	<span class="carousel-control-next-icon" aria-hidden="true"></span>
+    	<span class="visually-hidden">다음</span>
+  	</button>
+</div>
+
 
 <div class="main-background">
 	<main>
