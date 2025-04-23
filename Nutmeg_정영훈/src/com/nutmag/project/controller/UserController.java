@@ -46,6 +46,7 @@ import com.nutmag.project.dto.UserDTO;
 import com.nutmag.project.dto.UserMatchDTO;
 
 import util.MailUtil;
+import util.PageUtil;
 import util.Path;
 
 @Controller
@@ -1078,13 +1079,39 @@ public class UserController
 	
 	//내 결제 내역
 	@RequestMapping(value = "/UserFee.action", method = RequestMethod.GET)
-	public String userFeeList(HttpSession session,Model model) {
+	public String userFeeList(HttpServletRequest request,Model model) {
 		
+		HttpSession session = request.getSession();
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
 		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-		
 		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
 		
-		List<TeamMemberFeeDTO> feeList =  userDAO.feeList(user_code_id); 
+		// 현재 페이지 파라미터 처리 (기본값: 1)
+        String pageParam = request.getParameter("page");
+        int currentPage = 1;
+        
+        if (pageParam != null && !pageParam.isEmpty()) 
+        {
+            try 
+            {
+                currentPage = Integer.parseInt(pageParam);
+            } 
+            catch (NumberFormatException e) 
+            {
+                // 숫자 형식이 아닌 경우 기본값 사용
+            }
+        }
+        
+        // 전체 게시글 수 조회
+        int totalCount = userDAO.feeListCount(user_code_id);	
+        
+        // 페이징 유틸 생성 (한 페이지에 10개씩, 5개 페이지 번호)
+        PageUtil pageUtil = new PageUtil(currentPage, totalCount, 10, 5);
+        
+        int start =pageUtil.getStart();
+        int end = pageUtil.getEnd();
+		
+		List<TeamMemberFeeDTO> feeList =  userDAO.feeList(start,end,user_code_id); 
 		
 		System.out.println("=======================확인=======================");
 		for (TeamMemberFeeDTO teamMemberFeeDTO : feeList)
@@ -1093,6 +1120,12 @@ public class UserController
 		}
 		System.out.println("==================================================");
 		
+		// 페이징 HTML 생성
+        String pageHtml = pageUtil.getPageHtml("UserFee.action?page=%d");
+        
+        // 요청 속성에 데이터 설정
+        model.addAttribute("pageHtml", pageHtml);
+        model.addAttribute("totalCount", totalCount);
 		model.addAttribute("feeList", feeList);
 	    return "/user/UserFee";
 	}
@@ -1100,14 +1133,46 @@ public class UserController
 	
 	//내 경기 참여 내역
 	@RequestMapping(value = "/UserMatch.action", method = RequestMethod.GET)
-	public String userMatchList(HttpSession session,Model model) {
+	public String userMatchList(HttpServletRequest request,Model model) {
 		
+		HttpSession session = request.getSession();
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
 		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-		
 		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
 		
-		List<UserMatchDTO> matchList =  userDAO.matchList(user_code_id); 
+		// 현재 페이지 파라미터 처리 (기본값: 1)
+        String pageParam = request.getParameter("page");
+        int currentPage = 1;
+        
+        if (pageParam != null && !pageParam.isEmpty()) 
+        {
+            try 
+            {
+                currentPage = Integer.parseInt(pageParam);
+            } 
+            catch (NumberFormatException e) 
+            {
+                // 숫자 형식이 아닌 경우 기본값 사용
+            }
+        }
+        
+        // 전체 게시글 수 조회
+        int totalCount = userDAO.matchListCount(user_code_id);
+        
+        // 페이징 유틸 생성 (한 페이지에 10개씩, 5개 페이지 번호)
+        PageUtil pageUtil = new PageUtil(currentPage, totalCount, 10, 5);
+        
+        int start =pageUtil.getStart();
+        int end = pageUtil.getEnd();
 		
+		List<UserMatchDTO> matchList =  userDAO.matchList(start,end,user_code_id); 
+		
+		// 페이징 HTML 생성
+        String pageHtml = pageUtil.getPageHtml("UserMatch.action?page=%d");
+        
+        // 요청 속성에 데이터 설정
+        model.addAttribute("pageHtml", pageHtml);
+        model.addAttribute("totalCount", totalCount);
 		model.addAttribute("matchList", matchList);
 	    return "/user/UserMatch";
 	}

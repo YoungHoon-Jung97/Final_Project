@@ -24,10 +24,13 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5; /* 연한 회색 배경 */
+    background-color: white; /* 연한 회색 배경 */
     color: #333; /* 기본 텍스트 색상 */
     width: 100%;
+  	background: #ffffff !important;
+  	background-image: none !important;
 }
+
 
 /* 전체 레이아웃 wrapper */
 .wrapper {
@@ -46,8 +49,10 @@ html, body {
     background-color: #ffffff; /* 흰 배경 */
     border-radius: 16px; /* 모서리 둥글게 */
     padding: 30px 25px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* 연한 그림자 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06); 
     flex-shrink: 0; /* 사이즈 축소 방지 */
+    border: 1px solid #e0e0e0;
+
 }
 
 /* 사용자 박스 (사진, 이름, 상태) */
@@ -116,7 +121,8 @@ html, body {
     background-color: #ffffff;
     border-radius: 16px;
     padding: 40px 50px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e0e0e0;
 }
 
 /* 내 정보 타이틀 */
@@ -187,43 +193,90 @@ html, body {
 .edit-button:hover {
     background-color: #388E3C;
 }
+
+.dashboard-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+.dashboard-card:hover {
+  transform: translateY(-3px);
+}
+.card-icon {
+  font-size: 28px;
+  color: #4CAF50;
+}
+.card-label {
+  font-weight: 600;
+  color: #666;
+  font-size: 14px;
+}
+.card-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+}
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  text-align: center;
+}
+.table td {
+  text-align: center;
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  padding-left: 12px;
+  border-left: 5px solid #4CAF50;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 </style>
 
-<script>
-$(document).ready(function () {
-    $('.menu-link').click(function (e) {
-    	e.preventDefault();
-        const url = $(this).data('url');
-        console.log("요청 URL: " + url);
 
-        $.ajax({
-            url: url,
-            method: 'GET',
-            success: function (result) {
-                $('#content-area').html(result);
-            },
-            error: function () {
-                alert("콘텐츠를 불러오는 데 실패했습니다.");
-            }
-        });
+
+<script>
+$(document).on('click', '.menu-link', function (e) {
+    e.preventDefault();
+    const url = $(this).data('url');
+    if (!url) return;
+    console.log("요청 URL: ", $(this).data('url'));
+    $.ajax({
+        url: url,
+        method: 'GET',
+        success: function (result) {
+            $('#content-area').html(result);
+        },
+        error: function () {
+            alert("콘텐츠를 불러오는 데 실패했습니다.");
+        }
     });
 });
 </script>
 <c:import url="/WEB-INF/view/Template.jsp"></c:import>
 
 <body>
-
-
-<body>
 <div class="wrapper">
     <!-- 사이드바 -->
     <div class="sidebar">
-        <img src="" alt="프로필 이미지" class="img-thumbnail rounded-circle mb-3" style="width: 90px; height: 90px; object-fit: cover;">
         	<c:forEach var="info" items="${operatorInfo}">
-                <h5 class="mb-1">${info.operator_name }</h5>님 반갑습니다!
+                <h5 class="mb-1"  style="text-align: center;">${info.operator_name } </h5>
+                <div style="text-align: center;">님 반갑습니다!</div>
             </c:forEach>  
-        <div class="text-muted mb-3">구장 운영자</div>
+        <div class="mt-2" style="text-align: center;"><span class="badge bg-primary text-dark">구장 운영자</span></div>
 	        <nav>
+	        	<a class="nav-link menu-active" onclick="location.reload();">
+				    <i class="bi bi-house-door me-2"></i> 구장 운영자 대시보드
+				</a>
 	       		<a class="nav-link menu-link" data-url="OperatorStadiumListForm.action">
 				    <i class="bi bi-house-door me-2"></i> 나의 구장 목록
 				</a>
@@ -254,72 +307,79 @@ $(document).ready(function () {
 	        </nav>
         </div>
 
-		<div class="content-area" id="content-area">
-		    <h4 class="mb-4">운영자 대시보드</h4>
-
-			<!-- ✅ 요약 카드: 오늘의 개요 -->
-			<div class="row mb-4">
-			    <div class="col-md-3">
-			        <div class="card text-white bg-success mb-3">
-			            <div class="card-body">
-			                <h5 class="card-title">총 구장 수</h5>
-			                <p class="card-text fs-4">${totalStadiumCount} 개</p>
-			            </div>
-			        </div>
-			    </div>
-			    <div class="col-md-3">
-			        <div class="card text-white bg-primary mb-3">
-			            <div class="card-body">
-			                <h5 class="card-title">오늘 예약 수</h5>
-			                <p class="card-text fs-4">${todayReservationCount} 건</p>
-			            </div>
-			        </div>
-			    </div>
-			    <div class="col-md-3">
-			        <div class="card text-white bg-warning mb-3">
-			            <div class="card-body">
-			                <h5 class="card-title">이번 달 매출</h5>
-			                <p class="card-text fs-4">${monthlyRevenue} 원</p>
-			            </div>
-			        </div>
-			    </div>
-			    <div class="col-md-3">
-			        <div class="card text-white bg-danger mb-3">
-			            <div class="card-body">
-			                <h5 class="card-title">대기 중 승인</h5>
-			                <p class="card-text fs-4">${pendingApprovals} 건</p>
-			            </div>
-			        </div>
-			    </div>
+	<div class="content-area" id="content-area">
+		  <div class="section-title">
+			  <i class="bi bi-speedometer2 me-2"></i>
+			  구장 운영자 대시보드
 			</div>
-			
-			<!-- ✅ 최근 예약 목록 -->
-			<h5 class="mb-3">최근 예약 내역</h5>
-			<table class="table table-striped">
-			    <thead>
-			        <tr>
-			            <th>예약일</th>
-			            <th>경기장명</th>
-			            <th>시간</th>
-			            <th>결제 금액</th>
-			            <th>상태</th>
-			        </tr>
-			    </thead>
-			    <tbody>
-			        <c:forEach var="r" items="${recentReservations}">
-			        <tr>
-			            <td>${r.match_date}</td>
-			            <td>${r.field_name}</td>
-			            <td>${r.start_time} ~ ${r.end_time}</td>
-			            <td>${r.pay_amount} 원</td>
-			            <td>${r.match_status}</td>
-			        </tr>
-			        </c:forEach>
-			    </tbody>
-			</table>
-
+		
+		  <!-- 요약 카드 섹션 -->
+		  <div class="row mb-5">
+		    <div class="col-md-3">
+		      <div class="dashboard-card">
+		        <div class="card-icon"><i class="bi bi-building"></i></div>
+		        <div>
+		          <div class="card-label">총 구장 수</div>
+		          <div class="card-value">${totalStadiumCount} 개</div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="col-md-3">
+		      <div class="dashboard-card">
+		        <div class="card-icon"><i class="bi bi-calendar-event"></i></div>
+		        <div>
+		          <div class="card-label">오늘 예약 수</div>
+		          <div class="card-value">${todayReservationCount} 건</div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="col-md-3">
+		      <div class="dashboard-card">
+		        <div class="card-icon"><i class="bi bi-currency-dollar"></i></div>
+		        <div>
+		          <div class="card-label">이번 달 매출</div>
+		          <div class="card-value">${monthlyRevenue} 원</div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="col-md-3">
+		      <div class="dashboard-card">
+		        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+		        <div>
+		          <div class="card-label">대기 중 승인</div>
+		          <div class="card-value">${pendingApprovals} 건</div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		
+		  <!-- 최근 예약 목록 -->
+		  <h5 class="mb-3">최근 예약 내역</h5>
+		  <div class="table-responsive">
+		    <table class="table table-bordered align-middle">
+		      <thead>
+		        <tr class="table-light">
+		          <th>예약일</th>
+		          <th>경기장명</th>
+		          <th>시간</th>
+		          <th>결제 금액</th>
+		          <th>상태</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		        <c:forEach var="r" items="${recentReservations}">
+		        <tr>
+		          <td>${r.match_date}</td>
+		          <td>${r.field_name}</td>
+		          <td>${r.start_time} ~ ${r.end_time}</td>
+		          <td>${r.pay_amount} 원</td>
+		          <td>${r.match_status}</td>
+		        </tr>
+		        </c:forEach>
+		      </tbody>
+		    </table>
+		  </div>
 		</div>
-
-</div>
+	</div>
 </body>
 </html>

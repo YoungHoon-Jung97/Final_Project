@@ -6,7 +6,9 @@
 %>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<h4 class="mb-4">구장 승인,반려 목록</h4>
+<div class="section-title">
+  <i class="bi bi-list-check me-2"></i> 경기장 승인, 취소 내역
+</div>
 <h5>구장 승인 목록</h5>
 <c:forEach var="ok" items="${fieldApprOkList}">
     <div class="match-card">

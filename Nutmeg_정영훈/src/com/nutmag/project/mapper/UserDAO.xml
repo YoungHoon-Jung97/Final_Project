@@ -156,7 +156,7 @@
 	SELECT USER_NAME,USER_EMAIL,USER_PWD,USER_TEL,USER_NICK_NAME,USER_SSN1,USER_SSN2
 		 , USER_ADDR, USER_POSTAL_ADDR, USER_DETAILED_ADDR
 	FROM USER_INFO
-	WHERE user_id = #{user_code_id}
+	WHERE user_code_id = #{user_code_id}
 	</select>
 	
 	<!-- 이메일로 사용자 정보 조회 -->
@@ -180,18 +180,80 @@
        WHERE user_code_id = #{user_code_id}
    </update>
    
+   <!--=================================================================================  -->
+   
    <!-- 내 결재 내역 -->
    <select id="feeList" resultType="com.nutmag.project.dto.TeamMemberFeeDTO">
-   		SELECT *
+   		SELECT RNUM, 
+		TEAM_MEMBER_FEE_PAY_ID,
+		TEAM_MEMBER_FEE_PAY_PRICE,
+		TEAM_MEMBER_FEE_PAY_AT,
+		TEAM_FEE_ID,
+		TEAM_MEMBER_ID,
+		USER_NICK_NAME,
+		USER_CODE_ID,
+		TEAM_ID,
+		TEMP_TEAM_NAME
+		FROM (
+		    SELECT ROWNUM AS RNUM, DATA.*
+		    FROM (
+		        SELECT *
+		        FROM TEAM_MEMBER_FEE_PAY_VIEW
+		        WHERE USER_CODE_ID = #{user_code_id}
+		        ORDER BY TEAM_MEMBER_FEE_PAY_AT DESC
+		    ) DATA
+		    WHERE ROWNUM &lt;= #{end}
+		)
+		WHERE RNUM &gt;= #{start}
+   </select>
+   
+   <!-- 내 참여 기록 -->
+   <select id="matchList" resultType="com.nutmag.project.dto.UserMatchDTO">
+   		SELECT RNUM,
+		FIELD_RES_ID,
+		MATCH_DATE,
+		START_TIME,
+		END_TIME,
+		FIELD_NAME,
+		STADIUM_NAME,
+		STADIUM_ADDR,
+		STADIUM_DETAILED_ADDR,
+		MATCH_INWON,
+		FIELD_SIZE,
+		MATCH_FEE,
+		PAYMENT_DATE,
+		MY_TEAM,
+		USER_CODE_ID,
+		USER_NAME,
+		USER_NICK_NAME,
+		TEAM_TYPE
+		FROM (
+		    SELECT ROWNUM AS RNUM, DATA.*
+		    FROM (
+		        SELECT *
+		        FROM USER_MATCHES_VIEW
+		        WHERE USER_CODE_ID = #{user_code_id}
+		        ORDER BY MATCH_DATE DESC
+		    ) DATA
+		    WHERE ROWNUM &lt;= #{end}
+		)
+		WHERE RNUM &gt;= #{start}
+   </select>
+   
+   <!-- 내 결재 내역 수 -->
+   <select id="feeListCount" resultType="int">
+   		SELECT COUNT(*) AS COUNT
    		FROM TEAM_MEMBER_FEE_PAY_VIEW
    		WHERE USER_CODE_ID =#{user_code_id}
    </select>
    
    <!-- 내 참여 기록 -->
-   <select id="matchList" resultType="com.nutmag.project.dto.UserMatchDTO">
-   		SELECT * FROM USER_MATCHES_VIEW 
+   <select id="matchListCount" resultType="int">
+   		SELECT COUNT(*) AS COUNT
+   		FROM USER_MATCHES_VIEW 
 		WHERE "USER_CODE_ID" =#{user_code_id}
 		ORDER BY "MATCH_DATE" DESC
    </select>
+ 	
 	
 </mapper>

@@ -36,7 +36,9 @@ $(document).on('click', '.show-fields-btn', function () {
 });
 </script>
 
-<h4 class="mb-4">구장 목록</h4>
+<div class="section-title">
+	  <i class="bi bi-house-door me-2"></i> 나의 구장 목록
+	</div>
 
 <div class="match-card2">보유한 구장 전체 갯수 : ${stadiumCount} 개 </div>
 

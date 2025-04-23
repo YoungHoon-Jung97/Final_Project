@@ -1,194 +1,164 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
-    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
 %>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+
+  .user-table {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  width: 100%;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+  
+  .user-table .row {
+    display: contents; /* grid-item 그대로 행처럼 동작 */
+  }
+
+  /* 헤더 */
+  .user-table .header > div {
+    padding: 16px 0;
+    text-align: center;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(to right, #7dcfb6, #80cfa9);
+  }
+
+  /* 데이터 셀 */
+  .user-table .cell {
+    padding: 14px 8px;
+    text-align: center;
+    border-bottom: 1px solid #ececec;
+    font-size: 0.95rem;
+  }
+
+  /* 줄무늬 & 호버 */
+  .user-table .row:nth-child(even) .cell {
+    background: rgba(125,207,182,0.07);
+  }
+  .user-table .row:hover .cell {
+    background: rgba(125,207,182,0.15);
+  }
+
+  /* 버튼 셀만 flex 정렬 */
+  .user-table .cell.actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-sm {
+    padding: 0.35rem 0.9rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+  }
+
+</style>
+
+<h4 class="mb-4">경기장 승인 요청</h4>
+
+<!-- 동일한 스타일 적용 -->
+<div class="user-table">
+  <!-- 헤더 -->
+  <div class="row header">
+    <div>구장명</div><div>등록일</div><div>크기</div>
+    <div>바닥/환경</div><div>가격</div><div>관리</div>
+  </div>
+
+  <c:forEach var="field" items="${fieldAllList}">
+    <div class="row">
+      <div class="cell">${field.field_reg_name}</div>
+      <div class="cell">${field.field_reg_at}</div>
+      <div class="cell">${field.field_reg_garo} x ${field.field_reg_sero}</div>
+      <div class="cell">${field.field_type} / ${field.field_environment_type}</div>
+      <div class="cell">${field.field_reg_price} 원</div>
+      <div class="cell actions">
+        <form method="post" action="FieldApprInsert.action" class="d-inline">
+          <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
+          <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
+          <button type="button" class="btn btn-outline-primary btn-sm approve-btn">승인</button>
+        </form>
+        <form method="post" action="FieldApprCancelForm.action" class="d-inline">
+          <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
+          <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
+          <button type="button" class="btn btn-outline-danger btn-sm reject-btn">반려</button>
+        </form>
+      </div>
+    </div>
+  </c:forEach>
+</div>
+
+<!-- 반려 모달 -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="rejectReasonForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">반려 사유 입력</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+        </div>
+        <div class="modal-body" id="rejectModalBody">
+          <!-- Ajax로 삽입될 반려 사유 입력 폼 -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger btn-sm">반려 처리</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
-$(document).ready(function () {
-    $('.approve-btn').click(function () {
-        const form = $(this).closest('form');
-        if (confirm("정말 승인하시겠습니까?")) {
-            $.post(form.attr('action'), form.serialize(), function () {
-                alert("승인되었습니다.");
-                form.closest('.match-card').fadeOut();
-            });
-        }
+$(function () {
+  $('.approve-btn').click(function () {
+    const form = $(this).closest('form');
+    if (confirm("정말 승인하시겠습니까?")) {
+      $.post(form.attr('action'), form.serialize(), function () {
+        alert("승인 완료");
+        form.closest('.row').fadeOut();
+      });
+    }
+  });
+
+  $('.reject-btn').click(function () {
+    const form = $(this).closest('form');
+    $.post(form.attr('action'), form.serialize(), function (data) {
+      $('#rejectModalBody').html(data);
+      new bootstrap.Modal($('#rejectModal')).show();
+    }).fail(function () {
+      alert("반려 사유 불러오기 실패");
     });
+  });
 
-    $('.reject-btn').click(function () {
-        const form = $(this).closest('form');
-
-        $.post(form.attr('action'), form.serialize(), function (data) {
-            // JSP로부터 받아온 HTML을 모달에 출력
-            $('#rejectModalBody').html(data);
-            const modal = new bootstrap.Modal(document.getElementById('rejectModal'));
-            modal.show();
-        }).fail(function () {
-            alert("반려 사유 페이지 로딩 실패");
-        });
-    });
-});
-
-</script>
-
-<script>
-$(document).on("click", "#rejectModal .btn-danger", function () {
+  $(document).on('click', '#rejectModal .btn-outline-danger', function () {
     const type = $('#rejectModal select').val();
     const reason = $('#rejectModal textarea').val();
-    const fieldRegId = $('#rejectModal input[name="field_reg_id"]').val(); // form에 숨겨진 input 필요
-    const userCodeId = $('#rejectModal input[name="user_code_id"]').val(); // form에 숨겨진 input 필요
+    const fieldRegId = $('#rejectModal input[name="field_reg_id"]').val();
+    const userCodeId = $('#rejectModal input[name="user_code_id"]').val();
 
     if (!reason) {
-        alert("반려 사유를 선택해주세요");
-        return;
+      alert("반려 사유를 입력해주세요");
+      return;
     }
 
     $.post('<%=cp%>/FieldApprCancelInsert.action', {
-    	field_appr_cancel_type_id: type,
-    	field_appr_cancel_reason: reason,
-        field_reg_id: fieldRegId,
-        user_code_id: userCodeId
+      field_appr_cancel_type_id: type,
+      field_appr_cancel_reason: reason,
+      field_reg_id: fieldRegId,
+      user_code_id: userCodeId
     }, function () {
-        alert("반려 처리 완료");
-        const modal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
-        modal.hide();
-        // 목록 갱신
-        $.get('<%=cp%>/AdminFieldApprForm.action', function (data) {
-            $('#content-area').html(data);
-        });
+      alert("반려 완료");
+      bootstrap.Modal.getInstance(document.getElementById('rejectModal')).hide();
+      $.get('<%=cp%>/AdminFieldApprForm.action', function (data) {
+        $('#content-area').html(data);
+      });
     });
+  });
 });
 </script>
-
-
-<h4 class="mb-4">경기장 승인 요청</h4>
-
-<c:forEach var="field" items="${fieldAllList}">
-    <div class="match-card border rounded p-3 mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <!-- 왼쪽: 경기장 정보 -->
-            <div>
-                <strong>${field.field_reg_name}</strong><br>
-                등록일 : ${field.field_reg_at} <br>
-                크기 : ${field.field_reg_garo} x ${field.field_reg_sero} <br>
-                바닥 : ${field.field_type}, 환경 : ${field.field_environment_type} <br>
-                가격 : ${field.field_reg_price} 원
-            </div>
-
-            <!-- 오른쪽: 승인/반려 버튼 -->
-            <div class="text-end">
-                <!-- 승인 form -->
-                <form class="approve-form d-inline" method="post" action="FieldApprInsert.action">
-                    <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
-                    <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
-                    <button type="button" class="btn btn-primary approve-btn">승인</button>
-                </form>
-
-                <!-- 반려 form -->
-                <form class="reject-form d-inline" method="post" action="FieldApprCancelForm.action">
-                    <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
-                    <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
-                    <button type="button" class="btn btn-danger reject-btn">반려</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    
-    
-<!-- 모달: 반려 사유 입력용 -->
-<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="rejectModalLabel">반려 사유 입력</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
-      </div>
-      <div class="modal-body" id="rejectModalBody">
-        <!-- Ajax로 불러온 JSP가 여기에 들어옴 -->
-      </div>
-    </div>
-  </div>
-</div>
-    
-    
-</c:forEach>
-
-
-
-<%-- <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-    request.setCharacterEncoding("UTF-8");
-    String cp = request.getContextPath();
-    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-%>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function () {
-    
-	const form = $(this).closest('form');
-	var user_code_id = "<%= user_code_id %>";
-	form.find('input[name="user_code_id"]').val(user_code_id);	
-	// 승인 버튼
-    $('.approve-btn').click(function () {
-        const form = $(this).closest('form');
-        if (confirm("정말 승인하시겠습니까?"+user_code_id)) {
-            $.post(form.attr('action'), form.serialize(), function () {
-                alert("승인되었습니다.");
-                form.closest('.match-card').fadeOut(); // 성공 후 제거
-            });
-        }
-    });
-
-    // 반려 버튼
-    $('.reject-btn').click(function () {
-        const form = $(this).closest('form');
-        if (confirm("정말 반려하시겠습니까?")) {
-            $.post(form.attr('action'), form.serialize(), function (data) {
-                $('#content-area').html(data); // 페이지 불러옴
-            }).fail(function () {
-                alert("반려 페이지 불러오기 실패");
-            });
-        }
-    });
-});
-</script>
-
-<h4 class="mb-4">경기장 승인 요청</h4>
-
-<c:forEach var="field" items="${fieldAllList}">
-    <div class="match-card border rounded p-3 mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <!-- 왼쪽: 경기장 정보 -->
-            <div>
-                <strong>${field.field_reg_name}</strong><br>
-                등록일 : ${field.field_reg_at} <br>
-                크기 : ${field.field_reg_garo} x ${field.field_reg_sero} <br>
-                바닥 : ${field.field_type}, 환경 : ${field.field_environment_type} <br>
-                가격 : ${field.field_reg_price} 원
-            </div>
-
-            <!-- 오른쪽: 승인/반려 버튼 -->
-            <div class="text-end">
-                <!-- 승인 form -->
-                <form class="approve-form d-inline" method="post" action="FieldApprInsert.action">
-                    <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
-                    <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
-                    <button type="button" class="btn btn-primary approve-btn">승인</button>
-                </form>
-
-                <!-- 반려 form -->
-                <form class="reject-form d-inline" method="post" action="FieldApprCancelForm.action">
-                    <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
-                    <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
-                    <button type="button" class="btn btn-danger reject-btn">반려</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</c:forEach>
- --%>

@@ -37,7 +37,7 @@ $(document).on('click', '.show-fields-btn', function () {
 </script>
 
 
-<h4 class="mb-4">구장 휴무일 삭제</h4>
+
 
 <c:forEach var="stadium" items="${stadiumSearchList}">
     <div class="match-card">

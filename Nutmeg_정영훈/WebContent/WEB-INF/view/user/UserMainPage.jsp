@@ -188,17 +188,15 @@ html, body {
 <div class="wrapper">
     <!-- 사이드바 -->
     <div class="sidebar">
-        <img src="<%=cp %>/images/profile_default.png" alt="프로필 이미지" class="img-thumbnail rounded-circle mb-3" style="width: 90px; height: 90px; object-fit: cover;">
         <h5 class="mb-1">${userInfo.user_name}</h5>
         <div class="text-muted mb-3">사용자</div>
         <nav>
            	<a class="nav-link active" href="UserMainPage.action"><i class="bi bi-person-circle"></i> 마이페이지</a>
-            <a class="nav-link" href="#"><i class="bi bi-people"></i> 정보 관리</a>
             <a class="nav-link" href="UserMatch.action"><i class="bi bi-flag"></i> 경기 기록</a>
             <a class="nav-link" href="UserFee.action"><i class="bi bi-cash"></i> 결제 내역</a>
-            <a class="nav-link" href="#"><i class="bi bi-chat"></i> 나의 동호회</a>
+            <a class="nav-link" href="TeamMain.action"><i class="bi bi-chat"></i> 나의 동호회</a>
             <a class="nav-link" href="UserNotification.action"><i class="bi bi-journal-text"></i>알림</a>
-            <a class="nav-link" href="#"><i class="bi bi-box-arrow-right"></i> 로그아웃</a>
+            <a class="nav-link" href="Logout.action"><i class="bi bi-box-arrow-right"></i> 로그아웃</a>
         </nav>
     </div>
 

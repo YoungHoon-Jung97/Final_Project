@@ -72,6 +72,10 @@ $(document).on('click', '.delete-btn', function () {
 
 </head>
 <body>
+<div class="section-title">
+  <i class="bi bi-calendar-check me-2"></i> 경기장 휴무일 삭제
+</div>
+
 <div class="content">
 	<c:forEach var="holiday" items="${HolidayList}">
 	    <div class="match-card holiday-card">
