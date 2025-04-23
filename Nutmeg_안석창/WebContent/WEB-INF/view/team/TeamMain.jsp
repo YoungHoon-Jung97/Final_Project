@@ -199,7 +199,14 @@
 							<a href="MemberAppr.action">
 								<span>동호회 회원 수락</span>
 							</a>
+						<form action="DisbandTeam.action" method="post"
+							onsubmit="return confirm('정말 동호회를 해체하시겠습니까?');"
+							style="display: inline-block; margin-left: 10px;">
+							<button type="submit" class="btn btn-danger">동호회 해체</button>
+						</form>
 						</c:if>
+						
+			
 					</div>
 				</div> <!-- .main-content  -->
 			</div> <!-- .main  -->

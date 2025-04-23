@@ -107,5 +107,58 @@
 	
 	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
+
+<div id="filterPanel" class="filter-panel">
+	<h4>필터</h4>
+	<hr>
+	
+	<form method="get" action="">
+		<div class="mb-3">
+			<label for="regionSelect" class="form-label">지역</label>
+			<select id="regionSelect" name="region" class="form-select">
+				<option value="">전체</option>
+				<option value="서울">서울</option>
+				<option value="경기">경기</option>
+				<option value="부산">부산</option>
+				<option value="대구">대구</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-primary w-100 mt-3">검색</button>
+	</form>
+</div>
+
+<!-- 플로팅 버튼 (Top, 필터) -->
+<div class="floatingButton-wrapper">
+	<button id="topIconButton" class="top-icon-slide" title="맨 위로 이동">
+		<i class="bi bi-caret-up-fill"></i>
+	</button>
+	
+	<button id="leftIconButton" class="left-icon-slide" title="필터">
+		<i class="bi bi-funnel-fill"></i>
+	</button>
+	
+	<div id="floatingButton" class="floatingButton">
+		<img src="images/soccerball.png" alt="floating" class="floatingButton-img">
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	document.getElementById("topIconButton").addEventListener("click", function ()
+	{
+		window.scrollTo(
+		{
+			top: 0,
+			behavior: "smooth"
+		});
+	});
+	
+	document.getElementById("leftIconButton").addEventListener("click", function ()
+	{
+		var panel = document.getElementById("filterPanel");
+		panel.classList.toggle("active");
+	});
+
+</script>
 </body>
 </html>

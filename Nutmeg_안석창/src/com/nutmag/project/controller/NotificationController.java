@@ -31,7 +31,7 @@ public class NotificationController
 		
 		session.setAttribute("notification_count", notificationDAO.notificationCount(user_code_id));
 		
-		return "redirect:/Mypage.action";
+		return "redirect:/UserNotification.action";
 	};
 	
 	

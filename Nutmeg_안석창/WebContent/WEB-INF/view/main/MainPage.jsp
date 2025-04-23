@@ -34,35 +34,35 @@
 			{
 				var message = "${fn:escapeXml(sessionScope.message)}";
 				var parts = message.split(":");
-				
+
 				if (parts.length > 1)
 				{
 					var type = parts[0].trim();
 					var content = parts[1].trim();
-					
+
 					switch (type)
 					{
-						case "SUCCESS_INSERT":
-						case "SUCCESS_APPLY":
-							swal("성공", content, "success");
-							break;
-						
-						case "NEED_REGISTER_STADIUM":
-							swal("주의", content, "warning");
-							break;
-							
-						case "ERROR_DUPLICATE_JOIN":
-						case "ERROR_AUTH_REQUIRED":
-						case "ERROR_DUPLICATE_REQUEST":
-						case "ERROR":
-							swal("에러", content, "error");
-							break;
-						
-						default:
-							swal("알림", content, "info");
+					case "SUCCESS_INSERT":
+					case "SUCCESS_APPLY":
+						swal("성공", content, "success");
+						break;
+
+					case "NEED_REGISTER_STADIUM":
+						swal("주의", content, "warning");
+						break;
+
+					case "ERROR_DUPLICATE_JOIN":
+					case "ERROR_AUTH_REQUIRED":
+					case "ERROR_DUPLICATE_REQUEST":
+					case "ERROR":
+						swal("에러", content, "error");
+						break;
+
+					default:
+						swal("알림", content, "info");
 					}
 				}
-				
+
 				else
 					swal("처리 필요", message, "info");
 			}
@@ -104,6 +104,39 @@
 	</div>
 </div>
 
+<!-- 슬라이드 이미지 배너 -->
+<div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+	<div class="carousel-inner">
+		<div class="carousel-item active">
+			<img src="<%=cp %>/images/pic1.jpg" class="d-block w-100" alt="축구 이미지 1">
+		</div>
+		
+		<div class="carousel-item">
+			<img src="<%=cp %>/images/pic4.jpg" class="d-block w-100" alt="축구 이미지 2">
+		</div>
+		
+		<div class="carousel-item">
+			<img src="<%=cp %>/images/pic2.jpg" class="d-block w-100" alt="축구 이미지3">
+		</div>
+		
+		<div class="carousel-item">
+			<img src="<%=cp %>/images/pic5.jpg" class="d-block w-100" alt="축구 이미지4">
+		</div>
+	</div>
+
+	<button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		
+		<span class="visually-hidden">이전</span>
+	</button>
+	
+	<button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		
+		<span class="visually-hidden">다음</span>
+	</button>
+</div>
+
 <div class="main-background">
 	<main>
 		<!-- 동호회 리스트 -->
@@ -140,7 +173,7 @@
 							</div>
 							
 							<div class="card-content">
-								<h2 value="${team.temp_team_name}">${team.temp_team_name}</h2>
+								<h2>${team.temp_team_name}</h2>
 								<!-- 동호회 이름 -->
 								<p>${team.region_name} / ${team.city_name}</p>
 								<!-- 동호회 지역 -->

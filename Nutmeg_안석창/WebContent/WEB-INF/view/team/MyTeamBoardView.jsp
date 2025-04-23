@@ -11,6 +11,8 @@
 <meta charset="UTF-8">
 <title>MyTeamBoardView.jsp</title>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/MyTeamBoardView.css?after">
 
@@ -35,19 +37,19 @@ function confirmDelete(id)
 				<div class="main-content">
 					<ul class="team-menu">
 						<li class="teampage-link">
-							<a href="MyTeam.action">동호회 정보</a>
+							<a href="TeamMain.action">동호회 정보</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamSchedule.action">동호회 매치 일정</a>
+							<a href="TeamSchedule.action">동호회 매치 일정</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamFee.action">동호회 가계부</a>
+							<a href="TeamFee.action">동호회 가계부</a>
 						</li>
 						
 						<li class="teampage-link">
-							<a href="MyTeamBoard.action">동호회 게시판</a>
+							<a href="TeamBoard.action">동호회 게시판</a>
 						</li>
 					</ul>
 					

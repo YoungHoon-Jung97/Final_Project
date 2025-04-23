@@ -50,9 +50,9 @@ public class TeamFeeController
 		 
 		 if (team_id == 0) {
 			 
-			String message = "ERROR_DUPLICATE_JOIN: 임시동호회 임으로 이용리 불가능합니다.";
+			String message = "ERROR_DUPLICATE_JOIN: 임시동호회 임으로 이용이 불가능합니다.";
 			session.setAttribute("message", message);
-			return "redirect:MyTeam.action";
+			return "redirect:TeamMain.action";
 			
 		 }
 		 

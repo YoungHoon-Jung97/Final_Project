@@ -115,6 +115,11 @@ public interface ITeamDAO {
 	
 	//-------------------------------------------------------------------------------
 	
-
+	// 임시동호회 해체
+	public void tempTempDrop(@Param("temp_team_id")int temp_team_id);
+	
+	// 정식동호회 해체
+	public void teamDrop(@Param("team_id")int team_id);
+		
 	
 }

@@ -41,7 +41,9 @@ import com.nutmag.project.dto.OperatorResCancelDTO;
 import com.nutmag.project.dto.StadiumHolidayInsertDTO;
 import com.nutmag.project.dto.StadiumRegInsertDTO;
 import com.nutmag.project.dto.StadiumTimeDTO;
+import com.nutmag.project.dto.TeamMemberFeeDTO;
 import com.nutmag.project.dto.UserDTO;
+import com.nutmag.project.dto.UserMatchDTO;
 
 import util.MailUtil;
 import util.Path;
@@ -1015,6 +1017,36 @@ public class UserController
 	@RequestMapping(value = "/UserMainPage.action" , method = RequestMethod.GET)
 	public String Mypage(Model model, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+
+	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
+	    UserDTO userInfo = dao.getUser(user_code_id);   // 정보 불러오기
+
+	    if (userInfo == null) {
+	        message = "회원 정보를 찾을 수 없습니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";
+	    }
+
+	    model.addAttribute("userInfo", userInfo);
+
+	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
+	}
+	
+	//사용자 알림
+	@RequestMapping(value = "/UserNotification.action" , method = RequestMethod.GET)
+	public String userNotification(Model model, HttpServletRequest request)
+	{
 	    HttpSession session = request.getSession();
 	    String message = "";
 
@@ -1041,38 +1073,36 @@ public class UserController
 	    System.out.println("=============================================================");
 	    model.addAttribute("notificationList", notificationList);
 
-	    return "/user/UserMainPage"; // 유저 정보 보여줄 페이지
+	    return "/user/UserNotification"; // 유저 정보 보여줄 페이지
 	}
 	
-
-	// 내 정보
-	@RequestMapping("/MyInformation.action")
-	public String MyInformation(Model model, HttpServletRequest request)
-	{
-	    HttpSession session = request.getSession();
-	    String message = "";
-
-	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-
-	    // 로그인 체크
-	    if (user_code_id == null) {
-	        message = "로그인을 해야 합니다.";
-	        model.addAttribute("message", message);
-	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
-	    }
-
-	    IUserDAO dao = sqlSession.getMapper(IUserDAO.class); // DAO 호출
-	    UserDTO userInfo = dao.getUser(user_code_id);   // 정보 불러오기
-
-	    if (userInfo == null) {
-	        message = "회원 정보를 찾을 수 없습니다.";
-	        model.addAttribute("message", message);
-	        return "redirect:MainPage.action";
-	    }
-
-	    model.addAttribute("userInfo", userInfo);
-
-	    return "/user/UserMyinfo"; // 유저 정보 보여줄 페이지
+	//내 결제 내역
+	@RequestMapping(value = "/UserFee.action", method = RequestMethod.GET)
+	public String userFeeList(HttpSession session,Model model) {
+		
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		
+		List<TeamMemberFeeDTO> feeList =  userDAO.feeList(user_code_id); 
+		
+		model.addAttribute("feeList", feeList);
+	    return "/user/UserFee";
+	}
+	
+	
+	//내 경기 참여 내역
+	@RequestMapping(value = "/UserMatch.action", method = RequestMethod.GET)
+	public String userMatchList(HttpSession session,Model model) {
+		
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		
+		List<UserMatchDTO> matchList =  userDAO.matchList(user_code_id); 
+		
+		model.addAttribute("matchList", matchList);
+	    return "/user/UserMatch";
 	}
 		
 	// 내 정보 수정 폼 페이지 들어가기 전 비밀번호 확인
@@ -1124,8 +1154,8 @@ public class UserController
 	    UserDTO userEdit = dao.userUpdate(user_code_id);   // 정보 불러오기
 
 	    if (userEdit == null) {
-	        message = "회원 정보를 찾을 수 없습니다.";
-	        model.addAttribute("message", message);
+	        message = "ERROR: 회원 정보를 찾을 수 없습니다.";
+	        session.setAttribute("message", message);
 	        return "redirect:MainPage.action";
 	    }
 
@@ -1134,36 +1164,44 @@ public class UserController
 	    return "/user/UserInfoEdit"; // 수정 폼 JSP로 이동
 	}
 	
-	//사용자 정보 업데이트
+	// 사용자 정보 업데이트
 	@RequestMapping(value = "/UserUpdate.action", method = RequestMethod.POST)
-	   public String updateUser(UserDTO userDTO, HttpServletRequest request, Model model) {
-
-	       HttpSession session = request.getSession();
-	       Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-	       userDTO.setUser_code_id(user_code_id);
-
-	       // 기존 비밀번호와 새로운 비밀번호를 비교
-	       String currentPwd = request.getParameter("current_pwd");  // hidden으로 받은 기존 비밀번호
-	       String newPwd = request.getParameter("user_pwd");         // 새 비밀번호
-	       String confirmPwd = request.getParameter("password2");    // 새 비밀번호 확인
-
-	       // 비밀번호가 다르면 수정 페이지로 돌아가기
-	       if (!newPwd.equals(confirmPwd)) {  // equals()로 비밀번호 비교
-	           return "redirect:UserInfoEdit.action";  // 수정 페이지로 돌아감
-	       }
-
-	       // 비밀번호가 일치하면 DB에 업데이트
-	       if (newPwd != null && !newPwd.trim().equals("")) {
-	           userDTO.setUser_pwd(newPwd);  // 새 비밀번호로 업데이트
-	       } else {
-	           userDTO.setUser_pwd(currentPwd); // 비밀번호 변경 없으면 기존 비밀번호 사용
-	       }
-
-	       // DB 업데이트
-	       IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
-	       userDAO.updateUser(userDTO);  // 비밀번호 포함한 전체 정보 업데이트
-
-	       // 메인 페이지로 리다이렉트
-	       return "redirect:MainPage.action";
-	   }
+	public String updateUser(UserDTO userDTO, HttpServletRequest request, Model model)
+	{
+		HttpSession session = request.getSession();
+		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+		userDTO.setUser_code_id(user_code_id);
+		
+		// 기존 비밀번호와 새로운 비밀번호를 비교
+		String currentPwd = request.getParameter("current_pwd");  // hidden으로 받은 기존 비밀번호
+		String newPwd = request.getParameter("user_pwd");         // 새 비밀번호
+		String confirmPwd = request.getParameter("password2");    // 새 비밀번호 확인
+		
+		System.out.println("currentPwd: " + currentPwd);
+		System.out.println("newPwd: " + newPwd);
+		System.out.println("confirmPwd: " + confirmPwd);
+		
+		if (newPwd == null || newPwd.isEmpty())
+			userDTO.setUser_pwd(currentPwd);
+		
+		else
+		{
+			if (newPwd.equals(confirmPwd))
+				userDTO.setUser_pwd(newPwd);
+			
+			else
+			{
+				String message = "WARNING: 새 비밀번호가 다릅니다.";
+		        session.setAttribute("message", message);
+				return "redirect:UserInfoEdit.action";
+			}
+		}
+		
+		// DB 업데이트
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		userDAO.updateUser(userDTO);  // 비밀번호 포함한 전체 정보 업데이트
+		
+		// 메인 페이지로 리다이렉트
+		return "redirect:UserMainPage.action";
+	}
 }

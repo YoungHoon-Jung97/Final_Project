@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>TeamApply.jsp</title>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
 <link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamMain.css?after">
@@ -37,7 +38,7 @@
 				<div class="content-section">
 					<h4 class="section-title" style="margin-bottom: 10px;">포지션 선택</h4>
 					
-					<div class="btn-group-vertical w-100" role="group" aria-label="Position Selection" style="margin-bottom: 10px;">
+					<div class="w-100" role="group" aria-label="Position Selection" style="margin-bottom: 10px;">
 						<c:forEach var="position" items="${positionList}">
 							<button type="button" class="btn btn-outline-primary position-button w-100" data-position-id="${position.position_id}">
 								${position.position_name}

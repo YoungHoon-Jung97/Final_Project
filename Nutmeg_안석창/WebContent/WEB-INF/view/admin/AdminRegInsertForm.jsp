@@ -9,7 +9,7 @@ String cp = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/insertForm.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css">
 </head>
 <body>
 	<div class="content">

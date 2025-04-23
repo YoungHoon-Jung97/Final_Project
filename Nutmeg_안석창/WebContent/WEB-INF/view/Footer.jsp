@@ -12,18 +12,18 @@
 
 <style type="text/css">
 
-footer
-{
-	background-color: #343a40;
-	color: #ffffff;
-	padding: 20px 0;
-	margin-top: 50px;
-}
-
-footer a
-{
-	color: #ff7f50;
-}
+	footer
+	{
+		background-color: #343a40;
+		color: #ffffff;
+		padding: 20px 0;
+		margin-top: 50px;
+	}
+	
+	footer a
+	{
+		color: #ff7f50;
+	}
 
 </style>
 

@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.nutmag.project.dao.IFieldDAO;
 import com.nutmag.project.dao.IPositionDAO;
@@ -59,6 +64,18 @@ public class StadiumController
 		model.addAttribute("stadiumTimeList", stadiumDAO.stadiumTimeList());
 		
 		return "/stadium/StadiumRegInsertForm";
+	}
+	
+	@Configuration
+	@EnableWebMvc
+	public class WebConfig implements WebMvcConfigurer
+	{
+	    @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry)
+	    {
+	        registry.addResourceHandler("/resources/**")
+	                .addResourceLocations("/resources/");
+	    }
 	}
 	
 	// 이미지 바인딩 예외 처리
@@ -107,10 +124,9 @@ public class StadiumController
 			else
 				System.out.println("uploadFile is null");
 			
-			String root = request.getServletContext().getRealPath("");
 			
 			// 1. 업로드 경로 설정
-			String uploadPath = root + Path.getUploadStadiumDir();
+			String uploadPath = Path.getUploadStadiumDir();
 			File uploadDir = new File(uploadPath);
 			
 			// 파일 경로 없을 시 폴더 생성
@@ -120,20 +136,33 @@ public class StadiumController
 			// 2. 파일 저장
 			if (uploadFile != null && !uploadFile.isEmpty())
 			{
-				String originalFileName = uploadFile.getOriginalFilename();
-				String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-				String savedFileName = stadiumDTO.getStadium_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
-				File saveFile = new File(uploadPath, savedFileName);
-				uploadFile.transferTo(saveFile);
-				
-				String fileWebPath = Path.getUploadStadiumDir() + savedFileName;
-				stadiumDTO.setStadium_reg_image(fileWebPath);
-				
-				// 디버그
-				System.out.println("/n=====[파일 경로]=====");
-				System.out.println("파일 저장 경로 (uploadPath) : " + uploadPath);
-				System.out.println("파일 이름 (savedFileName) : " + savedFileName);
-				System.out.println("데이터 베이스에 저장된 경로(fileWebPath) : " + fileWebPath);
+				 String originalFileName = uploadFile.getOriginalFilename();
+				    String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+				    String savedFileName = stadiumDTO.getStadium_reg_name().replaceAll("[^a-zA-Z0-9가-힣_\\-]", "_")
+				                             + "_" + System.currentTimeMillis() + fileExtension;
+
+				    // 공유폴더 저장
+				    File saveFile = new File(uploadPath, savedFileName);
+				    uploadFile.transferTo(saveFile);
+
+				    // 정적 리소스 경로 복사
+				    String staticPath = request.getServletContext().getRealPath("/resources/uploads/stadiums/");
+				    File staticFile = new File(staticPath, savedFileName);
+
+				    if (!staticFile.getParentFile().exists())
+				        staticFile.getParentFile().mkdirs();
+
+				    FileUtils.copyFile(saveFile, staticFile); // org.apache.commons.io.FileUtils 필요
+
+				    // DB에는 웹 접근 가능한 경로 저장
+				    String fileWebPath = "resources/uploads/stadiums/" + savedFileName;
+				    stadiumDTO.setStadium_reg_image(fileWebPath);
+
+				    // 디버그
+				    System.out.println("\n=====[파일 경로]=====");
+				    System.out.println("공유폴더 저장경로 : " + saveFile.getAbsolutePath());
+				    System.out.println("정적리소스 복사경로 : " + staticFile.getAbsolutePath());
+				    System.out.println("DB 저장 웹경로 : " + fileWebPath);
 			}
 			
 			// 3. DB 저장
@@ -262,100 +291,81 @@ public class StadiumController
 	
 	// 경기장 등록
 	@RequestMapping(value = "/FieldRegInsert.action", method = RequestMethod.POST)
-	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request)
-	{
-		HttpSession session = request.getSession();
-		MultipartFile file = fieldDTO.getField_reg_image();
-		
-		System.out.println("=================================================================================");
-		System.out.println("파일 업로드 시작: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
-		
-		// 파일이 있을 시
-		if (file != null && !file.isEmpty())
-		{
-			try
-			{
-				System.out.println("======= [DEBUG] 폼 파라미터 로그 =======");
-				
-				if (fieldDTO != null)
-				{
-					System.out.println("Field_reg_name (경기장 이름) = " + fieldDTO.getField_reg_name());
-					System.out.println("Field_reg_price(경기장 가격) = " + fieldDTO.getField_reg_price());
-					System.out.println("Field_reg_garo(가로) = " + fieldDTO.getField_reg_garo());
-					System.out.println("Field_reg_sero(세로) = " + fieldDTO.getField_reg_sero());
-					System.out.println("Field_reg_at(등록일) = " + fieldDTO.getField_reg_at());
-					System.out.println("Field_reg_fac = " + fieldDTO.getField_reg_facilities());
-				}
-				
-				System.out.println("======= 파일 업로드 상태 =======");
-				System.out.println("파일 비어 있음? : " + file.isEmpty());
-				System.out.println("파일 원래 이름 : " + file.getOriginalFilename());
-				
-				// 웹 애플리케이션 루트 경로
-				String root = request.getServletContext().getRealPath("");
-				String uploadDir = Path.getUploadFieldDir(); // 예: "resources/uploads/fields/"
-				
-				// 전체 업로드 경로 생성
-				String uploadPath = root + uploadDir;
-				
-				if (!uploadDir.endsWith(File.separator))
-					uploadPath = root + uploadDir + File.separator;
-				
-				// 폴더 없으면 생성
-				File uploadDirFile = new File(uploadPath);
-				
-				if (!uploadDirFile.exists())
-				{
-					boolean created = uploadDirFile.mkdirs();
-					System.out.println("디렉토리 생성 결과: " + created);
-				}
-				
-				// 파일명 생성 및 저장
-				String originalFileName = file.getOriginalFilename();
-				String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-				String savedFileName = fieldDTO.getField_reg_name() + "_" + System.currentTimeMillis() + fileExtension;
-				String saveFullPath = uploadPath + savedFileName;
-				
-				System.out.println("저장될 파일 경로: " + saveFullPath);
-				file.transferTo(new File(saveFullPath));
-				System.out.println("파일 저장 완료");
-				
-				// DB 저장용 웹 경로 설정 (슬래시로 바꾸고, / 붙여줌)
-				String dbWebPath = (uploadDir + savedFileName).replace("\\", "/");
-				fieldDTO.setField_image(dbWebPath);
-				System.out.println("DB에 저장할 파일 경로: " + dbWebPath);
-			}
-			catch (Exception e)
-			{
-				System.out.println("파일 저장 중 오류 발생:");
-				e.printStackTrace();
-			}
-		}
-		
-		else
-			fieldDTO.setField_image("resources/uploads/fields/default.png"); // 기본 이미지 경로 예시
-		
-		try
-		{
-			IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
-			dao.fieldInsert(fieldDTO);
-			System.out.println("DB 저장 완료");
-			
-			String message = "SUCCESS_INSERT: 경기장 등록이 완료 되었습니다.";
-			session.setAttribute("message", message);
-		}
-		
-		catch (Exception e)
-		{
-			System.out.println("DB 저장 중 오류 발생:");
-			e.printStackTrace();
-		}
-		
-		System.out.println("=================================================================================");
-		
-		return "redirect:MainPage.action";
+	public String fieldInsert(FieldRegInsertDTO fieldDTO, HttpServletRequest request) {
+	    HttpSession session = request.getSession();
+	    MultipartFile file = fieldDTO.getField_reg_image();
+
+	    System.out.println("=================================================================================");
+	    System.out.println("파일 업로드 시작: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
+
+	    try {
+	        if (fieldDTO != null) {
+	            System.out.println("======= [DEBUG] 폼 파라미터 로그 =======");
+	            System.out.println("Field_reg_name = " + fieldDTO.getField_reg_name());
+	            System.out.println("Field_reg_price = " + fieldDTO.getField_reg_price());
+	            System.out.println("Field_reg_garo = " + fieldDTO.getField_reg_garo());
+	            System.out.println("Field_reg_sero = " + fieldDTO.getField_reg_sero());
+	            System.out.println("Field_reg_at = " + fieldDTO.getField_reg_at());
+	            System.out.println("Field_reg_fac = " + fieldDTO.getField_reg_facilities());
+	        }
+
+	        // 1. 업로드 경로 설정
+	        String uploadPath = Path.getUploadFieldDir();  // 공유폴더 저장경로
+	        File uploadDir = new File(uploadPath);
+
+	        if (!uploadDir.exists())
+	            uploadDir.mkdirs();
+
+	        // 2. 파일 저장
+	        if (file != null && !file.isEmpty()) {
+	            String originalFileName = file.getOriginalFilename();
+	            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	            String savedFileName = fieldDTO.getField_reg_name().replaceAll("[^a-zA-Z0-9가-힣_\\-]", "_")
+	                                    + "_" + System.currentTimeMillis() + fileExtension;
+
+	            // 공유폴더 저장
+	            File saveFile = new File(uploadPath, savedFileName);
+	            file.transferTo(saveFile);
+
+	            // 정적 리소스 경로 복사
+	            String staticPath = request.getServletContext().getRealPath("/resources/uploads/fields/");
+	            File staticFile = new File(staticPath, savedFileName);
+
+	            if (!staticFile.getParentFile().exists())
+	                staticFile.getParentFile().mkdirs();
+
+	            FileUtils.copyFile(saveFile, staticFile); // commons-io 필요
+
+	            // DB 저장용 경로 설정
+	            String fileWebPath = "resources/uploads/fields/" + savedFileName;
+	            fieldDTO.setField_image(fileWebPath);
+
+	            // 디버그 출력
+	            System.out.println("\n=====[파일 경로]=====");
+	            System.out.println("공유폴더 저장경로 : " + saveFile.getAbsolutePath());
+	            System.out.println("정적리소스 복사경로 : " + staticFile.getAbsolutePath());
+	            System.out.println("DB 저장 웹경로 : " + fileWebPath);
+	        } else {
+	            // 파일이 없는 경우 기본 이미지 경로 설정
+	            fieldDTO.setField_image("resources/uploads/fields/default.png");
+	        }
+
+	        // 3. DB 저장
+	        IFieldDAO dao = sqlSession.getMapper(IFieldDAO.class);
+	        dao.fieldInsert(fieldDTO);
+
+	        // 4. 완료 메시지
+	        String message = "SUCCESS_INSERT: 경기장 등록이 완료 되었습니다.";
+	        session.setAttribute("message", message);
+	    } catch (Exception e) {
+	        System.out.println("파일 처리 또는 DB 저장 중 오류:");
+	        e.printStackTrace();
+	    }
+
+	    System.out.println("=================================================================================");
+	    return "redirect:MainPage.action";
 	}
-	
+
 	// 구장 휴무
 	@RequestMapping(value = "/StadiumHoliday.action", method = RequestMethod.POST)
 	public String stadiumHoliday(Model model, StadiumHolidayInsertDTO stadiumHolidayDTO)
@@ -416,7 +426,7 @@ public class StadiumController
 		
 		
 	// 클릭한 경기장 예약 페이지로 이동
-	@RequestMapping(value = "/FieldReservationForm.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/FieldReservationForm.action", method = {RequestMethod.GET, RequestMethod.POST})
 	public String fieldReservation(@RequestParam("field_code_id") int field_code_id, Model model
 			, HttpServletRequest request) 
 	{

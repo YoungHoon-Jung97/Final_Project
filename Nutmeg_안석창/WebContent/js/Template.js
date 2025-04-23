@@ -95,7 +95,12 @@ $(function()
 	$(".company").click(function()
 	{
 		window.location.href = "Aboutme.action";
-		
+	});
+	
+	// 알림
+	$(".bi-bell-fill, .bi-bell").click(function()
+	{
+		window.location.href = "UserNotification.action";
 	});
 	
 	// 내 정보
