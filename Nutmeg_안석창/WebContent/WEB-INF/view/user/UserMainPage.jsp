@@ -89,7 +89,7 @@
 			<aside class="sidebar">
 				<nav>
 					<a class="nav-link active" href="UserMainPage.action">
-						<i class="bi bi-person-circle"></i> 마이페이지
+						<i class="bi bi-person-circle"></i> 내 정보
 					</a>
 					
 					<a class="nav-link" href="UserMatch.action">
