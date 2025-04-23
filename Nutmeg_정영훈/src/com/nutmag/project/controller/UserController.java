@@ -1086,6 +1086,13 @@ public class UserController
 		
 		List<TeamMemberFeeDTO> feeList =  userDAO.feeList(user_code_id); 
 		
+		System.out.println("=======================확인=======================");
+		for (TeamMemberFeeDTO teamMemberFeeDTO : feeList)
+		{
+			System.out.println("team_member_fee_pay_price = " + teamMemberFeeDTO.getTeam_member_fee_pay_price());
+		}
+		System.out.println("==================================================");
+		
 		model.addAttribute("feeList", feeList);
 	    return "/user/UserFee";
 	}

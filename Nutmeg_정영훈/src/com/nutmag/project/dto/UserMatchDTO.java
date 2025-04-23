@@ -2,12 +2,12 @@ package com.nutmag.project.dto;
 
 public class UserMatchDTO {
 	
-	private int field_res_id,field_size,user_code_id
+	private int field_res_id,user_code_id
 	,match_fee;
 	
 	private String match_date ,start_time ,end_time,field_name,stadium_name
 	,stadium_addr,stadium_detailed_addr,match_inwon,payment_date,my_team
-	,user_name,user_nick_name,team_type;
+	,user_name,user_nick_name,team_type,field_size;
 
 	public int getField_res_id() {
 		return field_res_id;
@@ -17,11 +17,11 @@ public class UserMatchDTO {
 		this.field_res_id = field_res_id;
 	}
 
-	public int getField_size() {
+	public String getField_size() {
 		return field_size;
 	}
 
-	public void setField_size(int field_size) {
+	public void setField_size(String field_size) {
 		this.field_size = field_size;
 	}
 

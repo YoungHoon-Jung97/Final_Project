@@ -226,16 +226,25 @@ html, body {
     <div class="content-area">
 	    <h4>내 정보</h4>
 	    <div class="profile-box">
-	        <c:forEach var="notification" items="${notificationList}">
-	            <div class="info-row ${notification.is_read == 'N' ? 'unread' : 'read'}">
-	                <strong>알림</strong>
-	                <span>
-	                    <a href="IsRead.action?notification_id=${notification.notification_id}" class="notification-link">
-	                        ${notification.message}
-	                    </a>
-	                </span>
-	            </div>
-	        </c:forEach>
+	    	<c:choose>
+	    		<c:when test="${empty notificationList}">
+	    			<tr>
+                        <td colspan="5" class="no-data-message">알림이 없습니다.</td>
+                    </tr>
+	    		</c:when>
+		    	<c:otherwise>
+			        <c:forEach var="notification" items="${notificationList}">
+			            <div class="info-row ${notification.is_read == 'N' ? 'unread' : 'read'}">
+			                <strong>알림</strong>
+			                <span>
+			                    <a href="IsRead.action?notification_id=${notification.notification_id}" class="notification-link">
+			                        ${notification.message}
+			                    </a>
+			                </span>
+			            </div>
+			        </c:forEach>
+		    	</c:otherwise>
+	    	</c:choose>
 	    </div>
 	</div>
 </div>

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
@@ -273,6 +274,7 @@ html, body {
 	        <thead>
 	            <tr>
 	                <th>납부 날짜</th>
+	                <th>동호회 명</th>
 	                <th>종류</th>
 	                <th>내용</th>
 	                <th>금액</th>
@@ -290,6 +292,7 @@ html, body {
 	                    <c:forEach var="fee" items="${feeList}">
 	                        <tr>
 	                            <td class="fee-date">${fee.team_member_fee_pay_at}</td>
+	                            <td>${fee.temp_team_name}</td>
 	                            <td>회비</td>
 	                            <td>납부</td>
 	                            <td><fmt:formatNumber value="${fee.team_member_fee_pay_price}" type="number" pattern="#,###" />원</td>
