@@ -10,6 +10,8 @@ import org.apache.ibatis.annotations.Param;
 import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.MercenaryDTO;
+import com.nutmag.project.dto.MercenaryOfferDTO;
+import com.nutmag.project.dto.UserDTO;
 
 public interface IMercenaryDAO
 {
@@ -34,5 +36,13 @@ public interface IMercenaryDAO
 	//팀참여 매치
 	public ArrayList<MatchDTO> searchTeamMatch(@Param("team_id")int team_id);
 	
+	//용병 사용자 코드 조회
+	public MercenaryDTO searchUsercode(@Param("mercenary_id")int mercenary_id);
+	
+	//용병 신청 리스트
+	public ArrayList<MercenaryOfferDTO> getMercenaryOfferList(@Param("user_code_id")int user_code_id);
+	
+	//용병 신청 응답
+	public void mercenaryResponse(MercenaryDTO mercenary);
 
 }

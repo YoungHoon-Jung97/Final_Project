@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -103,6 +104,7 @@
 				</div>
 				
 				<div id="mercenaryList">
+				<form action="SendMercenary.action">
 					<c:choose>
 						<c:when test="${not empty mercenaryList}">
 							<c:forEach var="mercenary" items="${mercenaryList}">
@@ -116,7 +118,6 @@
 										<!--  용병 모달 -->
 										<div class="modal" style="background-color: rgba(0, 0, 0, 0.1);">
 											<div class="modal-content">
-												<form action="SendMercenary.action">
 													<span class="close-modal">&times;</span>
 													<div class="modal-header">
 												   		<h2 class="modal-title">팀 매치 선택</h2>
@@ -126,18 +127,18 @@
 												      		<label class="form__label required">경기 선택</label>
 												      		<div class="form__input--wrapper">
 												      			<input type="hidden" name="mercenary_id" value="${mercenary.mercenary_id}">
-												        		<select class="form__input">
-													      			<c:choose>
-													      				<c:when test="${empty teamMatchList}">
-													      					<option value="0">없음</option>
-													      				</c:when>
-													      				<c:otherwise>
-														          			<c:forEach var="teamMatch" items="${teamMatchList}">
-														            			<option value="${teamMatch.field_res_id}">시간 : ${teamMatch.match_date}/ 장소 : ${teamMatch.stadium_addr}</option>
-														          			</c:forEach>
-														          		</c:otherwise>
-													      			</c:choose>
-												        		</select>
+												        		<select class="form__input" name="field_res_id">
+																    <c:choose>
+																        <c:when test="${empty teamMatchList}">
+																            <option value="0">없음</option>
+																        </c:when>
+																        <c:otherwise>
+																            <c:forEach var="teamMatch" items="${teamMatchList}">
+																                <option value="${teamMatch.field_res_id}">시간 : ${teamMatch.match_date}/ 장소 : ${teamMatch.stadium_addr}</option>
+																            </c:forEach>
+																        </c:otherwise>
+																    </c:choose>
+																</select>
 												      		</div>
 												    	</div>
 												  	</div>
@@ -145,7 +146,6 @@
 														<button type="button" class="modal-button modal-cancel">취소</button>
 												    	<button type="submit" class="modal-button modal-submit" id="confirmHire">확인</button>
 													</div>
-												</form>
 											</div>
 										</div>
 									</div>
@@ -159,6 +159,7 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
+				</form>
 				</div>
 			</div>
 		</div>

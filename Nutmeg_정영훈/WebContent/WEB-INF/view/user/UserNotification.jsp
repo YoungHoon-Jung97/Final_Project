@@ -44,8 +44,12 @@
 									<span>
 										<a href="IsRead.action?notification_id=${notification.notification_id}"
 										class="notification-link" style="text-decoration:none;">
-											${notification.message}
+										<strong>[${notification.notification_type}]</strong>	${notification.message}
 										</a>
+										<a href="DeleteNotification.action?notification_id=${notification.notification_id}" 
+							      		class="delete-button" onclick="return confirm('정말 삭제하시겠습니까?');">
+											삭제
+							   			</a>
 									</span>
 								</div>
 							</c:forEach>
@@ -71,6 +75,9 @@
 					
 					<a class="nav-link" href="UserNotification.action">
 						<i class="bi bi-journal-text"></i> 알림
+					</a>
+					<a class="nav-link" href="UserMercenary.action">
+						<i class="bi bi-journal-text"></i> 용병 신청
 					</a>
 				</nav>
 			</aside>

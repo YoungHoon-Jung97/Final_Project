@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nutmag.project.dao.IAdminDAO;
 import com.nutmag.project.dao.IBankDAO;
 import com.nutmag.project.dao.IFieldDAO;
+import com.nutmag.project.dao.IMercenaryDAO;
 import com.nutmag.project.dao.INotificationDAO;
 import com.nutmag.project.dao.IStadiumDAO;
 import com.nutmag.project.dao.ITeamDAO;
@@ -35,6 +36,7 @@ import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.MatchDTO;
+import com.nutmag.project.dto.MercenaryOfferDTO;
 import com.nutmag.project.dto.NotificationDTO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.OperatorResCancelDTO;
@@ -1275,5 +1277,30 @@ public class UserController
 		
 		// 메인 페이지로 리다이렉트
 		return "redirect:UserMainPage.action";
+	}
+	
+	//용병 요청
+	@RequestMapping(value = "/UserMercenary.action")
+	public String userMercenary(Model model, HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+	    IMercenaryDAO mercenaryDAO = sqlSession.getMapper(IMercenaryDAO.class); // DAO 호출
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+	    
+	    List<MercenaryOfferDTO> mercenaryOfferList= mercenaryDAO.getMercenaryOfferList(user_code_id);
+	  
+
+	    model.addAttribute("mercenaryOfferList",mercenaryOfferList);
+
+	    return "/user/UserMercenary"; // 수정 폼 JSP로 이동
 	}
 }
