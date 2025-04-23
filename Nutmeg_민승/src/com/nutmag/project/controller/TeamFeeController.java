@@ -1,5 +1,9 @@
 package com.nutmag.project.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +35,7 @@ public class TeamFeeController
 	private SqlSession sqlSession;
 	
 	// 가게부 호출
-	@RequestMapping(value = "/MyTeamFee.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamFee.action", method = RequestMethod.GET)
 	public String teamFee(HttpServletRequest request,Model model)
 	{
 		 HttpSession session = request.getSession();
@@ -46,9 +50,9 @@ public class TeamFeeController
 		 
 		 if (team_id == 0) {
 			 
-			String message = "ERROR_DUPLICATE_JOIN: 임시동호회 임으로 이용리 불가능합니다.";
+			String message = "ERROR_DUPLICATE_JOIN: 임시동호회 임으로 이용이 불가능합니다.";
 			session.setAttribute("message", message);
-			return "redirect:MyTeam.action";
+			return "redirect:TeamMain.action";
 			
 		 }
 		 
@@ -87,7 +91,18 @@ public class TeamFeeController
 		 List<TeamFeeDTO> teamMonthFeeList=  teamFeeDAO.getTeamMonthFeeList(team_id);
 		
 		 // 페이징 HTML 생성
-		 String pageHtml = pageUtil.getPageHtml("MyTeamFee.action?page=%d");
+		 String pageHtml = pageUtil.getPageHtml("TeamFee.action?page=%d");
+		 
+		 LocalDate localDate = LocalDate.now();
+		 
+		 Calendar cal = Calendar.getInstance();
+		 cal.set(Calendar.HOUR_OF_DAY, 0);
+		 cal.set(Calendar.MINUTE, 0);
+		 cal.set(Calendar.SECOND, 0);
+		 cal.set(Calendar.MILLISECOND, 0);
+		 Date today = cal.getTime();
+
+		 request.setAttribute("today", today);
 		 model.addAttribute("team", team);
 		 model.addAttribute("teamFeeList", teamFeeList);
 		 model.addAttribute("teamMonthFeeList", teamMonthFeeList);
@@ -125,7 +140,7 @@ public class TeamFeeController
 		
 		teaFeeDAO.addTeamFeeInfo(teamFee);
 		
-		return "redirect:/MyTeamFee.action";
+		return "redirect:/TeamFee.action";
 	};
 	
 	//동호회 회비 정보 등록
@@ -139,7 +154,7 @@ public class TeamFeeController
 		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
 		
 		
-		ITeamFeeDAO teaFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
+		ITeamFeeDAO teamFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		
 		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
@@ -160,9 +175,9 @@ public class TeamFeeController
 		teamFee.setTeam_fee_id(team_fee_id);
 		teamFee.setTeam_fee_price(team_fee_price);
 		
-		teaFeeDAO.addMonthFee(teamFee);
+		teamFeeDAO.addMonthFee(teamFee);
 		
-		return "redirect:/MyTeamFee.action";
+		return "redirect:/TeamFee.action";
 	};
 	
 	
@@ -174,15 +189,18 @@ public class TeamFeeController
 		int team_fee_id = Integer.parseInt(request.getParameter("team_fee_id"));
 		Integer temp_team_id = (Integer) session.getAttribute("team_id");
 	
-		ITeamFeeDAO teaFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
+		ITeamFeeDAO teamFeeDAO = sqlSession.getMapper(ITeamFeeDAO.class);
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
+		
+		TeamFeeDTO teamFee =  teamFeeDAO.getTeamMonthFee(team_fee_id);
 		
 		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
 		
-		List<TeamMemberFeeDTO> teamMemberFeeList =  teaFeeDAO.getMemberFeeList(team_fee_id);
-		
+		List<TeamMemberFeeDTO> teamMemberFeeList =  teamFeeDAO.getMemberFeeList(team_fee_id);
+
 		model.addAttribute("teamMemberFeeList", teamMemberFeeList);
 		model.addAttribute("team", team);
+		model.addAttribute("teamFee", teamFee);
 		
 		return "/team/TeamMonthFee";
 	};

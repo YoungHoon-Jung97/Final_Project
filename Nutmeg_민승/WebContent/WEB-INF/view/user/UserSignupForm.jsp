@@ -10,8 +10,8 @@
 <meta charset="UTF-8">
 <title>UserSignupForm.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -135,11 +135,11 @@
 			<!-- 전화번호 입력 -->
 			<div class="form__group">
 				<div class="form__field">
-					<label for="tel" class="form__label">전화번호</label> 
+					<label for="tel" class="form__label required">전화번호</label> 
 					
 					<div class="form__input--wrapper">
 						<input type="tel" class="form__input" id="tel" placeholder="전화번호를 입력하세요."
-						name="user_tel">
+						name="user_tel" pattern="^\d{3}-\d{3,4}-\d{4}$" required>
 					</div>
 				</div>
 				

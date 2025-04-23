@@ -249,6 +249,9 @@
 		ui.user_pwd = #{logPwKo}
 	</select>
 
+	<delete id="deleteUser">
+		DELETE FROM USER_INFO WHERE USER_ID = #{user_id}
+	</delete>
 
 	<delete id="unbanUser">
 		DELETE FROM USER_BAN WHERE USER_CODE_ID1 = #{user_id}

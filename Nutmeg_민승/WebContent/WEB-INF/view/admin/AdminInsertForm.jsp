@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/insertForm.css">
 <style type="text/css">
 	#ssn1 {
     	width: 200px;

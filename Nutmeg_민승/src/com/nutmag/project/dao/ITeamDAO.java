@@ -120,9 +120,6 @@ public interface ITeamDAO {
 	
 	// 정식동호회 해체
 	public void teamDrop(@Param("team_id")int team_id);
-	
-	
-
-	
+		
 	
 }

@@ -77,6 +77,7 @@ body
 {
 	display: flex;
 	gap: 15px;
+	margin-top: 3px;
 }
 
 .nav-menu.active
@@ -468,6 +469,12 @@ main
 	color: white;
 	font-size: 20px;
 	cursor: pointer;
+	transition: color 0.2s ease-in-out;
+}
+
+.user-icon:hover
+{
+	color: #888;
 }
 
 @keyframes shrink
@@ -712,11 +719,17 @@ main
 	font-size: 0.95em;
 }
 
+.notification-nick-name
+{
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	margin-right: 5px;
+}
+
 .login-nick-name
 {
-	margin-left: auto;
-    margin-right: 10px;
-    margin-top: 3px;
+	margin-top: 3px;
 }
 
 .section-header .underline
@@ -725,4 +738,43 @@ main
 	height: 4px;
 	background-color: #7dcfb6;
 	border-radius: 2px;
+}
+
+.position-relative
+{
+	display: flex;
+	align-items: center;
+	height: 35px;
+	margin-right: 5px;
+}
+
+.notification-bell
+{
+	background: none;
+	border: none;
+	position: relative;
+	font-size: 20px;
+	color: white;
+	transition: color 0.3s ease;
+	padding: 0.25rem 0.5rem;
+}
+
+.notification-bell:hover
+{
+	color: #888;
+}
+
+.notification-bell:focus
+{
+	outline: none;
+	box-shadow: none;
+}
+
+/* 뱃지 위치 조정 */
+.notification-bell .badge
+{
+	font-size: 10px;
+	padding: 3px 3px;
+	box-shadow: 0 0 0 2px white;
+	margin: 3px 0 0 -5px;
 }

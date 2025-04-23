@@ -3,7 +3,7 @@ package com.nutmag.project.dto;
 public class NotificationDTO
 {
 	int user_code_id,notification_id,notification_type_id;
-	char is_read;
+	String is_read;
 	
 	String message, created_at,notification_type;
 	
@@ -57,11 +57,11 @@ public class NotificationDTO
 	{
 		this.created_at = created_at;
 	}
-	public char getIs_read()
+	public String getIs_read()
 	{
 		return is_read;
 	}
-	public void setIs_read(char is_read)
+	public void setIs_read(String is_read)
 	{
 		this.is_read = is_read;
 	}

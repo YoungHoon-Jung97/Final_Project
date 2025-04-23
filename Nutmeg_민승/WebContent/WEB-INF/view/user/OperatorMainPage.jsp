@@ -14,10 +14,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/StadiumListForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stadium/StadiumListForm.css?after">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 <script type="text/javascript" src="<%=cp %>/js/OperatorStadiumUpdateForm.js?after"></script>
 <style>
 /* 기본 HTML 및 바디 설정 */
@@ -242,11 +242,11 @@ $(document).ready(function () {
 				<a class="nav-link menu-link" data-url="OperatorFieldResApprForm.action">
 				    <i class="bi bi-check-circle me-2"></i> 경기장 승인관리
 				</a>
-				<a class="nav-link menu-link" data-url="OperatorStadiumHolidayUpdateForm.action">
-				    <i class="bi bi-credit-card me-2"></i> 결제 내역
-				</a>
 				<a class="nav-link menu-link" data-url="OperatorFieldApprList.action">
 				    <i class="bi bi-list-check me-2"></i> 경기장 승인,취소 내역
+				</a>
+				<a class="nav-link menu-link" data-url="OperatorFieldResHistory.action">
+				    <i class="bi bi-credit-card me-2"></i> 결제 내역
 				</a>
 				<a class="nav-link menu-active" href="Logout.action">
 				    <i class="bi bi-box-arrow-right me-2"></i> 로그아웃
@@ -255,8 +255,69 @@ $(document).ready(function () {
         </div>
 
 		<div class="content-area" id="content-area">
-		    <h4 class="mb-4">기본 정보</h4>
-		    <p>여기에 내용 출력</p>
+		    <h4 class="mb-4">운영자 대시보드</h4>
+
+			<!-- ✅ 요약 카드: 오늘의 개요 -->
+			<div class="row mb-4">
+			    <div class="col-md-3">
+			        <div class="card text-white bg-success mb-3">
+			            <div class="card-body">
+			                <h5 class="card-title">총 구장 수</h5>
+			                <p class="card-text fs-4">${totalStadiumCount} 개</p>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="col-md-3">
+			        <div class="card text-white bg-primary mb-3">
+			            <div class="card-body">
+			                <h5 class="card-title">오늘 예약 수</h5>
+			                <p class="card-text fs-4">${todayReservationCount} 건</p>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="col-md-3">
+			        <div class="card text-white bg-warning mb-3">
+			            <div class="card-body">
+			                <h5 class="card-title">이번 달 매출</h5>
+			                <p class="card-text fs-4">${monthlyRevenue} 원</p>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="col-md-3">
+			        <div class="card text-white bg-danger mb-3">
+			            <div class="card-body">
+			                <h5 class="card-title">대기 중 승인</h5>
+			                <p class="card-text fs-4">${pendingApprovals} 건</p>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			
+			<!-- ✅ 최근 예약 목록 -->
+			<h5 class="mb-3">최근 예약 내역</h5>
+			<table class="table table-striped">
+			    <thead>
+			        <tr>
+			            <th>예약일</th>
+			            <th>경기장명</th>
+			            <th>시간</th>
+			            <th>결제 금액</th>
+			            <th>상태</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			        <c:forEach var="r" items="${recentReservations}">
+			        <tr>
+			            <td>${r.match_date}</td>
+			            <td>${r.field_name}</td>
+			            <td>${r.start_time} ~ ${r.end_time}</td>
+			            <td>${r.pay_amount} 원</td>
+			            <td>${r.match_status}</td>
+			        </tr>
+			        </c:forEach>
+			    </tbody>
+			</table>
+
 		</div>
 
 </div>

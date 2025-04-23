@@ -312,7 +312,7 @@ public class AdminController
 	
 	
 	// 사용자 관리 페이지
-	 @RequestMapping(value="/UserManage.action", method=RequestMethod.GET)
+	 @RequestMapping(value="/UserManagePage.action", method=RequestMethod.GET)
 	  public String userManageView(HttpServletRequest request,Model model) {
 		  
 	    List<UserDTO> users = sqlSession.getMapper(IAdminDAO.class).selectUserList();     
@@ -339,7 +339,7 @@ public class AdminController
         System.out.println("================================================================");
         dao.insertUserBan(dto);
 
-        return "redirect:UserManage.action";
+        return "redirect:UserManagePage.action";
     }
 
     // 사용자 차단 해제
@@ -350,10 +350,17 @@ public class AdminController
 	    sqlSession.getMapper(IAdminDAO.class).unbanUser(userId);
 	}
 
+	// 사용자 삭제
+	@RequestMapping(value="UserDelete.action", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteUser(@RequestParam("user_id") int userId)
+	{
+	    sqlSession.getMapper(IAdminDAO.class).deleteUser(userId);
+	}
 
 	
 	// 관리자 컨텐츠
-	@RequestMapping(value = "/AdminDashboard.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/AdminDashboardContent.action", method = RequestMethod.GET)
 	public String adminDashboardContent(Model model)
 	{
 	    IAdminDAO adminDao = sqlSession.getMapper(IAdminDAO.class);
@@ -375,6 +382,16 @@ public class AdminController
 	    return "/admin/AdminDashboardContent";
 	}
 
+	// 회사 소개 페이지
+	@RequestMapping(value = "Aboutme.action", method=RequestMethod.GET)
+	public String companyIntro()
+	{
+		String result = null;
+		
+		result = "/admin/Aboutme";
+		
+	    return result;
+	}
 	
 }
 

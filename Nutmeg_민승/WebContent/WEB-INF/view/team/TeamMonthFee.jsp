@@ -10,9 +10,9 @@
 <head>
 <meta charset="UTF-8">
 <title>팀 가계부</title>
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/TeamMain.css">
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/modal.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/TeamTemplate.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/team/TeamMain.css">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/modal.css">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/team/TeamTemplate.css?after">
 <style type="text/css">
 /*팀 메뉴 넘어갔을 때 표시*/
 .teampage-link:nth-child(3) a {
@@ -212,43 +212,35 @@
         <div class="main">
             <div class="main-content">
                 <ul class="team-menu">
-                    <li class="teampage-link"><a href="MyTeam.action">팀 정보</a></li>
-                    <li class="teampage-link"><a href="MyTeamSchedule.action">팀 매치</a></li>
-                    <li class="teampage-link"><a href="MyTeamFee.action">팀 가계부</a></li>
-                    <li class="teampage-link"><a href="MyTeamBoard.action">팀 게시판</a></li>
+                    <li class="teampage-link">
+						<a href="TeamMain.action">동호회 정보</a>
+					</li>
+					
+					<li class="teampage-link">
+						<a href="TeamSchedule.action">동호회 매치 일정</a>
+					</li>
+					
+					<li class="teampage-link">
+						<a href="TeamFee.action">동호회 가계부</a>
+					</li>
+					
+					<li class="teampage-link">
+						<a href="TeamBoard.action">동호회 게시판</a>
+					</li>
                 </ul>
                 <!-- .tean-menu -->
                 
                 <div class="fee-container">
                     <div class="fee-header">
-                        <h2 class="fee-title">팀 회비 납부</h2>
+                        <h2 class="fee-title">${teamFee.team_fee_pay_start_at}일 팀 회비 납부자 명단</h2>
                     </div>
-                    
-                    <div class="fee-summary">
-                        <div class="summary-item">
-                            <div class="summary-label">총 수입</div>
-                            <div class="summary-value income"><fmt:formatNumber value="${income}" type="number" pattern="#,###" />원</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">총 지출</div>
-                            <div class="summary-value expense"><fmt:formatNumber value="${expense}" type="number" pattern="#,###" />원</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="summary-label">잔액</div>
-                            <div class="summary-value balance"><fmt:formatNumber value="${tot}" type="number" pattern="#,###" />원</div>
-                        </div>
-                    </div>
-                                        
-                    <div class="btn-group">
-                        <button id="collectFeeBtn" class="btn">회비 모으기</button>
-                    </div>
-                    
+           
                     <!-- 전체 내용 추가  -->
                     <div id="allTab" class="tab-content active">
                         <table class="fee-table">
                             <thead>
                                 <tr>
-                                    <th>날짜</th>
+                                    <th>납부 날짜</th>
                                     <th>종류</th>
                                     <th>내용</th>
                                     <th>금액</th>

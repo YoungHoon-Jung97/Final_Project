@@ -140,7 +140,7 @@
 	SELECT USER_NAME,USER_EMAIL,USER_PWD,USER_TEL,USER_NICK_NAME,USER_SSN1,USER_SSN2
 		 , USER_ADDR, USER_POSTAL_ADDR, USER_DETAILED_ADDR, USER_CODE_ID
 	FROM USER_INFO
-	WHERE user_id = #{user_code_id}
+	WHERE user_code_id = #{user_code_id}
 	</select>
 	
 	<!-- 비밀번호 확인 -->
@@ -179,5 +179,19 @@
        </set>
        WHERE user_code_id = #{user_code_id}
    </update>
+   
+   <!-- 내 결재 내역 -->
+   <select id="feeList" resultType="com.nutmag.project.dto.TeamMemberFeeDTO">
+   		SELECT *
+   		FROM TEAM_MEMBER_FEE_PAY_VIEW
+   		WHERE USER_CODE_ID =#{user_code_id}
+   </select>
+   
+   <!-- 내 참여 기록 -->
+   <select id="matchList" resultType="com.nutmag.project.dto.UserMatchDTO">
+   		SELECT * FROM USER_MATCHES_VIEW 
+		WHERE "USER_CODE_ID" =#{user_code_id}
+		ORDER BY "MATCH_DATE" DESC
+   </select>
 	
 </mapper>

@@ -32,7 +32,7 @@
 <title>AdminLogin</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Login.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/Login.css?after">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="<%=cp %>/js/util.js"></script>
@@ -130,7 +130,7 @@
 											<p class="mb-0 mt-4 text-center">
 												<a href="AdminInsertForm.action" class="link">회원가입</a>
 												<span class="boundary1">|</span>
-												<a href="ForgotEmail.action" class="link">이메일 찾기</a>
+												<a href="ForgotEmailResult.action" class="link">이메일 찾기</a>
 												<span class="boundary2">|</span>
 												<a href="ForgotPassword.action" class="link">비밀번호 찾기</a>
 											</p>
@@ -189,7 +189,7 @@
 											<p class="mb-0 mt-4 text-center margin-p">
 												<a href="UserSignupForm.action" class="link">Sign up</a>
 												<span class="boundary1">|</span>
-												<a href="ForgotEmail.action" class="link">Find Email</a>
+												<a href="ForgotEmailResult.action" class="link">Find Email</a>
 												<span class="boundary3">|</span>
 												<a href="ForgotPassword.action" class="link">Find Password</a>
 											</p>

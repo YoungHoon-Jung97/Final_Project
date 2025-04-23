@@ -111,7 +111,7 @@ public class MatchController {
 			return "Error";
 		}
 		
-		return "redirect:MyTeamSchedule.action";
+		return "redirect:TeamSchedule.action";
 	}
 	
 	//매치 참여자 출력 페이지 호출
@@ -186,7 +186,7 @@ public class MatchController {
 		
 		model.addAttribute("matchRoomList", matchDAO.matchRoomList());
 		
-		return"redirect:MyTeamSchedule.action";
+		return"redirect:TeamSchedule.action";
 	}
 	
 	// 매치방 상세 페이지

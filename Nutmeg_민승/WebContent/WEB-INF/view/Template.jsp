@@ -49,8 +49,8 @@
 <title>Template.jsp</title>
 
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/Template.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/Template.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/util/scrollBar.css?after">
 
 <!-- Bootstrap Icons CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -155,6 +155,12 @@
 				<div class="nav-sub match">매치 참가</div>
 				<div class="nav-sub field">매치 생성</div>
 			</div>
+			
+			<!-- 회사소개 항목 추가 -->
+			<div class="nav-item">
+				<span class="nav-title company">회사소개</span>
+				<div class="nav-sub company">회사 개요</div>
+			</div>
 		</nav>
 	</div>
 	
@@ -168,21 +174,33 @@
 <%	if (user_code_id != -1)
 	{
 %>
-		<div class="nav-title login-nick-name">
+		<div class="nav-title notification-nick-name">
 			<div class="position-relative d-inline-block">
-			  <button class="btn btn-light position-relative">
-			    <% if (notification_count > 0) { %>
-					<i class="bi bi-bell-fill"></i>   <!-- 채워진 종 -->
-			     	<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-			        	<%= notification_count %>
-			        	<span class="visually-hidden">unread messages</span>
-			      	</span>
-			    <% } else{%>
-			    	<i class="bi bi-bell"></i>
-			    <%} %>
-			  </button>
+			  <button class="notification-bell">
+<%					if (notification_count > 0)
+					{
+%>
+						<i class="bi bi-bell-fill"></i>
+						
+						<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+							<%= notification_count %>
+							
+							<span class="visually-hidden">unread messages</span>
+						</span>
+<%					}
+					
+					else
+					{
+%>
+						<i class="bi bi-bell"></i>
+<%					}
+%>
+				</button>
 			</div>
-			<%=user_nick_name %> 님
+			
+			<div class="login-nick-name">
+				<%=user_nick_name %> 님
+			</div>
 		</div>
 <%	}
 %>

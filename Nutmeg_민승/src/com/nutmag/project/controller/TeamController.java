@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutmag.project.dao.IBankDAO;
@@ -322,122 +326,103 @@ public class TeamController
 			response.getWriter().write("이미 사용중인 팀네임 입니다.");
 	}
 	
+	
+	@Configuration
+	@EnableWebMvc
+	public class WebConfig implements WebMvcConfigurer
+	{
+	    @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry)
+	    {
+	        registry.addResourceHandler("/resources/**")
+	                .addResourceLocations("/resources/");
+	    }
+	}
+	
 	// 동호회 등록(파일 등록)
 	@RequestMapping(value = "/TeamInsert.action", method = RequestMethod.POST)
 	public String insertTeam(TeamDTO team, HttpServletRequest request)
 	{
-		MultipartFile file = team.getTemp_team_emblem();
-		
-		System.out.println("/n===================================================================================================");
-		
-		System.out.println("파일 업로드 시작: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
-		
-		// 파일이 있을 시
-		if (file != null && !file.isEmpty())
-		{
-			try
-			{
-				// 디버그 코드
-				System.out.println("\n==================================동호회 등록==================================");
-				
-				if (team != null)
-				{
-					System.out.println("TEMP_TEAM_NAME(팀 이름) = " + team.getTemp_team_name());
-					System.out.println("TEMP_TEAM_DESC(팀 설명) = " + team.getTemp_team_desc());
-					System.out.println("TEMP_TEAM_EMBLEM(팀 엠블럼) = " + team.getTemp_team_emblem());
-					System.out.println("TEMP_TEAM_ACCOUNT(팀 계좌번호) = " + team.getTemp_team_account());
-					System.out.println("TEMP_TEAM_ACCOUNT_HOLDER(팀 예금주) = " + team.getTemp_team_account_holder());
-					System.out.println("BANK_ID(팀 은행) = " + team.getBank_id());
-					System.out.println("REGION_ID(팀 지역) = " + team.getRegion_id());
-					System.out.println("CITY_ID(팀 도시) = " + team.getCity_id());
-					System.out.println("TEMP_TEAM_PERSON_COUNT(팀 인원수) = " + team.getTemp_team_persom_count());
-				}
-				System.out.println("=================================================================================");
-				System.out.println("\n==================================파일 업로드 상태 ==================================");
-				
-				if (file != null)
-				{
-					System.out.println("파일 비어 있음? : " + file.isEmpty());
-					System.out.println("파일 원래 이름 : " + file.getOriginalFilename());
-				}
-				System.out.println("=======================================================================================");
-				// 웹 애플리케이션 루트 경로 가져오기
-				String root = request.getServletContext().getRealPath("");
-				
-				// 업로드 디렉토리 경로
-				String uploadDir = Path.getUploadEmblemDir();
-				
-				// 전체 업로드 경로 생성
-				String uploadPath = root + uploadDir;
-				if (!uploadDir.endsWith(File.separator))
-					uploadPath = root + uploadDir + File.separator;
-				
-				File uploadDirFile = new File(uploadPath);
-				// 파일 경로 없을 시 폴더 생성
-				if (!uploadDirFile.exists())
-				{
-					boolean created = uploadDirFile.mkdirs();
-					System.out.println("디렉토리 생성 결과: " + created);
-				}
-				
-				// 파일명 충돌 방지를 위한 고유 파일명 생성
-				String originalFileName = file.getOriginalFilename();
-				String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-				String teamFileName = team.getTemp_team_name() + "_" + System.currentTimeMillis() + fileExtension;
-				
-				// 파일 저장
-				String filePath = uploadPath + teamFileName;
-				System.out.println("저장될 파일 경로: " + filePath);
-				
-				File dest = new File(filePath);
-				file.transferTo(dest);
-				System.out.println("파일 저장 완료");
-				
-				System.out.println("웹 애플리케이션 루트: " + root);
-				// DB에 저장할 상대 경로 설정
-				String dbFilePath = uploadDir;
-				if (!uploadDir.endsWith("/") && !uploadDir.endsWith("\\"))
-					dbFilePath += "/";
-				
-				dbFilePath += teamFileName;
-				
-				System.out.println("/n===================================[파일 업로드]===================================");
-				System.out.println("전체 업로드 경로: " + uploadPath);
-				System.out.println("설정된 업로드 경로: " + uploadDir);
-				System.out.println("DB에 저장할 파일 경로: " + dbFilePath);
-				System.out.println("=====================================================================================");
-				
-				team.setEmblem(dbFilePath);
-			}
-			catch (Exception e)
-			{
-				System.out.println("파일 저장 중 오류 발생:");
-				e.printStackTrace();
-			}
-		}
-		
-		else
-			team.setEmblem("/");
-		
-		try
-		{
-			ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
-			dao.teamInsert(team);
-			System.out.println("DB 저장 완료");
-		}
-		catch (Exception e)
-		{
-			System.out.println("DB 저장 중 오류 발생:");
-			e.printStackTrace();
-		}
-		
-		System.out.println("\n===================================================================================================");
-		
-		return "redirect:/MainPage.action";
+	    MultipartFile file = team.getTemp_team_emblem();
+
+	    System.out.println("\n===================================================================================================");
+	    System.out.println("파일 업로드 시작: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
+
+	    try
+	    {
+	        System.out.println("========= [DEBUG] 동호회 등록 파라미터 확인 =========");
+
+	        if (team != null)
+	        {
+	            System.out.println("TEMP_TEAM_NAME = " + team.getTemp_team_name());
+	            System.out.println("TEMP_TEAM_DESC = " + team.getTemp_team_desc());
+	            System.out.println("TEMP_TEAM_ACCOUNT = " + team.getTemp_team_account());
+	            System.out.println("TEMP_TEAM_ACCOUNT_HOLDER = " + team.getTemp_team_account_holder());
+	            System.out.println("BANK_ID = " + team.getBank_id());
+	            System.out.println("REGION_ID = " + team.getRegion_id());
+	            System.out.println("CITY_ID = " + team.getCity_id());
+	            System.out.println("TEMP_TEAM_PERSON_COUNT = " + team.getTemp_team_persom_count());
+	        }
+
+	        // 1. 업로드 경로 설정
+	        String uploadPath = Path.getUploadEmblemDir();  // 공유폴더 경로
+	        File uploadDir = new File(uploadPath);
+	        if (!uploadDir.exists())
+	            uploadDir.mkdirs();
+
+	        // 2. 파일 저장
+	        if (file != null && !file.isEmpty())
+	        {
+	            String originalFileName = file.getOriginalFilename();
+	            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	            String savedFileName = team.getTemp_team_name().replaceAll("[^a-zA-Z0-9가-힣_\\-]", "_")
+	                                        + "_" + System.currentTimeMillis() + fileExtension;
+
+	            // 공유폴더 저장
+	            File saveFile = new File(uploadPath, savedFileName);
+	            file.transferTo(saveFile);
+
+	            // 정적 리소스 경로 복사
+	            String staticPath = request.getServletContext().getRealPath("/resources/uploads/emblems/");
+	            File staticFile = new File(staticPath, savedFileName);
+
+	            if (!staticFile.getParentFile().exists())
+	                staticFile.getParentFile().mkdirs();
+
+	            FileUtils.copyFile(saveFile, staticFile); // org.apache.commons.io.FileUtils 필요
+
+	            // DB에 저장할 웹 경로
+	            String fileWebPath = "resources/uploads/emblems/" + savedFileName;
+	            team.setEmblem(fileWebPath);
+
+	            // 디버그
+	            System.out.println("\n=====[파일 경로]=====");
+	            System.out.println("공유폴더 저장경로 : " + saveFile.getAbsolutePath());
+	            System.out.println("정적리소스 복사경로 : " + staticFile.getAbsolutePath());
+	            System.out.println("DB 저장 웹경로 : " + fileWebPath);
+	        }
+	        else
+	        {
+	            team.setEmblem("resources/uploads/emblems/default.png"); // 기본 엠블럼
+	        }
+
+	        // 3. DB 저장
+	        ITeamDAO dao = sqlSession.getMapper(ITeamDAO.class);
+	        dao.teamInsert(team);
+	        System.out.println("DB 저장 완료");
+	    }
+	    catch (Exception e)
+	    {
+	        System.out.println("파일 저장 또는 DB 처리 중 오류:");
+	        e.printStackTrace();
+	    }
+
+	    System.out.println("\n===================================================================================================");
+	    return "redirect:/MainPage.action";
 	}
 
 	// 내 동호회 메인 페이지 호출
-	@RequestMapping(value = "/MyTeam.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamMain.action", method = RequestMethod.GET)
 	public String teamMain(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
@@ -492,7 +477,7 @@ public class TeamController
 	}
 	
 	// 동호회 일정 페이지
-	@RequestMapping(value = "/MyTeamSchedule.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/TeamSchedule.action", method = RequestMethod.GET)
 	public String teamSchedule(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
@@ -787,7 +772,7 @@ public class TeamController
 			notificationDAO.addNotification(notification);
 		}
 		
-		return "redirect:/MyTeam.action";
+		return "redirect:/TeamMain.action";
 	}
 	
 	// 동호회 정보 수정
@@ -802,38 +787,60 @@ public class TeamController
 	public String disbandTeam(HttpSession session, Model model) {
 	    Integer temp_team_id = (Integer) session.getAttribute("team_id");
 	    System.out.println("[DEBUG] disbandTeam 호출됨. session.team_id = " + temp_team_id);
-	   
+	    
 		// 동호회 정보 가져오기
 		ITeamDAO teamDAO = sqlSession.getMapper(ITeamDAO.class);
 		TeamDTO team = teamDAO.getTeamInfo(temp_team_id);
+		
+		INotificationDAO notificationDAO = sqlSession.getMapper(INotificationDAO.class);
+		NotificationDTO notification = new NotificationDTO();
+		
 		int team_id = team.getTeam_id();
 		
-	
 		// 동호회원 가져오기
 		if (team_id == 0)
 		{
 			// 임시동호회 인원 찾기
 			teamDAO.tempTempDrop(temp_team_id);
-			
 			String message = "SUCCESS_APPLY: 해체가 성공적으로 완료되었습니다.";
 			session.setAttribute("message", message);
-			return "redirect:MainPage.action";
+			
+			team_id =temp_team_id;
+			ArrayList<TeamApplyDTO> teamMemberList =  teamDAO.tempTeamMemberList(team_id);
+			
+			for (TeamApplyDTO teamMember : teamMemberList)
+			{
+				int user_code_id = teamMember.getUser_code_id();
+				notification.setUser_code_id(user_code_id);
+				notification.setNotification_type_id(1);
+				//알림 메시지 등록
+				notification.setMessage(team.getTemp_team_name() + " 동호회에서 강퇴되었습니다.");
+				notificationDAO.addNotification(notification);
+			}
+			
+			
+		}
+		else if (team_id != 0)
+		{
+			// 임시동호회 인원 찾기
+			teamDAO.teamDrop(team_id);
+			String message = "SUCCESS_APPLY: 해체가 성공적으로 완료되었습니다.";
+			session.setAttribute("message", message);
+			
+			ArrayList<TeamApplyDTO> teamMemberList =  teamDAO.teamMemberList(team_id);
+			
+			for (TeamApplyDTO teamMember : teamMemberList)
+			{
+				int user_code_id = teamMember.getUser_code_id();
+				notification.setUser_code_id(user_code_id);
+				notification.setNotification_type_id(1);
+				//알림 메시지 등록
+				notification.setMessage(team.getTemp_team_name() + " 동호회에서 강퇴되었습니다.");
+				notificationDAO.addNotification(notification);
+			}
 			
 		}
 		
-		else if (team_id != 0)
-		{
-
-			// 임시동호회 인원 찾기
-			teamDAO.teamDrop(team_id);
-			
-			String message = "SUCCESS_APPLY: 해체가 성공적으로 완료되었습니다.";
-			session.setAttribute("message", message);
-			return "redirect:MainPage.action";
-			
-		}
-	   
-
 	    return "redirect:/MainPage.action";
 	}
 }

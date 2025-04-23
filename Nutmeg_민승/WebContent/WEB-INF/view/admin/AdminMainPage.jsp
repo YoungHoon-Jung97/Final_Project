@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<%=cp%>/css/Template.css">
+    <link rel="stylesheet" href="<%=cp%>/css/util/Template.css">
  <style>
     /* 전체 바디 */
     body {
@@ -152,7 +152,7 @@
  // 현재 스크립트에 추가
     $(document).ready(function () {
         // 첫 진입 시 대시보드 자동 로딩
-        $.get("<%=cp%>/AdminDashboard.action", function (result) {
+        $.get("<%=cp%>/AdminDashboardContent.action", function (result) {
             $('#content-area').html(result);
         });
 
@@ -185,13 +185,14 @@
                 <div class="mt-2"><span class="badge bg-warning text-dark">관리자 로그인</span></div>
             </div>
             <div class="fw-bold mb-2">관리 메뉴</div>
-            <a class="nav-link menu-link" data-url="<%=cp%>/AdminDashboard.action">
+            <a class="nav-link menu-link" data-url="<%=cp%>/AdminDashboardContent.action
+">
                 <i class="bi bi-house-door me-2"></i>대시보드
             </a>
             <a class="nav-link menu-link" data-url="<%=cp%>/AdminFieldApprForm.action">
                 <i class="bi bi-building me-2"></i>경기장 승인관리
             </a>
-            <a class="nav-link menu-link" data-url="<%=cp%>/UserManage.action">
+            <a class="nav-link menu-link" data-url="<%=cp%>/UserManagePage.action">
                 <i class="bi bi-people-fill me-2"></i>사용자 관리
             </a>
         </div>

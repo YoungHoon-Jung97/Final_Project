@@ -12,8 +12,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>StadiumRegInsertForm.jsp</title>
 
-<link rel="stylesheet" type="text/css" href="<%=cp%>/css/insertForm.css?after">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/scrollBar.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp%>/css/util/insertForm.css?after">
+<link rel="stylesheet" type="text/css" href="<%=cp %>/css/ustil/scrollBar.css?after">
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
