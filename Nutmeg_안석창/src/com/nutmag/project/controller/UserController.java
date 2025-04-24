@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nutmag.project.dao.IAdminDAO;
 import com.nutmag.project.dao.IBankDAO;
 import com.nutmag.project.dao.IFieldDAO;
+import com.nutmag.project.dao.IMercenaryDAO;
 import com.nutmag.project.dao.INotificationDAO;
 import com.nutmag.project.dao.IStadiumDAO;
 import com.nutmag.project.dao.ITeamDAO;
@@ -35,6 +36,7 @@ import com.nutmag.project.dto.FieldRegInsertDTO;
 import com.nutmag.project.dto.FieldRegSearchDTO;
 import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.MatchDTO;
+import com.nutmag.project.dto.MercenaryOfferDTO;
 import com.nutmag.project.dto.NotificationDTO;
 import com.nutmag.project.dto.OperatorDTO;
 import com.nutmag.project.dto.OperatorResCancelDTO;
@@ -46,6 +48,7 @@ import com.nutmag.project.dto.UserDTO;
 import com.nutmag.project.dto.UserMatchDTO;
 
 import util.MailUtil;
+import util.PageUtil;
 import util.Path;
 
 @Controller
@@ -1078,14 +1081,53 @@ public class UserController
 	
 	//내 결제 내역
 	@RequestMapping(value = "/UserFee.action", method = RequestMethod.GET)
-	public String userFeeList(HttpSession session,Model model) {
+	public String userFeeList(HttpServletRequest request,Model model) {
 		
+		HttpSession session = request.getSession();
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
 		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-		
 		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
 		
-		List<TeamMemberFeeDTO> feeList =  userDAO.feeList(user_code_id); 
+		// 현재 페이지 파라미터 처리 (기본값: 1)
+        String pageParam = request.getParameter("page");
+        int currentPage = 1;
+        
+        if (pageParam != null && !pageParam.isEmpty()) 
+        {
+            try 
+            {
+                currentPage = Integer.parseInt(pageParam);
+            } 
+            catch (NumberFormatException e) 
+            {
+                // 숫자 형식이 아닌 경우 기본값 사용
+            }
+        }
+        
+        // 전체 게시글 수 조회
+        int totalCount = userDAO.feeListCount(user_code_id);	
+        
+        // 페이징 유틸 생성 (한 페이지에 10개씩, 5개 페이지 번호)
+        PageUtil pageUtil = new PageUtil(currentPage, totalCount, 10, 5);
+        
+        int start =pageUtil.getStart();
+        int end = pageUtil.getEnd();
 		
+		List<TeamMemberFeeDTO> feeList =  userDAO.feeList(start,end,user_code_id); 
+		
+		System.out.println("=======================확인=======================");
+		for (TeamMemberFeeDTO teamMemberFeeDTO : feeList)
+		{
+			System.out.println("team_member_fee_pay_price = " + teamMemberFeeDTO.getTeam_member_fee_pay_price());
+		}
+		System.out.println("==================================================");
+		
+		// 페이징 HTML 생성
+        String pageHtml = pageUtil.getPageHtml("UserFee.action?page=%d");
+        
+        // 요청 속성에 데이터 설정
+        model.addAttribute("pageHtml", pageHtml);
+        model.addAttribute("totalCount", totalCount);
 		model.addAttribute("feeList", feeList);
 	    return "/user/UserFee";
 	}
@@ -1093,14 +1135,46 @@ public class UserController
 	
 	//내 경기 참여 내역
 	@RequestMapping(value = "/UserMatch.action", method = RequestMethod.GET)
-	public String userMatchList(HttpSession session,Model model) {
+	public String userMatchList(HttpServletRequest request,Model model) {
 		
+		HttpSession session = request.getSession();
+		Integer temp_team_id = (Integer) session.getAttribute("team_id");
 		Integer user_code_id = (Integer) session.getAttribute("user_code_id");
-		
 		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
 		
-		List<UserMatchDTO> matchList =  userDAO.matchList(user_code_id); 
+		// 현재 페이지 파라미터 처리 (기본값: 1)
+        String pageParam = request.getParameter("page");
+        int currentPage = 1;
+        
+        if (pageParam != null && !pageParam.isEmpty()) 
+        {
+            try 
+            {
+                currentPage = Integer.parseInt(pageParam);
+            } 
+            catch (NumberFormatException e) 
+            {
+                // 숫자 형식이 아닌 경우 기본값 사용
+            }
+        }
+        
+        // 전체 게시글 수 조회
+        int totalCount = userDAO.matchListCount(user_code_id);
+        
+        // 페이징 유틸 생성 (한 페이지에 10개씩, 5개 페이지 번호)
+        PageUtil pageUtil = new PageUtil(currentPage, totalCount, 10, 5);
+        
+        int start =pageUtil.getStart();
+        int end = pageUtil.getEnd();
 		
+		List<UserMatchDTO> matchList =  userDAO.matchList(start,end,user_code_id); 
+		
+		// 페이징 HTML 생성
+        String pageHtml = pageUtil.getPageHtml("UserMatch.action?page=%d");
+        
+        // 요청 속성에 데이터 설정
+        model.addAttribute("pageHtml", pageHtml);
+        model.addAttribute("totalCount", totalCount);
 		model.addAttribute("matchList", matchList);
 	    return "/user/UserMatch";
 	}
@@ -1154,7 +1228,7 @@ public class UserController
 	    UserDTO userEdit = dao.userUpdate(user_code_id);   // 정보 불러오기
 
 	    if (userEdit == null) {
-	        message = "ERROR: 회원 정보를 찾을 수 없습니다.";
+	    	message = "ERROR: 회원 정보를 찾을 수 없습니다.";
 	        session.setAttribute("message", message);
 	        return "redirect:MainPage.action";
 	    }
@@ -1203,5 +1277,30 @@ public class UserController
 		
 		// 메인 페이지로 리다이렉트
 		return "redirect:UserMainPage.action";
+	}
+	
+	//용병 요청
+	@RequestMapping(value = "/UserMercenary.action")
+	public String userMercenary(Model model, HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+	    String message = "";
+
+	    Integer user_code_id = (Integer) session.getAttribute("user_code_id");
+	    IMercenaryDAO mercenaryDAO = sqlSession.getMapper(IMercenaryDAO.class); // DAO 호출
+
+	    // 로그인 체크
+	    if (user_code_id == null) {
+	        message = "로그인을 해야 합니다.";
+	        model.addAttribute("message", message);
+	        return "redirect:MainPage.action";  // 로그인 페이지나 메인 페이지
+	    }
+	    
+	    List<MercenaryOfferDTO> mercenaryOfferList= mercenaryDAO.getMercenaryOfferList(user_code_id);
+	  
+
+	    model.addAttribute("mercenaryOfferList",mercenaryOfferList);
+
+	    return "/user/UserMercenary"; // 수정 폼 JSP로 이동
 	}
 }

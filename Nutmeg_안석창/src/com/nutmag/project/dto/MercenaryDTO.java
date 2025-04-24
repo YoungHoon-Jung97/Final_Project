@@ -2,10 +2,46 @@ package com.nutmag.project.dto;
 
 public class MercenaryDTO
 {
-	private int mercenary_id,region_id,user_code_id,position_id,city_id;
+	private int mercenary_id,region_id,user_code_id,position_id,city_id,field_res_id,team_id,mercenary_response_id,response_type_id;
 	private String mercenary_reg_at,position_name,city_name,region_name,user_name,user_nick_name,
-	mercenary_time_start_at,mercenary_time_end_at, time;
+	mercenary_time_start_at,mercenary_time_end_at, time,mercenary_response_at;
 	
+	
+	
+	public int getMercenary_response_id() {
+		return mercenary_response_id;
+	}
+	public void setMercenary_response_id(int mercenary_response_id) {
+		this.mercenary_response_id = mercenary_response_id;
+	}
+	public int getResponse_type_id() {
+		return response_type_id;
+	}
+	public void setResponse_type_id(int response_type_id) {
+		this.response_type_id = response_type_id;
+	}
+	public String getMercenary_response_at() {
+		return mercenary_response_at;
+	}
+	public void setMercenary_response_at(String mercenary_response_at) {
+		this.mercenary_response_at = mercenary_response_at;
+	}
+	public int getTeam_id()
+	{
+		return team_id;
+	}
+	public void setTeam_id(int team_id)
+	{
+		this.team_id = team_id;
+	}
+	public int getField_res_id()
+	{
+		return field_res_id;
+	}
+	public void setField_res_id(int field_res_id)
+	{
+		this.field_res_id = field_res_id;
+	}
 	public String getTime() {
 		return time;
 	}

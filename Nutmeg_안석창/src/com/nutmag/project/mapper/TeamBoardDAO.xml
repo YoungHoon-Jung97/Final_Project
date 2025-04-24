@@ -22,12 +22,12 @@
                 	TB.TEAM_BOARD_CREATEAT AS "TEAM_BOARD_CREATE_AT", TB.TEAM_MEMBER_ID, TM.USER_NICK_NAME ,TB.TEAM_ID
                 FROM TEAM_BOARD TB 
                 JOIN TEAM_MEMBER_VIEW TM ON TB.TEAM_MEMBER_ID = TM.TEAM_MEMBER_ID
+                WHERE TB.TEAM_ID =#{team_id}
                 ORDER BY TB.TEAM_BOARD_ID DESC
          	) DATA 
             WHERE ROWNUM &lt;=#{end}
 		) 
         WHERE RNUM &gt;= #{start}
-        AND TEAM_ID =#{team_id}
 	</select>
 	
 	<!-- 게시글 추가 -->

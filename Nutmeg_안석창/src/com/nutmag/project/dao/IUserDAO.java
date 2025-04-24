@@ -74,10 +74,18 @@ public interface IUserDAO
 
  	public void updateUser(UserDTO userDTO);
  	
+ 	//--------------------------------------------------------------------------------------
+ 	
  	//내 결재 내역
- 	public ArrayList<TeamMemberFeeDTO> feeList(@Param("user_code_id") int user_code_id);
+ 	public ArrayList<TeamMemberFeeDTO> feeList(@Param("start")int start,@Param("end") int end ,@Param("user_code_id") int user_code_id);
  	
  	//내 참여 기록
- 	public ArrayList<UserMatchDTO> matchList(@Param("user_code_id")int user_code_id);
+ 	public ArrayList<UserMatchDTO> matchList(@Param("start")int start,@Param("end") int end ,@Param("user_code_id")int user_code_id);
+ 	
+ 	//내 결재 내역 수
+ 	public int feeListCount(@Param("user_code_id") int user_code_id);
+ 	
+ 	//내 참여 기록 수
+ 	public int matchListCount(@Param("user_code_id")int user_code_id);
 	
 }

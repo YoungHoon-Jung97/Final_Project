@@ -34,6 +34,24 @@ public class NotificationController
 		return "redirect:/UserNotification.action";
 	};
 	
+	//알림 삭제
+	@RequestMapping(value = "/DeleteNotification.action", method = RequestMethod.GET)
+	public String deleteNotification(HttpServletRequest request)
+	{
+	    HttpSession session = request.getSession();
+	    INotificationDAO notificationDAO = sqlSession.getMapper(INotificationDAO.class);
+
+	    int notification_id = Integer.parseInt(request.getParameter("notification_id"));
+
+	    // 삭제 실행
+	    notificationDAO.deletefication(notification_id);
+
+	    // 사용자 알림 개수 갱신
+	    int user_code_id = (int) session.getAttribute("user_code_id");
+	    session.setAttribute("notification_count", notificationDAO.notificationCount(user_code_id));
+
+	    return "redirect:/UserNotification.action";
+	}
 	
 	
 }

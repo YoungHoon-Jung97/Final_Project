@@ -40,5 +40,11 @@
 		FROM NOTIFICATION_VIEW
 		WHERE USER_CODE_ID = #{user_code_id} AND IS_READ ='N'
 	</select>
+	
+	<!-- 메시지 삭제 -->
+	<delete id="deletefication">
+		DELETE FROM NOTIFICATION_VIEW 
+        WHERE NOTIFICATION_ID = #{notification_id}
+	</delete>
 
 </mapper>

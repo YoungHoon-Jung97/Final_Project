@@ -8,7 +8,17 @@ public class TeamMemberFeeDTO {
 	team_id;
 	
 	private String team_member_fee_pay_at,
-	user_nick_name;
+	user_nick_name,temp_team_name;
+
+	public String getTemp_team_name()
+	{
+		return temp_team_name;
+	}
+
+	public void setTemp_team_name(String temp_team_name)
+	{
+		this.temp_team_name = temp_team_name;
+	}
 
 	public int getTeam_member_fee_pay_id() {
 		return team_member_fee_pay_id;

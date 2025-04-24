@@ -19,6 +19,7 @@ $(function()
 	function openModal()
 	{
 		$('.modal').css('display', 'block');
+		$("header, .floatingButton-wrapper, .filter-panel").addClass("blur-background");
 	}
 	
 	// 모달 닫기
@@ -28,6 +29,7 @@ $(function()
 		document.getElementById('menu-bar').classList.remove('blur-background');
 		document.getElementById('floatingButton-wrapper').classList.remove('blur-background');
 		document.getElementById('filterPanel').classList.remove('blur-background');
+		$("header, .floatingButton-wrapper, .filter-panel").removeClass("blur-background");
 	}
 	
 	// 다른 페이지 누를 시 모달 닫힘

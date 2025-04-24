@@ -84,7 +84,6 @@ $(function()
 		window.location.href = "MercenaryInsertForm.action";
 	});
 	
-	
 	// 매치 참가
 	$(".match").click(function()
 	{

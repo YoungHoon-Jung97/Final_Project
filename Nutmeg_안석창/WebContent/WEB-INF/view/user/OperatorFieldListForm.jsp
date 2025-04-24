@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -8,37 +8,33 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="css/main.css">
-<link rel="stylesheet" type="text/css" href="<%=cp %>/css/stadium/StadiumFieldCheckForm.css?after">
+<title>OperatorFieldListForm.jsp</title>
+
 </head>
 <body>
+<div class="match-card1">
+	<strong>구장에 소속된 경기장을 확인 해주세요</strong>
+</div>
 
-	<div class="match-card1">
-		<strong>구장에 소속된 경기장을 확인 해주세요</strong>
-	</div>
-	
-	<c:forEach var="field" items="${fieldSearchId}">
-		<div class="match-card2">
-			<div class="stadium-card">
-				<div class="stadium-img-wrapper">
-					<img src="${field.field_reg_image}" alt="" class="stadium-img">
-	
-					<div class="stadium-info">
-						<strong>${field.field_reg_name}</strong> 등록일 :
-						${field.field_reg_at} <br> 가로 : ${field.field_reg_garo}, 세로 :
-						${field.field_reg_sero} <br> 바닥 종류 : ${field.field_type}, 환경
-						: ${field.field_environment_type}<br> 2시간당 가격 :
-						${field.field_reg_price}
-					</div>
+<c:forEach var="field" items="${fieldSearchId}">
+	<div class="match-card2">
+		<div class="stadium-card">
+			<div class="stadium-img-wrapper">
+				<img src="${field.field_reg_image}" alt="경기장 이미지" class="stadium-img">
+				
+				<div class="stadium-info">
+					<strong>${field.field_reg_name}</strong>
+					등록일 : ${field.field_reg_at}<br>
+					가로 : ${field.field_reg_garo}, 세로 : ${field.field_reg_sero}<br>
+					바닥 종류 : ${field.field_type}, 환경 : ${field.field_environment_type}<br>
+					2시간당 가격 : ${field.field_reg_price}
 				</div>
-	
-				<!-- 버튼 -->
-				<input type="hidden" name="stadium_reg_id"
-					value="${stadium.stadium_reg_id}">
 			</div>
+			
+			<!-- 버튼 -->
+			<input type="hidden" name="stadium_reg_id" value="${stadium.stadium_reg_id}">
 		</div>
-	</c:forEach>
-
+	</div>
+</c:forEach>
 </body>
 </html>

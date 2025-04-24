@@ -77,7 +77,7 @@ public class TeamBoardController {
 		}
         System.out.println("==============================================================");
         // 페이징 HTML 생성
-        String pageHtml = pageUtil.getPageHtml("MyTeamBoard.action?page=%d");
+        String pageHtml = pageUtil.getPageHtml("TeamBoard.action?page=%d");
         
         // 요청 속성에 데이터 설정
         model.addAttribute("teamBoardList", teamBoardList);

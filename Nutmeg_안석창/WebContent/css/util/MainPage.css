@@ -248,9 +248,14 @@ body
 
 #mainCarousel img
 {
-	height: auto;
+	height: 300px;
 	max-height: 350px;
 	width: 100%;
 	object-fit: contain;
 	background-color: #E2E2E2; /* 혹시 이미지가 작을 경우 배경 */
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover
+{
+	background-color: #bbb;
 }

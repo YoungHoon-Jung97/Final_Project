@@ -18,7 +18,7 @@
     /* 전체 바디 */
     body {
       font-family: 'Noto Sans KR', sans-serif;
-      background: #f0f3f5;
+      background: white;
       margin: 0;
       padding: 0;
     }
@@ -124,7 +124,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.04);
       padding: 32px;
-      min-height: 600px;
+      min-height: 800px;
     }
     .admin-content p {
       color: #666;
@@ -147,7 +147,14 @@
       .admin-wrapper { flex-direction: column; }
       .admin-sidebar { width: 100%; }
     }
-  </style>
+    <style>
+    .admin-wrapper {
+        display: flex;
+        width: 100%;
+        align-items: flex-start;
+    }
+</style>
+
     <script>
  // 현재 스크립트에 추가
     $(document).ready(function () {
@@ -185,8 +192,7 @@
                 <div class="mt-2"><span class="badge bg-warning text-dark">관리자 로그인</span></div>
             </div>
             <div class="fw-bold mb-2">관리 메뉴</div>
-            <a class="nav-link menu-link" data-url="<%=cp%>/AdminDashboardContent.action
-">
+            <a class="nav-link menu-link" data-url="<%=cp%>/AdminDashboardContent.action">
                 <i class="bi bi-house-door me-2"></i>대시보드
             </a>
             <a class="nav-link menu-link" data-url="<%=cp%>/AdminFieldApprForm.action">
@@ -195,6 +201,9 @@
             <a class="nav-link menu-link" data-url="<%=cp%>/UserManagePage.action">
                 <i class="bi bi-people-fill me-2"></i>사용자 관리
             </a>
+            <a class="nav-link menu-active" href="Logout.action">
+				<i class="bi bi-box-arrow-right me-2"></i> 로그아웃
+			</a>
         </div>
 
         <!-- 콘텐츠 영역 -->

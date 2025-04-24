@@ -103,6 +103,10 @@
 					<a class="nav-link" href="UserNotification.action">
 						<i class="bi bi-journal-text"></i> 알림
 					</a>
+					
+					<a class="nav-link" href="UserMercenary.action">
+						<i class="bi bi-journal-text"></i> 용병 신청
+					</a>
 				</nav>
 			</aside>
 		</div>

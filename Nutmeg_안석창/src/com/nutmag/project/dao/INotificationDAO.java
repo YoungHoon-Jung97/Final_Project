@@ -17,4 +17,7 @@ public interface INotificationDAO
 	
 	//안 읽은 메시지 수
 	public int notificationCount(int user_code_id);
+	
+	// 메세지 삭제
+	public void deletefication(int notification_id);
 }

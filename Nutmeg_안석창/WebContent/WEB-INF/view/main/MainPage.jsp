@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -34,35 +34,35 @@
 			{
 				var message = "${fn:escapeXml(sessionScope.message)}";
 				var parts = message.split(":");
-
+				
 				if (parts.length > 1)
 				{
 					var type = parts[0].trim();
 					var content = parts[1].trim();
-
+					
 					switch (type)
 					{
-					case "SUCCESS_INSERT":
-					case "SUCCESS_APPLY":
-						swal("성공", content, "success");
-						break;
-
-					case "NEED_REGISTER_STADIUM":
-						swal("주의", content, "warning");
-						break;
-
-					case "ERROR_DUPLICATE_JOIN":
-					case "ERROR_AUTH_REQUIRED":
-					case "ERROR_DUPLICATE_REQUEST":
-					case "ERROR":
-						swal("에러", content, "error");
-						break;
-
-					default:
-						swal("알림", content, "info");
+						case "SUCCESS_INSERT":
+						case "SUCCESS_APPLY":
+							swal("성공", content, "success");
+							break;
+						
+						case "NEED_REGISTER_STADIUM":
+							swal("주의", content, "warning");
+							break;
+							
+						case "ERROR_DUPLICATE_JOIN":
+						case "ERROR_AUTH_REQUIRED":
+						case "ERROR_DUPLICATE_REQUEST":
+						case "ERROR":
+							swal("에러", content, "error");
+							break;
+						
+						default:
+							swal("알림", content, "info");
 					}
 				}
-
+				
 				else
 					swal("처리 필요", message, "info");
 			}
@@ -173,7 +173,7 @@
 							</div>
 							
 							<div class="card-content">
-								<h2>${team.temp_team_name}</h2>
+								<h2 value="${team.temp_team_name}">${team.temp_team_name}</h2>
 								<!-- 동호회 이름 -->
 								<p>${team.region_name} / ${team.city_name}</p>
 								<!-- 동호회 지역 -->
