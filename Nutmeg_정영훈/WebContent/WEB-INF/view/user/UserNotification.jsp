@@ -61,7 +61,7 @@
 			<!-- 사이드바 -->
 			<aside class="sidebar">
 				<nav>
-					<a class="nav-link active" href="UserMainPage.action">
+					<a class="nav-link" href="UserMainPage.action">
 						<i class="bi bi-person-circle"></i> 내 정보
 					</a>
 					
@@ -73,11 +73,12 @@
 						<i class="bi bi-cash"></i> 결제 내역
 					</a>
 					
-					<a class="nav-link" href="UserNotification.action">
+					<a class="nav-link active" href="UserNotification.action">
 						<i class="bi bi-journal-text"></i> 알림
 					</a>
+					
 					<a class="nav-link" href="UserMercenary.action">
-						<i class="bi bi-trophy"></i>  용병 신청
+						<i class="bi bi-journal-text"></i> 용병 신청
 					</a>
 				</nav>
 			</aside>

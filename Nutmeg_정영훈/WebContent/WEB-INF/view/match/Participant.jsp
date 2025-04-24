@@ -10,21 +10,11 @@
 <meta charset="UTF-8">
 <title>Participant.jsp</title>
 
-
-<c:import url="/WEB-INF/view/Template.jsp"></c:import>
-
-<style>
-<style>
-/* 전체 main 영역 */
-main {
-	width: 100%;
-	padding: 40px 0;
-	display: flex;
-	justify-content: center;
-}
+<style type="text/css">
 
 /* 컨테이너: 흰색 박스 */
-.member-container {
+.member-container
+{
 	width: 95vw; /* 화면 기준 너비로 */
 	max-width: 1280px;
 	background-color: #ffffff;
@@ -36,7 +26,8 @@ main {
 }
 
 /* 상단 타이틀 */
-.member-title {
+.member-title
+{
 	text-align: center;
 	font-size: 28px;
 	font-weight: bold;
@@ -45,7 +36,8 @@ main {
 }
 
 /* 헤더 */
-.member-header {
+.member-header
+{
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	background-color: #7dcfb6;
@@ -59,7 +51,8 @@ main {
 }
 
 /* 각 참가자 행 */
-.member-row {
+.member-row
+{
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	text-align: center;
@@ -68,57 +61,65 @@ main {
 	transition: background-color 0.2s ease;
 }
 
-.member-row:hover {
+.member-row:hover
+{
 	background-color: #f9f9f9;
 }
 
-.member-row .col {
+.member-row .col
+{
 	font-size: 15px;
 	color: #333;
 	word-break: keep-all;
 }
 
 /* 비어있는 경우 메시지 */
-.empty-row {
+.empty-row
+{
 	text-align: center;
 	padding: 50px 0;
 	color: #999;
 	font-size: 16px;
 }
+
 </style>
+
+<c:import url="/WEB-INF/view/Template.jsp"></c:import>
 
 </head>
 <body>
-
-<main style="padding-top: 30px;">
-<div class="member-container">
-	<div class="member-title">매치 참가 인원</div>
-
-	<div class="member-header">
-		<div class="col">이름</div>
-		<div class="col">포지션</div>
-		<div class="col">나이</div>
-		<div class="col">성별</div>
-	</div>
-
-	<c:choose>
-		<c:when test="${not empty paticipantList}">
-			<c:forEach var="paticipant" items="${paticipantList}">
-				<div class="member-row">
-					<div class="col">${paticipant.user_nick_name}</div>
-					<div class="col">${paticipant.position_name}</div>
-					<div class="col">${paticipant.age}</div>
-					<div class="col">${paticipant.gender}</div>
-				</div>
-			</c:forEach>
-		</c:when>
-		<c:otherwise>
-			<div class="empty-row">참가한 인원이 없습니다.</div>
-		</c:otherwise>
-	</c:choose>
+<div class="main-background">
+	<main>
+		<div class="member-container">
+			<div class="member-title">매치 참가 인원</div>
+			
+			<div class="member-header">
+				<div class="col">이름</div>
+				<div class="col">포지션</div>
+				<div class="col">나이</div>
+				<div class="col">성별</div>
+			</div>
+			
+			<c:choose>
+				<c:when test="${not empty paticipantList}">
+					<c:forEach var="paticipant" items="${paticipantList}">
+						<div class="member-row">
+							<div class="col">${paticipant.user_nick_name}</div>
+							<div class="col">${paticipant.position_name}</div>
+							<div class="col">${paticipant.age}</div>
+							<div class="col">${paticipant.gender}</div>
+						</div>
+					</c:forEach>
+				</c:when>
+				
+				<c:otherwise>
+					<div class="empty-row">참가한 인원이 없습니다.</div>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</main>
+	
+	<c:import url="/WEB-INF/view/Footer.jsp"></c:import>
 </div>
-</main>
-
-
 </body>
 </html>
