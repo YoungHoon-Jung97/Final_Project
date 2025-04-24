@@ -4,105 +4,72 @@
 	request.setCharacterEncoding("UTF-8");
 String cp = request.getContextPath();
 %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자 페이지</title>
 
+
+<!-- Bootstrap & jQuery -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<style>
-  .user-table {
-    display: grid;
-    /* 6개의 열을 동일 너비로 */
-    grid-template-columns: repeat(6, 1fr);
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  }
-  .user-table .row {
-    display: contents; /* grid-item 그대로 행처럼 동작 */
-  }
-
-  /* 헤더 */
-  .user-table .header > div {
-    padding: 16px 0;
-    text-align: center;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(to right, #7dcfb6, #80cfa9);
-  }
-
-  /* 데이터 셀 */
-  .user-table .cell {
-    padding: 14px 8px;
-    text-align: center;
-    border-bottom: 1px solid #ececec;
-    font-size: 0.95rem;
-  }
-
-  /* 줄무늬 & 호버 */
-  .user-table .row:nth-child(even) .cell {
-    background: rgba(125,207,182,0.07);
-  }
-  .user-table .row:hover .cell {
-    background: rgba(125,207,182,0.15);
-  }
-
-  /* 버튼 셀만 flex 정렬 */
-  .user-table .cell.actions {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-  }
-  .btn-sm {
-    padding: 0.35rem 0.9rem;
-    font-size: 0.85rem;
-    border-radius: 4px;
-  }
-
-</style>
-
-<div class="user-table">
-  <!-- 헤더 -->
-  <div class="row header">
-    <div>이름</div><div>이메일</div><div>전화번호</div>
-    <div>닉네임</div><div>상태</div><div>관리</div>
-  </div>
-  <!-- 반복문 돌면서 rows -->
-  <c:forEach var="user" items="${userList}">
-    <div class="row">
-      <div class="cell">${user.user_name}</div>
-      <div class="cell">${user.user_email}</div>
-      <div class="cell">${user.user_tel}</div>
-      <div class="cell">${user.user_nick_name}</div>
-      <div class="cell">
-        <c:choose>
-          <c:when test="${user.is_banned=='Y'}">
-            <span class="text-danger">차단됨</span>
-          </c:when>
-          <c:otherwise>
-            <span class="text-success">정상</span>
-          </c:otherwise>
-        </c:choose>
-      </div>
-      <div class="cell actions">
-        <c:choose>
-          <c:when test="${user.is_banned=='Y'}">
-            <button class="btn btn-outline-secondary btn-sm unban-btn"
-                    data-user-id="${user.user_code_id}">해제</button>
-          </c:when>
-          <c:otherwise>
-            <button class="btn btn-outline-danger btn-sm ban-btn"
-                    data-user-id="${user.user_code_id}">차단</button>
-          </c:otherwise>
-        </c:choose>
-        <button class="btn btn-outline-dark btn-sm delete-btn"
-                data-user-id="${user.user_id}">삭제</button>
-      </div>
-    </div>
-  </c:forEach>
-</div>
-
+<link rel="stylesheet" href="<%=cp%>/css/admin/Admin.css">
+</head>
+<body>
+<h4 class="mb-4">사용자 관리</h4>
+<table class="table table-hover text-center user-list">
+	<thead class="thead-light">
+		<tr>
+			<th>이름</th>
+			<th>이메일</th>
+			<th>전화번호</th>
+			<th>닉네임</th>
+			<th>상태</th>
+			<th>관리</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach var="user" items="${userList}">
+			<tr>
+				<td>${user.user_name}</td>
+				<td>${user.user_email}</td>
+				<td>${user.user_tel}</td>
+				<td>${user.user_nick_name}</td>
+				<td>
+					<c:choose>
+						<c:when test="${user.is_banned=='Y'}">
+							<span class="text-danger">차단됨</span>
+						</c:when>
+						<c:otherwise>
+							<span class="text-success">정상</span>
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td>
+			    	<div class="d-flex justify-content-center gap-2">
+						<c:choose>
+							<c:when test="${user.is_banned=='Y'}">
+							  <button class="btn btn-outline-secondary btn-sm unban-btn"
+							          data-user-id="${user.user_code_id}">해제</button>
+							</c:when>
+							<c:otherwise>
+								<button class="btn btn-outline-danger btn-sm ban-btn"
+								        data-user-id="${user.user_code_id}">차단</button>
+							</c:otherwise>
+						</c:choose>
+			      		<button class="btn btn-outline-dark btn-sm delete-btn"
+			              data-user-id="${user.user_id}">삭제</button>
+			    	</div>
+				</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
+<!-- 페이징 -->
+<div class="pagination">${pageHtml}</div>
 
 <!-- 차단 모달 -->
 <div class="modal fade" id="banModal" tabindex="-1"
@@ -139,62 +106,62 @@ String cp = request.getContextPath();
 		</form>
 	</div>
 </div>
-
+</body>
 <script>
 $(function(){
 
-  // 차단 버튼 클릭 
-  $('.ban-btn').on('click', function(){
-    $('#banUserId').val($(this).data('user-id'));
-    new bootstrap.Modal($('#banModal')).show();
-  });
-
-  // 차단 폼 
-  $('#banForm').on('submit', function(e){
-    e.preventDefault();
-    $.post(
-      '<%=cp%>/UserBanInsert.action',
-      $(this).serialize(),
-      function(){
-        alert("사용자가 차단되었습니다.");
-        location.reload();
-      }
-    ).fail(function(xhr){
-      alert("차단 처리 중 오류가 발생했습니다: " + xhr.status);
-    });
-  });
-
-  // 차단 해제 버튼
-  $('.unban-btn').on('click', function(){
-    if (!confirm("정말 차단을 해제하시겠습니까?")) return;
-    var uid = $(this).data('user-id');
-    $.post(
-      '<%=cp%>/UserUnban.action',
-      { user_id: uid },                // 컨트롤러가 받는 파라미터 이름(user_id)으로 맞춤
-      function(){
-        alert("차단이 해제되었습니다.");
-        location.reload();
-      }
-    ).fail(function(xhr){
-      alert("차단 해제 중 오류가 발생했습니다: " + xhr.status);
-    });
-  });
-
-  // 삭제 버튼
-  $('.delete-btn').on('click', function(){
-    if (!confirm("정말 사용자를 삭제하시겠습니까?")) return;
-    var uid = $(this).data('user-id');
-    $.post(
-      '<%=cp%>/UserDelete.action',     
-      { user_id: uid },                
-      function(){
-        alert("사용자가 삭제되었습니다.");
-        location.reload();
-      }
-    ).fail(function(xhr){
-      alert("삭제 중 오류 발생: " + xhr.status);
-    });
-  });
+	// 차단 버튼 클릭 
+	$('.ban-btn').on('click', function(){
+		$('#banUserId').val($(this).data('user-id'));
+		new bootstrap.Modal($('#banModal')).show();
+	});
+	
+	// 차단 폼 
+	$('#banForm').on('submit', function(e){
+		e.preventDefault();
+		$.post(
+			'<%=cp%>/UserBanInsert.action',
+			$(this).serialize(),
+			function(){
+			  alert("사용자가 차단되었습니다.");
+			  location.reload();
+			}
+		).fail(function(xhr){
+			alert("차단 처리 중 오류가 발생했습니다: " + xhr.status);
+		});
+	});
+	
+	// 차단 해제 버튼
+	$('.unban-btn').on('click', function(){
+		if (!confirm("정말 차단을 해제하시겠습니까?")) return;
+		var uid = $(this).data('user-id');
+		$.post(
+			'<%=cp%>/UserUnban.action',
+			{ user_id: uid },                // 컨트롤러가 받는 파라미터 이름(user_id)으로 맞춤
+			function(){
+				alert("차단이 해제되었습니다.");
+				location.reload();
+			}
+		).fail(function(xhr){
+			alert("차단 해제 중 오류가 발생했습니다: " + xhr.status);
+		});
+	});
+	
+	// 삭제 버튼
+	$('.delete-btn').on('click', function(){
+		if (!confirm("정말 사용자를 삭제하시겠습니까?")) return;
+		var uid = $(this).data('user-id');
+			$.post(
+			'<%=cp%>/UserDelete.action',     
+			 { user_id: uid },                
+			 function(){
+				alert("사용자가 삭제되었습니다.");
+				location.reload();
+			 }
+		).fail(function(xhr){
+			alert("삭제 중 오류 발생: " + xhr.status);
+		});
+	});
 
 });
 </script>

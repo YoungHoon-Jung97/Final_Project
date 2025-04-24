@@ -4,95 +4,67 @@
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
 %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>경기장 승인 요청</title>
 
-<style>
+<!-- Bootstrap & jQuery -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  .user-table {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  width: 100%;
-  max-width: 100%;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-  
-  .user-table .row {
-    display: contents; /* grid-item 그대로 행처럼 동작 */
-  }
+<!-- 관리자 공통 CSS -->
+<link rel="stylesheet" href="<%=cp%>/css/admin/Admin.css">
+</head>
+<body>
 
-  /* 헤더 */
-  .user-table .header > div {
-    padding: 16px 0;
-    text-align: center;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(to right, #7dcfb6, #80cfa9);
-  }
+  <div class="admin-wrapper">
+    <!-- ✅ 메인 콘텐츠 -->
+    <div class="admin-content">
+      <h4 class="mb-4">경기장 승인 요청</h4>
 
-  /* 데이터 셀 */
-  .user-table .cell {
-    padding: 14px 8px;
-    text-align: center;
-    border-bottom: 1px solid #ececec;
-    font-size: 0.95rem;
-  }
-
-  /* 줄무늬 & 호버 */
-  .user-table .row:nth-child(even) .cell {
-    background: rgba(125,207,182,0.07);
-  }
-  .user-table .row:hover .cell {
-    background: rgba(125,207,182,0.15);
-  }
-
-  /* 버튼 셀만 flex 정렬 */
-  .user-table .cell.actions {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-  }
-  .btn-sm {
-    padding: 0.35rem 0.9rem;
-    font-size: 0.85rem;
-    border-radius: 4px;
-  }
-
-</style>
-
-<h4 class="mb-4">경기장 승인 요청</h4>
-
-<!-- 동일한 스타일 적용 -->
-<div class="user-table">
-  <!-- 헤더 -->
-  <div class="row header">
-    <div>구장명</div><div>등록일</div><div>크기</div>
-    <div>바닥/환경</div><div>가격</div><div>관리</div>
+      <table class="table table-hover text-center user-table">
+        <thead class="thead-light">
+          <tr>
+            <th>구장명</th>
+            <th>등록일</th>
+            <th>크기</th>
+            <th>바닥/환경</th>
+            <th>가격</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:forEach var="field" items="${fieldAllList}">
+            <tr>
+              <td>${field.field_reg_name}</td>
+              <td>${field.field_reg_at}</td>
+              <td>${field.field_reg_garo} x ${field.field_reg_sero}</td>
+              <td>${field.field_type} / ${field.field_environment_type}</td>
+              <td>${field.field_reg_price} 원</td>
+              <td>
+                <div class="d-flex justify-content-center gap-2">
+                  <form method="post" action="FieldApprInsert.action" class="d-inline">
+                    <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
+                    <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
+                    <button type="button" class="btn btn-outline-primary btn-sm approve-btn">승인</button>
+                  </form>
+                  <form method="post" action="FieldApprCancelForm.action" class="d-inline">
+                    <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
+                    <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
+                    <button type="button" class="btn btn-outline-danger btn-sm reject-btn">반려</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          </c:forEach>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <c:forEach var="field" items="${fieldAllList}">
-    <div class="row">
-      <div class="cell">${field.field_reg_name}</div>
-      <div class="cell">${field.field_reg_at}</div>
-      <div class="cell">${field.field_reg_garo} x ${field.field_reg_sero}</div>
-      <div class="cell">${field.field_type} / ${field.field_environment_type}</div>
-      <div class="cell">${field.field_reg_price} 원</div>
-      <div class="cell actions">
-        <form method="post" action="FieldApprInsert.action" class="d-inline">
-          <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
-          <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
-          <button type="button" class="btn btn-outline-primary btn-sm approve-btn">승인</button>
-        </form>
-        <form method="post" action="FieldApprCancelForm.action" class="d-inline">
-          <input type="hidden" name="field_reg_id" value="${field.field_reg_id}" />
-          <input type="hidden" name="user_code_id" value="${sessionScope.user_code_id}" />
-          <button type="button" class="btn btn-outline-danger btn-sm reject-btn">반려</button>
-        </form>
-      </div>
-    </div>
-  </c:forEach>
-</div>
 
 <!-- 반려 모달 -->
 <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
@@ -121,7 +93,7 @@ $(function () {
     if (confirm("정말 승인하시겠습니까?")) {
       $.post(form.attr('action'), form.serialize(), function () {
         alert("승인 완료");
-        form.closest('.row').fadeOut();
+        form.closest('tr').fadeOut();  // tr로 바뀌었으므로 여기 수정
       });
     }
   });
@@ -162,3 +134,6 @@ $(function () {
   });
 });
 </script>
+
+</body>
+</html>

@@ -272,7 +272,7 @@ public class MercenaryController
        
     	mercenaryDAO.mercenaryResponse(mercenary);
     	
-        return "redirect?UserMercenary.action";
+        return "redirect:UserMercenary.action";
     }
 	
     

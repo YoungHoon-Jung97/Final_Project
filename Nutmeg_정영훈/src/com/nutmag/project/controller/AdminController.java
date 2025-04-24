@@ -20,12 +20,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nutmag.project.dao.IAdminDAO;
 import com.nutmag.project.dao.IFieldDAO;
+import com.nutmag.project.dao.ITeamDAO;
 import com.nutmag.project.dao.IUserDAO;
 import com.nutmag.project.dto.AdminDTO;
 import com.nutmag.project.dto.AdminFieldApprDTO;
 import com.nutmag.project.dto.AdminFieldCancelDTO;
 import com.nutmag.project.dto.UserBanDTO;
 import com.nutmag.project.dto.UserDTO;
+
+import util.PageUtil;
 
 
 @Controller
@@ -312,13 +315,18 @@ public class AdminController
 	
 	
 	// 사용자 관리 페이지
-	 @RequestMapping(value="/UserManagePage.action", method=RequestMethod.GET)
-	  public String userManageView(HttpServletRequest request,Model model) {
-		  
-	    List<UserDTO> users = sqlSession.getMapper(IAdminDAO.class).selectUserList();     
-	    model.addAttribute("userList", users);
-	    return "/admin/UserManagePage";      
-		   
+	@RequestMapping(value="/UserManagePage.action", method=RequestMethod.GET)
+	public String userManageView(HttpServletRequest request,Model model) {
+	  
+		
+		IAdminDAO admidDAO = sqlSession.getMapper(IAdminDAO.class);
+
+		
+		List<UserDTO> users = sqlSession.getMapper(IAdminDAO.class).selectUserList();
+		model.addAttribute("userList", users);
+	
+		return "/admin/UserManagePage";   
+		
 	}
 	
 	// 사용자 차단 처리 

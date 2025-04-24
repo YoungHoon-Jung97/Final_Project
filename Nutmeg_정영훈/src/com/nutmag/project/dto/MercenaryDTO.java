@@ -2,7 +2,7 @@ package com.nutmag.project.dto;
 
 public class MercenaryDTO
 {
-	private int mercenary_id,region_id,user_code_id,position_id,city_id,field_res_id,team_id,mercenary_response_id,response_type_id;
+	private int mercenary_id,mercenary_offer_id,region_id,user_code_id,position_id,city_id,field_res_id,team_id,mercenary_response_id,response_type_id;
 	private String mercenary_reg_at,position_name,city_name,region_name,user_name,user_nick_name,
 	mercenary_time_start_at,mercenary_time_end_at, time,mercenary_response_at;
 	
@@ -10,6 +10,14 @@ public class MercenaryDTO
 	
 	public int getMercenary_response_id() {
 		return mercenary_response_id;
+	}
+	public int getMercenary_offer_id()
+	{
+		return mercenary_offer_id;
+	}
+	public void setMercenary_offer_id(int mercenary_offer_id)
+	{
+		this.mercenary_offer_id = mercenary_offer_id;
 	}
 	public void setMercenary_response_id(int mercenary_response_id) {
 		this.mercenary_response_id = mercenary_response_id;

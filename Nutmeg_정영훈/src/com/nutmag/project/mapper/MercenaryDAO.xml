@@ -67,21 +67,11 @@
   	</select>
   	
   	<!-- 용병 고용 메시지-->
-  	<insert id="sendMercenary" parameterType="com.nutmag.project.dto.MercenaryDTO" >
-		INSERT INTO MERCENARY_OFFER(
-		MERCENARY_OFFER_ID,
-		MERCENARY_OFFER_AT,
-		FIELD_RES_ID,
-		MERCENARY_ID,
-		TEAM_ID
-		)
-		VALUES
-		(
-		MERCENARY_OFFER_SEQ.NEXTVAL,
-		sysdate,
-		#{field_res_id},
-		#{mercenary_id},
-		#{team_id}
+  	<insert id="sendMercenary" parameterType="com.nutmag.project.dto.MercenaryDTO" statementType="CALLABLE">
+		CALL PRC_MERCENARY_RESPONSE(
+		    #{field_res_id},
+			#{mercenary_id},
+			#{team_id}
 		)
   	</insert>
   	
@@ -97,22 +87,14 @@
   		SELECT *
   		FROM MERCENARY_OFFER_VIEW 
   		WHERE USER_CODE_ID =#{user_code_id}
+  		AND RESPONSE_TYPE_ID IS NULL
   	</select>
 
 	<!-- 용병 신청 응답 -->
-	<select id="mercenaryResponse" parameterType="com.nutmag.project.dto.MercenaryDTO">
-		INSERT INTO MERCENARY_RESPONSE
-		(
-			MERCENARY_RESPONSE_ID,
-			MERCENARY_RESPONSE_AT,
-			MERCENARY_OFFER_ID,
-			RESPONSE_TYPE_ID
-		)VALUES
-		(
-		  MERCENARY_RESPONSE_SEQ.NEXTVAL,
-		  SYSDATE,
-		  #{mercenary_offer_id},#{response_type_id}
-		)
-	</select>
+	<update id="mercenaryResponse" parameterType="com.nutmag.project.dto.MercenaryDTO">
+		UPDATE MERCENARY_RESPONSE
+		SET RESPONSE_TYPE_ID =#{response_type_id}
+		WHERE  MERCENARY_OFFER_ID= #{mercenary_offer_id}
+	</update>
 
 </mapper>
