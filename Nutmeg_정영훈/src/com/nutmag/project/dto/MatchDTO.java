@@ -6,8 +6,25 @@ public class MatchDTO {
 	match_result_away_score,match_pay_id,team_member_id,age,awayteam_pay_amount,user_code_id;
 	private String match_date,start_time,end_time,field_name,stadium_name,user_nick_name,
 	stadium_addr,stadium_detailed_addr,match_inwon,home_team_name,away_team_name,match_status
-	,position_name,gender,field_res_pay_at;
+	,position_name,gender,field_res_pay_at,
+	home_team_emblem,away_team_emblem;
 	
+
+	public String getHome_team_emblem() {
+		return home_team_emblem;
+	}
+
+	public void setHome_team_emblem(String home_team_emblem) {
+		this.home_team_emblem = home_team_emblem;
+	}
+
+	public String getAway_team_emblem() {
+		return away_team_emblem;
+	}
+
+	public void setAway_team_emblem(String away_team_emblem) {
+		this.away_team_emblem = away_team_emblem;
+	}
 
 	public int getAge()
 	{

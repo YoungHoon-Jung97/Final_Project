@@ -44,7 +44,8 @@
 						<div class="match-teams">
 							<div class="team">
 								<div class="team-name">매치 개최팀 (Home Team)</div>
-								
+								<img id="descTeamEmblem" src="${match.home_team_emblem}" alt="팀 앰블럼" class="circle-img">
+
 								<div class="team-score">${match.home_team_name}</div>
 							</div>
 							

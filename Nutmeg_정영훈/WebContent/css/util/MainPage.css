@@ -1,261 +1,364 @@
 @charset "UTF-8";
-
-/* 기본 배경 */
-body
-{
-	background-size: cover;
-	background-attachment: fixed;
-	background-position: center;
-	margin-top: 1rem;
+/* Modern Variables */
+:root {
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary-color: #10b981;
+  --secondary-hover: #059669;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-light: #9ca3af;
+  --bg-light: #f9fafb;
+  --bg-white: #ffffff;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main: 'Pretendard', 'Noto Sans KR', sans-serif;
 }
 
-/* 카드 박스 */
-.card
-{
-	width: 300px;
-	background: rgba(255, 255, 255, 0.85);
-	border-radius: 16px;
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-	overflow: hidden;
-	text-align: center;
-	transition: transform 0.2s, box-shadow 0.3s ease-in-out;
-	margin-top: 30px;
-	backdrop-filter: blur(2px);
-	border: 1px solid #d7f0e2;
+/* Base Styles */
+body {
+  background-color: var(--bg-light);
+  margin: 0;
+  font-family: var(--font-main);
+  color: var(--text-primary);
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
-.card:hover
-{
-	transform: translateY(-5px);
-	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+/* Clean Modern Card Box */
+.card {
+  width: 650px;
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  text-align: left;
+  transition: var(--transition-base);
+  margin: 1.5rem auto; /* 감소된 카드 간 간격 */
+  padding: 2rem;
+  border: none;
+  position: relative;
 }
 
-/* 카드 이미지 영역 */
-.card-img
-{
-	background-color: #cdece2;
-	padding-top: 10px;
-	padding-bottom: 30px;
-	z-index: 1;
+/* Subtle Card Hover Effect */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
 }
 
-/* 이미지 원형 처리 */
-.card-img img
-{
-	width: 80px;
-	height: 80px;
-	object-fit: cover;
-	border-radius: 50%;
-	border: 3px solid white;
-	box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+/* Clean Card Image Area */
+.card-img {
+  background: #f8f9fa;
+  padding: 1.5rem 0;
+  text-align: center;
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
 }
 
-/* 콘텐츠 텍스트 */
-.card-content
-{
-	padding: 20px;
+/* Simple Image Styling */
+.card-img img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  transition: var(--transition-base);
 }
 
-.card-content h2
-{
-	margin: 0;
-	font-size: 1.5em;
-	font-weight: bold;
-	color: #356859;
+.card-img img:hover {
+  transform: scale(1.03);
 }
 
-.card-content p
-{
-	margin: 8px 0 0;
-	font-size: 0.9em;
-	color: #607466;
+/* Clean Content Text */
+.card-content {
+  padding-top: 1.5rem;
 }
 
-/* 버튼 스타일 */
-.card-action
-{
-	margin-top: 16px;
-	background: linear-gradient(to right, #7dcfb6, #80cfa9);
-	color: white;
-	border: none;
-	padding: 10px 24px;
-	border-radius: 8px;
-	font-weight: bold;
-	cursor: pointer;
-	transition: background 0.3s ease;
+.card-content h2 {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
-.card-action:hover
-{
-	background: linear-gradient(to right, #65bda2, #6ab797);
+.card-content p {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
-/* 새싹 아이콘 */
-.temp-icon
-{
-	margin-top: 5px;
-	margin-right: 235px;
-	height: 20px;
+/* Clean Button */
+.card-action {
+  margin-top: 1.5rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-size: 0.95rem;
 }
 
-/* 텍스트 정보 스타일 */
-.modal_body p
-{
-	margin: 10px 0;
-	padding: 8px 0;
-	font-size: 15px;
-	border-bottom: 1px solid #f0f0f0;
+.card-action:hover {
+  background: var(--primary-hover);
 }
 
-.modal_body p:last-child
-{
-	border-bottom: none;
-	margin-top: 15px;
-	padding-top: 10px;
-	font-style: italic;
-	color: #666;
+/* Icon with Animation */
+.temp-icon {
+  margin-top: 5px;
+  margin-right: 235px;
+  height: 24px;
+  transition: var(--transition-base);
 }
 
-/* 정보 라벨 스타일 */
-.modal_body p::before
-{
-	content: attr(id);
-	font-weight: bold;
-	color: #5f6368;
-	margin-right: 8px;
-	font-size: 14px;
+.temp-icon:hover {
+  transform: rotate(15deg);
 }
 
-#descTeamName::before
-{
-	content: "동호회명: ";
+/* Clean Text Info Styling */
+.modal_body p {
+  margin: 0.5rem 0;
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #eaeaea;
+  color: var(--text-secondary);
 }
 
-#descTeamReion::before
-{
-	content: "지역: ";
+.modal_body p:last-child {
+  border-bottom: none;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  color: var(--text-light);
 }
 
-#descTeamCity::before
-{
-	content: "도시: ";
+/* Clean Info Label */
+.modal_body p::before {
+  content: attr(id);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
 }
 
-#descTeamMemberCount::before
-{
-	content: "현재 회원 수: ";
+#descTeamName::before { content: "동호회명: "; }
+#descTeamReion::before { content: "지역: "; }
+#descTeamCity::before { content: "도시: "; }
+#descTeamMemberCount::before { content: "현재 회원 수: "; }
+#descTeamDesc::before {
+  content: "소개: ";
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
 }
 
-#descTeamDesc::before
-{
-	content: "소개: ";
-	display: block;
-	margin-bottom: 5px;
+/* Description Text */
+#descTeamDesc {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
 }
 
-#descTeamDesc
-{
-	white-space: pre-wrap;
-	word-break: break-word;
+/* Modern Banner Style */
+.side-banner {
+  position: fixed;
+  bottom: 200px;
+  width: 150px;
+  z-index: 999;
+  transition: var(--transition-base);
 }
 
-/* 이미지 배너 공통 스타일 */
-.side-banner
-{
-	position: fixed;
-	bottom: 200px;
-	width: 150px;
-	z-index: 999;
+/* Left/Right Banner Position */
+.left-banner { 
+  left: 50px; 
+  transform: translateX(-10px);
 }
 
-/* 왼쪽 배너 위치 */
-.left-banner
-{
-	left: 50px;
+.right-banner { 
+  right: 50px; 
+  transform: translateX(10px);
 }
 
-/* 오른쪽 배너 위치 */
-.right-banner
-{
-	right: 150px;
+.left-banner:hover {
+  transform: translateX(0);
 }
 
-/* 이미지 스타일 */
-.side-banner img
-{
-	width: 180%;
-	height: 150%;
-	border-radius: 15px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.right-banner:hover {
+  transform: translateX(0);
 }
 
-.music-banner
-{
-	position: fixed;
-	top: 30px;
-	right: 30px;
-	background: #fff;
-	border-radius: 12px;
-	padding: 10px 15px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-	z-index: 1000;
-	display: flex;
-	align-items: center;
-	gap: 10px;
+/* Banner Image with Modern Effect */
+.side-banner img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition-base);
+  filter: brightness(0.95);
 }
 
-.music-banner button
-{
-	border: none;
-	background: none;
-	font-size: 20px;
-	cursor: pointer;
+.side-banner img:hover {
+  filter: brightness(1.05);
+  transform: scale(1.05);
 }
 
-.music-banner img
-{
-	width: 30px;
-	height: 30px;
+/* Music Banner with Glassmorphism */
+.music-banner {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* 모바일에서는 배너 숨김 */
-@media screen and (max-width: 992px)
-{
-	.side-banner
-	{
-		display: none;
-	}
-	
-	.music-banner
-	{
-		display: none;
-	}
-	
-	.weather-widget
-	{
-		display: none;
-	}
+.music-banner button {
+  border: none;
+  background: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--primary-color);
+  transition: var(--transition-base);
 }
 
-#mainCarousel
-{
-	width: 80%;
-	margin: 30px auto;
-	border-radius: 15px;
-	overflow: hidden;
-	box-shadow: #00000040;
+.music-banner button:hover {
+  transform: scale(1.15);
+  color: var(--primary-hover);
 }
 
-#mainCarousel img
-{
-	height: 300px;
-	max-height: 350px;
-	width: 100%;
-	object-fit: contain;
-	background-color: #E2E2E2; /* 혹시 이미지가 작을 경우 배경 */
+.music-banner img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: var(--transition-base);
 }
 
-.carousel-control-prev:hover, .carousel-control-next:hover
-{
-	background-color: #bbb;
+.music-banner img:hover {
+  transform: rotate(45deg);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 992px) {
+  .side-banner, .music-banner, .weather-widget {
+    display: none;
+  }
+  
+  .card {
+    width: 90%;
+    padding: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .card-content h2 {
+    font-size: 1.75rem;
+  }
+  
+  .card-content p {
+    font-size: 1rem;
+  }
+}
+
+/* Modern Carousel Style */
+#mainCarousel {
+  width: 85%;
+  margin: 2.5rem auto;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  background: linear-gradient(45deg, #f1f1f1, #e2e2e2);
+}
+
+#mainCarousel .carousel-inner {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+#mainCarousel img {
+  height: 350px;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+#mainCarousel:hover img {
+  transform: scale(1.03);
+}
+
+/* Carousel Controls */
+.carousel-control-prev, .carousel-control-next {
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+  margin: 0 1rem;
+}
+
+.carousel-control-prev:hover, .carousel-control-next:hover {
+  background: rgba(255, 255, 255, 0.9);
+  opacity: 1;
+}
+
+.carousel-indicators {
+  margin-bottom: 1rem;
+}
+
+.carousel-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 0 5px;
+}
+
+.carousel-indicators .active {
+  background-color: var(--primary-color);
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card, #mainCarousel {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
 }
