@@ -8,6 +8,7 @@ public class TeamDTO {
 	private String temp_team_name,temp_team_desc,emblem,temp_team_apply_at,
 	temp_team_account,temp_team_account_holder,region_name,city_name,bank_name,
 	user_nick_name;
+	private MultipartFile temp_team_emblem;
 	
 	
 	public String getUser_nick_name() {
@@ -28,7 +29,6 @@ public class TeamDTO {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	private MultipartFile temp_team_emblem;
 	
 	public String getRegion_name()
 	{

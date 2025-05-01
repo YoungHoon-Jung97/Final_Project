@@ -13,7 +13,8 @@
 		    #{region_id},
 		    #{city_id},
 		    #{mercenary_time_start_at},
-		    #{mercenary_time_end_at}
+		    #{mercenary_time_end_at},
+		    #{profile}
 		)
 	</insert>  
 	

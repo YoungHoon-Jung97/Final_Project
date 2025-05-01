@@ -1,5 +1,7 @@
 package com.nutmag.project.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,20 +21,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.nutmag.project.dao.IFieldDAO;
 import com.nutmag.project.dao.IMercenaryDAO;
 import com.nutmag.project.dao.INotificationDAO;
 import com.nutmag.project.dao.IPositionDAO;
 import com.nutmag.project.dao.IRegionDAO;
 import com.nutmag.project.dao.ITeamDAO;
-import com.nutmag.project.dto.FieldResMainPageDTO;
 import com.nutmag.project.dto.MatchDTO;
 import com.nutmag.project.dto.MercenaryDTO;
 import com.nutmag.project.dto.NotificationDTO;
 import com.nutmag.project.dto.PositionDTO;
 import com.nutmag.project.dto.RegionDTO;
 import com.nutmag.project.dto.TeamDTO;
+
+import util.Path;
 
 @Controller
 public class MercenaryController
@@ -41,19 +45,81 @@ public class MercenaryController
     
 	//용병 등록
     @RequestMapping(value = "/MercenaryInsert.action", method = RequestMethod.POST)
-    public String insertMercenary(MercenaryDTO dto,HttpServletRequest request,Model model)
+    public String insertMercenary(MercenaryDTO mercenary,HttpServletRequest request,Model model) throws IllegalStateException, IOException
     {
 		HttpSession session = request.getSession();
+		MultipartFile file = mercenary.getMercenary_profile();
 		
+		String user_nick_name = (String) session.getAttribute("user_nick_name");
+		
+		if (mercenary != null)
+        {
+            System.out.println("PositionId = " + mercenary.getPosition_id());
+            System.out.println("RegionId = " + mercenary.getRegion_id());
+            System.out.println("CityId = " + mercenary.getCity_id());
+            System.out.println("StartAt = " + mercenary.getMercenary_time_start_at());
+            System.out.println("EndAt = " + mercenary.getMercenary_time_end_at());
+            
+        }
+
+		
+		// 1. 업로드 경로 설정
+        String uploadPath = Path.getUploadProfileDir();  // 공유폴더 경로
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists())
+            uploadDir.mkdirs();
+   
+        // 2. 파일 저장
+        if (file != null && !file.isEmpty())
+        {
+        	
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String savedFileName = user_nick_name.replaceAll("[^a-zA-Z0-9가-힣_\\-]", "_")
+                                        + "_" + System.currentTimeMillis() + fileExtension;
+            
+            System.out.println("originalFileName = " + originalFileName);
+            System.out.println("fileExtension = " + fileExtension);
+            System.out.println("savedFileName = " + savedFileName);
+
+            // 공유폴더 저장
+            File saveFile = new File(uploadPath, savedFileName);
+            file.transferTo(saveFile);
+
+            // 정적 리소스 경로 복사
+            String staticPath = request.getServletContext().getRealPath("/resources/uploads/profiles/");
+            File staticFile = new File(staticPath, savedFileName);
+
+            if (!staticFile.getParentFile().exists())
+                staticFile.getParentFile().mkdirs();
+
+            FileUtils.copyFile(saveFile, staticFile); // org.apache.commons.io.FileUtils 필요
+
+            // DB에 저장할 웹 경로
+            String fileWebPath = "resources/uploads/profiles/" + savedFileName;
+            mercenary.setProfile(fileWebPath);
+
+            // 디버그
+            System.out.println("\n=====[파일 경로]=====");
+            System.out.println("공유폴더 저장경로 : " + saveFile.getAbsolutePath());
+            System.out.println("정적리소스 복사경로 : " + staticFile.getAbsolutePath());
+            System.out.println("DB 저장 웹경로 : " + fileWebPath);
+        }
+        else
+        {
+        	mercenary.setProfile("resources/uploads/profiles/default.png"); // 기본 엠블럼
+        }
+
+
 		IMercenaryDAO mercenaryDAO = sqlSession.getMapper(IMercenaryDAO.class);
 		
 		Integer  user_code_id = (Integer)session.getAttribute("user_code_id");
-		dto.setUser_code_id(user_code_id);
+		mercenary.setUser_code_id(user_code_id);
 		
 		String message = "SUCCESS_INSERT: 용병등록이 되었습니다.";
 		session.setAttribute("message", message);
 		
-		mercenaryDAO.insertMercenary(dto);
+		mercenaryDAO.insertMercenary(mercenary);
         return "redirect:/MainPage.action";
     }
     

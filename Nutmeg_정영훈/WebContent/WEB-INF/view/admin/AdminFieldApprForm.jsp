@@ -33,6 +33,7 @@
             <th>크기</th>
             <th>바닥/환경</th>
             <th>가격</th>
+            <th>파일</th>
             <th>관리</th>
           </tr>
         </thead>
@@ -44,6 +45,7 @@
               <td>${field.field_reg_garo} x ${field.field_reg_sero}</td>
               <td>${field.field_type} / ${field.field_environment_type}</td>
               <td>${field.field_reg_price} 원</td>
+              <td><button class="btn btn-outline-primary">파일</button></td>
               <td>
                 <div class="d-flex justify-content-center gap-2">
                   <form method="post" action="FieldApprInsert.action" class="d-inline">

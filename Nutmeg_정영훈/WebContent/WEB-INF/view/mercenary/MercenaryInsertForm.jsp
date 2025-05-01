@@ -25,7 +25,7 @@
 </head>
 <body>
 <div class="content">
-	<form action="MercenaryInsert.action" method="POST" class="form">
+	<form action="MercenaryInsert.action" method="POST" class="form" enctype="multipart/form-data">
 		<input type="hidden" name="position_id" id="selected-position-id">
 		
 		<div class="form__title">용병 등록</div>
@@ -81,6 +81,21 @@
 					<select id="citys" name="city_id" class="form__input" required>
 						<option value="">구를 선택하세요</option>
 					</select>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 사진 -->
+		<div class="form__group">
+			<div class="form__field">
+				<label class="form__label">용병 프로필</label>
+				
+				<div class="file-upload-wrapper">
+					<input type="file" id="image" name="mercenary_profile" class="file-upload-input" />
+					
+					<button type="button" class="file-upload-btn" onclick="document.getElementById('image').click();">파일 선택</button>
+					
+					<span id="file-name" class="file-upload-filename">선택된 파일 없음</span>
 				</div>
 			</div>
 		</div>

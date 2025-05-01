@@ -1,13 +1,29 @@
 package com.nutmag.project.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class MercenaryDTO
 {
 	private int mercenary_id,mercenary_offer_id,region_id,user_code_id,position_id,city_id,field_res_id,team_id,mercenary_response_id,response_type_id;
 	private String mercenary_reg_at,position_name,city_name,region_name,user_name,user_nick_name,
-	mercenary_time_start_at,mercenary_time_end_at, time,mercenary_response_at;
+	mercenary_time_start_at,mercenary_time_end_at, time,mercenary_response_at,
+	profile;
+	
+	private MultipartFile mercenary_profile;
 	
 	
-	
+	public MultipartFile getMercenary_profile() {
+		return mercenary_profile;
+	}
+	public void setMercenary_profile(MultipartFile mercenary_profile) {
+		this.mercenary_profile = mercenary_profile;
+	}
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
 	public int getMercenary_response_id() {
 		return mercenary_response_id;
 	}

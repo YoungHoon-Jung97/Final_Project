@@ -180,11 +180,8 @@ public class MatchController {
 		int field_res_id = Integer.parseInt(request.getParameter("field_res_id"));	//예약 정보
 		
 		IMatchDAO matchDAO = sqlSession.getMapper(IMatchDAO.class);
-		MatchDTO match = matchDAO.getMatch(field_res_id);
+		matchDAO.approveMatch(field_res_id);
 		
-		int match_pay_id = match.getMatch_pay_id();
-		
-		model.addAttribute("matchRoomList", matchDAO.matchRoomList());
 		
 		return"redirect:TeamSchedule.action";
 	}

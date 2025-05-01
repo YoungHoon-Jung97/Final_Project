@@ -49,18 +49,33 @@ $(function()
 				{
 					data.forEach(function(mercenary)
 					{
-						html += '<div class="table-row">';
-						html += '<div class="table-cell">' + mercenary.user_nick_name + '</div>';
-						html += '<div class="table-cell">' + mercenary.position_name + '</div>';
-						html += '<div class="table-cell">' + mercenary.region_name + '</div>';
-						html += '<div class="table-cell">' + mercenary.city_name + '</div>';
-						html += '<div class="table-cell">';
-						html += '<form action="hireMercenary.action" method="POST">';
-						html += '<input type="hidden" name="mercenary_id" value="' + mercenary.mercenary_id + '">';
-						html += '<button type="submit" class="btn-hire">고용</button>';
-						html += '</form>';
+						html += '<div class="player-card">';
+						html += '  <div class="player-image">';
+						html += '  <img src="' + mercenary.profile +'" alt="' + mercenary.user_nick_name + '">';
+						html += '  </div>';
+						html += '  <div class="player-info">';
+						html += '    <div class="player-name">' + mercenary.user_nick_name + '</div>';
+						html += '    <div class="player-position">' + mercenary.position_name + '</div>';
+						html += '    <div class="player-stats">';
+						html += '      <div class="stat">';
+						html += '        <div class="stat-label">지역</div>';
+						html += '        <div class="stat-value">' + mercenary.region_name + '</div>';
+						html += '      </div>';
+						html += '      <div class="stat">';
+						html += '        <div class="stat-label">도시</div>';
+						html += '        <div class="stat-value">' + mercenary.city_name + '</div>';
+						html += '      </div>';
+						html += '    </div>';
+						html += '    <div class="player-actions">';
+						html += '      <form action="hireMercenary.action" method="POST" style="display:flex;gap:10px;">';
+						html += '        <input type="hidden" name="mercenary_id" value="' + mercenary.mercenary_id + '">';
+						html += '        <button type="submit" class="action-button recruit-button" onclick="openModal(this)">영입하기</button>';
+						html += '        <button type="button" class="action-button details-button">상세정보</button>';
+						html += '      </form>';
+						html += '    </div>';
+						html += '  </div>';
 						html += '</div>';
-						html += '</div>';
+
 					});
 				}
 				

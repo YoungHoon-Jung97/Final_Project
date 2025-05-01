@@ -35,6 +35,12 @@ $(function()
 		loadCities(regionId);
 	});
 	
+	$('#image').on('change', function ()
+	{
+		var fileName = this.files.length > 0 ? this.files[0].name : '선택된 파일 없음';
+		$('#file-name').text(fileName);
+	});
+	
 	// 지역에 따른 도시 로드
 	function loadCities(regionId)
 	{
