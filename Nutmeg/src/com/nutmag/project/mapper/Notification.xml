@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutmag.project.dao.INotificationDAO">
+
+	<!-- 메시지 등록 -->
+	<insert id="addNotification" parameterType="com.nutmag.project.dto.NotificationDTO">
+		INSERT INTO NOTIFICATIONS(
+		    NOTIFICATION_ID
+		    ,USER_CODE_ID
+		    ,MESSAGE
+		    ,CREATED_AT
+		    ,IS_READ
+		    ,NOTIFICATION_TYPE_ID
+		  )
+		VALUES(
+		NOTIFICATIONS_SEQ.NEXTVAL,
+		${user_code_id}, #{message},SYSDATE,'N',#{notification_type_id}
+		)
+	</insert>
+	
+	<!-- 메시지 출력 -->
+	<select id="getNotificationList" resultType="com.nutmag.project.dto.NotificationDTO">
+		SELECT *
+		FROM NOTIFICATION_VIEW
+		WHERE USER_CODE_ID = #{user_code_id}
+	</select>
+	
+	<!-- 메시지 확인 -->
+	<update id="readNotification">
+		UPDATE NOTIFICATION_VIEW
+		SET IS_READ = 'Y'
+		WHERE NOTIFICATION_ID = #{notification_id}
+	</update>	
+	
+	<!-- 안 읽은 메시지 수 -->
+	<select id="notificationCount" resultType="int">
+		SELECT COUNT(*) AS "COUNT"
+		FROM NOTIFICATION_VIEW
+		WHERE USER_CODE_ID = #{user_code_id} AND IS_READ ='N'
+	</select>
+	
+	<!-- 메시지 삭제 -->
+	<delete id="deletefication">
+		DELETE FROM NOTIFICATION_VIEW 
+        WHERE NOTIFICATION_ID = #{notification_id}
+	</delete>
+
+</mapper>
